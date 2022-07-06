@@ -1,11 +1,14 @@
 ﻿<ResourceDictionary
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:converters="clr-namespace:Win10Themables.Converters">
+	xmlns:converters="clr-namespace:Win10Themables.Converters"
+	xmlns:helperclasses="clr-namespace:CoreUtilites.HelperClasses;assembly=CoreUtilities">
 
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="/CoreUtils;component/Styles.xaml" />
+		<ResourceDictionary Source="/CoreUtilities;component/Styles.xaml" />
 	</ResourceDictionary.MergedDictionaries>
+
+	<helperclasses:BindingProxy x:Key="proxy" Data="{Binding}" />
 
 	<!--#region Application colours-->
 
@@ -41,6 +44,10 @@
 	<converters:RangeSliderThumbValueConverter x:Key="RangeSliderThumbLowerValueConverter" />
 
 	<!--#endregion End Converters-->
+
+	<FontFamily x:Key="OpenSans">pack://application:,,,/Fonts/#Open Sans</FontFamily>
+
+	<!--#region Controls-->
 
 	<!--#region Slider thumb-->
 
@@ -161,7 +168,7 @@
 			Focusable="False" />
 	</ControlTemplate>
 
-	<Style TargetType="{x:Type ComboBox}">
+	<Style x:Key="ThemableCombobox" TargetType="{x:Type ComboBox}">
 		<Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
 		<Setter Property="VerticalAlignment" Value="Center" />
 		<Setter Property="OverridesDefaultStyle" Value="true" />
@@ -262,6 +269,34 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+
+	<!--#region Custom Combobox Item-->
+
+	<Style TargetType="{x:Type ComboBoxItem}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ComboBoxItem">
+					<Border
+						x:Name="Bd"
+						Padding="1"
+						Background="Transparent"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="0"
+						CornerRadius="5"
+						SnapsToDevicePixels="true">
+						<ContentPresenter />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--#endregion Custom Combobox Item-->
 
 	<!--#endregion End Combobox-->
 
@@ -378,9 +413,32 @@
 
 	<!--#endregion End ScrollBar-->
 
-	<!--#region Custom datagrid column header-->
+	<!--#region Custom Datagrid-->
 
-	<Style x:Key="{x:Type DataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+	<Style x:Key="ThemableDatagridCell" TargetType="{x:Type DataGridCell}">
+		<Style.Triggers>
+			<Trigger Property="DataGridCell.IsSelected" Value="True">
+				<Setter Property="BorderBrush">
+					<Setter.Value>
+						<SolidColorBrush Color="Transparent" />
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+				<Setter Property="Background">
+					<Setter.Value>
+						<SolidColorBrush Color="Transparent" />
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<Style x:Key="ThemableDatagridRowHeader" TargetType="{x:Type DataGridRowHeader}">
+		<Setter Property="Control.Background" Value="{DynamicResource DatagridHeaderBrush}" />
+		<Setter Property="Control.HorizontalContentAlignment" Value="Center" />
+	</Style>
+
+	<Style x:Key="ThemableDatagridColumnHeader" TargetType="{x:Type DataGridColumnHeader}">
 		<Setter Property="SnapsToDevicePixels" Value="True" />
 		<Setter Property="MinWidth" Value="0" />
 		<Setter Property="MinHeight" Value="0" />
@@ -465,39 +523,29 @@
 		</Setter>
 	</Style>
 
-	<!--#endregion Custom datagrid-->
-
-	<!--#region Custom Combobox Item-->
-
-	<Style TargetType="ComboBoxItem">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="ComboBoxItem">
-					<Border
-						x:Name="Bd"
-						Padding="1"
-						Background="Transparent"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="0"
-						CornerRadius="5"
-						SnapsToDevicePixels="true">
-						<ContentPresenter />
-					</Border>
-					<ControlTemplate.Triggers>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
-						</Trigger>
-					</ControlTemplate.Triggers>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
+	<Style x:Key="ThemableDataGrid" TargetType="{x:Type DataGrid}">
+		<Setter Property="IsReadOnly" Value="True" />
+		<Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource StatusTextBrush}" />
+		<Setter Property="VerticalGridLinesBrush" Value="{DynamicResource StatusTextBrush}" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+		<Setter Property="EnableRowVirtualization" Value="True" />
+		<Setter Property="RowBackground" Value="{DynamicResource DatagridRowBrush}" />
+		<Setter Property="FontSize" Value="12" />
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+		<Setter Property="ItemsSource" Value="{Binding VirtualisedLogRows}" />
+		<Setter Property="AutoGenerateColumns" Value="False" />
+		<Setter Property="Margin" Value="-1,-1,0,-1" />
+		<Setter Property="CellStyle" Value="{StaticResource ThemableDatagridCell}" />
+		<Setter Property="RowHeaderStyle" Value="{StaticResource ThemableDatagridRowHeader}" />
+		<Setter Property="ColumnHeaderStyle" Value="{StaticResource ThemableDatagridColumnHeader}" />
 	</Style>
 
-	<!--#endregion Custom Combobox Item-->
+	<!--#endregion Custom datagrid-->
 
 	<!--#region Custom ListBox-->
 
-	<Style x:Key="CustomListbox" TargetType="{x:Type ListBox}">
+	<Style x:Key="ThemableListBox" TargetType="{x:Type ListBox}">
 		<Setter Property="Background" Value="Black" />
 		<Setter Property="BorderBrush" Value="Black" />
 		<Setter Property="BorderThickness" Value="1" />
@@ -558,7 +606,7 @@
 
 	<!--#region Custom Checkbox-->
 
-	<Style TargetType="CheckBox">
+	<Style x:Key="ThemableCheckBox" TargetType="{x:Type CheckBox}">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type CheckBox}">
@@ -646,11 +694,11 @@
 				<ControlTemplate TargetType="{x:Type CheckBox}">
 					<Border
 						x:Name="Border"
-						Width="{Binding Height, ElementName=Border, Converter={StaticResource ValueDoublerConverter}}"
+						Width="{Binding Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=2}"
 						Height="{TemplateBinding Height}"
 						Background="{DynamicResource ControlNonClickablePartBrush}"
 						BorderThickness="0"
-						CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueHalverConverter}}">
+						CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}">
 						<Grid x:Name="grid">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="1*" />
@@ -658,12 +706,12 @@
 							</Grid.ColumnDefinitions>
 							<Border
 								x:Name="highlightCircle"
-								Height="{Binding Height, ElementName=Border, Converter={StaticResource ValueSubtract2Converter}}"
+								Height="{Binding Height, ElementName=Border, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-2}"
 								Margin="1"
 								VerticalAlignment="Top"
 								Background="{DynamicResource ControlClickablePartBrush}"
 								BorderThickness="0"
-								CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueHalverConverter}}" />
+								CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
 						</Grid>
 					</Border>
 					<ControlTemplate.Triggers>
@@ -704,4 +752,6 @@
 	</Style>
 
 	<!--#endregion End Custom Checkbox-->
+
+	<!--#endregion End Controls-->
 </ResourceDictionary>

@@ -1,17 +1,18 @@
 ﻿<Window
-	x:Class="Win10Themables.Views.MainWindow"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:controls="clr-namespace:Win10Themables.Controls"
+	x:Class="Win10Themables.Views.MainWindow"
+	x:Name="Window"
+	Title="Test App"
 	Width="800"
 	Height="450"
-	Title="Test App"
-	x:Name="Window"
 	AllowsTransparency="False"
-	WindowStyle="None">
+	Icon="Logo_SmallCopy.ico"
+	WindowStyle="None" 
+	FontFamily="{StaticResource OpenSans}">
 	<WindowChrome.WindowChrome>
-		<WindowChrome CaptionHeight="24" 
-					  ResizeBorderThickness="5" />
+		<WindowChrome CaptionHeight="24" ResizeBorderThickness="5" />
 	</WindowChrome.WindowChrome>
-	<controls:MainWindowControl Title="{Binding ElementName=Window, Path=Title}"/>
+	<controls:MainWindowControl />
 </Window>

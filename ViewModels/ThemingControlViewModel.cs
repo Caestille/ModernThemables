@@ -1,8 +1,7 @@
-﻿using CoreUtils.Interfaces;
-using CoreUtils.Services;
+﻿using CoreUtilities.Interfaces;
+using CoreUtilities.Services;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -166,42 +165,20 @@ namespace Win10Themables.ViewModels
 		{
 			this.registryService = new RegistryService();
 
-			if (!registryService.TryGetSetting(ColourModeSettingName, out string? mode))
-			{
-				mode = lightModeKey;
-				registryService.SetSetting(ColourModeSettingName, mode);
-			}
-			if (mode == lightModeKey)
-				IsDarkMode = false;
-			else if (mode == darkModeKey)
-				IsDarkMode = true;
+			registryService.TryGetSetting(ColourModeSettingName, lightModeKey, out string? mode);
+			IsDarkMode = mode == darkModeKey;
 
-			if (!registryService.TryGetSetting(ThemeSettingName, out string? theme))
-			{
-				theme = $"{ThemeColour.A}-{ThemeColour.R}-{ThemeColour.G}-{ThemeColour.B}";
-				registryService.SetSetting(ThemeSettingName, theme);
-			}
-			List<byte>? accent = theme?.Split('-').Select(byte.Parse).ToList();
-			if (accent != null)
-			{
-				SetAccentColour(accent[0], accent[1], accent[2], accent[3]);
-			}
+			registryService.TryGetSetting(ThemeSettingName, $"{ThemeColour.A}-{ThemeColour.R}-{ThemeColour.G}-{ThemeColour.B}", out string? theme);
+			var accent = theme?.Split('-').Select(byte.Parse).ToList();
+			SetAccentColour(accent[0], accent[1], accent[2], accent[3]);
 
-			if (!registryService.TryGetSetting(OsSyncSettingName, out string? sync))
-			{
-				sync = "false";
-				registryService.SetSetting(OsSyncSettingName, sync);
-			}
-			IsSyncingWithOs = bool.Parse(sync);
+			registryService.TryGetSetting(OsSyncSettingName, false, out bool sync);
+			IsSyncingWithOs = sync;
 
 			osThemePollTimer.Elapsed += OsThemePollTimer_Elapsed;
 			osThemePollTimer.AutoReset = true;
-		}
 
-		private void OsThemePollTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
-		{
-			if (isSyncingWithOs)
-				SyncThemeWithOs(true);
+			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
 
 		private void SetLightModeColours()
@@ -337,6 +314,18 @@ namespace Win10Themables.ViewModels
 		private static Color MonoColour(byte value)
 		{
 			return Color.FromArgb(255, value, value, value);
+		}
+
+		private void OsThemePollTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+		{
+			if (isSyncingWithOs)
+				SyncThemeWithOs(true);
+		}
+
+		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
+		{
+			osThemePollTimer.Elapsed -= OsThemePollTimer_Elapsed;
+			osThemePollTimer.Stop();
 		}
 	}
 }
