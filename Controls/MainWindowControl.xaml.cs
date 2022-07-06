@@ -29,13 +29,11 @@ namespace Win10Themables.Controls
 
 		private bool isThemingGridOpen;
 		private bool isWindowMaximised;
-		private bool isAnimating;
+		private bool isDockedOrMaximised;
 
 		private Window mainWindow;
 
 		private static CurrentMonitorInfo currentMonitorInfo;
-
-		public ICommand WindowSizeChangedCommand => new RelayCommand(WindowSizeChanged);
 
 		public string Title
 		{
@@ -45,14 +43,6 @@ namespace Win10Themables.Controls
 		public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
 		  "Title", typeof(string), typeof(MainWindowControl), new PropertyMetadata(""));
 
-		public WindowState WindowStateProperty
-		{
-			get { return (WindowState)GetValue(WindowStateDProperty); }
-			set { SetValue(WindowStateDProperty, value); }
-		}
-		public static readonly DependencyProperty WindowStateDProperty = DependencyProperty.Register(
-		  "WindowStateProperty", typeof(WindowState), typeof(MainWindowControl), new PropertyMetadata(WindowState.Normal));
-
 		public ObservableObject VisibleViewModel
 		{
 			get { return (ObservableObject)GetValue(VisibleViewModelProperty); }
@@ -61,19 +51,12 @@ namespace Win10Themables.Controls
 		public static readonly DependencyProperty VisibleViewModelProperty = DependencyProperty.Register(
 		  "VisibleViewModel", typeof(ObservableObject), typeof(MainWindowControl), new PropertyMetadata(null));
 
-		public bool IsDockedOrMaximised
-		{
-			get { return (bool)GetValue(IsDockedProperty); }
-			private set { SetValue(IsDockedProperty, value); }
-		}
-		public static readonly DependencyProperty IsDockedProperty = DependencyProperty.Register(
-		  "IsDockedOrMaximised", typeof(bool), typeof(MainWindowControl), new PropertyMetadata(false));
-
 		public MainWindowControl()
 		{
 			InitializeComponent();
 			mainWindow = Application.Current.MainWindow;
 			mainWindow.Loaded += MainWindow_Loaded;
+			mainWindow.SizeChanged += MainWindow_SizeChanged;
 			SettingsClippingStackPanel.ClipToBounds = true;
 		}
 
@@ -85,7 +68,7 @@ namespace Win10Themables.Controls
 
 		private void MinimiseButton_Click(object sender, RoutedEventArgs e)
 		{
-			WindowStateProperty = WindowState.Minimized;
+			mainWindow.WindowState = WindowState.Minimized;
 		}
 
 		public void ChangeStateButton_Click(object sender, RoutedEventArgs e)
@@ -93,13 +76,13 @@ namespace Win10Themables.Controls
 			ChangeWindowState();
 		}
 
-		public void WindowSizeChanged()
+		private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			var isDockedTop = !isWindowMaximised && (mainWindow.WindowState == WindowState.Maximized);
 			var isDockedSide = mainWindow.WindowState == WindowState.Normal
 				&& mainWindow.Width != mainWindow.RestoreBounds.Width
 				&& mainWindow.Height != mainWindow.RestoreBounds.Height;
-			var wasDocked = IsDockedOrMaximised
+			var wasDocked = isDockedOrMaximised
 				&& isWindowMaximised
 				&& mainWindow.WindowState == WindowState.Normal;
 
@@ -107,15 +90,14 @@ namespace Win10Themables.Controls
 			{
 				ChangeWindowState();
 			}
-
-			IsDockedOrMaximised = isDockedTop || isDockedSide || (mainWindow.WindowState == WindowState.Maximized);
+			isDockedOrMaximised = isDockedTop || isDockedSide || (mainWindow.WindowState == WindowState.Maximized);
 		}
 
 		public async void ChangeWindowState()
 		{
 			isWindowMaximised = !isWindowMaximised;
 
-			WindowStateProperty = !isWindowMaximised ? WindowState.Normal : WindowState.Maximized;
+			mainWindow.WindowState = !isWindowMaximised ? WindowState.Normal : WindowState.Maximized;
 			var logicalElements = new List<FrameworkElement>();
 			GetLogicalElements(this, logicalElements);
 			var grid = (Grid)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "RestoreDownGrid");
