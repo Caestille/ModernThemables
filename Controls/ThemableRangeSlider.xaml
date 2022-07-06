@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Name="root">
     <UserControl.Resources>
-        <ControlTemplate x:Key="simpleSlider" TargetType="{x:Type Slider}">
+        <ControlTemplate x:Key="SimpleSlider" TargetType="{x:Type Slider}">
             <Border SnapsToDevicePixels="true"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}">
@@ -18,7 +18,7 @@
 
                     <Track x:Name="PART_Track" Grid.Row="1">
                         <Track.Thumb>
-                            <Thumb x:Name="Thumb" Focusable="False" Height="18" OverridesDefaultStyle="True" Template="{StaticResource SliderThumbHorizontalDefault}" VerticalAlignment="Center" Width="11"/>
+                            <Thumb x:Name="Thumb" Focusable="False" Height="18" OverridesDefaultStyle="True" Template="{StaticResource SliderThumbHorizontalDefault}" VerticalAlignment="Center" Width="15"/>
                         </Track.Thumb>
                     </Track>
                 </Grid>
@@ -28,41 +28,45 @@
 
     <Grid VerticalAlignment="Top" Name="BaseGrid">
         <Border BorderThickness="0,4,0,0"
-		        BorderBrush="{DynamicResource TabButtonMouseOverBrush}"
+		        BorderBrush="{DynamicResource DisabledControlNonClickablePartBrush}"
 		        VerticalAlignment="Center"
 		        Height="4"
-		        Margin="5,0,5,0"/>
+		        Margin="5,0,5,0"
+			CornerRadius="2"/>
 
         <Border BorderThickness="0,4,0,0"
-		        BorderBrush="{DynamicResource TabButtonClickBrush}"
+		        BorderBrush="{DynamicResource DisabledControlNonClickablePartBrush}"
 		        VerticalAlignment="Center"
 		        Height="2"
-		        Margin="6,0,6,0"/>
+		        Margin="6,0,6,0"
+			CornerRadius="2"/>
 
         <Border Name="OuterBorder"
                 BorderThickness="0,6,0,0"
-                BorderBrush="{DynamicResource SliderInRangeFillBrush}"
+                BorderBrush="{DynamicResource ThemeBackgroundBrush}"
                 VerticalAlignment="Center"
                 Height="6"
-                Margin="20,0,5,0"/>
+                Margin="20,0,5,0"
+			CornerRadius="2"/>
 
         <Border Name="InnerBorder"
                 BorderThickness="0,4,0,0"
-                BorderBrush="{DynamicResource SliderInRangeOutlineBrush}"
+                BorderBrush="{DynamicResource ThemeBackgroundBrush}"
                 VerticalAlignment="Center"
                 Height="4"
-                Margin="20,0,5,0"/>
+                Margin="20,0,5,0"
+			CornerRadius="2"/>
 
         <Slider x:Name="LowerSlider"
 		        Minimum="{Binding ElementName=root, Path=Minimum}"
 		        Maximum="{Binding ElementName=root, Path=Maximum}"
 		        Value="{Binding ElementName=root, Path=LowerValue}"
-		        Template="{StaticResource simpleSlider}"/>
+		        Template="{StaticResource SimpleSlider}"/>
 
         <Slider x:Name="UpperSlider"
 		        Minimum="{Binding ElementName=root, Path=Minimum}"
 		        Maximum="{Binding ElementName=root, Path=Maximum}"
 		        Value="{Binding ElementName=root, Path=UpperValue}"
-		        Template="{StaticResource simpleSlider}"/>
+		        Template="{StaticResource SimpleSlider}"/>
     </Grid>
 </UserControl>

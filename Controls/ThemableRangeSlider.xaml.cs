@@ -77,6 +77,13 @@ namespace Win10Themables.Controls
 
 			UpperSlider.ValueChanged += UpperSlider_ValueChanged;
 			LowerSlider.ValueChanged += LowerSlider_ValueChanged;
+			this.Loaded += CustomSlider_Loaded;
+		}
+
+		private void CustomSlider_Loaded(object sender, RoutedEventArgs e)
+		{
+			AdjustSliderRangeBorderValues();
+			this.Loaded -= CustomSlider_Loaded;
 		}
 
 		private void LowerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

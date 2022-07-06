@@ -17,17 +17,19 @@
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="AppGuid.txt" />
+    <None Remove="Fonts\OpenSans-VariableFont_wdth,wght.ttf" />
     <None Remove="LICENSE" />
     <None Remove="Logo_SmallCopy.ico" />
     <None Remove="README.md" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreUtils" Version="1.0.6" />
+    <PackageReference Include="CoreUtilities" Version="1.0.14" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\OpenSans-VariableFont_wdth,wght.ttf" />
     <Resource Include="Logo_Small.png" />
     <Resource Include="Logo_SmallCopy.ico" />
   </ItemGroup>
