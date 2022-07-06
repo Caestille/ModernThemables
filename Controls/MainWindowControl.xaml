@@ -8,9 +8,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	x:Name="WindowControl"
 	mc:Ignorable="d">
-	<Grid
-		x:Name="RootGrid"
-		Background="{DynamicResource ThemeBrush}">
+	<Grid x:Name="RootGrid" Background="{DynamicResource ThemeBrush}">
 		<Grid Margin="1,30,1,1" Background="{DynamicResource MainBackgroundBrush}">
 			<ContentControl x:Name="Content" Content="{Binding Path=VisibleViewModel, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}" />
 		</Grid>
@@ -113,6 +111,7 @@
 					BorderThickness="0"
 					Click="CloseButton_Click"
 					DockPanel.Dock="Right"
+					Focusable="False"
 					Foreground="White"
 					MouseDownColour="DarkRed"
 					MouseOverColour="Red">
@@ -145,6 +144,7 @@
 					BorderThickness="0"
 					Click="ChangeStateButton_Click"
 					DockPanel.Dock="Right"
+					Focusable="False"
 					Foreground="White"
 					MouseDownColour="DimGray"
 					MouseOverColour="Gray">
@@ -177,6 +177,7 @@
 					BorderThickness="0"
 					Click="MinimiseButton_Click"
 					DockPanel.Dock="Right"
+					Focusable="False"
 					Foreground="White"
 					MouseDownColour="DimGray"
 					MouseOverColour="Gray">
@@ -201,6 +202,7 @@
 					BorderThickness="0"
 					Click="ThemeSetButton_Click"
 					DockPanel.Dock="Right"
+					Focusable="False"
 					Foreground="White"
 					MouseDownColour="DimGray"
 					MouseOverColour="Gray">
@@ -232,6 +234,10 @@
 						</Grid>
 					</Grid>
 				</controls:ExtendedButton>
+				<Image
+					Width="Auto"
+					Margin="3"
+					Source="{Binding Path=Icon, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}" />
 				<Label
 					Margin="5,2"
 					Content="{Binding Path=Title, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}"

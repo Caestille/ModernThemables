@@ -43,6 +43,14 @@ namespace Win10Themables.Controls
 		public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
 		  "Title", typeof(string), typeof(MainWindowControl), new PropertyMetadata(""));
 
+		public ImageSource Icon
+		{
+			get { return (ImageSource)GetValue(IconProperty); }
+			set { SetValue(IconProperty, value); }
+		}
+		public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
+		  "Icon", typeof(ImageSource), typeof(MainWindowControl), new PropertyMetadata(null));
+
 		public ObservableObject VisibleViewModel
 		{
 			get { return (ObservableObject)GetValue(VisibleViewModelProperty); }
