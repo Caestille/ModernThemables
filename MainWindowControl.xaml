@@ -276,7 +276,7 @@
 			x:Name="StatusTextBorder"
 			Width="0"
 			Height="0"
-			Background="{DynamicResource StatusTextBrush}"
+			Background="{DynamicResource StatusTextLightBrush}"
 			Visibility="Collapsed" />
 		<Border
 			x:Name="ThemeBackgroundBorder"

@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreUtilities" Version="1.0.14" />
+    <PackageReference Include="CoreUtilities" Version="1.0.15" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
   </ItemGroup>
 
