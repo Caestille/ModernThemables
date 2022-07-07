@@ -22,7 +22,7 @@
 	</Button.Resources>
 	<Button.Style>
 		<Style TargetType="{x:Type Button}">
-			<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+			<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 			<Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
 			<Setter Property="Background" Value="{StaticResource Button.Static.Background}" />
 			<Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}" />

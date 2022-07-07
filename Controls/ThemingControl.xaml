@@ -173,7 +173,8 @@
 				Margin="5,10"
 				BorderBrush="{DynamicResource StatusTextBrush}"
 				BorderThickness="1"
-				CornerRadius="5">
+				CornerRadius="5"
+				SnapsToDevicePixels="True">
 				<Grid Focusable="False">
 					<Grid.RowDefinitions>
 						<RowDefinition />

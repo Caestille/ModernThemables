@@ -4,13 +4,15 @@
 	xmlns:controls="clr-namespace:Win10Themables.Controls"
 	x:Class="Win10Themables.Views.MainWindow"
 	x:Name="Window"
-	Title="Test App"
+	Title="Finance Tracker"
 	Width="800"
 	Height="450"
 	AllowsTransparency="False"
-	Icon="Logo_SmallCopy.ico"
-	WindowStyle="None" 
-	FontFamily="{StaticResource OpenSans}">
+	WindowStyle="None"
+	RenderOptions.BitmapScalingMode="NearestNeighbor"
+	RenderOptions.ClearTypeHint="Enabled"
+	SnapsToDevicePixels="True"
+	UseLayoutRounding="True">
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="24" ResizeBorderThickness="5" />
 	</WindowChrome.WindowChrome>

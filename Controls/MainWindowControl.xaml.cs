@@ -9,7 +9,7 @@ using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Win10Themables;
+using CoreUtilities.HelperClasses;
 
 namespace Win10Themables.Controls
 {

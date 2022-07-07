@@ -2,7 +2,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:converters="clr-namespace:Win10Themables.Converters"
-	xmlns:helperclasses="clr-namespace:CoreUtilites.HelperClasses;assembly=CoreUtilities">
+	xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="/CoreUtilities;component/Styles.xaml" />
@@ -45,28 +45,28 @@
 
 	<!--#endregion End Converters-->
 
-	<FontFamily x:Key="OpenSans">/Fonts/#Open Sans</FontFamily>
-
 	<!--#region Controls-->
 
 	<!--#region Themable Focus Style-->
-	
+
 	<Style x:Key="ThemableFocusStyle">
 		<Setter Property="Control.Template">
 			<Setter.Value>
 				<ControlTemplate>
 					<Grid>
-						<Border Margin="-3"
-								Background="{DynamicResource StatusTextBrush}"
-								Opacity="0.2"
-								CornerRadius="3"
-								SnapsToDevicePixels="true"/>
-						<Border Margin="-3"
-								Background="Transparent"
-								BorderThickness="1"
-								BorderBrush="{DynamicResource StatusTextBrush}"
-								CornerRadius="3"
-								SnapsToDevicePixels="true"/>
+						<Border
+							Margin="-3"
+							Background="{DynamicResource StatusTextBrush}"
+							CornerRadius="3"
+							Opacity="0.2"
+							SnapsToDevicePixels="true" />
+						<Border
+							Margin="-3"
+							Background="Transparent"
+							BorderBrush="{DynamicResource StatusTextBrush}"
+							BorderThickness="1"
+							CornerRadius="3"
+							SnapsToDevicePixels="true" />
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
@@ -78,9 +78,7 @@
 	<!--#region Slider thumb-->
 
 	<ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
-		<Grid
-			Width="20"
-			Height="20">
+		<Grid Width="20" Height="20">
 			<Ellipse
 				x:Name="grip"
 				Width="14"
@@ -119,74 +117,74 @@
 
 	<!--#region Combobox-->
 	<Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Control.Template">
 			<Setter.Value>
 				<ControlTemplate>
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition />
-						<ColumnDefinition Width="20" />
-					</Grid.ColumnDefinitions>
-					<Border
-				x:Name="Border"
-				Grid.ColumnSpan="2"
-				Background="{DynamicResource StatusTextLightBrush}"
-				BorderBrush="#abadb3"
-				BorderThickness="1,1,1,1"
-				CornerRadius="5"
-				SnapsToDevicePixels="True" />
-					<Border
-				x:Name="Border2"
-				Grid.Column="0"
-				Margin="1"
-				Background="{DynamicResource InvertedTextBrush}"
-				BorderBrush="Red"
-				BorderThickness="{TemplateBinding BorderThickness}"
-				CornerRadius="5"
-				SnapsToDevicePixels="True" />
-					<Path
-				x:Name="Arrow"
-				Grid.Column="1"
-				HorizontalAlignment="Center"
-				VerticalAlignment="Center"
-				Data="M 0 0 L 4 4 L 8 0 Z"
-				Fill="{DynamicResource StatusTextBrush}" />
-					<VisualStateManager.VisualStateGroups>
-						<VisualStateGroup x:Name="CommonStates">
-							<VisualState x:Name="Normal" />
-							<VisualState x:Name="MouseOver" />
-							<VisualState x:Name="Pressed" />
-							<VisualState x:Name="Disabled" />
-						</VisualStateGroup>
-					</VisualStateManager.VisualStateGroups>
-				</Grid>
-				<ControlTemplate.Triggers>
-					<Trigger Property="ToggleButton.IsMouseOver" Value="true">
-						<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
-						<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
-						<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
-						<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource InvertedTextBrush}" />
-					</Trigger>
-					<Trigger Property="ToggleButton.IsChecked" Value="true">
-						<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeClickBrush}" />
-						<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
-						<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
-						<Setter TargetName="Arrow" Property="Fill" Value="White" />
-					</Trigger>
-					<Trigger Property="IsEnabled" Value="False">
-						<Setter TargetName="Border" Property="Background" Value="{DynamicResource StatusTextLightBrush}" />
-						<Setter Property="Foreground" Value="Gray" />
-						<Setter TargetName="Border2" Property="Background" Value="Gray" />
-						<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource DatagridHeaderBrush}" />
-					</Trigger>
-					<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">
-						<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeClickBrush}" />
-						<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
-						<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
-						<Setter TargetName="Arrow" Property="Fill" Value="White" />
-					</DataTrigger>
-				</ControlTemplate.Triggers>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition Width="20" />
+						</Grid.ColumnDefinitions>
+						<Border
+							x:Name="Border"
+							Grid.ColumnSpan="2"
+							Background="{DynamicResource StatusTextLightBrush}"
+							BorderBrush="#abadb3"
+							BorderThickness="1,1,1,1"
+							CornerRadius="5"
+							SnapsToDevicePixels="True" />
+						<Border
+							x:Name="Border2"
+							Grid.Column="0"
+							Margin="1"
+							Background="{DynamicResource InvertedTextBrush}"
+							BorderBrush="Red"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="5"
+							SnapsToDevicePixels="True" />
+						<Path
+							x:Name="Arrow"
+							Grid.Column="1"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							Data="M 0 0 L 4 4 L 8 0 Z"
+							Fill="{DynamicResource StatusTextBrush}" />
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal" />
+								<VisualState x:Name="MouseOver" />
+								<VisualState x:Name="Pressed" />
+								<VisualState x:Name="Disabled" />
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="ToggleButton.IsMouseOver" Value="true">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
+							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
+							<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource InvertedTextBrush}" />
+						</Trigger>
+						<Trigger Property="ToggleButton.IsChecked" Value="true">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeClickBrush}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
+							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
+							<Setter TargetName="Arrow" Property="Fill" Value="White" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource StatusTextLightBrush}" />
+							<Setter Property="Foreground" Value="Gray" />
+							<Setter TargetName="Border2" Property="Background" Value="Gray" />
+							<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource DatagridHeaderBrush}" />
+						</Trigger>
+						<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeClickBrush}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
+							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
+							<Setter TargetName="Arrow" Property="Fill" Value="White" />
+						</DataTrigger>
+					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -200,7 +198,7 @@
 	</ControlTemplate>
 
 	<Style x:Key="ThemableCombobox" TargetType="{x:Type ComboBox}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
 		<Setter Property="VerticalAlignment" Value="Center" />
 		<Setter Property="OverridesDefaultStyle" Value="true" />
@@ -305,7 +303,7 @@
 	<!--#region Custom Combobox Item-->
 
 	<Style TargetType="{x:Type ComboBoxItem}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ComboBoxItem">
@@ -336,7 +334,7 @@
 	<!--#region ScrollBar-->
 
 	<Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Thumb}">
@@ -368,7 +366,7 @@
 	</Style>
 
 	<Style TargetType="{x:Type ScrollBar}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Stylus.IsFlicksEnabled" Value="false" />
 		<Setter Property="Foreground" Value="#8C8C8C" />
 		<Setter Property="Background" Value="Transparent" />
@@ -451,7 +449,7 @@
 	<!--#region Custom Datagrid-->
 
 	<Style x:Key="ThemableDatagridCell" TargetType="{x:Type DataGridCell}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Style.Triggers>
 			<Trigger Property="DataGridCell.IsSelected" Value="True">
 				<Setter Property="BorderBrush">
@@ -470,13 +468,13 @@
 	</Style>
 
 	<Style x:Key="ThemableDatagridRowHeader" TargetType="{x:Type DataGridRowHeader}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Control.Background" Value="{DynamicResource DatagridHeaderBrush}" />
 		<Setter Property="Control.HorizontalContentAlignment" Value="Center" />
 	</Style>
 
 	<Style x:Key="ThemableDatagridColumnHeader" TargetType="{x:Type DataGridColumnHeader}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="SnapsToDevicePixels" Value="True" />
 		<Setter Property="MinWidth" Value="0" />
 		<Setter Property="MinHeight" Value="0" />
@@ -562,7 +560,7 @@
 	</Style>
 
 	<Style x:Key="ThemableDataGrid" TargetType="{x:Type DataGrid}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="IsReadOnly" Value="True" />
 		<Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource StatusTextBrush}" />
 		<Setter Property="VerticalGridLinesBrush" Value="{DynamicResource StatusTextBrush}" />
@@ -585,7 +583,7 @@
 	<!--#region Custom ListBox-->
 
 	<Style x:Key="ThemableListBox" TargetType="{x:Type ListBox}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Background" Value="Black" />
 		<Setter Property="BorderBrush" Value="Black" />
 		<Setter Property="BorderThickness" Value="1" />
@@ -647,7 +645,7 @@
 	<!--#region Custom Checkbox-->
 
 	<Style x:Key="ThemableCheckBox" TargetType="{x:Type CheckBox}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type CheckBox}">
@@ -730,7 +728,7 @@
 	<!--#region Toggle Checkbox-->
 
 	<Style x:Key="ToggleCheckbox" TargetType="CheckBox">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type CheckBox}">
