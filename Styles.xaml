@@ -45,7 +45,7 @@
 
 	<!--#endregion End Converters-->
 
-	<FontFamily x:Key="OpenSans">pack://application:,,,/Fonts/#Open Sans</FontFamily>
+	<FontFamily x:Key="OpenSans">/Fonts/#Open Sans</FontFamily>
 
 	<!--#region Controls-->
 
@@ -53,13 +53,12 @@
 
 	<ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
 		<Grid
-			Width="15"
-			Height="15"
-			UseLayoutRounding="True">
+			Width="20"
+			Height="20">
 			<Ellipse
 				x:Name="grip"
-				Width="15"
-				Height="15"
+				Width="14"
+				Height="14"
 				VerticalAlignment="Center"
 				Fill="{DynamicResource ControlClickablePartBrush}"
 				Stroke="{DynamicResource MainBackgroundBrush}" />

@@ -60,10 +60,9 @@
 								OffsetX="21"
 								OffsetY="51">
 								<controls:ThemingControl
-									Margin="3,0,0,0"
 									x:Name="ThemingControl"
-									Width="280"
-									Height="134"
+									Width="Auto"
+									Height="Auto"
 									HorizontalAlignment="Center"
 									VerticalAlignment="Bottom" />
 							</coreutilscontrols:BlurHost>
@@ -265,25 +264,25 @@
 			x:Name="ThemeBorder"
 			Width="0"
 			Height="0"
-			Visibility="Collapsed"
-			Background="{DynamicResource ThemeBrush}" />
+			Background="{DynamicResource ThemeBrush}"
+			Visibility="Collapsed" />
 		<Border
 			x:Name="ThemeTextBorder"
 			Width="0"
 			Height="0"
-			Visibility="Collapsed"
-			Background="{DynamicResource ThemeTextBrush}" />
+			Background="{DynamicResource ThemeTextBrush}"
+			Visibility="Collapsed" />
 		<Border
 			x:Name="StatusTextBorder"
 			Width="0"
 			Height="0"
-			Visibility="Collapsed"
-			Background="{DynamicResource StatusTextBrush}" />
+			Background="{DynamicResource StatusTextBrush}"
+			Visibility="Collapsed" />
 		<Border
 			x:Name="ThemeBackgroundBorder"
 			Width="0"
 			Height="0"
-			Visibility="Collapsed"
-			Background="{DynamicResource ThemeBackgroundBrush}" />
+			Background="{DynamicResource ThemeBackgroundBrush}"
+			Visibility="Collapsed" />
 	</Grid>
 </UserControl>

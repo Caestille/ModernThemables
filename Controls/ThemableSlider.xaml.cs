@@ -19,14 +19,14 @@ namespace Win10Themables.Controls
 			set => SetValue(MaximumProperty, value);
 		}
 
-		public static readonly DependencyProperty LowerValueProperty = DependencyProperty.Register("LowerValue", typeof(double), typeof(CustomSlider), new UIPropertyMetadata(0d));
-		public double LowerValue
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(double), typeof(CustomSlider), new UIPropertyMetadata(0d));
+		public double Value
 		{
-			get => (double)GetValue(LowerValueProperty);
+			get => (double)GetValue(ValueProperty);
 			set
 			{
-				double oldValue = LowerValue;
-				SetValue(LowerValueProperty, value);
+				double oldValue = Value;
+				SetValue(ValueProperty, value);
 				ValueChanged?.Invoke(this, new RoutedPropertyChangedEventArgs<double>(oldValue, value));
 			}
 		}
@@ -54,14 +54,12 @@ namespace Win10Themables.Controls
 
 		private void AdjustSliderRangeBorderValues()
 		{
-			double width = BaseGrid.ActualWidth;
+			double width = BaseGrid.ActualWidth - 10;
 			double range = Maximum - Minimum;
-			double rightPadding = (width - LowerValue / range * width);
-			double factor = ((width - rightPadding) / width);
-			rightPadding += (width * 0.02 * factor);
+			double rightPadding = (width - Value / range * width);
 			if (double.IsNaN(rightPadding))
 				rightPadding = 0;
-			InnerBorder.Margin = OuterBorder.Margin = new Thickness(0, 0, rightPadding, 0);
+			OuterBorder.Margin = new Thickness(5, 0, rightPadding + 5, 0);
 		}
 	}
 }
