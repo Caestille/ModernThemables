@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Win10Themables;
 
 namespace Win10Themables.Controls
 {
@@ -135,63 +136,42 @@ namespace Win10Themables.Controls
 
 			mainWindow.WindowState = !isWindowMaximised ? WindowState.Normal : WindowState.Maximized;
 			var logicalElements = new List<FrameworkElement>();
-			GetLogicalElements(this, logicalElements);
+			logicalElements = (this as FrameworkElement).GetLogicalElements();
 			var grid = (Grid)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "RestoreDownGrid");
 			grid.Visibility = !isWindowMaximised ? Visibility.Collapsed : Visibility.Visible;
 			var border = (Border)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "MaximiseBorder");
 			border.Visibility = !isWindowMaximised ? Visibility.Visible : Visibility.Collapsed;
 		}
 
-		private void OpenThemingMenu()
+		private void OpenThemingMenu(bool open)
 		{
-			if (isThemingGridOpen)
+			if (open == isThemingGridOpen)
 				return;
 
-			SettingsClippingStackPanel.IsHitTestVisible = true;
+			SettingsClippingStackPanel.IsEnabled = open;
 
-			ThemeSetButton.RenderTransform = new RotateTransform(180) { CenterX = ThemeSetButton.ActualWidth / 2, CenterY = ThemeSetButton.ActualHeight / 2 };
+			SettingsClippingStackPanel.IsHitTestVisible = open;
 
-			var start = SettingsGrid.ActualHeight * -1;
-			var end = 5;
-			SettingsGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(0.3))));
-			BlackoutGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 0.3, new Duration(TimeSpan.FromSeconds(0.1))));
-			SettingsBorderBlur.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(0.1))));
-			SettingsGrid.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(start, end, new Duration(TimeSpan.FromSeconds(0.1))));
+			var menuHiddenTopMargin = 5;
+			var menuStart = open ? SettingsGrid.ActualHeight * -1 : menuHiddenTopMargin;
+			var menuEnd = open ? menuHiddenTopMargin : SettingsGrid.ActualHeight * -1;
+			var settingsOpacityStart = open ? 0 : 1;
+			var settingsOpacityEnd = open ? 1 : 0;
+			var settingsOpacityTimespan = open ? 0.3 : 0.1;
+			var blackoutGridOpacityStart = open ? 0 : 0.3;
+			var blackoutGridOpacityEnd = open ? 0.3 : 0;
+			var buttonRotate = open ? 180 : 0;
 
-			isThemingGridOpen = true;
-		}
+			ThemeSetButton.RenderTransform = new RotateTransform(buttonRotate) { CenterX = ThemeSetButton.ActualWidth / 2, CenterY = ThemeSetButton.ActualHeight / 2 };
+			SettingsGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(settingsOpacityStart, settingsOpacityEnd, new Duration(TimeSpan.FromSeconds(settingsOpacityTimespan))));
+			BlackoutGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(blackoutGridOpacityStart, blackoutGridOpacityEnd, new Duration(TimeSpan.FromSeconds(0.1))));
+			SettingsBorderBlur.BeginAnimation(OpacityProperty, new DoubleAnimation(settingsOpacityStart, settingsOpacityEnd, new Duration(TimeSpan.FromSeconds(0.1))));
+			SettingsGrid.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(menuStart, menuEnd, new Duration(TimeSpan.FromSeconds(0.1))));
 
-		private void CloseThemingMenu()
-		{
-			if (!isThemingGridOpen)
-				return;
+			isThemingGridOpen = open;
 
-			SettingsClippingStackPanel.IsHitTestVisible = false;
-
-			RotateTransform rotateTransform = new RotateTransform(0) { CenterX = ThemeSetButton.ActualWidth / 2, CenterY = ThemeSetButton.ActualHeight / 2 };
-			ThemeSetButton.RenderTransform = rotateTransform;
-
-			var start = 5;
-			var end = SettingsGrid.ActualHeight * -1;
-			SettingsGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(1, 0, new Duration(TimeSpan.FromSeconds(0.1))));
-			BlackoutGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(0.3, 0, new Duration(TimeSpan.FromSeconds(0.1))));
-			SettingsBorderBlur.BeginAnimation(OpacityProperty, new DoubleAnimation(1, 0, new Duration(TimeSpan.FromSeconds(0.1))));
-			SettingsGrid.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(start, end, new Duration(TimeSpan.FromSeconds(0.1))));
-
-			isThemingGridOpen = false;
-		}
-
-		private void GetLogicalElements(object parent, List<FrameworkElement> logicalElements)
-		{
-			if (parent == null) return;
-			if (parent.GetType().IsSubclassOf(typeof(FrameworkElement)))
-				logicalElements.Add((FrameworkElement)parent);
-			var doParent = parent as DependencyObject;
-			if (doParent == null) return;
-			foreach (object child in LogicalTreeHelper.GetChildren(doParent))
-			{
-				GetLogicalElements(child, logicalElements);
-			}
+			if (open)
+				ThemingControl.FocusOnOpen();
 		}
 
 		private static IntPtr HookProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -246,6 +226,13 @@ namespace Win10Themables.Controls
 			this.SetBinding(IconProperty, new Binding("Icon") { Source = mainWindow });
 			this.SetBinding(TitleProperty, new Binding("Title") { Source = mainWindow });
 			this.SetBinding(IsMainWindowFocusedProperty, new Binding("IsActive") { Source = mainWindow });
+
+			ThemingControl.InternalRequestClose += ThemingControl_InternalRequestClose;
+		}
+
+		private void ThemingControl_InternalRequestClose(object? sender, EventArgs e)
+		{
+			OpenThemingMenu(false);
 		}
 
 		private void MinimiseButton_Click(object sender, RoutedEventArgs e)
@@ -265,15 +252,12 @@ namespace Win10Themables.Controls
 
 		private void ThemeSetButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (isThemingGridOpen)
-				CloseThemingMenu();
-			else
-				OpenThemingMenu();
+			OpenThemingMenu(!isThemingGridOpen);
 		}
 
 		private void SettingsCloseButton_Click(object sender, RoutedEventArgs e)
 		{
-			CloseThemingMenu();
+			OpenThemingMenu(false);
 		}
 
 		private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -296,6 +280,7 @@ namespace Win10Themables.Controls
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
 			mainWindow.SizeChanged -= MainWindow_SizeChanged;
+			ThemingControl.InternalRequestClose -= ThemingControl_InternalRequestClose;
 		}
 	}
 }

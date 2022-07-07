@@ -8,7 +8,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	x:Name="WindowControl"
 	mc:Ignorable="d">
-	<Grid x:Name="RootGrid">
+	<Grid x:Name="RootGrid" Focusable="False">
 		<Grid.Background>
 			<MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
 				<Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
@@ -16,19 +16,28 @@
 				<Binding ElementName="ThemeBackgroundBorder" Path="Background" />
 			</MultiBinding>
 		</Grid.Background>
-		<Grid Margin="1,30,1,1" Background="{DynamicResource MainBackgroundBrush}">
-			<ContentControl x:Name="Content" Content="{Binding Path=VisibleViewModel, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}" />
+		<Grid
+			Margin="1,30,1,1"
+			Background="{DynamicResource MainBackgroundBrush}"
+			Focusable="False">
+			<ContentControl
+				x:Name="Content"
+				Content="{Binding Path=VisibleViewModel, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}"
+				Focusable="False" />
 		</Grid>
 		<Grid
 			x:Name="BlackoutGrid"
 			Margin="0,30,0,0"
 			Background="Black"
+			Focusable="False"
 			IsHitTestVisible="False"
 			Opacity="0" />
 		<StackPanel
 			x:Name="SettingsClippingStackPanel"
 			Margin="0,30,0,0"
 			ClipToBounds="False"
+			Focusable="False"
+			IsEnabled="False"
 			IsHitTestVisible="False">
 			<Canvas>
 				<Grid
@@ -36,7 +45,8 @@
 					Canvas.Top="{Binding ElementName=SettingsBorder, Path=ActualHeight, Converter={StaticResource DoubleInverterConverter}}"
 					Canvas.Right="6"
 					Width="Auto"
-					Height="Auto">
+					Height="Auto"
+					Focusable="False">
 					<Border
 						x:Name="SettingsBorder"
 						Width="Auto"
@@ -44,7 +54,8 @@
 						Background="{DynamicResource MainBackgroundBrush}"
 						BorderBrush="{DynamicResource StatusTextLightBrush}"
 						BorderThickness="1"
-						CornerRadius="5">
+						CornerRadius="5"
+						Focusable="False">
 						<Border.Effect>
 							<DropShadowEffect
 								x:Name="SettingsBorderBlur"
@@ -57,6 +68,7 @@
 							<coreutilscontrols:BlurHost
 								BlurBackground="{Binding ElementName=Content}"
 								BlurOpacity="0.5"
+								Focusable="False"
 								OffsetX="21"
 								OffsetY="51">
 								<controls:ThemingControl
@@ -210,7 +222,7 @@
 					BorderThickness="0"
 					Click="ThemeSetButton_Click"
 					DockPanel.Dock="Right"
-					Focusable="False"
+					Focusable="True"
 					Foreground="White"
 					MouseDownColour="DimGray"
 					MouseOverColour="Gray">
