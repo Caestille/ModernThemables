@@ -23,6 +23,7 @@ namespace Win10Themables.ViewModels
 
 		private bool? wasDarkBeforeSync;
 		private byte[] themeBeforeSync;
+		private double themePerceivedBrightness;
 
 		private System.Timers.Timer osThemePollTimer = new System.Timers.Timer(1000);
 
@@ -79,10 +80,7 @@ namespace Win10Themables.ViewModels
 			set
 			{
 				SetProperty(ref isDarkMode, value);
-				if (isDarkMode)
-					SetDarkModeColours();
-				else
-					SetLightModeColours();
+				SetTheme();
 			}
 		}
 
@@ -181,48 +179,56 @@ namespace Win10Themables.ViewModels
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
 
-		private void SetLightModeColours()
+		private void SetTheme()
 		{
-			registryService.SetSetting(ColourModeSettingName, lightModeKey);
+			registryService.SetSetting(ColourModeSettingName, isDarkMode ? darkModeKey : lightModeKey);
 			SetThemeBackground();
 
-			Application.Current.Resources["MainBackgroundBrush"] = new SolidColorBrush(MainBackgroundColourLight);
-			Application.Current.Resources["TextBrush"] = new SolidColorBrush(TextColourLight);
-			Application.Current.Resources["TextColour"] = Color.FromArgb(TextColourLight.A, TextColourLight.R, TextColourLight.G, TextColourLight.B);
-			Application.Current.Resources["StatusTextBrush"] = new SolidColorBrush(StatusTextColourLight);
-			Application.Current.Resources["StatusTextLightBrush"] = new SolidColorBrush(StatusTextLightColourLight);
-			Application.Current.Resources["InvertedTextBrush"] = new SolidColorBrush(InvertedTextColourLight);
-			Application.Current.Resources["ThemeDisabledTextBrush"] = new SolidColorBrush(ThemeDisabledTextColourLight);
-			Application.Current.Resources["DatagridHeaderBrush"] = new SolidColorBrush(DatagridHeaderColourLight);
-			Application.Current.Resources["DatagridRowBrush"] = new SolidColorBrush(DatagridRowColourLight);
-			Application.Current.Resources["DisabledControlClickablePartBrush"] = new SolidColorBrush(DisabledControlClickablePartColourLight);
-			Application.Current.Resources["DisabledControlNonClickablePartBrush"] = new SolidColorBrush(DisabledControlNonClickablePartColourLight);
-			Application.Current.Resources["ControlClickablePartBrush"] = new SolidColorBrush(ControlClickablePartColourLight);
-			Application.Current.Resources["ControlClickablePartMouseOverBrush"] = new SolidColorBrush(ControlClickablePartMouseOverColourLight);
-			Application.Current.Resources["ControlClickablePartMouseDownBrush"] = new SolidColorBrush(ControlClickablePartMouseDownColourLight);
-			Application.Current.Resources["ControlNonClickablePartBrush"] = new SolidColorBrush(ControlNonClickablePartColourLight);
-		}
-
-		private void SetDarkModeColours()
-		{
-			registryService.SetSetting(ColourModeSettingName, darkModeKey);
-			SetThemeBackground();
-
-			Application.Current.Resources["MainBackgroundBrush"] = new SolidColorBrush(MainBackgroundColourDark);
-			Application.Current.Resources["TextBrush"] = new SolidColorBrush(TextColourDark);
-			Application.Current.Resources["TextColour"] = Color.FromArgb(TextColourDark.A, TextColourDark.R, TextColourDark.G, TextColourDark.B);
-			Application.Current.Resources["StatusTextBrush"] = new SolidColorBrush(StatusTextColourDark);
-			Application.Current.Resources["StatusTextLightBrush"] = new SolidColorBrush(StatusTextLightColourDark);
-			Application.Current.Resources["InvertedTextBrush"] = new SolidColorBrush(InvertedTextColourDark);
-			Application.Current.Resources["ThemeDisabledTextBrush"] = new SolidColorBrush(ThemeDisabledTextColourDark);
-			Application.Current.Resources["DatagridHeaderBrush"] = new SolidColorBrush(DatagridHeaderColourDark);
-			Application.Current.Resources["DatagridRowBrush"] = new SolidColorBrush(DatagridRowColourDark);
-			Application.Current.Resources["DisabledControlClickablePartBrush"] = new SolidColorBrush(DisabledControlClickablePartColourDark);
-			Application.Current.Resources["DisabledControlNonClickablePartBrush"] = new SolidColorBrush(DisabledControlNonClickablePartColourDark);
-			Application.Current.Resources["ControlClickablePartBrush"] = new SolidColorBrush(ControlClickablePartColourDark);
-			Application.Current.Resources["ControlClickablePartMouseOverBrush"] = new SolidColorBrush(ControlClickablePartMouseOverColourDark);
-			Application.Current.Resources["ControlClickablePartMouseDownBrush"] = new SolidColorBrush(ControlClickablePartMouseDownColourDark);
-			Application.Current.Resources["ControlNonClickablePartBrush"] = new SolidColorBrush(ControlNonClickablePartColourDark);
+			Application.Current.Resources["MainBackgroundBrush"] = isDarkMode 
+				? new SolidColorBrush(MainBackgroundColourDark) 
+				: new SolidColorBrush(MainBackgroundColourLight);
+			Application.Current.Resources["TextBrush"] = isDarkMode 
+				? new SolidColorBrush(TextColourDark) 
+				: new SolidColorBrush(TextColourLight);
+			Application.Current.Resources["TextColour"] = isDarkMode 
+				? Color.FromArgb(TextColourDark.A, TextColourDark.R, TextColourDark.G, TextColourDark.B) 
+				: Color.FromArgb(TextColourLight.A, TextColourLight.R, TextColourLight.G, TextColourLight.B);
+			Application.Current.Resources["StatusTextBrush"] = isDarkMode 
+				? new SolidColorBrush(StatusTextColourDark) 
+				: new SolidColorBrush(StatusTextColourLight);
+			Application.Current.Resources["StatusTextLightBrush"] = isDarkMode 
+				? new SolidColorBrush(StatusTextLightColourDark) 
+				: new SolidColorBrush(StatusTextLightColourLight);
+			Application.Current.Resources["InvertedTextBrush"] = isDarkMode 
+				? new SolidColorBrush(InvertedTextColourDark) 
+				: new SolidColorBrush(InvertedTextColourLight);
+			Application.Current.Resources["ThemeDisabledTextBrush"] = isDarkMode 
+				? new SolidColorBrush(ThemeDisabledTextColourDark) 
+				: new SolidColorBrush(ThemeDisabledTextColourLight);
+			Application.Current.Resources["DatagridHeaderBrush"] = isDarkMode 
+				? new SolidColorBrush(DatagridHeaderColourDark) 
+				: new SolidColorBrush(DatagridHeaderColourLight);
+			Application.Current.Resources["DatagridRowBrush"] = isDarkMode 
+				? new SolidColorBrush(DatagridRowColourDark) 
+				: new SolidColorBrush(DatagridRowColourLight);
+			Application.Current.Resources["DisabledControlClickablePartBrush"] = isDarkMode 
+				? new SolidColorBrush(DisabledControlClickablePartColourDark) 
+				: new SolidColorBrush(DisabledControlClickablePartColourLight);
+			Application.Current.Resources["DisabledControlNonClickablePartBrush"] = isDarkMode 
+				? new SolidColorBrush(DisabledControlNonClickablePartColourDark) 
+				: new SolidColorBrush(DisabledControlNonClickablePartColourLight);
+			Application.Current.Resources["ControlClickablePartBrush"] = isDarkMode 
+				? new SolidColorBrush(ControlClickablePartColourDark) 
+				: new SolidColorBrush(ControlClickablePartColourLight);
+			Application.Current.Resources["ControlClickablePartMouseOverBrush"] = isDarkMode 
+				? new SolidColorBrush(ControlClickablePartMouseOverColourDark) 
+				: new SolidColorBrush(ControlClickablePartMouseOverColourLight);
+			Application.Current.Resources["ControlClickablePartMouseDownBrush"] = isDarkMode 
+				? new SolidColorBrush(ControlClickablePartMouseDownColourDark)
+				: new SolidColorBrush(ControlClickablePartMouseDownColourLight);
+			Application.Current.Resources["ControlNonClickablePartBrush"] = isDarkMode 
+				? new SolidColorBrush(ControlNonClickablePartColourDark) 
+				: new SolidColorBrush(ControlNonClickablePartColourLight);
 		}
 
 		private void SyncThemeWithOs(bool doSync)
@@ -263,12 +269,10 @@ namespace Win10Themables.ViewModels
 			registryService.SetSetting(ThemeSettingName, $"{A}-{R}-{G}-{B}");
 
 			ThemeColour = Color.FromArgb(A, R, G, B);
-			ThemeMouseOverColour = ChangeColorBrightness(ThemeColour, 0.1f);
-			ThemeClickColour = ChangeColorBrightness(ThemeColour, -0.1f);
 			SetThemeBackground();
 
-			double perceivedBrightness = Math.Sqrt(0.299 * Math.Pow(R, 2) + 0.587 * Math.Pow(G, 2) + 0.114 * Math.Pow(B, 2));
-			bool isThemeDark = perceivedBrightness < 255 * 0.5;
+			themePerceivedBrightness = Math.Sqrt(0.299 * Math.Pow(R, 2) + 0.587 * Math.Pow(G, 2) + 0.114 * Math.Pow(B, 2));
+			bool isThemeDark = themePerceivedBrightness < 255 * 0.5;
 
 			ThemeTextColour = isThemeDark ? Colors.White : Colors.Black;
 			ThemeStatusColour = isThemeDark ? Colors.LightGray : Colors.DimGray;
@@ -283,29 +287,32 @@ namespace Win10Themables.ViewModels
 
 		private void SetThemeBackground()
 		{
-			float modifier = isDarkMode ? 0.2f : -0.2f;
-			ThemeBackgroundColour = ChangeColorBrightness(ThemeColour, modifier);
+			float modifier = isDarkMode ? -0.2f : 0.2f;
+			float perceivedBrightnessFactor = (((float)themePerceivedBrightness + 255) / 255f) * 1f;
+			ThemeBackgroundColour = ChangeColorBrightness(ThemeColour, modifier * perceivedBrightnessFactor);
+			ThemeMouseOverColour = ChangeColorBrightness(ThemeColour, 0.1f * perceivedBrightnessFactor);
+			ThemeClickColour = ChangeColorBrightness(ThemeColour, -0.1f * perceivedBrightnessFactor);
 			Application.Current.Resources["ThemeBackgroundBrush"] = new SolidColorBrush(ThemeBackgroundColour);
 		}
 
-		public Color ChangeColorBrightness(Color color, float correctionFactor)
+		private Color ChangeColorBrightness(Color color, float factor)
 		{
 			float red = (float)color.R;
 			float green = (float)color.G;
 			float blue = (float)color.B;
 
-			if (correctionFactor < 0)
+			if (factor < 0)
 			{
-				correctionFactor = 1 + correctionFactor;
-				red *= correctionFactor;
-				green *= correctionFactor;
-				blue *= correctionFactor;
+				factor = 1 + factor;
+				red *= factor;
+				green *= factor;
+				blue *= factor;
 			}
 			else
 			{
-				red = (255 - red) * correctionFactor + red;
-				green = (255 - green) * correctionFactor + green;
-				blue = (255 - blue) * correctionFactor + blue;
+				red = (255 - red) * factor + red;
+				green = (255 - green) * factor + green;
+				blue = (255 - blue) * factor + blue;
 			}
 
 			return Color.FromArgb(color.A, (byte)red, (byte)green, (byte)blue);

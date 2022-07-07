@@ -22,8 +22,8 @@
 						<Track.Thumb>
 							<Thumb
 								x:Name="Thumb"
-								Width="15"
-								Height="18"
+								Width="20"
+								Height="20"
 								VerticalAlignment="Center"
 								Focusable="False"
 								OverridesDefaultStyle="True"
@@ -39,37 +39,17 @@
 		<Border
 			Name="OuterBorderRight"
 			Height="4"
-			Margin="5,0,5,0"
+			Margin="5,0"
 			VerticalAlignment="Center"
-			BorderBrush="{DynamicResource DisabledControlNonClickablePartBrush}"
-			BorderThickness="0,4,0,0"
-			CornerRadius="2" />
-
-		<Border
-			Name="InnerBorderRight"
-			Height="2"
-			Margin="6,0,6,0"
-			VerticalAlignment="Center"
-			BorderBrush="{DynamicResource DisabledControlNonClickablePartBrush}"
-			BorderThickness="0,4,0,0"
-			CornerRadius="2" />
+			Background="{DynamicResource DisabledControlNonClickablePartBrush}"
+			CornerRadius="1.5" />
 
 		<Border
 			Name="OuterBorder"
 			Height="6"
 			Margin="20,0,5,0"
 			VerticalAlignment="Center"
-			BorderBrush="{DynamicResource ThemeBackgroundBrush}"
-			BorderThickness="0,6,0,0"
-			CornerRadius="2" />
-
-		<Border
-			Name="InnerBorder"
-			Height="4"
-			Margin="20,0,5,0"
-			VerticalAlignment="Center"
-			BorderBrush="{DynamicResource ThemeBackgroundBrush}"
-			BorderThickness="0,4,0,0"
+			Background="{DynamicResource ThemeBackgroundBrush}"
 			CornerRadius="2" />
 
 		<Slider
@@ -77,6 +57,6 @@
 			Maximum="{Binding ElementName=root, Path=Maximum}"
 			Minimum="{Binding ElementName=root, Path=Minimum}"
 			Template="{StaticResource simpleSlider}"
-			Value="{Binding ElementName=root, Path=LowerValue}" />
+			Value="{Binding ElementName=root, Path=Value}" />
 	</Grid>
 </UserControl>

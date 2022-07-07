@@ -123,7 +123,7 @@
 				Width="100"
 				VerticalAlignment="Center"
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
-				LowerValue="{Binding R, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+				Value="{Binding R, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
 				Maximum="255"
 				Minimum="0" />
 			<Label
@@ -137,13 +137,14 @@
 				Width="100"
 				VerticalAlignment="Center"
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
-				LowerValue="{Binding G, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+				Value="{Binding G, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
 				Maximum="255"
 				Minimum="0" />
 			<Label
 				Grid.Row="2"
 				Grid.Column="1"
 				Content="B"
+				Height="Auto"
 				Foreground="{DynamicResource TextBrush}"
 				SnapsToDevicePixels="True" />
 			<controls:CustomSlider
@@ -152,7 +153,7 @@
 				Width="100"
 				VerticalAlignment="Center"
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
-				LowerValue="{Binding B, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+				Value="{Binding B, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
 				Maximum="255"
 				Minimum="0" />
 			<Label
