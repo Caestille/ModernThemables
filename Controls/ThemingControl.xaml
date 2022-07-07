@@ -4,7 +4,6 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:controls="clr-namespace:Win10Themables.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:local="clr-namespace:ThemableWindow"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:viewmodels="clr-namespace:Win10Themables.ViewModels"
 	x:Name="WindowControl"
@@ -14,7 +13,7 @@
 	<UserControl.DataContext>
 		<viewmodels:ThemingControlViewModel />
 	</UserControl.DataContext>
-	<Grid Margin="0">
+	<Grid Margin="0" Focusable="False">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
@@ -27,6 +26,7 @@
 			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
 		<CheckBox
+			x:Name="SyncCheckbox"
 			Grid.Row="0"
 			Grid.Column="1"
 			Width="30"
@@ -50,7 +50,8 @@
 			Grid.Column="2"
 			Width="30"
 			Height="30"
-			HorizontalAlignment="Left">
+			HorizontalAlignment="Left"
+			Focusable="False">
 			<Grid
 				x:Name="LightModeIconGrid"
 				Grid.Row="1"
@@ -99,7 +100,8 @@
 		<Grid
 			x:Name="ThemeSettingsGrid"
 			Grid.Row="2"
-			Grid.ColumnSpan="4">
+			Grid.ColumnSpan="4"
+			Focusable="False">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -123,9 +125,9 @@
 				Width="100"
 				VerticalAlignment="Center"
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
-				Value="{Binding R, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
 				Maximum="255"
-				Minimum="0" />
+				Minimum="0"
+				Value="{Binding R, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 			<Label
 				Grid.Row="1"
 				Grid.Column="1"
@@ -137,14 +139,14 @@
 				Width="100"
 				VerticalAlignment="Center"
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
-				Value="{Binding G, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
 				Maximum="255"
-				Minimum="0" />
+				Minimum="0"
+				Value="{Binding G, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 			<Label
 				Grid.Row="2"
 				Grid.Column="1"
-				Content="B"
 				Height="Auto"
+				Content="B"
 				Foreground="{DynamicResource TextBrush}"
 				SnapsToDevicePixels="True" />
 			<controls:CustomSlider
@@ -153,9 +155,9 @@
 				Width="100"
 				VerticalAlignment="Center"
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
-				Value="{Binding B, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
 				Maximum="255"
-				Minimum="0" />
+				Minimum="0"
+				Value="{Binding B, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 			<Label
 				Grid.RowSpan="3"
 				Grid.Column="0"
@@ -171,8 +173,9 @@
 				Margin="5,10"
 				BorderBrush="{DynamicResource StatusTextBrush}"
 				BorderThickness="1"
-				CornerRadius="5">
-				<Grid>
+				CornerRadius="5"
+				SnapsToDevicePixels="True">
+				<Grid Focusable="False">
 					<Grid.RowDefinitions>
 						<RowDefinition />
 						<RowDefinition />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Win10Themables.Controls
 {
@@ -26,7 +27,7 @@ namespace Win10Themables.Controls
 			set
 			{
 				double oldValue = Value;
-				SetValue(ValueProperty, value);
+				SetValue(ValueProperty, Math.Min(Math.Max(value, Minimum), Maximum));
 				ValueChanged?.Invoke(this, new RoutedPropertyChangedEventArgs<double>(oldValue, value));
 			}
 		}
@@ -39,6 +40,16 @@ namespace Win10Themables.Controls
 
 			Slider.ValueChanged += Slider_ValueChanged;
 			this.Loaded += CustomSlider_Loaded;
+		}
+
+		protected override void OnPreviewKeyDown(KeyEventArgs e)
+		{
+			if (e.Key == Key.Right || e.Key == Key.Left)
+			{
+				Value += e.Key == Key.Right ? 0.1 * (Maximum - Minimum) : -0.1 * (Maximum - Minimum);
+				e.Handled = true;
+			}
+			base.OnPreviewKeyDown(e);
 		}
 
 		private void CustomSlider_Loaded(object sender, RoutedEventArgs e)

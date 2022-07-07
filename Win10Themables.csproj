@@ -8,30 +8,47 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>Themable dark/light/colour base window control. Get started by adding control to root of window, and setting window borders to none, and allow transparency</Description>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Authors>Joseph Ward</Authors>
+    <Company>Caestille</Company>
+    <PackageProjectUrl>https://github.com/Caestille/Win10Themables</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Caestille/Win10Themables</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call $(SolutionDir)PublishNugetLocally.bat" />
+    <Exec Command="call PublishNugetLocally.bat" />
   </Target>
+
+  <ItemGroup>
+    <Compile Remove="Nugets\**" />
+    <EmbeddedResource Remove="Nugets\**" />
+    <None Remove="Nugets\**" />
+    <Page Remove="Nugets\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="AppGuid.txt" />
-    <None Remove="Fonts\OpenSans-VariableFont_wdth,wght.ttf" />
     <None Remove="LICENSE" />
     <None Remove="Logo_SmallCopy.ico" />
-    <None Remove="README.md" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreUtilities" Version="1.0.15" />
+    <PackageReference Include="CoreUtilities" Version="1.0.20" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Fonts\OpenSans-VariableFont_wdth,wght.ttf" />
     <Resource Include="Logo_Small.png" />
     <Resource Include="Logo_SmallCopy.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

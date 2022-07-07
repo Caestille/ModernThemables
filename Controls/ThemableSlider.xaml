@@ -54,6 +54,7 @@
 
 		<Slider
 			x:Name="Slider"
+			FocusVisualStyle="{StaticResource ThemableFocusStyle}"
 			Maximum="{Binding ElementName=root, Path=Maximum}"
 			Minimum="{Binding ElementName=root, Path=Minimum}"
 			Template="{StaticResource simpleSlider}"

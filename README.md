@@ -42,6 +42,14 @@ The package also implements some custom controls and styles which intrinsically 
 		<controls:MainWindowControl />
 	</Window>
 ```
+
+- I recommend also adding (for a sharper view):
+```
+	RenderOptions.BitmapScalingMode="NearestNeighbor"
+	RenderOptions.ClearTypeHint="Enabled"
+	SnapsToDevicePixels="True"
+	UseLayoutRounding="True"
+```
 	
 # Notes
 Controls currently include:
@@ -60,6 +68,7 @@ Styles/Control templates include:
 - Listbox: Key="ThemedListbox"
 - Checkbox: Key="ThemedCheckbox"
 - Toggle checkbox: Apple style sliding thumb in pill shaped border. Key: "ToggleCheckbox"
+- ThemableFocusStyle: A focus style which is more compatible with the current theme. Has to be applied explicity using "FocusStyle={StaticResource ThemableFocusStyle}" in a control or style
 
 Colours controls implement (accessed through a DynamicResource qualifier in xaml), and available for use in your controls include:
 - MainBackgroundBrush

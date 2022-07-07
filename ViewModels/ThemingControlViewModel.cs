@@ -166,7 +166,8 @@ namespace Win10Themables.ViewModels
 			registryService.TryGetSetting(ColourModeSettingName, lightModeKey, out string? mode);
 			IsDarkMode = mode == darkModeKey;
 
-			registryService.TryGetSetting(ThemeSettingName, $"{ThemeColour.A}-{ThemeColour.R}-{ThemeColour.G}-{ThemeColour.B}", out string? theme);
+			var tempSetting = $"{ThemeColour.A}-{ThemeColour.R}-{ThemeColour.G}-{ThemeColour.B}";
+			registryService.TryGetSetting(ThemeSettingName, tempSetting, out string? theme);
 			var accent = theme?.Split('-').Select(byte.Parse).ToList();
 			SetAccentColour(accent[0], accent[1], accent[2], accent[3]);
 
