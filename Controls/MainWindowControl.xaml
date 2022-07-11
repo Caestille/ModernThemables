@@ -69,8 +69,8 @@
 								BlurBackground="{Binding ElementName=Content}"
 								BlurOpacity="0.5"
 								Focusable="False"
-								OffsetX="21"
-								OffsetY="51">
+								OffsetX="1"
+								OffsetY="31">
 								<controls:ThemingControl
 									x:Name="ThemingControl"
 									Width="Auto"
@@ -211,7 +211,7 @@
 					Width="1"
 					Margin="1,4,1,4"
 					HorizontalAlignment="Right"
-					Background="{DynamicResource ThemeStatusBrush}"
+					Background="{DynamicResource ThemeDisabledTextBrush}"
 					DockPanel.Dock="Right" />
 				<controls:ExtendedButton
 					x:Name="ThemeSetButton"
@@ -288,7 +288,7 @@
 			x:Name="StatusTextBorder"
 			Width="0"
 			Height="0"
-			Background="{DynamicResource StatusTextLightBrush}"
+			Background="{DynamicResource ThemeDisabledTextBrush}"
 			Visibility="Collapsed" />
 		<Border
 			x:Name="ThemeBackgroundBorder"

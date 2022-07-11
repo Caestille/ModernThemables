@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
+using Win10Themables.Extensions;
 
 namespace Win10Themables.ViewModels
 {
@@ -20,43 +21,44 @@ namespace Win10Themables.ViewModels
 		private const string ColourModeSettingName = "ColourMode";
 		private const string OsSyncSettingName = "ThemeOsSync";
 		private const string ThemeSettingName = "Theme";
+		private const string MonoThemeSettingName = "MonochromaticTheme";
 
 		private bool? wasDarkBeforeSync;
-		private byte[] themeBeforeSync;
-		private double themePerceivedBrightness;
+		private bool? wasMonoBeforeSync;
+		private Color? themeBeforeSync;
+		private Color? themeBeforeMono;
 
 		private System.Timers.Timer osThemePollTimer = new System.Timers.Timer(1000);
 
-		private byte r;
-		public byte R
+		public Color ThemeColourProperty
 		{
-			get => r;
+			get => ThemeColour;
 			set
 			{
-				this.SetProperty(ref r, value);
-				SetAccentColour(255, R, G, B, false);
-			}
-		}
-
-		private byte g;
-		public byte G
-		{
-			get => g;
-			set
-			{
-				this.SetProperty(ref g, value);
-				SetAccentColour(255, R, G, B, false);
-			}
-		}
-
-		private byte b;
-		public byte B
-		{
-			get => b;
-			set
-			{
-				this.SetProperty(ref b, value);
-				SetAccentColour(255, R, G, B, false);
+				if (IsMonoTheme)
+				{
+					var changedValue = "R";
+					if (ThemeColour.G != value.G) changedValue = "G";
+					if (ThemeColour.B != value.B) changedValue = "B";
+					switch (changedValue)
+					{
+						case "R":
+							value.G = value.R;
+							value.B = value.R;
+							break;
+						case "G":
+							value.R = value.G;
+							value.B = value.G;
+							break;
+						case "B":
+							value.R = value.B;
+							value.G = value.B;
+							break;
+					}
+					ThemeColour = value;
+					OnPropertyChanged(nameof(ThemeColourProperty));
+				}
+				SetThemeColour(value);
 			}
 		}
 
@@ -68,6 +70,7 @@ namespace Win10Themables.ViewModels
 			{
 				SetProperty(ref isSyncingWithOs, value);
 				SyncThemeWithOs(value);
+				if (value) IsMonoTheme = false;
 			}
 		}
 
@@ -80,14 +83,34 @@ namespace Win10Themables.ViewModels
 			set
 			{
 				SetProperty(ref isDarkMode, value);
-				SetTheme();
+				SetThemeAndBrightnessMode();
+			}
+		}
+
+		private bool isMonoTheme;
+		public bool IsMonoTheme
+		{
+			get => isMonoTheme;
+			set
+			{
+				SetProperty(ref isMonoTheme, value);
+				registryService.SetSetting(MonoThemeSettingName, value.ToString());
+				if (!value)
+				{
+					if (themeBeforeMono.HasValue) SetThemeColour(themeBeforeMono.Value);
+					return;
+				}
+				themeBeforeMono = ThemeColour;
+				var mean = (ThemeColour.R + ThemeColour.G + ThemeColour.B) / 3;
+				ThemeColour = ColourHelpers.MonoColour((byte)mean);
+				SetThemeColour(ThemeColour);
 			}
 		}
 
 		#region Colour stores
 		// Background
-		private static readonly Color MainBackgroundColourLight = Colors.White;
-		private static readonly Color MainBackgroundColourDark = Color.FromArgb(255, 20, 20, 20);
+		private static readonly Color MainBackgroundColourLight = ColourHelpers.MonoColour(245);
+		private static readonly Color MainBackgroundColourDark = ColourHelpers.MonoColour(20);
 
 		// Main text colour
 		private static readonly Color TextColourLight = Colors.Black;
@@ -102,38 +125,38 @@ namespace Win10Themables.ViewModels
 		private static readonly Color StatusTextColourDark = Colors.DarkGray;
 
 		// Status text light colour
-		private static readonly Color StatusTextLightColourLight = MonoColour(225);
-		private static readonly Color StatusTextLightColourDark = MonoColour(30);
+		private static readonly Color StatusTextLightColourLight = ColourHelpers.MonoColour(225);
+		private static readonly Color StatusTextLightColourDark = ColourHelpers.MonoColour(30);
 
 		// Control clickable part colour
-		private static readonly Color ControlClickablePartColourLight = MonoColour(150);
-		private static readonly Color ControlClickablePartColourDark = MonoColour(140);
+		private static readonly Color ControlClickablePartColourLight = ColourHelpers.MonoColour(155);
+		private static readonly Color ControlClickablePartColourDark = ColourHelpers.MonoColour(100);
 		// Mouse over
-		private static readonly Color ControlClickablePartMouseOverColourLight = MonoColour(140);
-		private static readonly Color ControlClickablePartMouseOverColourDark = MonoColour(150);
+		private static readonly Color ControlClickablePartMouseOverColourLight = ColourHelpers.MonoColour(175);
+		private static readonly Color ControlClickablePartMouseOverColourDark = ColourHelpers.MonoColour(120);
 		// Mouse down
-		private static readonly Color ControlClickablePartMouseDownColourLight = MonoColour(190);
-		private static readonly Color ControlClickablePartMouseDownColourDark = MonoColour(100);
+		private static readonly Color ControlClickablePartMouseDownColourLight = ColourHelpers.MonoColour(145);
+		private static readonly Color ControlClickablePartMouseDownColourDark = ColourHelpers.MonoColour(90);
 
 		// Control non clickable part colour
-		private static readonly Color ControlNonClickablePartColourLight = MonoColour(200);
-		private static readonly Color ControlNonClickablePartColourDark = MonoColour(80);
+		private static readonly Color ControlNonClickablePartColourLight = ColourHelpers.MonoColour(200);
+		private static readonly Color ControlNonClickablePartColourDark = ColourHelpers.MonoColour(80);
 
 		// Disabled control clickable part colour
-		private static readonly Color DisabledControlClickablePartColourLight = MonoColour(230);
-		private static readonly Color DisabledControlClickablePartColourDark = MonoColour(40);
+		private static readonly Color DisabledControlClickablePartColourLight = ColourHelpers.MonoColour(230);
+		private static readonly Color DisabledControlClickablePartColourDark = ColourHelpers.MonoColour(40);
 
 		// Disabled control non clickable part colour
-		private static readonly Color DisabledControlNonClickablePartColourLight = MonoColour(210);
-		private static readonly Color DisabledControlNonClickablePartColourDark = MonoColour(60);
+		private static readonly Color DisabledControlNonClickablePartColourLight = ColourHelpers.MonoColour(210);
+		private static readonly Color DisabledControlNonClickablePartColourDark = ColourHelpers.MonoColour(60);
 
 		// Datagrid header
-		private static readonly Color DatagridHeaderColourLight = MonoColour(237);
-		private static readonly Color DatagridHeaderColourDark = MonoColour(85);
+		private static readonly Color DatagridHeaderColourLight = ColourHelpers.MonoColour(237);
+		private static readonly Color DatagridHeaderColourDark = ColourHelpers.MonoColour(85);
 
 		// Datagrid row
 		private static readonly Color DatagridRowColourLight = Colors.White;
-		private static readonly Color DatagridRowColourDark = MonoColour(30);
+		private static readonly Color DatagridRowColourDark = ColourHelpers.MonoColour(30);
 
 		// Theme colour
 		private static Color ThemeColour = Color.FromArgb(255, 47, 47, 74);
@@ -142,7 +165,7 @@ namespace Win10Themables.ViewModels
 		private static Color ThemeMouseOverColour = Color.FromArgb(255, 30, 134, 204);
 
 		// Theme click colour
-		private static Color ThemeClickColour = Color.FromArgb(255, 0, 103, 173);
+		private static Color ThemeMouseDownColour = Color.FromArgb(255, 0, 103, 173);
 
 		// Theme click colour
 		private static Color ThemeBackgroundColour = Color.FromArgb(255, 129, 172, 202);
@@ -154,14 +177,19 @@ namespace Win10Themables.ViewModels
 		private static Color ThemeStatusColour = Colors.Gray;
 
 		// Theme disabled text colour
-		private static readonly Color ThemeDisabledTextColourLight = Colors.White;
-		private static readonly Color ThemeDisabledTextColourDark = Colors.Gray;
+		private static Color ThemeDisabledTextColour = Colors.Gray;
+
+		// Theme near background colour
+		private static Color ThemeNearBackgroundColour = Colors.Gray;
+		private static Color ThemeBackgroundNearBackgroundColour = Colors.Gray;
+		private static Color ThemeMouseOverNearBackgroundColour = Colors.Gray;
+		private static Color ThemeMouseDownNearBackgroundColour = Colors.Gray;
 
 		#endregion
 
 		public ThemingControlViewModel()
 		{
-			this.registryService = new RegistryService();
+			this.registryService = new RegistryService(@"SOFTWARE\ThemableApps");
 
 			registryService.TryGetSetting(ColourModeSettingName, lightModeKey, out string? mode);
 			IsDarkMode = mode == darkModeKey;
@@ -169,10 +197,13 @@ namespace Win10Themables.ViewModels
 			var tempSetting = $"{ThemeColour.A}-{ThemeColour.R}-{ThemeColour.G}-{ThemeColour.B}";
 			registryService.TryGetSetting(ThemeSettingName, tempSetting, out string? theme);
 			var accent = theme?.Split('-').Select(byte.Parse).ToList();
-			SetAccentColour(accent[0], accent[1], accent[2], accent[3]);
+			SetThemeColour(Color.FromArgb(accent[0], accent[1], accent[2], accent[3]));
 
 			registryService.TryGetSetting(OsSyncSettingName, false, out bool sync);
 			IsSyncingWithOs = sync;
+
+			registryService.TryGetSetting(MonoThemeSettingName, false, out bool mono);
+			IsMonoTheme = mono;
 
 			osThemePollTimer.Elapsed += OsThemePollTimer_Elapsed;
 			osThemePollTimer.AutoReset = true;
@@ -180,7 +211,7 @@ namespace Win10Themables.ViewModels
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
 
-		private void SetTheme()
+		private void SetThemeAndBrightnessMode()
 		{
 			registryService.SetSetting(ColourModeSettingName, isDarkMode ? darkModeKey : lightModeKey);
 			SetThemeBackground();
@@ -194,18 +225,15 @@ namespace Win10Themables.ViewModels
 			Application.Current.Resources["TextColour"] = isDarkMode 
 				? Color.FromArgb(TextColourDark.A, TextColourDark.R, TextColourDark.G, TextColourDark.B) 
 				: Color.FromArgb(TextColourLight.A, TextColourLight.R, TextColourLight.G, TextColourLight.B);
+			Application.Current.Resources["InvertedTextBrush"] = isDarkMode
+				? new SolidColorBrush(InvertedTextColourDark)
+				: new SolidColorBrush(InvertedTextColourLight);
 			Application.Current.Resources["StatusTextBrush"] = isDarkMode 
 				? new SolidColorBrush(StatusTextColourDark) 
 				: new SolidColorBrush(StatusTextColourLight);
 			Application.Current.Resources["StatusTextLightBrush"] = isDarkMode 
 				? new SolidColorBrush(StatusTextLightColourDark) 
 				: new SolidColorBrush(StatusTextLightColourLight);
-			Application.Current.Resources["InvertedTextBrush"] = isDarkMode 
-				? new SolidColorBrush(InvertedTextColourDark) 
-				: new SolidColorBrush(InvertedTextColourLight);
-			Application.Current.Resources["ThemeDisabledTextBrush"] = isDarkMode 
-				? new SolidColorBrush(ThemeDisabledTextColourDark) 
-				: new SolidColorBrush(ThemeDisabledTextColourLight);
 			Application.Current.Resources["DatagridHeaderBrush"] = isDarkMode 
 				? new SolidColorBrush(DatagridHeaderColourDark) 
 				: new SolidColorBrush(DatagridHeaderColourLight);
@@ -240,88 +268,83 @@ namespace Win10Themables.ViewModels
 				if (!osThemePollTimer.Enabled)
 				{
 					wasDarkBeforeSync = isDarkMode;
-					themeBeforeSync = new byte[] { 255, R, G, B };
+					wasMonoBeforeSync = isMonoTheme;
+					themeBeforeSync = ThemeColour;
 					osThemePollTimer.Start();
 				}
 				IsDarkMode = ShouldSystemUseDarkMode();
 				var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush).Color;
-				SetAccentColour(255, colour.R, colour.G, colour.B);
+				SetThemeColour(colour);
 			}
 			else
 			{
 				if (wasDarkBeforeSync != null)
 					IsDarkMode = wasDarkBeforeSync.Value;
+				if (wasMonoBeforeSync != null)
+					IsMonoTheme = wasMonoBeforeSync.Value;
 				if (themeBeforeSync != null)
-					SetAccentColour(255, themeBeforeSync[1], themeBeforeSync[2], themeBeforeSync[3]);
+					SetThemeColour(themeBeforeSync.Value);
 				if (osThemePollTimer.Enabled)
 					osThemePollTimer.Stop();
 			}
 		}
 
-		private void SetAccentColour(byte A, byte R, byte G, byte B, bool setComponents = true)
+		private void SetThemeColour(Color colour)
 		{
-			if (setComponents)
-			{
-				this.R = R;
-				this.G = G;
-				this.B = B;
-			}
+			registryService.SetSetting(ThemeSettingName, $"{colour.A}-{colour.R}-{colour.G}-{colour.B}");
 
-			registryService.SetSetting(ThemeSettingName, $"{A}-{R}-{G}-{B}");
-
-			ThemeColour = Color.FromArgb(A, R, G, B);
+			ThemeColour = colour;
+			OnPropertyChanged(nameof(ThemeColourProperty));
 			SetThemeBackground();
 
-			themePerceivedBrightness = Math.Sqrt(0.299 * Math.Pow(R, 2) + 0.587 * Math.Pow(G, 2) + 0.114 * Math.Pow(B, 2));
-			bool isThemeDark = themePerceivedBrightness < 255 * 0.5;
+			var isThemeDark = ThemeColour.PerceivedBrightness() < 0.5;
 
 			ThemeTextColour = isThemeDark ? Colors.White : Colors.Black;
 			ThemeStatusColour = isThemeDark ? Colors.LightGray : Colors.DimGray;
 
+			var desiredBrightness = Math.Min(Math.Max(ThemeBackgroundColour.PerceivedBrightness() + (isThemeDark ? 0.15 : -0.15), 0), 1);
+			ThemeDisabledTextColour = Colors.Black;
+			var themeDisabledTextPerceivedBrightness = ThemeDisabledTextColour.PerceivedBrightness();
+			var count = 0;
+			while (Math.Abs(themeDisabledTextPerceivedBrightness - desiredBrightness) > 0.01 && count < 200)
+			{
+				ThemeDisabledTextColour.ChangeThisColourBrightness(0.01f);
+				themeDisabledTextPerceivedBrightness = ThemeDisabledTextColour.PerceivedBrightness();
+				count++;
+			}
+
 			Application.Current.Resources["ThemeBrush"] = new SolidColorBrush(ThemeColour);
-			Application.Current.Resources["ThemeMouseOverBrush"] = new SolidColorBrush(ThemeMouseOverColour);
-			Application.Current.Resources["ThemeClickBrush"] = new SolidColorBrush(ThemeClickColour);
 			Application.Current.Resources["ThemeBackgroundBrush"] = new SolidColorBrush(ThemeBackgroundColour);
 			Application.Current.Resources["ThemeTextBrush"] = new SolidColorBrush(ThemeTextColour);
 			Application.Current.Resources["ThemeStatusBrush"] = new SolidColorBrush(ThemeStatusColour);
+			Application.Current.Resources["ThemeDisabledTextBrush"] = new SolidColorBrush(ThemeDisabledTextColour);
 		}
 
 		private void SetThemeBackground()
 		{
 			float modifier = isDarkMode ? -0.2f : 0.2f;
-			float perceivedBrightnessFactor = (((float)themePerceivedBrightness + 255) / 255f) * 1f;
-			ThemeBackgroundColour = ChangeColorBrightness(ThemeColour, modifier * perceivedBrightnessFactor);
-			ThemeMouseOverColour = ChangeColorBrightness(ThemeColour, 0.1f * perceivedBrightnessFactor);
-			ThemeClickColour = ChangeColorBrightness(ThemeColour, -0.1f * perceivedBrightnessFactor);
+			float perceivedBrightnessFactor = (((float)ThemeColour.PerceivedBrightness() + 1f) / 1f) * 1f;
+
+			ThemeBackgroundColour = ThemeColour.ChangeColourBrightness(modifier * perceivedBrightnessFactor);
+			ThemeMouseOverColour = ThemeColour.ChangeColourBrightness(0.1f * perceivedBrightnessFactor);
+			ThemeMouseDownColour = ThemeColour.ChangeColourBrightness(-0.1f * perceivedBrightnessFactor);
+			var compare = isDarkMode ? ThemeBackgroundColour : ThemeMouseOverColour;
+			var background = isDarkMode ? MainBackgroundColourDark : MainBackgroundColourLight;
+			var threshold = isDarkMode ? 0.03 : 0.03;
+			var diffFactor = isDarkMode ? -1 : 1;
+			var modifierFactor = -modifier / (isDarkMode ? 1 : 2) * perceivedBrightnessFactor;
+			ThemeNearBackgroundColour.SetNearBackgroundColour(compare, background, ThemeColour, diffFactor, threshold, modifierFactor);
+			ThemeBackgroundNearBackgroundColour.SetNearBackgroundColour(compare, background, ThemeBackgroundColour, diffFactor, threshold, modifierFactor);
+			ThemeMouseOverNearBackgroundColour.SetNearBackgroundColour(compare, background, ThemeMouseOverColour, diffFactor, threshold, modifierFactor);
+			ThemeMouseDownNearBackgroundColour.SetNearBackgroundColour(compare, background, ThemeMouseDownColour, diffFactor, threshold, modifierFactor);
+
 			Application.Current.Resources["ThemeBackgroundBrush"] = new SolidColorBrush(ThemeBackgroundColour);
-		}
-
-		private Color ChangeColorBrightness(Color color, float factor)
-		{
-			float red = (float)color.R;
-			float green = (float)color.G;
-			float blue = (float)color.B;
-
-			if (factor < 0)
-			{
-				factor = 1 + factor;
-				red *= factor;
-				green *= factor;
-				blue *= factor;
-			}
-			else
-			{
-				red = (255 - red) * factor + red;
-				green = (255 - green) * factor + green;
-				blue = (255 - blue) * factor + blue;
-			}
-
-			return Color.FromArgb(color.A, (byte)red, (byte)green, (byte)blue);
-		}
-
-		private static Color MonoColour(byte value)
-		{
-			return Color.FromArgb(255, value, value, value);
+			Application.Current.Resources["ThemeMouseOverBrush"] = new SolidColorBrush(ThemeMouseOverColour);
+			Application.Current.Resources["ThemeMouseDownBrush"] = new SolidColorBrush(ThemeMouseDownColour);
+			Application.Current.Resources["ThemeNearBackgroundBrush"] = new SolidColorBrush(ThemeNearBackgroundColour);
+			Application.Current.Resources["ThemeBackgroundNearBackgroundBrush"] = new SolidColorBrush(ThemeBackgroundNearBackgroundColour);
+			Application.Current.Resources["ThemeMouseOverNearBackgroundBrush"] = new SolidColorBrush(ThemeMouseOverNearBackgroundColour);
+			Application.Current.Resources["ThemeMouseDownNearBackgroundBrush"] = new SolidColorBrush(ThemeMouseDownNearBackgroundColour);
 		}
 
 		private void OsThemePollTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)

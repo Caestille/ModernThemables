@@ -70,7 +70,7 @@ namespace Win10Themables.Controls
 			double rightPadding = (width - Value / range * width);
 			if (double.IsNaN(rightPadding))
 				rightPadding = 0;
-			OuterBorder.Margin = new Thickness(5, 0, rightPadding + 5, 0);
+			InnerBorder.Margin = new Thickness(5, 0, rightPadding + 5, 0);
 		}
 	}
 }

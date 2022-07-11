@@ -87,7 +87,7 @@ Colours controls implement (accessed through a DynamicResource qualifier in xaml
 - DatagridRowBrush
 - ThemeBrush
 - ThemeMouseOverBrush
-- ThemeClickBrush
+- ThemeMouseDownBrush
 - ThemeBackgroundBrush
 - ThemeTextBrush
 - ThemeStatusBrush
