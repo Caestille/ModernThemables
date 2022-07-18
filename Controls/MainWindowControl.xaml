@@ -12,12 +12,24 @@
 		<Grid.Background>
 			<MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
 				<Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
-				<Binding ElementName="ThemeBorder" Path="Background" />
-				<Binding ElementName="ThemeBackgroundBorder" Path="Background" />
+				<Binding ElementName="ThemeMouseOverBorder" Path="Background" />
+				<Binding ElementName="DisabledControlClickablePartBorder" Path="Background" />
 			</MultiBinding>
 		</Grid.Background>
 		<Grid
-			Margin="1,30,1,1"
+			Height="30"
+			Margin="1"
+			VerticalAlignment="Top">
+			<Grid.Background>
+				<MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
+					<Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
+					<Binding ElementName="ThemeBorder" Path="Background" />
+					<Binding ElementName="StatusTextLightBorder" Path="Background" />
+				</MultiBinding>
+			</Grid.Background>
+		</Grid>
+		<Grid
+			Margin="1,31,1,1"
 			Background="{DynamicResource MainBackgroundBrush}"
 			Focusable="False">
 			<ContentControl
@@ -27,14 +39,14 @@
 		</Grid>
 		<Grid
 			x:Name="BlackoutGrid"
-			Margin="0,30,0,0"
+			Margin="0,31,0,0"
 			Background="Black"
 			Focusable="False"
 			IsHitTestVisible="False"
 			Opacity="0" />
 		<StackPanel
 			x:Name="SettingsClippingStackPanel"
-			Margin="0,30,0,0"
+			Margin="0,31,0,0"
 			ClipToBounds="False"
 			Focusable="False"
 			IsEnabled="False"
@@ -67,7 +79,7 @@
 						<Grid>
 							<coreutilscontrols:BlurHost
 								BlurBackground="{Binding ElementName=Content}"
-								BlurOpacity="0.5"
+								BlurOpacity="1"
 								Focusable="False"
 								OffsetX="1"
 								OffsetY="31">
@@ -118,14 +130,14 @@
 		</StackPanel>
 		<Grid
 			x:Name="HeaderGrid"
-			Height="30"
+			Height="31"
 			Margin="0"
 			VerticalAlignment="Top">
 			<DockPanel>
 				<controls:ExtendedButton
 					x:Name="CloseButton"
 					Width="40"
-					Margin="1,0"
+					Margin="1,0,0,0"
 					HorizontalAlignment="Right"
 					Background="Transparent"
 					BorderThickness="0"
@@ -249,17 +261,17 @@
 				</controls:ExtendedButton>
 				<Image
 					Width="Auto"
-					Margin="3"
+					Margin="9,8,0,8"
 					Source="{Binding Path=Icon, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}" />
 				<Label
-					Margin="5,2"
+					Margin="2"
 					Content="{Binding Path=Title, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}"
 					FontSize="11.5">
 					<Label.Foreground>
 						<MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
 							<Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
 							<Binding ElementName="ThemeTextBorder" Path="Background" />
-							<Binding ElementName="StatusTextBorder" Path="Background" />
+							<Binding ElementName="ThemeDisabledBorder" Path="Background" />
 						</MultiBinding>
 					</Label.Foreground>
 				</Label>
@@ -272,22 +284,34 @@
 			Background="{DynamicResource ThemeBrush}"
 			Visibility="Collapsed" />
 		<Border
+			x:Name="ThemeMouseOverBorder"
+			Width="0"
+			Height="0"
+			Background="{DynamicResource ThemeMouseOverBrush}"
+			Visibility="Collapsed" />
+		<Border
 			x:Name="ThemeTextBorder"
 			Width="0"
 			Height="0"
 			Background="{DynamicResource ThemeTextBrush}"
 			Visibility="Collapsed" />
 		<Border
-			x:Name="StatusTextBorder"
+			x:Name="ThemeDisabledBorder"
 			Width="0"
 			Height="0"
 			Background="{DynamicResource ThemeDisabledTextBrush}"
 			Visibility="Collapsed" />
 		<Border
-			x:Name="ThemeBackgroundBorder"
+			x:Name="StatusTextLightBorder"
 			Width="0"
 			Height="0"
-			Background="{DynamicResource ThemeBackgroundBrush}"
+			Background="{DynamicResource StatusTextLightBrush}"
+			Visibility="Collapsed" />
+		<Border
+			x:Name="DisabledControlClickablePartBorder"
+			Width="0"
+			Height="0"
+			Background="{DynamicResource DisabledControlClickablePartBrush}"
 			Visibility="Collapsed" />
 	</Grid>
 </UserControl>
