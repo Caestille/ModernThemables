@@ -15,24 +15,32 @@
 	<SolidColorBrush x:Key="MainBackgroundBrush" Color="Black" />
 	<SolidColorBrush x:Key="TextBrush" Color="White" />
 	<Color x:Key="TextColour" />
+	<Color x:Key="InvertedTextColour" />
 	<SolidColorBrush x:Key="InvertedTextBrush" Color="White" />
 	<SolidColorBrush x:Key="StatusTextBrush" Color="DarkGray" />
-	<SolidColorBrush x:Key="StatusTextLightBrush" Color="#1e1e1e" />
-	<SolidColorBrush x:Key="DisabledControlClickablePartBrush" Color="#1e1e1e" />
-	<SolidColorBrush x:Key="DisabledControlNonClickablePartBrush" Color="#1e1e1e" />
-	<SolidColorBrush x:Key="ControlClickablePartBrush" Color="#1e1e1e" />
-	<SolidColorBrush x:Key="ControlClickablePartMouseOverBrush" Color="#1e1e1e" />
-	<SolidColorBrush x:Key="ControlClickablePartMousDownBrush" Color="#1e1e1e" />
-	<SolidColorBrush x:Key="ControlNonClickablePartBrush" Color="#1e1e1e" />
+	<SolidColorBrush x:Key="StatusTextLightBrush" Color="#282828" />
+	<SolidColorBrush x:Key="MenuBrush" Color="#1e1e1e" />
+	<SolidColorBrush x:Key="MenuMouseOverBrush" Color="#1e1e1e" />
+	<SolidColorBrush x:Key="MenuMouseDownBrush" Color="#1e1e1e" />
+	<SolidColorBrush x:Key="ControlClickablePartBrush" Color="#8c8c8c" />
+	<SolidColorBrush x:Key="ControlClickablePartMouseOverBrush" Color="#969696" />
+	<SolidColorBrush x:Key="ControlClickablePartMouseDownBrush" Color="#646464" />
+	<SolidColorBrush x:Key="ControlNonClickablePartBrush" Color="#505050" />
+	<SolidColorBrush x:Key="DisabledControlClickablePartBrush" Color="#282828" />
+	<SolidColorBrush x:Key="DisabledControlNonClickablePartBrush" Color="#3c3c3c" />
 	<SolidColorBrush x:Key="DatagridHeaderBrush" Color="#555555" />
 	<SolidColorBrush x:Key="DatagridRowBrush" Color="#1e1e1e" />
 	<SolidColorBrush x:Key="ThemeBrush" Color="#2f2f4a" />
 	<SolidColorBrush x:Key="ThemeMouseOverBrush" Color="#3d3d5f" />
-	<SolidColorBrush x:Key="ThemeClickBrush" Color="#2f2f4a" />
+	<SolidColorBrush x:Key="ThemeMouseDownBrush" Color="#2f2f4a" />
 	<SolidColorBrush x:Key="ThemeBackgroundBrush" Color="#26263b" />
 	<SolidColorBrush x:Key="ThemeTextBrush" Color="White" />
 	<SolidColorBrush x:Key="ThemeStatusBrush" Color="DimGray" />
 	<SolidColorBrush x:Key="ThemeDisabledTextBrush" Color="Gray" />
+	<SolidColorBrush x:Key="ThemeNearBackgroundBrush" Color="Gray" />
+	<SolidColorBrush x:Key="ThemeBackgroundNearBackgroundBrush" Color="Gray" />
+	<SolidColorBrush x:Key="ThemeMouseOverNearBackgroundBrush" Color="Gray" />
+	<SolidColorBrush x:Key="ThemeMouseDownNearBackgroundBrush" Color="Gray" />
 
 	<!--#endregion End Application colours-->
 
@@ -42,6 +50,7 @@
 	<converters:RangeSliderMaxValueConverter x:Key="RangeSliderMaxValueConverter" />
 	<converters:RangeSliderThumbValueConverter x:Key="RangeSliderThumbUpperValueConverter" />
 	<converters:RangeSliderThumbValueConverter x:Key="RangeSliderThumbLowerValueConverter" />
+	<converters:ColourRgbConverter x:Key="ColourRgbConverter" />
 
 	<!--#endregion End Converters-->
 
@@ -86,16 +95,28 @@
 				VerticalAlignment="Center"
 				Fill="{DynamicResource ControlClickablePartBrush}"
 				Stroke="{DynamicResource MainBackgroundBrush}" />
+			<Border
+				x:Name="gripBorder"
+				Width="12"
+				Height="12"
+				VerticalAlignment="Center"
+				Background="Transparent"
+				BorderBrush="Transparent"
+				BorderThickness="1"
+				CornerRadius="6.5" />
 		</Grid>
 		<ControlTemplate.Triggers>
 			<Trigger Property="IsMouseOver" Value="true">
 				<Setter TargetName="grip" Property="Fill" Value="{DynamicResource ThemeMouseOverBrush}" />
+				<Setter TargetName="gripBorder" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverNearBackgroundBrush}" />
 			</Trigger>
 			<Trigger Property="IsDragging" Value="true">
-				<Setter TargetName="grip" Property="Fill" Value="{DynamicResource ThemeClickBrush}" />
+				<Setter TargetName="grip" Property="Fill" Value="{DynamicResource ThemeMouseDownBrush}" />
+				<Setter TargetName="gripBorder" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownNearBackgroundBrush}" />
 			</Trigger>
 			<Trigger Property="IsEnabled" Value="false">
 				<Setter TargetName="grip" Property="Fill" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+				<Setter TargetName="gripBorder" Property="BorderBrush" Value="Transparent" />
 			</Trigger>
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
@@ -167,9 +188,9 @@
 							<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource InvertedTextBrush}" />
 						</Trigger>
 						<Trigger Property="ToggleButton.IsChecked" Value="true">
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeClickBrush}" />
-							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
-							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
+							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
 							<Setter TargetName="Arrow" Property="Fill" Value="White" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
@@ -179,9 +200,9 @@
 							<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource DatagridHeaderBrush}" />
 						</Trigger>
 						<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeClickBrush}" />
-							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
-							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeClickBrush}" />
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
+							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
 							<Setter TargetName="Arrow" Property="Fill" Value="White" />
 						</DataTrigger>
 					</ControlTemplate.Triggers>
@@ -415,7 +436,7 @@
 							<Setter TargetName="Thumb" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
 						</Trigger>
 						<Trigger SourceName="Thumb" Property="IsDragging" Value="true">
-							<Setter TargetName="Thumb" Property="Background" Value="{DynamicResource ThemeClickBrush}" />
+							<Setter TargetName="Thumb" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
 						</Trigger>
 
 						<Trigger Property="IsEnabled" Value="false">
@@ -714,7 +735,7 @@
 								<Condition Property="IsMouseOver" Value="True" />
 							</MultiTrigger.Conditions>
 							<MultiTrigger.Setters>
-								<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeClickBrush}" />
+								<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
 							</MultiTrigger.Setters>
 						</MultiTrigger>
 					</ControlTemplate.Triggers>
@@ -732,39 +753,53 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type CheckBox}">
-					<Border
-						x:Name="Border"
-						Width="{Binding Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=2}"
-						Height="{TemplateBinding Height}"
-						Background="{DynamicResource ControlNonClickablePartBrush}"
-						BorderThickness="0"
-						CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}">
-						<Grid x:Name="grid">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="1*" />
-								<ColumnDefinition Width="1*" />
-							</Grid.ColumnDefinitions>
-							<Border
-								x:Name="highlightCircle"
-								Height="{Binding Height, ElementName=Border, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-2}"
-								Margin="1"
-								VerticalAlignment="Top"
-								Background="{DynamicResource ControlClickablePartBrush}"
-								BorderThickness="0"
-								CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
-						</Grid>
-					</Border>
+					<Grid>
+						<Border
+							x:Name="Border"
+							Width="{Binding Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=2}"
+							Height="{TemplateBinding Height}"
+							Background="{DynamicResource ControlNonClickablePartBrush}"
+							BorderThickness="0"
+							CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}">
+							<Grid x:Name="grid">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="1*" />
+									<ColumnDefinition Width="1*" />
+								</Grid.ColumnDefinitions>
+								<Border
+									x:Name="highlightCircle"
+									Height="{Binding Height, ElementName=Border, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-2}"
+									Margin="1"
+									VerticalAlignment="Top"
+									Background="{DynamicResource ControlClickablePartBrush}"
+									BorderThickness="0"
+									CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
+							</Grid>
+						</Border>
+						<Border
+							x:Name="ThemeBorder"
+							Background="Transparent"
+							BorderBrush="{DynamicResource ThemeNearBackgroundBrush}"
+							BorderThickness="1"
+							CornerRadius="{Binding ElementName=Border, Path=CornerRadius}"
+							Opacity="0.5" />
+					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsChecked" Value="True">
 							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeBrush}" />
 							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource StatusTextBrush}" />
 							<Setter TargetName="highlightCircle" Property="Grid.Column" Value="1" />
 						</Trigger>
+						<Trigger Property="IsChecked" Value="False">
+							<Setter TargetName="ThemeBorder" Property="BorderBrush" Value="{DynamicResource ControlNonClickablePartBrush}" />
+						</Trigger>
 						<Trigger Property="IsMouseOver" Value="True">
 							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledControlNonClickablePartBrush}" />
 							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+							<Setter TargetName="ThemeBorder" Property="BorderBrush" Value="Transparent" />
 						</Trigger>
 						<MultiTrigger>
 							<MultiTrigger.Conditions>

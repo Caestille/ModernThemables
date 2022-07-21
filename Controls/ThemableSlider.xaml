@@ -45,12 +45,22 @@
 			CornerRadius="1.5" />
 
 		<Border
-			Name="OuterBorder"
+			Name="InnerBorder"
 			Height="6"
 			Margin="20,0,5,0"
 			VerticalAlignment="Center"
 			Background="{DynamicResource ThemeBackgroundBrush}"
 			CornerRadius="2" />
+
+		<Border
+			Name="OuterBorder"
+			Height="6"
+			Margin="{Binding ElementName=InnerBorder, Path=Margin}"
+			VerticalAlignment="Center"
+			BorderBrush="{DynamicResource ThemeBackgroundNearBackgroundBrush}"
+			BorderThickness="1"
+			CornerRadius="2"
+			Opacity="0.5" />
 
 		<Slider
 			x:Name="Slider"

@@ -16,10 +16,6 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call PublishNugetLocally.bat" />
-  </Target>
-
   <ItemGroup>
     <Compile Remove="Nugets\**" />
     <EmbeddedResource Remove="Nugets\**" />
@@ -35,8 +31,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreUtilities" Version="1.0.20" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreUtilities\CoreUtilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

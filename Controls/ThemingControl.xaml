@@ -57,8 +57,8 @@
 				Grid.Row="1"
 				Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfFalseConverter}}">
 				<Ellipse
-					Width="6"
-					Height="6"
+					Width="7"
+					Height="7"
 					Stroke="{DynamicResource StatusTextBrush}"
 					StrokeThickness="4" />
 				<Ellipse
@@ -79,7 +79,7 @@
 					Width="10"
 					Height="10"
 					Margin="15,5,5,15"
-					Background="{DynamicResource MainBackgroundBrush}"
+					Background="{DynamicResource MenuBrush}"
 					CornerRadius="5" />
 			</Grid>
 		</Grid>
@@ -127,7 +127,7 @@
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
 				Maximum="255"
 				Minimum="0"
-				Value="{Binding R, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+				Value="{Binding ThemeColourProperty, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=R}" />
 			<Label
 				Grid.Row="1"
 				Grid.Column="1"
@@ -141,7 +141,7 @@
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
 				Maximum="255"
 				Minimum="0"
-				Value="{Binding G, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+				Value="{Binding ThemeColourProperty, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=G}" />
 			<Label
 				Grid.Row="2"
 				Grid.Column="1"
@@ -157,14 +157,44 @@
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
 				Maximum="255"
 				Minimum="0"
-				Value="{Binding B, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-			<Label
-				Grid.RowSpan="3"
-				Grid.Column="0"
-				VerticalAlignment="Center"
-				Content="Theme Colour"
-				Foreground="{DynamicResource TextBrush}"
-				SnapsToDevicePixels="True" />
+				Value="{Binding ThemeColourProperty, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=B}" />
+			<Grid Grid.RowSpan="3">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Label
+					Padding="3"
+					VerticalAlignment="Bottom"
+					VerticalContentAlignment="Bottom"
+					Content="Theme Colour"
+					Foreground="{DynamicResource TextBrush}"
+					SnapsToDevicePixels="True" />
+				<Grid Grid.Row="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<Label
+						Grid.Row="0"
+						Margin="7,0,0,0"
+						Padding="3"
+						VerticalAlignment="Top"
+						Content="Mono"
+						Foreground="{DynamicResource TextBrush}" />
+					<CheckBox
+						Grid.Column="1"
+						Width="30"
+						Height="15"
+						Margin="2,4,0,0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						IsChecked="{Binding IsMonoTheme, Mode=TwoWay}"
+						IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
+						Style="{StaticResource ToggleCheckbox}" />
+				</Grid>
+			</Grid>
+
 			<Border
 				x:Name="ThemeIndicator"
 				Grid.RowSpan="3"
@@ -188,22 +218,26 @@
 						Grid.Row="0"
 						Grid.Column="0"
 						Background="{DynamicResource ThemeBrush}"
-						CornerRadius="4,0,0,0" />
+						CornerRadius="4,0,0,0"
+						ToolTip="Theme colour" />
 					<Border
 						Grid.Row="0"
 						Grid.Column="1"
 						Background="{DynamicResource ThemeMouseOverBrush}"
-						CornerRadius="0,4,0,0" />
+						CornerRadius="0,4,0,0"
+						ToolTip="Theme mouse over colour" />
 					<Border
 						Grid.Row="1"
 						Grid.Column="0"
-						Background="{DynamicResource ThemeClickBrush}"
-						CornerRadius="0,0,0,4" />
+						Background="{DynamicResource ThemeMouseDownBrush}"
+						CornerRadius="0,0,0,4"
+						ToolTip="Theme mouse down colour" />
 					<Border
 						Grid.Row="1"
 						Grid.Column="1"
 						Background="{DynamicResource ThemeTextBrush}"
-						CornerRadius="0,0,4,0" />
+						CornerRadius="0,0,4,0"
+						ToolTip="Theme text colour" />
 				</Grid>
 			</Border>
 		</Grid>
