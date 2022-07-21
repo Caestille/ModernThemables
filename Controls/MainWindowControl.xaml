@@ -59,11 +59,14 @@
 					Width="Auto"
 					Height="Auto"
 					Focusable="False">
+					<!--<Grid.OpacityMask>
+						<VisualBrush Visual="{Binding ElementName=SettingsBorder}" />
+					</Grid.OpacityMask>-->
 					<Border
 						x:Name="SettingsBorder"
 						Width="Auto"
 						Height="Auto"
-						Background="{DynamicResource MainBackgroundBrush}"
+						Background="{DynamicResource MenuBrush}"
 						BorderBrush="{DynamicResource StatusTextLightBrush}"
 						BorderThickness="1"
 						CornerRadius="5"
@@ -72,14 +75,13 @@
 							<DropShadowEffect
 								x:Name="SettingsBorderBlur"
 								BlurRadius="30"
-								Opacity="0"
 								ShadowDepth="0"
 								Color="Black" />
 						</Border.Effect>
 						<Grid>
 							<coreutilscontrols:BlurHost
 								BlurBackground="{Binding ElementName=Content}"
-								BlurOpacity="1"
+								BlurOpacity="0.5"
 								Focusable="False"
 								OffsetX="1"
 								OffsetY="31">

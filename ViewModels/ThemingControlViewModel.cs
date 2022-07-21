@@ -109,7 +109,7 @@ namespace Win10Themables.ViewModels
 
 		#region Colour stores
 		// Background
-		private static readonly Color MainBackgroundColourLight = ColourHelpers.MonoColour(245);
+		private static readonly Color MainBackgroundColourLight = ColourHelpers.MonoColour(255);
 		private static readonly Color MainBackgroundColourDark = ColourHelpers.MonoColour(20);
 
 		// Main text colour
@@ -125,8 +125,20 @@ namespace Win10Themables.ViewModels
 		private static readonly Color StatusTextColourDark = Colors.DarkGray;
 
 		// Status text light colour
-		private static readonly Color StatusTextLightColourLight = ColourHelpers.MonoColour(225);
-		private static readonly Color StatusTextLightColourDark = ColourHelpers.MonoColour(30);
+		private static readonly Color StatusTextLightColourLight = ColourHelpers.MonoColour(215);
+		private static readonly Color StatusTextLightColourDark = ColourHelpers.MonoColour(40);
+
+		// Menu colour
+		private static readonly Color MenuColourLight = ColourHelpers.MonoColour(225);
+		private static readonly Color MenuColourDark = ColourHelpers.MonoColour(30);
+
+		// Menu colour
+		private static readonly Color MenuMouseOverColourLight = ColourHelpers.MonoColour(140);
+		private static readonly Color MenuMouseOverColourDark = ColourHelpers.MonoColour(120);
+
+		// Menu colour
+		private static readonly Color MenuMouseDownColourDark = ColourHelpers.MonoColour(120);
+		private static readonly Color MenuMouseDownColourLight = ColourHelpers.MonoColour(100);
 
 		// Control clickable part colour
 		private static readonly Color ControlClickablePartColourLight = ColourHelpers.MonoColour(155);
@@ -139,15 +151,15 @@ namespace Win10Themables.ViewModels
 		private static readonly Color ControlClickablePartMouseDownColourDark = ColourHelpers.MonoColour(90);
 
 		// Control non clickable part colour
-		private static readonly Color ControlNonClickablePartColourLight = ColourHelpers.MonoColour(200);
-		private static readonly Color ControlNonClickablePartColourDark = ColourHelpers.MonoColour(80);
+		private static readonly Color ControlNonClickablePartColourLight = ColourHelpers.MonoColour(195);
+		private static readonly Color ControlNonClickablePartColourDark = ColourHelpers.MonoColour(60);
 
 		// Disabled control clickable part colour
-		private static readonly Color DisabledControlClickablePartColourLight = ColourHelpers.MonoColour(230);
+		private static readonly Color DisabledControlClickablePartColourLight = ColourHelpers.MonoColour(215);
 		private static readonly Color DisabledControlClickablePartColourDark = ColourHelpers.MonoColour(40);
 
 		// Disabled control non clickable part colour
-		private static readonly Color DisabledControlNonClickablePartColourLight = ColourHelpers.MonoColour(210);
+		private static readonly Color DisabledControlNonClickablePartColourLight = ColourHelpers.MonoColour(195);
 		private static readonly Color DisabledControlNonClickablePartColourDark = ColourHelpers.MonoColour(60);
 
 		// Datagrid header
@@ -189,7 +201,7 @@ namespace Win10Themables.ViewModels
 
 		public ThemingControlViewModel()
 		{
-			this.registryService = new RegistryService(@"SOFTWARE\ThemableApps");
+			this.registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
 
 			registryService.TryGetSetting(ColourModeSettingName, lightModeKey, out string? mode);
 			IsDarkMode = mode == darkModeKey;
@@ -225,6 +237,9 @@ namespace Win10Themables.ViewModels
 			Application.Current.Resources["TextColour"] = isDarkMode 
 				? Color.FromArgb(TextColourDark.A, TextColourDark.R, TextColourDark.G, TextColourDark.B) 
 				: Color.FromArgb(TextColourLight.A, TextColourLight.R, TextColourLight.G, TextColourLight.B);
+			Application.Current.Resources["InvertedTextColour"] = !isDarkMode
+				? Color.FromArgb(TextColourDark.A, TextColourDark.R, TextColourDark.G, TextColourDark.B)
+				: Color.FromArgb(TextColourLight.A, TextColourLight.R, TextColourLight.G, TextColourLight.B);
 			Application.Current.Resources["InvertedTextBrush"] = isDarkMode
 				? new SolidColorBrush(InvertedTextColourDark)
 				: new SolidColorBrush(InvertedTextColourLight);
@@ -234,6 +249,15 @@ namespace Win10Themables.ViewModels
 			Application.Current.Resources["StatusTextLightBrush"] = isDarkMode 
 				? new SolidColorBrush(StatusTextLightColourDark) 
 				: new SolidColorBrush(StatusTextLightColourLight);
+			Application.Current.Resources["MenuBrush"] = isDarkMode
+				? new SolidColorBrush(MenuColourDark)
+				: new SolidColorBrush(MenuColourLight);
+			Application.Current.Resources["MenuMouseOverBrush"] = isDarkMode
+				? new SolidColorBrush(MenuMouseOverColourDark)
+				: new SolidColorBrush(MenuMouseOverColourLight);
+			Application.Current.Resources["MenuMouseDownBrush"] = isDarkMode
+				? new SolidColorBrush(MenuMouseDownColourDark)
+				: new SolidColorBrush(MenuMouseDownColourLight);
 			Application.Current.Resources["DatagridHeaderBrush"] = isDarkMode 
 				? new SolidColorBrush(DatagridHeaderColourDark) 
 				: new SolidColorBrush(DatagridHeaderColourLight);

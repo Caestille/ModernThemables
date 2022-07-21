@@ -15,9 +15,13 @@
 	<SolidColorBrush x:Key="MainBackgroundBrush" Color="Black" />
 	<SolidColorBrush x:Key="TextBrush" Color="White" />
 	<Color x:Key="TextColour" />
+	<Color x:Key="InvertedTextColour" />
 	<SolidColorBrush x:Key="InvertedTextBrush" Color="White" />
 	<SolidColorBrush x:Key="StatusTextBrush" Color="DarkGray" />
-	<SolidColorBrush x:Key="StatusTextLightBrush" Color="#1e1e1e" />
+	<SolidColorBrush x:Key="StatusTextLightBrush" Color="#282828" />
+	<SolidColorBrush x:Key="MenuBrush" Color="#1e1e1e" />
+	<SolidColorBrush x:Key="MenuMouseOverBrush" Color="#1e1e1e" />
+	<SolidColorBrush x:Key="MenuMouseDownBrush" Color="#1e1e1e" />
 	<SolidColorBrush x:Key="ControlClickablePartBrush" Color="#8c8c8c" />
 	<SolidColorBrush x:Key="ControlClickablePartMouseOverBrush" Color="#969696" />
 	<SolidColorBrush x:Key="ControlClickablePartMouseDownBrush" Color="#646464" />

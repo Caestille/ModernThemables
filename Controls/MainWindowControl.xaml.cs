@@ -10,6 +10,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using CoreUtilities.HelperClasses;
+using System.Threading.Tasks;
 
 namespace Win10Themables.Controls
 {
@@ -127,6 +128,7 @@ namespace Win10Themables.Controls
 		{
 			InitializeComponent();
 			SettingsClippingStackPanel.ClipToBounds = true;
+			SettingsBorderBlur.Opacity = 0;
 			this.Loaded += MainWindowControl_Loaded;
 		}
 
@@ -143,12 +145,10 @@ namespace Win10Themables.Controls
 			border.Visibility = !isWindowMaximised ? Visibility.Visible : Visibility.Collapsed;
 		}
 
-		private void OpenThemingMenu(bool open)
+		private async void OpenThemingMenu(bool open)
 		{
 			if (open == isThemingGridOpen)
 				return;
-
-			SettingsClippingStackPanel.IsEnabled = open;
 
 			SettingsClippingStackPanel.IsHitTestVisible = open;
 
@@ -165,10 +165,16 @@ namespace Win10Themables.Controls
 			ThemeSetButton.RenderTransform = new RotateTransform(buttonRotate) { CenterX = ThemeSetButton.ActualWidth / 2, CenterY = ThemeSetButton.ActualHeight / 2 };
 			SettingsGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(settingsOpacityStart, settingsOpacityEnd, new Duration(TimeSpan.FromSeconds(settingsOpacityTimespan))));
 			BlackoutGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(blackoutGridOpacityStart, blackoutGridOpacityEnd, new Duration(TimeSpan.FromSeconds(0.1))));
-			SettingsBorderBlur.BeginAnimation(OpacityProperty, new DoubleAnimation(settingsOpacityStart, settingsOpacityEnd, new Duration(TimeSpan.FromSeconds(0.1))));
 			SettingsGrid.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(menuStart, menuEnd, new Duration(TimeSpan.FromSeconds(0.1))));
 
 			isThemingGridOpen = open;
+
+			if (!open)
+				await Task.Delay(100);
+
+			SettingsBorderBlur.Opacity = open ? 0.7 : 0;
+
+			SettingsClippingStackPanel.IsEnabled = open;
 
 			if (open)
 				ThemingControl.FocusOnOpen();

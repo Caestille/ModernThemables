@@ -56,11 +56,11 @@
 			Name="OuterBorder"
 			Height="6"
 			Margin="{Binding ElementName=InnerBorder, Path=Margin}"
-			Opacity="0.5"
 			VerticalAlignment="Center"
-			BorderThickness="1"
 			BorderBrush="{DynamicResource ThemeBackgroundNearBackgroundBrush}"
-			CornerRadius="2" />
+			BorderThickness="1"
+			CornerRadius="2"
+			Opacity="0.5" />
 
 		<Slider
 			x:Name="Slider"
