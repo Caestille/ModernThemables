@@ -12,10 +12,11 @@ namespace Win10Themables.Controls
 		private bool isIndeterminate;
 		private const int lowSpeed = 5;
 		private const int highSpeed = 10;
-		private int indeterminateAngle1Speed = 5;
-		private int indeterminateAngle2Speed = 10;
+		private double indeterminateAngle1Speed = 5;
+		private double indeterminateAngle2Speed = 10;
 		private int sameSpeedCount;
 		private bool setHigh;
+		private bool allowSet;
 
 		public CircularProgressBar()
 		{
@@ -135,31 +136,41 @@ namespace Win10Themables.Controls
 						var nextAngle2 = (this_.indeterminateAngle2 + this_.indeterminateAngle2Speed) % 360;
 						var nextAngle1 = (this_.indeterminateAngle1 + this_.indeterminateAngle1Speed) % 360;
 						var diff = 360 - Math.Abs((nextAngle2 < nextAngle1 ? nextAngle1 - (nextAngle2 + 360) : nextAngle1 - nextAngle2));
-						var allowedDiff = 50;
-						if (diff < allowedDiff)
+						var allowedDiff = 120;
+						var acceleration = 0.5;
+						if (diff < allowedDiff && !this_.allowSet)
 						{
-							this_.indeterminateAngle2Speed = lowSpeed;
+							this_.indeterminateAngle2Speed -= acceleration;
 							this_.setHigh = false;
+							if (this_.indeterminateAngle2Speed == this_.indeterminateAngle1Speed)
+								this_.allowSet = true;
 						}
 
-						if (diff > (360 - allowedDiff))
+						if (diff > (360 - allowedDiff) && !this_.allowSet)
 						{
-							this_.indeterminateAngle1Speed = lowSpeed;
+							this_.indeterminateAngle1Speed -= acceleration;
 							this_.setHigh = true;
+							if (this_.indeterminateAngle2Speed == this_.indeterminateAngle1Speed)
+								this_.allowSet = true;
 						}
 
-						if (this_.indeterminateAngle1Speed == this_.indeterminateAngle2Speed)
+						if (this_.allowSet)
 						{
 							this_.sameSpeedCount++;
 						}
 
-						if (this_.sameSpeedCount == 30)
+						if (this_.sameSpeedCount >= 30)
 						{
-							this_.sameSpeedCount = 0;
 							if (this_.setHigh)
-								this_.indeterminateAngle2Speed = highSpeed;
+								this_.indeterminateAngle2Speed += acceleration;
 							else
-								this_.indeterminateAngle1Speed = highSpeed;
+								this_.indeterminateAngle1Speed += acceleration;
+
+							if ((this_.setHigh && this_.indeterminateAngle2Speed == highSpeed) || (!this_.setHigh && this_.indeterminateAngle1Speed == highSpeed))
+							{
+								this_.sameSpeedCount = 0;
+								this_.allowSet = false;
+							}
 						}
 
 						this_.indeterminateAngle1 += this_.indeterminateAngle1Speed;
@@ -167,7 +178,7 @@ namespace Win10Themables.Controls
 						this_.indeterminateAngle1 %= 360;
 						this_.indeterminateAngle2 %= 360;
 						try { Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2)); } catch { /* Task cancelled */ }
-						Thread.Sleep(1000 / 60);
+						Thread.Sleep(1000 / 90);
 					}
 				}));
 				thread.Start();
