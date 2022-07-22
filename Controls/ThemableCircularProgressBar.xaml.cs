@@ -22,6 +22,12 @@ namespace Win10Themables.Controls
 			InitializeComponent();
 			var angle = (Percentage * 360) / 100;
 			RenderArc(0, angle);
+			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+		}
+
+		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
+		{
+			IsIndeterminate = false;
 		}
 
 		public int Radius
@@ -114,6 +120,8 @@ namespace Win10Themables.Controls
 			this_.isIndeterminate = this_.IsIndeterminate;
 			if (this_.IsIndeterminate)
 			{
+				this_.PathRoot.StrokeEndLineCap = PenLineCap.Round;
+				this_.PathRoot.StrokeStartLineCap = PenLineCap.Round;
 				this_.indeterminateAngle1 = 0;
 				this_.indeterminateAngle2 = 45;
 
@@ -121,6 +129,9 @@ namespace Win10Themables.Controls
 				{
 					while (this_.isIndeterminate)
 					{
+						if (!this_.isIndeterminate)
+							break;
+
 						var nextAngle2 = (this_.indeterminateAngle2 + this_.indeterminateAngle2Speed) % 360;
 						var nextAngle1 = (this_.indeterminateAngle1 + this_.indeterminateAngle1Speed) % 360;
 						var diff = 360 - Math.Abs((nextAngle2 < nextAngle1 ? nextAngle1 - (nextAngle2 + 360) : nextAngle1 - nextAngle2));
@@ -155,11 +166,16 @@ namespace Win10Themables.Controls
 						this_.indeterminateAngle2 += this_.indeterminateAngle2Speed;
 						this_.indeterminateAngle1 %= 360;
 						this_.indeterminateAngle2 %= 360;
-						Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2));
+						try { Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2)); } catch { /* Task cancelled */ }
 						Thread.Sleep(1000 / 60);
 					}
 				}));
 				thread.Start();
+			}
+			else
+			{
+				//this_.PathRoot.StrokeEndLineCap = PenLineCap.Flat;
+				//this_.PathRoot.StrokeStartLineCap = PenLineCap.Flat;
 			}
 		}
 
@@ -183,6 +199,7 @@ namespace Win10Themables.Controls
 			Point startPoint = ComputeCartesianCoordinate(angle1, Radius);
 			Point endPoint = ComputeCartesianCoordinate(angle2, Radius);
 
+			PathRoot.StrokeThickness = StrokeThickness;
 			PathRoot.Width = Radius * 2 + StrokeThickness;
 			PathRoot.Height = Radius * 2 + StrokeThickness;
 			PathRoot.Margin = new Thickness(StrokeThickness, StrokeThickness, 0, 0);
