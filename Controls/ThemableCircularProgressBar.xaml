@@ -4,31 +4,28 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	d:DesignHeight="450"
-	d:DesignWidth="800"
 	mc:Ignorable="d">
-	<Viewbox>
-		<Path
-			x:Name="PathRoot"
-			HorizontalAlignment="Left"
-			VerticalAlignment="Top"
-			Stroke="{Binding SegmentColor, ElementName=userControl}"
-			StrokeThickness="{Binding StrokeThickness, ElementName=userControl}">
-			<Path.Data>
-				<PathGeometry>
-					<PathGeometry.Figures>
-						<PathFigureCollection>
-							<PathFigure x:Name="pathFigure">
-								<PathFigure.Segments>
-									<PathSegmentCollection>
-										<ArcSegment x:Name="arcSegment" SweepDirection="Clockwise" />
-									</PathSegmentCollection>
-								</PathFigure.Segments>
-							</PathFigure>
-						</PathFigureCollection>
-					</PathGeometry.Figures>
-				</PathGeometry>
-			</Path.Data>
-		</Path>
-	</Viewbox>
+	<Path
+		x:Name="PathRoot"
+		HorizontalAlignment="Left"
+		VerticalAlignment="Top"
+		SnapsToDevicePixels="True"
+		Stroke="{Binding SegmentColor, ElementName=userControl}"
+		StrokeThickness="{Binding StrokeThickness, ElementName=userControl}">
+		<Path.Data>
+			<PathGeometry>
+				<PathGeometry.Figures>
+					<PathFigureCollection>
+						<PathFigure x:Name="pathFigure">
+							<PathFigure.Segments>
+								<PathSegmentCollection>
+									<ArcSegment x:Name="arcSegment" SweepDirection="Clockwise" />
+								</PathSegmentCollection>
+							</PathFigure.Segments>
+						</PathFigure>
+					</PathFigureCollection>
+				</PathGeometry.Figures>
+			</PathGeometry>
+		</Path.Data>
+	</Path>
 </UserControl>

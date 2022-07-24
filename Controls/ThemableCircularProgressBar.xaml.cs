@@ -11,12 +11,11 @@ namespace Win10Themables.Controls
 		private double indeterminateAngle2;
 		private bool isIndeterminate;
 		private const int lowSpeed = 5;
-		private const int highSpeed = 10;
-		private double indeterminateAngle1Speed = 5;
-		private double indeterminateAngle2Speed = 10;
+		private const int highSpeed = 8;
+		private int indeterminateAngle1Speed = 5;
+		private int indeterminateAngle2Speed = 8;
 		private int sameSpeedCount;
 		private bool setHigh;
-		private bool allowSet;
 
 		public CircularProgressBar()
 		{
@@ -31,10 +30,9 @@ namespace Win10Themables.Controls
 			IsIndeterminate = false;
 		}
 
-		public int Radius
+		public double Radius
 		{
-			get => (int)GetValue(RadiusProperty);
-			set => SetValue(RadiusProperty, value);
+			get => Math.Max(ActualWidth * 0.5 - StrokeThickness, 1);
 		}
 
 		public Brush SegmentColor
@@ -43,9 +41,9 @@ namespace Win10Themables.Controls
 			set => SetValue(SegmentColorProperty, value);
 		}
 
-		public int StrokeThickness
+		public double StrokeThickness
 		{
-			get => (int)GetValue(StrokeThicknessProperty);
+			get => (double)GetValue(StrokeThicknessProperty);
 			set => SetValue(StrokeThicknessProperty, value);
 		}
 
@@ -65,13 +63,10 @@ namespace Win10Themables.Controls
 			DependencyProperty.Register("Percentage", typeof(double), typeof(CircularProgressBar), new PropertyMetadata(65d, OnPercentageChanged));
 
 		public static readonly DependencyProperty StrokeThicknessProperty =
-			DependencyProperty.Register("StrokeThickness", typeof(int), typeof(CircularProgressBar), new PropertyMetadata(5, OnThicknessChanged));
+			DependencyProperty.Register("StrokeThickness", typeof(double), typeof(CircularProgressBar), new PropertyMetadata(5d, OnThicknessChanged));
 
 		public static readonly DependencyProperty SegmentColorProperty =
 			DependencyProperty.Register("SegmentColor", typeof(Brush), typeof(CircularProgressBar), new PropertyMetadata(new SolidColorBrush(Colors.Red), OnColorChanged));
-
-		public static readonly DependencyProperty RadiusProperty =
-			DependencyProperty.Register("Radius", typeof(int), typeof(CircularProgressBar), new PropertyMetadata(25, OnPropertyChanged));
 
 		public static readonly DependencyProperty IsIndeterminateProperty =
 			DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(CircularProgressBar), new PropertyMetadata(false, OnSetIndeterminate));
@@ -85,7 +80,7 @@ namespace Win10Themables.Controls
 		private static void OnThicknessChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
 		{
 			CircularProgressBar? this_ = sender as CircularProgressBar;
-			this_?.set_tick((int)args.NewValue);
+			this_?.set_tick((double)args.NewValue);
 		}
 
 		private static void OnPercentageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
@@ -136,41 +131,31 @@ namespace Win10Themables.Controls
 						var nextAngle2 = (this_.indeterminateAngle2 + this_.indeterminateAngle2Speed) % 360;
 						var nextAngle1 = (this_.indeterminateAngle1 + this_.indeterminateAngle1Speed) % 360;
 						var diff = 360 - Math.Abs((nextAngle2 < nextAngle1 ? nextAngle1 - (nextAngle2 + 360) : nextAngle1 - nextAngle2));
-						var allowedDiff = 120;
-						var acceleration = 0.5;
-						if (diff < allowedDiff && !this_.allowSet)
+						var allowedDiff = 50;
+						if (diff < allowedDiff)
 						{
-							this_.indeterminateAngle2Speed -= acceleration;
+							this_.indeterminateAngle2Speed = lowSpeed;
 							this_.setHigh = false;
-							if (this_.indeterminateAngle2Speed == this_.indeterminateAngle1Speed)
-								this_.allowSet = true;
 						}
 
-						if (diff > (360 - allowedDiff) && !this_.allowSet)
+						if (diff > (360 - allowedDiff))
 						{
-							this_.indeterminateAngle1Speed -= acceleration;
+							this_.indeterminateAngle1Speed = lowSpeed;
 							this_.setHigh = true;
-							if (this_.indeterminateAngle2Speed == this_.indeterminateAngle1Speed)
-								this_.allowSet = true;
 						}
 
-						if (this_.allowSet)
+						if (this_.indeterminateAngle1Speed == this_.indeterminateAngle2Speed)
 						{
 							this_.sameSpeedCount++;
 						}
 
-						if (this_.sameSpeedCount >= 30)
+						if (this_.sameSpeedCount == 50)
 						{
+							this_.sameSpeedCount = 0;
 							if (this_.setHigh)
-								this_.indeterminateAngle2Speed += acceleration;
+								this_.indeterminateAngle2Speed = highSpeed;
 							else
-								this_.indeterminateAngle1Speed += acceleration;
-
-							if ((this_.setHigh && this_.indeterminateAngle2Speed == highSpeed) || (!this_.setHigh && this_.indeterminateAngle1Speed == highSpeed))
-							{
-								this_.sameSpeedCount = 0;
-								this_.allowSet = false;
-							}
+								this_.indeterminateAngle1Speed = highSpeed;
 						}
 
 						this_.indeterminateAngle1 += this_.indeterminateAngle1Speed;
@@ -190,7 +175,7 @@ namespace Win10Themables.Controls
 			}
 		}
 
-		public void set_tick(int n)
+		public void set_tick(double n)
 		{
 			PathRoot.StrokeThickness = n;
 		}
@@ -202,6 +187,8 @@ namespace Win10Themables.Controls
 
 		public void RenderArc(double angle1, double angle2)
 		{
+			angle1 += 10;
+			angle2 -= 10;
 			if (angle1 < 0)
 				angle1 += 360;
 			if (angle2 < 0)
