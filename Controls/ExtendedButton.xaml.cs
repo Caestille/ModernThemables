@@ -9,7 +9,7 @@ namespace Win10Themables.Controls
 	/// </summary>
 	public partial class ExtendedButton : Button
 	{
-        readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
+        readonly static SolidColorBrush? DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
 
         public ExtendedButton()
         {

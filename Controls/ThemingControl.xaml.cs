@@ -6,7 +6,7 @@ namespace Win10Themables.Controls
 {
 	public partial class ThemingControl : UserControl
 	{
-		public event EventHandler InternalRequestClose;
+		public event EventHandler? InternalRequestClose;
 
 		public ThemingControl()
 		{
