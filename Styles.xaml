@@ -56,6 +56,25 @@
 
 	<!--#region Controls-->
 
+	<Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="HasDropShadow" Value="False" />
+		<Setter Property="FontSize" Value="12" />
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ToolTip">
+					<Border
+						Background="{DynamicResource MenuBrush}"
+						BorderBrush="{DynamicResource StatusTextBrush}"
+						BorderThickness="1">
+						<ContentPresenter Margin="3" />
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<!--#region Themable Focus Style-->
 
 	<Style x:Key="ThemableFocusStyle">
