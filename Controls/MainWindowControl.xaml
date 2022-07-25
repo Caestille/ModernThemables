@@ -80,11 +80,13 @@
 						</Border.Effect>
 						<Grid>
 							<coreutilscontrols:BlurHost
+								x:Name="Blurrer"
 								BlurBackground="{Binding ElementName=Content}"
 								BlurOpacity="0.5"
 								Focusable="False"
 								OffsetX="1"
-								OffsetY="31">
+								OffsetY="31"
+								PreventResample="{Binding ElementName=SettingsGrid, Path=IsEnabled, Converter={StaticResource BoolInverter}}">
 								<controls:ThemingControl
 									x:Name="ThemingControl"
 									Width="Auto"

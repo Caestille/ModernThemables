@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using CoreUtilities.HelperClasses;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Win10Themables.Controls
 {
@@ -130,6 +131,10 @@ namespace Win10Themables.Controls
 			SettingsClippingStackPanel.ClipToBounds = true;
 			SettingsBorderBlur.Opacity = 0;
 			this.Loaded += MainWindowControl_Loaded;
+
+			OpenThemingMenu(true);
+			Blurrer.DrawBlurredElementBackground();
+			OpenThemingMenu(false);
 		}
 
 		private void ChangeWindowState()
@@ -218,8 +223,9 @@ namespace Win10Themables.Controls
 			((HwndSource)PresentationSource.FromVisual(this)).AddHook(HookProc);
 		}
 
-		private void MainWindowControl_Loaded(object sender, RoutedEventArgs e)
+		private async void MainWindowControl_Loaded(object sender, RoutedEventArgs e)
 		{
+			await System.Threading.Tasks.Task.Run(() => Thread.Sleep(300));
 			mainWindow = Window.GetWindow(this);
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			this.Loaded -= MainWindowControl_Loaded;
@@ -234,6 +240,8 @@ namespace Win10Themables.Controls
 			this.SetBinding(IsMainWindowFocusedProperty, new Binding("IsActive") { Source = mainWindow });
 
 			ThemingControl.InternalRequestClose += ThemingControl_InternalRequestClose;
+
+			Blurrer.DrawBlurredElementBackground();
 		}
 
 		private void ThemingControl_InternalRequestClose(object? sender, EventArgs e)
