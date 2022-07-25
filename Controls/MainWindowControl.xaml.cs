@@ -89,7 +89,7 @@ namespace Win10Themables.Controls
 		private bool isWindowMaximised;
 		private bool isDockedOrMaximised;
 
-		private Window? mainWindow;
+		private Window mainWindow;
 		private static CurrentMonitorInfo currentMonitorInfo;
 
 		private bool IsMainWindowFocused
@@ -134,9 +134,6 @@ namespace Win10Themables.Controls
 
 		private void ChangeWindowState()
 		{
-			if (mainWindow == null)
-				return;
-
 			isWindowMaximised = !isWindowMaximised;
 
 			mainWindow.WindowState = !isWindowMaximised ? WindowState.Normal : WindowState.Maximized;
@@ -187,10 +184,7 @@ namespace Win10Themables.Controls
 		{
 			if (msg == WM_GETMINMAXINFO)
 			{
-				var boxedMmi = Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
-				MINMAXINFO mmi = new MINMAXINFO();
-				if (boxedMmi != null)
-					mmi = (MINMAXINFO)boxedMmi;
+				var mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
 
 				var monitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
 
@@ -249,8 +243,7 @@ namespace Win10Themables.Controls
 
 		private void MinimiseButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (mainWindow != null)
-				mainWindow.WindowState = WindowState.Minimized;
+			mainWindow.WindowState = WindowState.Minimized;
 		}
 
 		private void ChangeStateButton_Click(object sender, RoutedEventArgs e)
@@ -275,9 +268,6 @@ namespace Win10Themables.Controls
 
 		private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			if (mainWindow == null)
-				return;
-
 			var isDockedTop = !isWindowMaximised && (mainWindow.WindowState == WindowState.Maximized);
 			var isDockedSide = mainWindow.WindowState == WindowState.Normal
 				&& mainWindow.Width != mainWindow.RestoreBounds.Width
@@ -295,9 +285,6 @@ namespace Win10Themables.Controls
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
-			if (mainWindow == null)
-				return;
-
 			mainWindow.SizeChanged -= MainWindow_SizeChanged;
 			ThemingControl.InternalRequestClose -= ThemingControl_InternalRequestClose;
 		}

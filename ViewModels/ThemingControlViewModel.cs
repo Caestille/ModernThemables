@@ -209,10 +209,7 @@ namespace Win10Themables.ViewModels
 			var tempSetting = $"{ThemeColour.A}-{ThemeColour.R}-{ThemeColour.G}-{ThemeColour.B}";
 			registryService.TryGetSetting(ThemeSettingName, tempSetting, out string? theme);
 			var accent = theme?.Split('-').Select(byte.Parse).ToList();
-			if (accent != null)
-			{
-				SetThemeColour(Color.FromArgb(accent[0], accent[1], accent[2], accent[3]));
-			}
+			SetThemeColour(Color.FromArgb(accent[0], accent[1], accent[2], accent[3]));
 
 			registryService.TryGetSetting(OsSyncSettingName, false, out bool sync);
 			IsSyncingWithOs = sync;
@@ -300,11 +297,8 @@ namespace Win10Themables.ViewModels
 					osThemePollTimer.Start();
 				}
 				IsDarkMode = ShouldSystemUseDarkMode();
-				var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush)?.Color;
-				if (colour != null)
-				{
-					SetThemeColour(colour.Value);
-				}
+				var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush).Color;
+				SetThemeColour(colour);
 			}
 			else
 			{
