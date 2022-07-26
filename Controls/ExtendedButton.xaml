@@ -63,9 +63,9 @@
 								<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
 							</Trigger>
 							<Trigger Property="IsEnabled" Value="false">
-								<Setter TargetName="border" Property="Background" Value="{StaticResource Button.Disabled.Background}" />
+								<Setter TargetName="border" Property="Background" Value="{Binding Path=DisabledBackgroundColour, ElementName=buttonExtension}" />
 								<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Disabled.Border}" />
-								<Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{StaticResource Button.Disabled.Foreground}" />
+								<Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding Path=DisabledForegroundColour, ElementName=buttonExtension}" />
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>

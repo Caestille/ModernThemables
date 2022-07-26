@@ -32,6 +32,22 @@ namespace Win10Themables.Controls
         public static readonly DependencyProperty MouseDownProperty = DependencyProperty.Register(
           "MouseDownColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
 
+        public SolidColorBrush DisabledBackgroundColour
+        {
+            get { return (SolidColorBrush)GetValue(DisabledBackgroundColourProperty); }
+            set { SetValue(DisabledBackgroundColourProperty, value); }
+        }
+        public static readonly DependencyProperty DisabledBackgroundColourProperty = DependencyProperty.Register(
+          "DisabledBackgroundColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
+
+        public SolidColorBrush DisabledForegroundColour
+        {
+            get { return (SolidColorBrush)GetValue(DisabledForegroundColourProperty); }
+            set { SetValue(DisabledForegroundColourProperty, value); }
+        }
+        public static readonly DependencyProperty DisabledForegroundColourProperty = DependencyProperty.Register(
+          "DisabledForegroundColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
+
         public CornerRadius CornerRadius
         {
             get { return (CornerRadius)GetValue(CornerRadiusProperty); }
