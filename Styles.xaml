@@ -50,14 +50,72 @@
 	<converters:RangeSliderMaxValueConverter x:Key="RangeSliderMaxValueConverter" />
 	<converters:RangeSliderThumbValueConverter x:Key="RangeSliderThumbUpperValueConverter" />
 	<converters:RangeSliderThumbValueConverter x:Key="RangeSliderThumbLowerValueConverter" />
+	<converters:CentreToolTipConverter x:Key="CentreToolTipConverter" />
 	<converters:ColourRgbConverter x:Key="ColourRgbConverter" />
 
 	<!--#endregion End Converters-->
 
 	<!--#region Controls-->
 
+	<!--#region Themable Info Tooltip Style-->
+
+	<Style x:Key="InfoTooltip" TargetType="ToolTip">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="Placement" Value="Bottom" />
+		<Setter Property="VerticalOffset" Value="3" />
+		<Setter Property="HorizontalOffset">
+			<Setter.Value>
+				<MultiBinding Converter="{StaticResource CentreToolTipConverter}">
+					<Binding Path="PlacementTarget.ActualWidth" RelativeSource="{RelativeSource Self}" />
+					<Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+				</MultiBinding>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="HasDropShadow" Value="False" />
+		<Setter Property="FontSize" Value="12" />
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ToolTip">
+					<Grid>
+						<Border
+							Width="10"
+							Height="10"
+							Margin="1"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Top"
+							Background="{DynamicResource MenuBrush}"
+							BorderBrush="{DynamicResource StatusTextBrush}"
+							BorderThickness="2">
+							<Border.RenderTransform>
+								<RotateTransform Angle="45" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
+							</Border.RenderTransform>
+						</Border>
+						<Border
+							Margin="0,5,0,0"
+							Background="{DynamicResource MenuBrush}"
+							BorderBrush="{DynamicResource StatusTextBrush}"
+							BorderThickness="1">
+							<ContentPresenter Margin="3" />
+						</Border>
+						<Border
+							Width="10"
+							Height="2"
+							Margin="0,5,0,0"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Top"
+							Background="{DynamicResource MenuBrush}"
+							BorderThickness="0" />
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--#endregion-->
+
 	<!--#region Themable Tooltip Style-->
-	
+
 	<Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
 		<Setter Property="OverridesDefaultStyle" Value="true" />
 		<Setter Property="HasDropShadow" Value="False" />
