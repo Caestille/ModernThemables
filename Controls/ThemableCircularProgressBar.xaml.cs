@@ -16,6 +16,7 @@ namespace Win10Themables.Controls
 		private int indeterminateAngle2Speed = 8;
 		private int sameSpeedCount;
 		private bool setHigh;
+		private bool breakAll = false;
 
 		public CircularProgressBar()
 		{
@@ -27,7 +28,7 @@ namespace Win10Themables.Controls
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
-			IsIndeterminate = false;
+			breakAll = true;
 		}
 
 		public double Radius
@@ -90,6 +91,8 @@ namespace Win10Themables.Controls
 			if (this_ == null || this_.IsIndeterminate)
 				return;
 
+			this_.PathRoot.Visibility = Visibility.Visible;
+
 			if (this_?.Percentage > 100)
 				this_.Percentage = 100;
 
@@ -116,6 +119,7 @@ namespace Win10Themables.Controls
 			this_.isIndeterminate = this_.IsIndeterminate;
 			if (this_.IsIndeterminate)
 			{
+				this_.PathRoot.Visibility = Visibility.Visible;
 				this_.PathRoot.StrokeEndLineCap = PenLineCap.Round;
 				this_.PathRoot.StrokeStartLineCap = PenLineCap.Round;
 				this_.indeterminateAngle1 = 0;
@@ -123,11 +127,8 @@ namespace Win10Themables.Controls
 
 				Thread thread = new Thread(new ThreadStart(() =>
 				{
-					while (this_.isIndeterminate)
+					while (this_.isIndeterminate && !this_.breakAll)
 					{
-						if (!this_.isIndeterminate)
-							break;
-
 						var nextAngle2 = (this_.indeterminateAngle2 + this_.indeterminateAngle2Speed) % 360;
 						var nextAngle1 = (this_.indeterminateAngle1 + this_.indeterminateAngle1Speed) % 360;
 						var diff = 360 - Math.Abs((nextAngle2 < nextAngle1 ? nextAngle1 - (nextAngle2 + 360) : nextAngle1 - nextAngle2));
@@ -162,7 +163,7 @@ namespace Win10Themables.Controls
 						this_.indeterminateAngle2 += this_.indeterminateAngle2Speed;
 						this_.indeterminateAngle1 %= 360;
 						this_.indeterminateAngle2 %= 360;
-						try { Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2)); } catch { /* Task cancelled */ }
+						try { Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2)); } catch { break; }
 						Thread.Sleep(1000 / 90);
 					}
 				}));
@@ -170,8 +171,30 @@ namespace Win10Themables.Controls
 			}
 			else
 			{
-				//this_.PathRoot.StrokeEndLineCap = PenLineCap.Flat;
-				//this_.PathRoot.StrokeStartLineCap = PenLineCap.Flat;
+				Thread thread = new Thread(new ThreadStart(() =>
+				{
+					while (true && !this_.breakAll)
+					{
+						var nextAngle2 = (this_.indeterminateAngle2 + lowSpeed) % 360;
+						var nextAngle1 = (this_.indeterminateAngle1 + lowSpeed) % 360;
+						var diff = 360 - Math.Abs((nextAngle2 < nextAngle1 ? nextAngle1 - (nextAngle2 + 360) : nextAngle1 - nextAngle2));
+						if (this_.indeterminateAngle1 > 360 - highSpeed && diff < 30)
+						{
+							try { Application.Current.Dispatcher.Invoke(() => this_.PathRoot.Visibility = Visibility.Collapsed); } catch { break; }
+							break;
+						}
+
+						this_.indeterminateAngle1 += highSpeed;
+						this_.indeterminateAngle2 += diff < 30 ? highSpeed : lowSpeed;
+						if (this_.indeterminateAngle2 > 360 || this_.indeterminateAngle2 == highSpeed)
+						{
+							this_.indeterminateAngle2 = 360 - 1;
+						}
+						try { Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2)); } catch { break; }
+						Thread.Sleep(1000 / 90);
+					}
+				}));
+				thread.Start();
 			}
 		}
 
@@ -187,8 +210,8 @@ namespace Win10Themables.Controls
 
 		public void RenderArc(double angle1, double angle2)
 		{
-			angle1 += 10;
-			angle2 -= 10;
+			//angle1 += 10;
+			//angle2 -= 10;
 			if (angle1 < 0)
 				angle1 += 360;
 			if (angle2 < 0)

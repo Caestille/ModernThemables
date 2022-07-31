@@ -11,7 +11,8 @@
 		VerticalAlignment="Top"
 		SnapsToDevicePixels="True"
 		Stroke="{Binding SegmentColor, ElementName=userControl}"
-		StrokeThickness="{Binding StrokeThickness, ElementName=userControl}">
+		StrokeThickness="{Binding StrokeThickness, ElementName=userControl}"
+		Visibility="Collapsed">
 		<Path.Data>
 			<PathGeometry>
 				<PathGeometry.Figures>
