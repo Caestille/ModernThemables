@@ -163,7 +163,19 @@ namespace Win10Themables.Controls
 						this_.indeterminateAngle2 += this_.indeterminateAngle2Speed;
 						this_.indeterminateAngle1 %= 360;
 						this_.indeterminateAngle2 %= 360;
-						try { Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2)); } catch { break; }
+
+						try 
+						{ 
+							Application.Current.Dispatcher.Invoke(() =>
+							{
+								if (!this_.breakAll)
+								{
+									this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2);
+								}
+							});
+						}
+						catch { break; }
+
 						Thread.Sleep(1000 / 90);
 					}
 				}));
