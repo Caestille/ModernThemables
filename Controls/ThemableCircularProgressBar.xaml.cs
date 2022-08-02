@@ -10,10 +10,10 @@ namespace Win10Themables.Controls
 		private double indeterminateAngle1;
 		private double indeterminateAngle2;
 		private bool isIndeterminate;
-		private const int lowSpeed = 5;
-		private const int highSpeed = 8;
-		private int indeterminateAngle1Speed = 5;
-		private int indeterminateAngle2Speed = 8;
+		private const int lowSpeed = 15;
+		private const int highSpeed = 24;
+		private int indeterminateAngle1Speed = 15;
+		private int indeterminateAngle2Speed = 24;
 		private int sameSpeedCount;
 		private bool setHigh;
 		private bool breakAll = false;
@@ -176,7 +176,7 @@ namespace Win10Themables.Controls
 						}
 						catch { break; }
 
-						Thread.Sleep(1000 / 90);
+						Thread.Sleep(1000 / 30);
 					}
 				}));
 				thread.Start();
@@ -203,7 +203,7 @@ namespace Win10Themables.Controls
 							this_.indeterminateAngle2 = 360 - 1;
 						}
 						try { Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2)); } catch { break; }
-						Thread.Sleep(1000 / 90);
+						Thread.Sleep(1000 / 30);
 					}
 				}));
 				thread.Start();
