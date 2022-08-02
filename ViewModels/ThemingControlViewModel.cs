@@ -4,6 +4,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using Win10Themables.Extensions;
@@ -284,33 +285,40 @@ namespace Win10Themables.ViewModels
 				: new SolidColorBrush(ControlNonClickablePartColourLight);
 		}
 
-		private void SyncThemeWithOs(bool doSync)
+		private async void SyncThemeWithOs(bool doSync)
 		{
-			registryService.SetSetting(OsSyncSettingName, doSync.ToString());
-			if (doSync)
+			await Task.Run(() =>
 			{
-				if (!osThemePollTimer.Enabled)
+				registryService.SetSetting(OsSyncSettingName, doSync.ToString());
+				if (doSync)
 				{
-					wasDarkBeforeSync = isDarkMode;
-					wasMonoBeforeSync = isMonoTheme;
-					themeBeforeSync = ThemeColour;
-					osThemePollTimer.Start();
+					if (!osThemePollTimer.Enabled)
+					{
+						wasDarkBeforeSync = isDarkMode;
+						wasMonoBeforeSync = isMonoTheme;
+						themeBeforeSync = ThemeColour;
+						osThemePollTimer.Start();
+					}
+					var shouldBeDark = ShouldSystemUseDarkMode();
+					if (shouldBeDark != isDarkMode)
+						IsDarkMode = shouldBeDark;
+
+					var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush).Color;
+					if (ThemeColour != colour)
+						SetThemeColour(colour);
 				}
-				IsDarkMode = ShouldSystemUseDarkMode();
-				var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush).Color;
-				SetThemeColour(colour);
-			}
-			else
-			{
-				if (wasDarkBeforeSync != null)
-					IsDarkMode = wasDarkBeforeSync.Value;
-				if (wasMonoBeforeSync != null)
-					IsMonoTheme = wasMonoBeforeSync.Value;
-				if (themeBeforeSync != null)
-					SetThemeColour(themeBeforeSync.Value);
-				if (osThemePollTimer.Enabled)
-					osThemePollTimer.Stop();
-			}
+				else
+				{
+					if (wasDarkBeforeSync != null)
+						IsDarkMode = wasDarkBeforeSync.Value;
+					if (wasMonoBeforeSync != null)
+						IsMonoTheme = wasMonoBeforeSync.Value;
+					if (themeBeforeSync != null)
+						SetThemeColour(themeBeforeSync.Value);
+					if (osThemePollTimer.Enabled)
+						osThemePollTimer.Stop();
+				}
+			});
 		}
 
 		private void SetThemeColour(Color colour)
