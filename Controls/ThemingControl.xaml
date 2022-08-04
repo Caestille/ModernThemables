@@ -74,13 +74,16 @@
 					Height="15"
 					BorderBrush="{DynamicResource StatusTextBrush}"
 					BorderThickness="5,0,0,5"
-					CornerRadius="30" />
-				<Border
-					Width="10"
-					Height="10"
-					Margin="15,5,5,15"
-					Background="{DynamicResource MenuBrush}"
-					CornerRadius="5" />
+					CornerRadius="30">
+					<Border.Clip>
+						<GeometryGroup FillRule="Nonzero">
+							<RectangleGeometry Rect="0,0,10,10" />
+							<RectangleGeometry Rect="10,8,10,10" />
+							<RectangleGeometry Rect="0,10,10,10" />
+						</GeometryGroup>
+					</Border.Clip>
+				</Border>
+				
 			</Grid>
 		</Grid>
 		<Label

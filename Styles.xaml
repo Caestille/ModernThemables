@@ -41,6 +41,7 @@
 	<SolidColorBrush x:Key="ThemeBackgroundNearBackgroundBrush" Color="Gray" />
 	<SolidColorBrush x:Key="ThemeMouseOverNearBackgroundBrush" Color="Gray" />
 	<SolidColorBrush x:Key="ThemeMouseDownNearBackgroundBrush" Color="Gray" />
+	<SolidColorBrush x:Key="ButtonForegroundBrush" Color="DarkGray" />
 
 	<!--#endregion End Application colours-->
 
@@ -175,7 +176,7 @@
 				Height="14"
 				VerticalAlignment="Center"
 				Fill="{DynamicResource ControlClickablePartBrush}"
-				Stroke="{DynamicResource MainBackgroundBrush}" />
+				Stroke="{DynamicResource MenuBrush}" />
 			<Border
 				x:Name="gripBorder"
 				Width="12"
@@ -552,6 +553,7 @@
 
 	<Style x:Key="ThemableDatagridCell" TargetType="{x:Type DataGridCell}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
+		<Setter Property="BorderBrush" Value="Transparent" />
 		<Style.Triggers>
 			<Trigger Property="DataGridCell.IsSelected" Value="True">
 				<Setter Property="BorderBrush">
@@ -559,7 +561,7 @@
 						<SolidColorBrush Color="Transparent" />
 					</Setter.Value>
 				</Setter>
-				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+				<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
 				<Setter Property="Background">
 					<Setter.Value>
 						<SolidColorBrush Color="Transparent" />

@@ -171,6 +171,10 @@ namespace Win10Themables.ViewModels
 		private static readonly Color DatagridRowColourLight = Colors.White;
 		private static readonly Color DatagridRowColourDark = ColourHelpers.MonoColour(30);
 
+		// Button foreground
+		private static readonly Color ButtonForegroundColourLight = ColourHelpers.MonoColour(100);
+		private static readonly Color ButtonForegroundColourDark = Colors.DarkGray;
+
 		// Theme colour
 		private static Color ThemeColour = Color.FromArgb(255, 47, 47, 74);
 
@@ -283,6 +287,9 @@ namespace Win10Themables.ViewModels
 			Application.Current.Resources["ControlNonClickablePartBrush"] = isDarkMode 
 				? new SolidColorBrush(ControlNonClickablePartColourDark) 
 				: new SolidColorBrush(ControlNonClickablePartColourLight);
+			Application.Current.Resources["ButtonForegroundBrush"] = isDarkMode
+				? new SolidColorBrush(ButtonForegroundColourDark)
+				: new SolidColorBrush(ButtonForegroundColourLight);
 		}
 
 		private async void SyncThemeWithOs(bool doSync)
