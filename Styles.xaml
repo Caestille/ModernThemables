@@ -164,9 +164,54 @@
 		</Setter>
 	</Style>
 
-	<!--#endregion End Themable Focus Style-->
+    <!--#endregion End Themable Focus Style-->
 
-	<!--#region Slider thumb-->
+    <!--#region Searchbox-->
+
+    <ControlTemplate x:Key="SearchTextBox" TargetType="{x:Type TextBox}">
+        <Grid>
+            <Border
+                Background="{DynamicResource TextBrush}"
+                CornerRadius="5"
+                Opacity="0.1" />
+            <TextBox
+                x:Name="SearchTextbox"
+                Padding="20,1,0,0"
+                BorderThickness="0"
+                Foreground="{DynamicResource TextBrush}"
+                Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <TextBox.Background>
+                    <SolidColorBrush Opacity="0.01" Color="Black" />
+                </TextBox.Background>
+            </TextBox>
+            <Grid
+                Width="20"
+                HorizontalAlignment="Left"
+                IsHitTestVisible="False">
+                <Border
+                    Width="11"
+                    Height="11"
+                    Margin="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    BorderBrush="{DynamicResource MenuMouseDownBrush}"
+                    BorderThickness="1"
+                    CornerRadius="5.5" />
+                <Line
+                    Stroke="{DynamicResource MenuMouseDownBrush}"
+                    StrokeThickness="1.5"
+                    X1="11"
+                    X2="17"
+                    Y1="11"
+                    Y2="17" />
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Slider thumb-->
 
 	<ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
 		<Grid Width="20" Height="20">
