@@ -7,7 +7,7 @@ namespace Win10Themables.Controls
     /// <summary>
     /// Interaction logic for SearchBox.xaml
     /// </summary>
-    public partial class SearchBox : UserControl
+    public partial class SearchBox
     {
         private const string DefaultSearchText = "Search...";
 
@@ -19,17 +19,39 @@ namespace Win10Themables.Controls
         public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
           "SearchText", typeof(string), typeof(SearchBox), new PropertyMetadata(DefaultSearchText));
 
+        public double BackgroundOpacity
+        {
+            get { return (double)GetValue(BackgroundOpacityProperty); }
+            set { SetValue(BackgroundOpacityProperty, value); }
+        }
+        public static readonly DependencyProperty BackgroundOpacityProperty = DependencyProperty.Register(
+          "BackgroundOpacity", typeof(double), typeof(SearchBox), new PropertyMetadata(1d));
+
+        public SolidColorBrush DefaultForegroundBrush
+		{
+            get { return (SolidColorBrush)GetValue(DefaultForegroundBrushProperty); }
+            set { SetValue(DefaultForegroundBrushProperty, value); }
+        }
+        public static readonly DependencyProperty DefaultForegroundBrushProperty = DependencyProperty.Register(
+          "DefaultForegroundBrush", typeof(SolidColorBrush), typeof(SearchBox), new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+
+        public SolidColorBrush SearchboxBackgroundBrush
+        {
+            get { return (SolidColorBrush)GetValue(SearchboxBackgroundBrushProperty); }
+            set { SetValue(SearchboxBackgroundBrushProperty, value); }
+        }
+        public static readonly DependencyProperty SearchboxBackgroundBrushProperty = DependencyProperty.Register(
+          "SearchboxBackgroundBrush", typeof(SolidColorBrush), typeof(SearchBox), new PropertyMetadata(new SolidColorBrush(Colors.White)));
+
         public SearchBox()
         {
             InitializeComponent();
-            SearchTextbox.Foreground = Application.Current.Resources["StatusTextBrush"] as SolidColorBrush;
         }
 
         private void TextBox_PreviewGotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
         {
             if (SearchTextbox.Text == DefaultSearchText)
             {
-                SearchTextbox.Foreground = Application.Current.Resources["TextBrush"] as SolidColorBrush;
                 SearchTextbox.Text = string.Empty;
             }
         }
@@ -38,7 +60,6 @@ namespace Win10Themables.Controls
         {
             if (SearchTextbox.Text == string.Empty)
             {
-                SearchTextbox.Foreground = Application.Current.Resources["StatusTextBrush"] as SolidColorBrush;
                 SearchTextbox.Text = DefaultSearchText;
             }
         }
