@@ -131,10 +131,6 @@ namespace Win10Themables.Controls
 			SettingsClippingStackPanel.ClipToBounds = true;
 			SettingsBorderBlur.Opacity = 0;
 			this.Loaded += MainWindowControl_Loaded;
-
-			OpenThemingMenu(true);
-			Blurrer.DrawBlurredElementBackground();
-			OpenThemingMenu(false);
 		}
 
 		private void ChangeWindowState()
@@ -168,8 +164,9 @@ namespace Win10Themables.Controls
 			var buttonRotate = open ? 180 : 0;
 
 			ThemeSetButton.RenderTransform = new RotateTransform(buttonRotate) { CenterX = ThemeSetButton.ActualWidth / 2, CenterY = ThemeSetButton.ActualHeight / 2 };
-			SettingsGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(settingsOpacityStart, settingsOpacityEnd, new Duration(TimeSpan.FromSeconds(settingsOpacityTimespan))));
-			BlackoutGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(blackoutGridOpacityStart, blackoutGridOpacityEnd, new Duration(TimeSpan.FromSeconds(0.1))));
+			//SettingsGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(settingsOpacityStart, settingsOpacityEnd, new Duration(TimeSpan.FromSeconds(settingsOpacityTimespan))));
+			//BlackoutGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(blackoutGridOpacityStart, blackoutGridOpacityEnd, new Duration(TimeSpan.FromSeconds(0.1))));
+			BlackoutGrid.Opacity = blackoutGridOpacityEnd;
 			SettingsGrid.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(menuStart, menuEnd, new Duration(TimeSpan.FromSeconds(0.1))));
 
 			isThemingGridOpen = open;
@@ -182,7 +179,11 @@ namespace Win10Themables.Controls
 			SettingsClippingStackPanel.IsEnabled = open;
 
 			if (open)
+			{
+				await Task.Delay(100);
 				ThemingControl.FocusOnOpen();
+				Blurrer.DrawBlurredElementBackground();
+			}
 		}
 
 		private static IntPtr HookProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -225,7 +226,7 @@ namespace Win10Themables.Controls
 
 		private async void MainWindowControl_Loaded(object sender, RoutedEventArgs e)
 		{
-			await System.Threading.Tasks.Task.Run(() => Thread.Sleep(300));
+			await Task.Run(() => Thread.Sleep(300));
 			mainWindow = Window.GetWindow(this);
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			this.Loaded -= MainWindowControl_Loaded;
@@ -240,8 +241,6 @@ namespace Win10Themables.Controls
 			this.SetBinding(IsMainWindowFocusedProperty, new Binding("IsActive") { Source = mainWindow });
 
 			ThemingControl.InternalRequestClose += ThemingControl_InternalRequestClose;
-
-			Blurrer.DrawBlurredElementBackground();
 		}
 
 		private void ThemingControl_InternalRequestClose(object? sender, EventArgs e)
