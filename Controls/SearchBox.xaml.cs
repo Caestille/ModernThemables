@@ -9,7 +9,7 @@ namespace Win10Themables.Controls
     /// </summary>
     public partial class SearchBox
     {
-        private const string DefaultSearchText = "Search...";
+        private const string DefaultSearchText = "Search";
 
         public string SearchText
         {

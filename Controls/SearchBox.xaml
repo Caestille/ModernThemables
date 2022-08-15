@@ -4,10 +4,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d"
-	x:Name="root">
+	x:Name="root"
+	mc:Ignorable="d">
 	<Grid>
-		<CheckBox Visibility="Collapsed" x:Name="CheckyBoi" IsChecked="{Binding Path=SearchText, ElementName=root, Converter={StaticResource StringIsValueConverter}, ConverterParameter=Search...}"/>
+		<CheckBox
+			x:Name="CheckyBoi"
+			IsChecked="{Binding Path=SearchText, ElementName=root, Converter={StaticResource StringIsValueConverter}, ConverterParameter=Search}"
+			Visibility="Collapsed" />
 		<Border
 			Background="{Binding Path=SearchboxBackgroundBrush, ElementName=root}"
 			CornerRadius="5"
@@ -15,7 +18,7 @@
 		<TextBox
 			x:Name="SearchTextbox"
 			Padding="20,1,0,0"
-			BorderThickness="0"			
+			BorderThickness="0"
 			PreviewGotKeyboardFocus="TextBox_PreviewGotKeyboardFocus"
 			PreviewLostKeyboardFocus="TextBox_PreviewLostKeyboardFocus"
 			Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -29,7 +32,7 @@
 							<Setter Property="TextBox.Foreground" Value="{Binding Path=DefaultForegroundBrush, ElementName=root}" />
 						</DataTrigger>
 						<DataTrigger Binding="{Binding Path=IsChecked, ElementName=CheckyBoi, UpdateSourceTrigger=PropertyChanged}" Value="False">
-							<Setter Property="TextBox.Foreground"  Value="{Binding Path=Foreground, ElementName=root}" />
+							<Setter Property="TextBox.Foreground" Value="{Binding Path=Foreground, ElementName=root}" />
 						</DataTrigger>
 					</Style.Triggers>
 				</Style>
@@ -46,11 +49,11 @@
 				HorizontalAlignment="Left"
 				VerticalAlignment="Top"
 				Background="Transparent"
-				BorderBrush="{DynamicResource MenuMouseDownBrush}"
+				BorderBrush="{Binding DefaultForegroundBrush, ElementName=root}"
 				BorderThickness="1"
 				CornerRadius="5.5" />
 			<Line
-				Stroke="{DynamicResource MenuMouseDownBrush}"
+				Stroke="{Binding DefaultForegroundBrush, ElementName=root}"
 				StrokeThickness="1.5"
 				X1="11"
 				X2="17"
