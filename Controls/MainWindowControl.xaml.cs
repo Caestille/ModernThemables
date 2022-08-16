@@ -138,6 +138,7 @@ namespace Win10Themables.Controls
 			isWindowMaximised = !isWindowMaximised;
 
 			mainWindow.WindowState = !isWindowMaximised ? WindowState.Normal : WindowState.Maximized;
+			RootGrid.Margin = isWindowMaximised ? new Thickness(7) : new Thickness(0);
 			var logicalElements = new List<FrameworkElement>();
 			logicalElements = (this as FrameworkElement).GetLogicalElements();
 			var grid = (Grid)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "RestoreDownGrid");
