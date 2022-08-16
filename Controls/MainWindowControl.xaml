@@ -101,6 +101,7 @@
 								HorizontalAlignment="Right"
 								VerticalAlignment="Top"
 								Background="Transparent"
+								DisabledBackgroundColour="Transparent"
 								BorderThickness="0"
 								Click="SettingsCloseButton_Click"
 								CornerRadius="0,5,0,5"
@@ -173,7 +174,7 @@
 					</Grid>
 				</controls:ExtendedButton>
 				<controls:ExtendedButton
-					x:Name="button"
+					x:Name="ChangeStateButton"
 					Width="40"
 					Margin="1,0"
 					Background="Transparent"
@@ -224,6 +225,7 @@
 						BorderThickness="0,0,0,1" />
 				</controls:ExtendedButton>
 				<Border
+					x:Name="Splitter"
 					Width="1"
 					Margin="1,4,1,4"
 					HorizontalAlignment="Right"

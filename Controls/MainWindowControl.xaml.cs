@@ -101,6 +101,14 @@ namespace Win10Themables.Controls
 		private static readonly DependencyProperty IsMainWindowFocusedProperty = DependencyProperty.Register(
 		  "IsMainWindowFocused", typeof(bool), typeof(MainWindowControl), new PropertyMetadata(false));
 
+		public bool IsToolWindow
+		{
+			get { return (bool)GetValue(IsToolWindowProperty); }
+			set { SetValue(IsToolWindowProperty, value); }
+		}
+		public static readonly DependencyProperty IsToolWindowProperty = DependencyProperty.Register(
+		  "IsToolWindow", typeof(bool), typeof(MainWindowControl), new PropertyMetadata(false));
+
 		private string Title
 		{
 			get { return (string)GetValue(TitleProperty); }
@@ -227,6 +235,14 @@ namespace Win10Themables.Controls
 
 		private async void MainWindowControl_Loaded(object sender, RoutedEventArgs e)
 		{
+			if (IsToolWindow)
+			{
+				ChangeStateButton.Visibility = Visibility.Collapsed;
+				MinimiseButton.Visibility = Visibility.Collapsed;
+				Splitter.Visibility = Visibility.Collapsed;
+				ThemeSetButton.Visibility = Visibility.Collapsed;
+			}
+
 			await Task.Run(() => Thread.Sleep(300));
 			mainWindow = Window.GetWindow(this);
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
@@ -261,7 +277,7 @@ namespace Win10Themables.Controls
 
 		private void CloseButton_Click(object sender, RoutedEventArgs e)
 		{
-			Application.Current.Shutdown();
+			mainWindow?.Close();
 		}
 
 		private void ThemeSetButton_Click(object sender, RoutedEventArgs e)
