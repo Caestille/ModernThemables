@@ -7,6 +7,8 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	x:Name="WindowControl"
+	MinWidth="100"
+	MinHeight="50"
 	mc:Ignorable="d">
 	<Grid x:Name="RootGrid" Focusable="False">
 		<Grid.Background>
@@ -94,17 +96,17 @@
 									HorizontalAlignment="Center"
 									VerticalAlignment="Bottom" />
 							</coreutilscontrols:BlurHost>
-							<controls:ExtendedButton
+							<controls:ThemableButton
 								Width="40"
 								Height="30"
 								Margin="0"
 								HorizontalAlignment="Right"
 								VerticalAlignment="Top"
 								Background="Transparent"
-								DisabledBackgroundColour="Transparent"
 								BorderThickness="0"
 								Click="SettingsCloseButton_Click"
 								CornerRadius="0,5,0,5"
+								DisabledBackgroundColour="Transparent"
 								MouseDownColour="{DynamicResource ControlClickablePartMouseDownBrush}"
 								MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}">
 								<Grid
@@ -127,7 +129,7 @@
 										Y1="10"
 										Y2="0" />
 								</Grid>
-							</controls:ExtendedButton>
+							</controls:ThemableButton>
 						</Grid>
 					</Border>
 				</Grid>
@@ -139,7 +141,7 @@
 			Margin="0"
 			VerticalAlignment="Top">
 			<DockPanel>
-				<controls:ExtendedButton
+				<controls:ThemableButton
 					x:Name="CloseButton"
 					Width="40"
 					Margin="1,0,0,0"
@@ -172,8 +174,8 @@
 							Y1="10"
 							Y2="0" />
 					</Grid>
-				</controls:ExtendedButton>
-				<controls:ExtendedButton
+				</controls:ThemableButton>
+				<controls:ThemableButton
 					x:Name="ChangeStateButton"
 					Width="40"
 					Margin="1,0"
@@ -204,8 +206,8 @@
 								CornerRadius="0,1,0,0" />
 						</Grid>
 					</Grid>
-				</controls:ExtendedButton>
-				<controls:ExtendedButton
+				</controls:ThemableButton>
+				<controls:ThemableButton
 					x:Name="MinimiseButton"
 					Width="40"
 					Margin="1,0"
@@ -223,7 +225,7 @@
 						Height="10"
 						BorderBrush="{DynamicResource ThemeTextBrush}"
 						BorderThickness="0,0,0,1" />
-				</controls:ExtendedButton>
+				</controls:ThemableButton>
 				<Border
 					x:Name="Splitter"
 					Width="1"
@@ -231,7 +233,7 @@
 					HorizontalAlignment="Right"
 					Background="{DynamicResource ThemeDisabledTextBrush}"
 					DockPanel.Dock="Right" />
-				<controls:ExtendedButton
+				<controls:ThemableButton
 					x:Name="ThemeSetButton"
 					Width="40"
 					Margin="1,0"
@@ -264,7 +266,7 @@
 							Y1="7.4"
 							Y2="2.5" />
 					</Grid>
-				</controls:ExtendedButton>
+				</controls:ThemableButton>
 				<Image
 					Width="Auto"
 					Margin="9,8,0,8"
