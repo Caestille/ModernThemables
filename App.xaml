@@ -6,8 +6,11 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Styles.xaml" />
-				<ResourceDictionary Source="/CoreUtilities;component/Styles.xaml" />
+				<ResourceDictionary Source="Themes/Generic.xaml" />
+				<ResourceDictionary Source="Themes/Rounded.xaml" />
+				<ResourceDictionary Source="Themes/Material.xaml" />
+				<ResourceDictionary Source="Themes/Windows10.xaml" />
+				<ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>

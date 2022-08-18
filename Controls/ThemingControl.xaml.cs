@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Win10Themables.Controls
+namespace ModernThemables.Controls
 {
 	public partial class ThemingControl : UserControl
 	{

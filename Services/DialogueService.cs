@@ -8,9 +8,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shell;
-using Win10Themables.Controls;
+using ModernThemables.Controls;
 
-namespace Win10Themables.Services
+namespace ModernThemables.Services
 {
 	public class DialogueService : IDialogueService
 	{

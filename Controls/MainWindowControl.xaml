@@ -1,9 +1,8 @@
 ﻿<UserControl
-	x:Class="Win10Themables.Controls.MainWindowControl"
+	x:Class="ModernThemables.Controls.MainWindowControl"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:controls="clr-namespace:Win10Themables.Controls"
-	xmlns:coreutilscontrols="clr-namespace:CoreUtilities.Controls;assembly=CoreUtilities"
+	xmlns:controls="clr-namespace:ModernThemables.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	x:Name="WindowControl"
@@ -81,7 +80,7 @@
 								Color="Black" />
 						</Border.Effect>
 						<Grid>
-							<coreutilscontrols:BlurHost
+							<controls:BlurHost
 								x:Name="Blurrer"
 								BlurBackground="{Binding ElementName=Content}"
 								BlurOpacity="0.5"
@@ -95,7 +94,7 @@
 									Height="Auto"
 									HorizontalAlignment="Center"
 									VerticalAlignment="Bottom" />
-							</coreutilscontrols:BlurHost>
+							</controls:BlurHost>
 							<controls:ThemableButton
 								Width="40"
 								Height="30"

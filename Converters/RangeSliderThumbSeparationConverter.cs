@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Win10Themables.Converters
+namespace ModernThemables.Converters
 {
 	public class RangeSliderThumbSeparationConverter : IMultiValueConverter
 	{

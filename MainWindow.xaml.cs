@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Win10Themables.Views
+namespace ModernThemables.Views
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

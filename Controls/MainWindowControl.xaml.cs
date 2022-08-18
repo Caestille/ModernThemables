@@ -13,7 +13,7 @@ using CoreUtilities.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace Win10Themables.Controls
+namespace ModernThemables.Controls
 {
 	/// <summary>
 	/// Interaction logic for MainWindowControl.xaml

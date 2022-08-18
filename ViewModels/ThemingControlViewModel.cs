@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using Win10Themables.Extensions;
+using ModernThemables.Extensions;
 
-namespace Win10Themables.ViewModels
+namespace ModernThemables.ViewModels
 {
 	public class ThemingControlViewModel : ObservableObject
 	{

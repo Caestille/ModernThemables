@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Win10Themables.Controls
+namespace ModernThemables.Controls
 {
 	public partial class RangeSlider
 	{

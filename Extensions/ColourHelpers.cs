@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
 
-namespace Win10Themables.Extensions
+namespace ModernThemables.Extensions
 {
 	public static class ColourHelpers
 	{

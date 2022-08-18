@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Win10Themables.Controls
+namespace ModernThemables.Controls
 {
     /// <summary>
     /// Interaction logic for SearchBox.xaml

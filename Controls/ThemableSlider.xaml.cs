@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Win10Themables.Controls
+namespace ModernThemables.Controls
 {
 	public partial class CustomSlider
 	{

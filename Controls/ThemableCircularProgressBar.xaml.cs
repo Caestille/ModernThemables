@@ -3,7 +3,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Win10Themables.Controls
+namespace ModernThemables.Controls
 {
 	public partial class CircularProgressBar
 	{
