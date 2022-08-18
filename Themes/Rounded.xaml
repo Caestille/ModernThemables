@@ -59,33 +59,95 @@
 				<ControlTemplate TargetType="ToolTip">
 					<Grid>
 						<Border
-							Width="10"
-							Height="10"
-							Margin="1"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Top"
+							Margin="10,10,10,10"
 							Background="{DynamicResource MenuBrush}"
 							BorderBrush="{DynamicResource StatusTextBrush}"
-							BorderThickness="2">
-							<Border.RenderTransform>
-								<RotateTransform Angle="45" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
-							</Border.RenderTransform>
+							BorderThickness="0"
+							CornerRadius="10">
+							<ContentPresenter Margin="6" />
+							<Border.Effect>
+								<DropShadowEffect
+									BlurRadius="10"
+									ShadowDepth="0"
+									Opacity="0.6"
+									Color="Black" />
+							</Border.Effect>
 						</Border>
+						<Grid VerticalAlignment="Top" Height="10" HorizontalAlignment="Center">
+							<Polygon
+								Fill="{DynamicResource MenuBrush}"
+								Points="10,0,20,10,0,10"
+								Stroke="{DynamicResource MenuBrush}"
+								StrokeThickness="1" >
+								<Polygon.Effect>
+									<DropShadowEffect
+									BlurRadius="10"
+									ShadowDepth="0"
+									Opacity="0.6"
+									Color="Black" />
+								</Polygon.Effect>
+								<Polygon.Clip>
+									<RectangleGeometry Rect="-10,-20,50,30" />
+								</Polygon.Clip>
+							</Polygon>
+						</Grid>
+
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="InfoTooltipHorizontal" TargetType="ToolTip">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="Placement" Value="Right" />
+		<Setter Property="HorizontalOffset" Value="3" />
+		<Setter Property="VerticalOffset">
+			<Setter.Value>
+				<MultiBinding Converter="{StaticResource CentreToolTipConverter}">
+					<Binding Path="PlacementTarget.ActualHeight" RelativeSource="{RelativeSource Self}" />
+					<Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+				</MultiBinding>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="HasDropShadow" Value="False" />
+		<Setter Property="FontSize" Value="12" />
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ToolTip">
+					<Grid>
 						<Border
-							Margin="0,5,0,0"
+							Margin="5,10,10,10"
 							Background="{DynamicResource MenuBrush}"
 							BorderBrush="{DynamicResource StatusTextBrush}"
-							BorderThickness="1">
-							<ContentPresenter Margin="3" />
+							BorderThickness="0"
+							CornerRadius="10">
+							<ContentPresenter Margin="6" />
+							<Border.Effect>
+								<DropShadowEffect
+									BlurRadius="10"
+									ShadowDepth="0"
+									Opacity="0.6"
+									Color="Black" />
+							</Border.Effect>
 						</Border>
-						<Border
-							Width="10"
-							Height="2"
-							Margin="0,5,0,0"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Top"
-							Background="{DynamicResource MenuBrush}"
-							BorderThickness="0" />
+						<Grid HorizontalAlignment="Left" Width="5" VerticalAlignment="Center">
+							<Polygon
+								Fill="{DynamicResource MenuBrush}"
+								Points="0,5,5,0,5,10"
+								Stroke="{DynamicResource MenuBrush}"
+								StrokeThickness="1" >
+								<Polygon.Effect>
+									<DropShadowEffect
+									BlurRadius="10"
+									ShadowDepth="0"
+									Opacity="0.6"
+									Color="Black" />
+								</Polygon.Effect>
+							</Polygon>
+						</Grid>
+
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
