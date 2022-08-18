@@ -4,11 +4,11 @@ using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
-	public class ThemableButton : Button
+	public class ExtendedButton : Button
 	{
-		static ThemableButton()
+		static ExtendedButton()
 		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(ThemableButton), new FrameworkPropertyMetadata(typeof(ThemableButton)));
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedButton), new FrameworkPropertyMetadata(typeof(ExtendedButton)));
 		}
 
 		readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
@@ -19,7 +19,7 @@ namespace ModernThemables.Controls
 			set { SetValue(MouseOverColourProperty, value); }
 		}
 		public static readonly DependencyProperty MouseOverColourProperty = DependencyProperty.Register(
-		  "MouseOverColour", typeof(SolidColorBrush), typeof(ThemableButton), new PropertyMetadata(DefaultMouseOverProperty));
+		  "MouseOverColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
 
 		public SolidColorBrush MouseDownColour
 		{
@@ -27,7 +27,7 @@ namespace ModernThemables.Controls
 			set { SetValue(MouseDownColourProperty, value); }
 		}
 		public static readonly DependencyProperty MouseDownColourProperty = DependencyProperty.Register(
-		  "MouseDownColour", typeof(SolidColorBrush), typeof(ThemableButton), new PropertyMetadata(DefaultMouseOverProperty));
+		  "MouseDownColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
 
 		public SolidColorBrush DisabledBackgroundColour
 		{
@@ -35,7 +35,7 @@ namespace ModernThemables.Controls
 			set { SetValue(DisabledBackgroundColourProperty, value); }
 		}
 		public static readonly DependencyProperty DisabledBackgroundColourProperty = DependencyProperty.Register(
-		  "DisabledBackgroundColour", typeof(SolidColorBrush), typeof(ThemableButton), new PropertyMetadata(DefaultMouseOverProperty));
+		  "DisabledBackgroundColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
 
 		public SolidColorBrush DisabledForegroundColour
 		{
@@ -43,7 +43,7 @@ namespace ModernThemables.Controls
 			set { SetValue(DisabledForegroundColourProperty, value); }
 		}
 		public static readonly DependencyProperty DisabledForegroundColourProperty = DependencyProperty.Register(
-		  "DisabledForegroundColour", typeof(SolidColorBrush), typeof(ThemableButton), new PropertyMetadata(DefaultMouseOverProperty));
+		  "DisabledForegroundColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
 
 		public CornerRadius CornerRadius
 		{
@@ -51,6 +51,6 @@ namespace ModernThemables.Controls
 			set { SetValue(CornerRadiusProperty, value); }
 		}
 		public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-		  "CornerRadius", typeof(CornerRadius), typeof(ThemableButton), new PropertyMetadata(new CornerRadius(0)));
+		  "CornerRadius", typeof(CornerRadius), typeof(ExtendedButton), new PropertyMetadata(new CornerRadius(0)));
 	}
 }

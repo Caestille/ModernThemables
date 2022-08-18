@@ -122,7 +122,8 @@
 				Content="R"
 				Foreground="{DynamicResource TextBrush}"
 				SnapsToDevicePixels="True" />
-			<controls:CustomSlider
+			<Slider
+				Style="{StaticResource RoundedSlider}"
 				Grid.Row="0"
 				Grid.Column="2"
 				Width="100"
@@ -136,7 +137,8 @@
 				Grid.Column="1"
 				Content="G"
 				Foreground="{DynamicResource TextBrush}" />
-			<controls:CustomSlider
+			<Slider
+				Style="{StaticResource RoundedSlider}"
 				Grid.Row="1"
 				Grid.Column="2"
 				Width="100"
@@ -152,7 +154,8 @@
 				Content="B"
 				Foreground="{DynamicResource TextBrush}"
 				SnapsToDevicePixels="True" />
-			<controls:CustomSlider
+			<Slider
+				Style="{StaticResource RoundedSlider}"
 				Grid.Row="2"
 				Grid.Column="2"
 				Width="100"

@@ -100,12 +100,12 @@
 
 	<!--#region Base themable button-->
 
-	<Style BasedOn="{StaticResource ResourceKey={x:Type Button}}" TargetType="{x:Type controls:ThemableButton}">
+	<Style BasedOn="{StaticResource ResourceKey={x:Type Button}}" TargetType="{x:Type controls:ExtendedButton}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type controls:ThemableButton}">
+				<ControlTemplate TargetType="{x:Type controls:ExtendedButton}">
 					<Border
 						x:Name="border"
 						Background="{TemplateBinding Background}"
