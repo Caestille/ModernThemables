@@ -878,6 +878,89 @@
 
 	<!--#endregion End Custom Checkbox-->
 
+	<!--#region Custom Radio Button-->
+
+	<Style x:Key="ThemableRadioButton" TargetType="{x:Type RadioButton}">
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RadioButton}">
+					<Border
+						x:Name="Border"
+						Padding="0,0,5,0"
+						Background="Transparent"
+						BorderBrush="Gray"
+						BorderThickness="0"
+						CornerRadius="4">
+						<Grid x:Name="grid">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="16" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<Border
+								x:Name="highlightCircle"
+								Height="14"
+								Margin="1"
+								VerticalAlignment="Center"
+								Background="Transparent"
+								BorderBrush="{DynamicResource StatusTextBrush}"
+								BorderThickness="1"
+								CornerRadius="7">
+								<Grid
+									x:Name="GlyphPanel"
+									Margin="0"
+									Visibility="Hidden">
+									<Ellipse
+										x:Name="GlyphPanelPath"
+										Width="6.5"
+										Height="6.5"
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										Fill="{DynamicResource ThemeTextBrush}" />
+								</Grid>
+							</Border>
+							<ContentPresenter
+								x:Name="content"
+								Grid.Column="1"
+								Margin="5,0,0,0"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Top" />
+
+						</Grid>
+					</Border>
+					<ControlTemplate.Triggers>
+						<!--  The GlyphPanel contains the CheckMark  -->
+						<Trigger Property="IsChecked" Value="True">
+							<Setter TargetName="GlyphPanel" Property="Visibility" Value="Visible" />
+						</Trigger>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeBrush}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="highlightCircle" Property="Background" Value="Gray" />
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
+							<Setter TargetName="highlightCircle" Property="BorderBrush" Value="Gray" />
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsChecked" Value="True" />
+								<Condition Property="IsMouseOver" Value="True" />
+							</MultiTrigger.Conditions>
+							<MultiTrigger.Setters>
+								<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
+							</MultiTrigger.Setters>
+						</MultiTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--#endregion End Custom Checkbox-->
+
 	<!--#region Toggle Checkbox-->
 
 	<Style x:Key="ToggleCheckbox" TargetType="CheckBox">
