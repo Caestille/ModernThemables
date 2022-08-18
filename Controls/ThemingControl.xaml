@@ -123,7 +123,6 @@
 				Foreground="{DynamicResource TextBrush}"
 				SnapsToDevicePixels="True" />
 			<Slider
-				Style="{StaticResource RoundedSlider}"
 				Grid.Row="0"
 				Grid.Column="2"
 				Width="100"
@@ -131,6 +130,7 @@
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
 				Maximum="255"
 				Minimum="0"
+				Style="{StaticResource RoundedSlider}"
 				Value="{Binding ThemeColourProperty, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=R}" />
 			<Label
 				Grid.Row="1"
@@ -138,7 +138,6 @@
 				Content="G"
 				Foreground="{DynamicResource TextBrush}" />
 			<Slider
-				Style="{StaticResource RoundedSlider}"
 				Grid.Row="1"
 				Grid.Column="2"
 				Width="100"
@@ -146,6 +145,7 @@
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
 				Maximum="255"
 				Minimum="0"
+				Style="{StaticResource RoundedSlider}"
 				Value="{Binding ThemeColourProperty, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=G}" />
 			<Label
 				Grid.Row="2"
@@ -155,7 +155,6 @@
 				Foreground="{DynamicResource TextBrush}"
 				SnapsToDevicePixels="True" />
 			<Slider
-				Style="{StaticResource RoundedSlider}"
 				Grid.Row="2"
 				Grid.Column="2"
 				Width="100"
@@ -163,6 +162,7 @@
 				IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
 				Maximum="255"
 				Minimum="0"
+				Style="{StaticResource RoundedSlider}"
 				Value="{Binding ThemeColourProperty, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=B}" />
 			<Grid Grid.RowSpan="3">
 				<Grid.RowDefinitions>

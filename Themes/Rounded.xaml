@@ -155,12 +155,12 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="RepeatButton">
 					<Border
-						Margin="-10,0,7,0"
-						CornerRadius="1"
 						Height="4"
+						Margin="-10,0,7,0"
 						Background="{DynamicResource DisabledControlNonClickablePartBrush}"
 						BorderBrush="{DynamicResource DisabledControlNonClickablePartBrush}"
-						BorderThickness="1" />
+						BorderThickness="1"
+						CornerRadius="1" />
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -173,12 +173,12 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="RepeatButton">
 					<Border
-						Margin="7,-1,-10,0"
-						CornerRadius="1"
 						Height="6"
+						Margin="7,-1,-10,0"
 						Background="{DynamicResource ThemeBackgroundBrush}"
 						BorderBrush="{DynamicResource ThemeBackgroundNearBackgroundBrush}"
 						BorderThickness="1"
+						CornerRadius="1"
 						SnapsToDevicePixels="True" />
 				</ControlTemplate>
 			</Setter.Value>
