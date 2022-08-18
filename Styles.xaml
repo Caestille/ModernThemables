@@ -275,79 +275,72 @@
 	<!--#endregion End slider thumb-->
 
 	<!--#region Combobox-->
-	<Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
-		<Setter Property="Control.Template">
-			<Setter.Value>
-				<ControlTemplate>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition />
-							<ColumnDefinition Width="20" />
-						</Grid.ColumnDefinitions>
-						<Border
-							x:Name="Border"
-							Grid.ColumnSpan="2"
-							Background="{DynamicResource StatusTextLightBrush}"
-							BorderBrush="#abadb3"
-							BorderThickness="1,1,1,1"
-							CornerRadius="5"
-							SnapsToDevicePixels="True" />
-						<Border
-							x:Name="Border2"
-							Grid.Column="0"
-							Margin="1"
-							Background="{DynamicResource InvertedTextBrush}"
-							BorderBrush="Red"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="5"
-							SnapsToDevicePixels="True" />
-						<Path
-							x:Name="Arrow"
-							Grid.Column="1"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Center"
-							Data="M 0 0 L 4 4 L 8 0 Z"
-							Fill="{DynamicResource StatusTextBrush}" />
-						<VisualStateManager.VisualStateGroups>
-							<VisualStateGroup x:Name="CommonStates">
-								<VisualState x:Name="Normal" />
-								<VisualState x:Name="MouseOver" />
-								<VisualState x:Name="Pressed" />
-								<VisualState x:Name="Disabled" />
-							</VisualStateGroup>
-						</VisualStateManager.VisualStateGroups>
-					</Grid>
-					<ControlTemplate.Triggers>
-						<Trigger Property="ToggleButton.IsMouseOver" Value="true">
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
-							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
-							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
-							<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource InvertedTextBrush}" />
-						</Trigger>
-						<Trigger Property="ToggleButton.IsChecked" Value="true">
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
-							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
-							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
-							<Setter TargetName="Arrow" Property="Fill" Value="White" />
-						</Trigger>
-						<Trigger Property="IsEnabled" Value="False">
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource StatusTextLightBrush}" />
-							<Setter Property="Foreground" Value="Gray" />
-							<Setter TargetName="Border2" Property="Background" Value="Gray" />
-							<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource DatagridHeaderBrush}" />
-						</Trigger>
-						<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
-							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
-							<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
-							<Setter TargetName="Arrow" Property="Fill" Value="White" />
-						</DataTrigger>
-					</ControlTemplate.Triggers>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+	<ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="20" />
+			</Grid.ColumnDefinitions>
+			<Border
+				x:Name="Border"
+				Grid.ColumnSpan="2"
+				Background="{DynamicResource StatusTextLightBrush}"
+				BorderBrush="#abadb3"
+				BorderThickness="1,1,1,1"
+				CornerRadius="5"
+				SnapsToDevicePixels="True" />
+			<Border
+				x:Name="Border2"
+				Grid.Column="0"
+				Margin="1"
+				Background="{DynamicResource InvertedTextBrush}"
+				BorderBrush="Red"
+				BorderThickness="{TemplateBinding BorderThickness}"
+				CornerRadius="5"
+				SnapsToDevicePixels="True" />
+			<Path
+				x:Name="Arrow"
+				Grid.Column="1"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Data="M 0 0 L 4 4 L 8 0 Z"
+				Fill="{DynamicResource StatusTextBrush}" />
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal" />
+					<VisualState x:Name="MouseOver" />
+					<VisualState x:Name="Pressed" />
+					<VisualState x:Name="Disabled" />
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger Property="ToggleButton.IsMouseOver" Value="true">
+				<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
+				<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
+				<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
+				<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource InvertedTextBrush}" />
+			</Trigger>
+			<Trigger Property="ToggleButton.IsChecked" Value="true">
+				<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
+				<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
+				<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
+				<Setter TargetName="Arrow" Property="Fill" Value="White" />
+			</Trigger>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter TargetName="Border" Property="Background" Value="{DynamicResource StatusTextLightBrush}" />
+				<Setter Property="Foreground" Value="Gray" />
+				<Setter TargetName="Border2" Property="Background" Value="Gray" />
+				<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource DatagridHeaderBrush}" />
+			</Trigger>
+			<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">
+				<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
+				<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
+				<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
+				<Setter TargetName="Arrow" Property="Fill" Value="White" />
+			</DataTrigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
 
 	<ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
 		<Border
@@ -379,7 +372,7 @@
 							ClickMode="Press"
 							Focusable="false"
 							IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-							Template="{StaticResource ComboBoxToggleButton}" />
+							Template="{StaticResource ComboBoxToggleButton}"/>
 
 						<ContentPresenter
 							x:Name="ContentSite"
