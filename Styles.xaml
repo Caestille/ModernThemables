@@ -97,6 +97,8 @@
 	</Style>
 
 	<!--#endregion End Themable Focus Style-->
+	
+	<!--#region Base themable button-->
 
 	<Style BasedOn="{StaticResource ResourceKey={x:Type Button}}" TargetType="{x:Type controls:ThemableButton}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
@@ -141,6 +143,8 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+	
+	<!--#endregion-->
 
 	<!--#region Themable Info Tooltip Style-->
 
@@ -279,21 +283,35 @@
 		<Grid>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition />
-				<ColumnDefinition Width="20" />
+				<ColumnDefinition Width="25" />
 			</Grid.ColumnDefinitions>
 			<Border
-				x:Name="Border"
+				x:Name="Border3"
+				Grid.ColumnSpan="1"
+				Background="Transparent"
+				Margin="0,0,5,0"
+				BorderThickness="0,0,0,1"
+				BorderBrush="{DynamicResource StatusTextBrush}"
+				CornerRadius="0"
+				SnapsToDevicePixels="True" />
+			<Border
 				Grid.ColumnSpan="2"
-				Background="{DynamicResource StatusTextLightBrush}"
-				BorderBrush="#abadb3"
-				BorderThickness="1,1,1,1"
-				CornerRadius="5"
+				Background="Transparent"
+				BorderThickness="0"
+				CornerRadius="12.5"
+				SnapsToDevicePixels="True" />
+			<Border
+				x:Name="Border"
+				Grid.Column="1"
+				Background="{DynamicResource ControlClickablePartBrush}"
+				BorderThickness="0"
+				CornerRadius="12.5"
 				SnapsToDevicePixels="True" />
 			<Border
 				x:Name="Border2"
 				Grid.Column="0"
-				Margin="1"
-				Background="{DynamicResource InvertedTextBrush}"
+				Margin="0"
+				Background="Transparent"
 				BorderBrush="Red"
 				BorderThickness="{TemplateBinding BorderThickness}"
 				CornerRadius="5"
@@ -301,10 +319,12 @@
 			<Path
 				x:Name="Arrow"
 				Grid.Column="1"
+				Margin="1,1,0,0"
 				HorizontalAlignment="Center"
 				VerticalAlignment="Center"
-				Data="M 0 0 L 4 4 L 8 0 Z"
-				Fill="{DynamicResource StatusTextBrush}" />
+				Data="M 0 0 L 4.5 4.5 L 9 0"
+				StrokeThickness="2"
+				Stroke="{DynamicResource TextBrush}" />
 			<VisualStateManager.VisualStateGroups>
 				<VisualStateGroup x:Name="CommonStates">
 					<VisualState x:Name="Normal" />
@@ -319,25 +339,24 @@
 				<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
 				<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
 				<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
-				<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource InvertedTextBrush}" />
 			</Trigger>
 			<Trigger Property="ToggleButton.IsChecked" Value="true">
 				<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
 				<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
 				<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
-				<Setter TargetName="Arrow" Property="Fill" Value="White" />
+				<Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource TextBrush}" />
 			</Trigger>
 			<Trigger Property="IsEnabled" Value="False">
 				<Setter TargetName="Border" Property="Background" Value="{DynamicResource StatusTextLightBrush}" />
 				<Setter Property="Foreground" Value="Gray" />
 				<Setter TargetName="Border2" Property="Background" Value="Gray" />
-				<Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource DatagridHeaderBrush}" />
+				<Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource DatagridHeaderBrush}" />
 			</Trigger>
 			<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">
 				<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
 				<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
 				<Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
-				<Setter TargetName="Arrow" Property="Fill" Value="White" />
+				<Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource TextBrush}" />
 			</DataTrigger>
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
@@ -376,7 +395,7 @@
 
 						<ContentPresenter
 							x:Name="ContentSite"
-							Margin="3,3,23,3"
+							Margin="3"
 							HorizontalAlignment="Left"
 							VerticalAlignment="Center"
 							Content="{TemplateBinding SelectionBoxItem}"
@@ -386,7 +405,7 @@
 
 						<TextBox
 							x:Name="PART_EditableTextBox"
-							Margin="3,3,23,3"
+							Margin="3"
 							HorizontalAlignment="Left"
 							VerticalAlignment="Center"
 							Background="Transparent"
@@ -398,6 +417,7 @@
 							Visibility="Hidden" />
 
 						<Popup
+							Margin="5"
 							x:Name="Popup"
 							AllowsTransparency="True"
 							Focusable="False"
@@ -410,13 +430,14 @@
 								MaxHeight="{TemplateBinding MaxDropDownHeight}"
 								SnapsToDevicePixels="True">
 								<Border
+									Margin="0,5,0,0"
 									x:Name="DropDownBorder"
-									Background="Gray"
-									BorderBrush="Gray"
+									Background="{DynamicResource MenuBrush}"
+									BorderBrush="{DynamicResource StatusTextLightBrush}"
 									BorderThickness="1"
 									CornerRadius="5" />
 								<ScrollViewer
-									Margin="2"
+									Margin="5,7,5,5"
 									Foreground="{DynamicResource TextBrush}"
 									SnapsToDevicePixels="True">
 									<StackPanel
@@ -653,7 +674,7 @@
 							Grid.ColumnSpan="2"
 							Background="{DynamicResource DatagridHeaderBrush}"
 							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="0,0,0,2" />
+							BorderThickness="0,0,0,0" />
 						<ContentPresenter
 							Margin="5"
 							HorizontalAlignment="Left"
