@@ -245,6 +245,13 @@ namespace Win10Themables.Controls
 
 			await Task.Run(() => Thread.Sleep(300));
 			mainWindow = Window.GetWindow(this);
+			if (IsToolWindow)
+			{
+				mainWindow.SizeToContent = SizeToContent.Manual;
+				mainWindow.Width = this.Width;
+				mainWindow.Height = this.Height;
+				mainWindow.SizeToContent = SizeToContent.WidthAndHeight;
+			}
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			this.Loaded -= MainWindowControl_Loaded;
 
