@@ -70,6 +70,34 @@
 
 	<!--#region Controls-->
 
+	<!--#region Themable Focus Style-->
+
+	<Style x:Key="ThemableFocusStyle">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Grid>
+						<Border
+							Margin="-3"
+							Background="{DynamicResource StatusTextBrush}"
+							CornerRadius="3"
+							Opacity="0.2"
+							SnapsToDevicePixels="true" />
+						<Border
+							Margin="-3"
+							Background="Transparent"
+							BorderBrush="{DynamicResource StatusTextBrush}"
+							BorderThickness="1"
+							CornerRadius="3"
+							SnapsToDevicePixels="true" />
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--#endregion End Themable Focus Style-->
+
 	<Style BasedOn="{StaticResource ResourceKey={x:Type Button}}" TargetType="{x:Type controls:ThemableButton}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
@@ -193,34 +221,6 @@
 	</Style>
 
 	<!--#endregion-->
-
-	<!--#region Themable Focus Style-->
-
-	<Style x:Key="ThemableFocusStyle">
-		<Setter Property="Control.Template">
-			<Setter.Value>
-				<ControlTemplate>
-					<Grid>
-						<Border
-							Margin="-3"
-							Background="{DynamicResource StatusTextBrush}"
-							CornerRadius="3"
-							Opacity="0.2"
-							SnapsToDevicePixels="true" />
-						<Border
-							Margin="-3"
-							Background="Transparent"
-							BorderBrush="{DynamicResource StatusTextBrush}"
-							BorderThickness="1"
-							CornerRadius="3"
-							SnapsToDevicePixels="true" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-
-	<!--#endregion End Themable Focus Style-->
 
 	<!--#region Slider thumb-->
 
