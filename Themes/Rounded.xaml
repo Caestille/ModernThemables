@@ -68,23 +68,26 @@
 							<Border.Effect>
 								<DropShadowEffect
 									BlurRadius="10"
-									ShadowDepth="0"
 									Opacity="0.6"
+									ShadowDepth="0"
 									Color="Black" />
 							</Border.Effect>
 						</Border>
-						<Grid VerticalAlignment="Top" Height="10" HorizontalAlignment="Center">
+						<Grid
+							Height="10"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Top">
 							<Polygon
 								Fill="{DynamicResource MenuBrush}"
 								Points="10,0,20,10,0,10"
 								Stroke="{DynamicResource MenuBrush}"
-								StrokeThickness="1" >
+								StrokeThickness="1">
 								<Polygon.Effect>
 									<DropShadowEffect
-									BlurRadius="10"
-									ShadowDepth="0"
-									Opacity="0.6"
-									Color="Black" />
+										BlurRadius="10"
+										Opacity="0.6"
+										ShadowDepth="0"
+										Color="Black" />
 								</Polygon.Effect>
 								<Polygon.Clip>
 									<RectangleGeometry Rect="-10,-20,50,30" />
@@ -127,23 +130,26 @@
 							<Border.Effect>
 								<DropShadowEffect
 									BlurRadius="10"
-									ShadowDepth="0"
 									Opacity="0.6"
+									ShadowDepth="0"
 									Color="Black" />
 							</Border.Effect>
 						</Border>
-						<Grid HorizontalAlignment="Left" Width="5" VerticalAlignment="Center">
+						<Grid
+							Width="5"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Center">
 							<Polygon
 								Fill="{DynamicResource MenuBrush}"
 								Points="0,5,5,0,5,10"
 								Stroke="{DynamicResource MenuBrush}"
-								StrokeThickness="1" >
+								StrokeThickness="1">
 								<Polygon.Effect>
 									<DropShadowEffect
-									BlurRadius="10"
-									ShadowDepth="0"
-									Opacity="0.6"
-									Color="Black" />
+										BlurRadius="10"
+										Opacity="0.6"
+										ShadowDepth="0"
+										Color="Black" />
 								</Polygon.Effect>
 							</Polygon>
 						</Grid>
