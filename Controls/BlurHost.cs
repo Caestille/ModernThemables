@@ -187,8 +187,10 @@ namespace ModernThemables.Controls
             if (!this_.BlurEnabled)
                 return;
 
-            this_.BlurDecoratorBrush.Visual = e.NewValue as Visual;
-            this_.DrawBlurredElementBackground();
+            Application.Current.Dispatcher.InvokeAsync(() => {
+                this_.BlurDecoratorBrush.Visual = e.NewValue as Visual;
+                this_.DrawBlurredElementBackground();
+            });
         }
 
         private static void Draw(DependencyObject d, DependencyPropertyChangedEventArgs e)
