@@ -104,7 +104,7 @@ namespace ModernThemables.Controls
 		{
 			double width = BaseGrid.ActualWidth - borderPadding;
 			double range = Maximum - Minimum;
-			OuterBorder.Margin = new Thickness(LowerValue / range * width + 10, 0, width - UpperValue / range * width + 10, 0);
+			OuterBorder.Margin = new Thickness(LowerValue / range * width + 10, 0, width - UpperValue / range * width + 7, 0);
 		}
 	}
 }

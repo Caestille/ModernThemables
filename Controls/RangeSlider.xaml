@@ -22,8 +22,6 @@
 						<Track.Thumb>
 							<Thumb
 								x:Name="Thumb"
-								Width="15"
-								Height="18"
 								VerticalAlignment="Center"
 								Focusable="False"
 								OverridesDefaultStyle="True"
@@ -46,7 +44,7 @@
 		<Border
 			Name="OuterBorder"
 			Height="6"
-			Margin="20,0,5,0"
+			Margin="20,0,5,1"
 			VerticalAlignment="Center"
 			Background="{DynamicResource ThemeBackgroundBrush}"
 			CornerRadius="2" />
