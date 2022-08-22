@@ -11,21 +11,33 @@ namespace ModernThemables.Controls
 		public double Minimum
 		{
 			get => (double)GetValue(MinimumProperty);
-			set => SetValue(MinimumProperty, value);
+			set
+			{
+				SetValue(MinimumProperty, value);
+				AdjustSliderRangeBorderValues();
+			}
 		}
 
 		public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(1d));
 		public double Maximum
 		{
 			get => (double)GetValue(MaximumProperty);
-			set => SetValue(MaximumProperty, value);
+			set
+			{
+				SetValue(MaximumProperty, value);
+				AdjustSliderRangeBorderValues();
+			}
 		}
 
 		public static readonly DependencyProperty SliderSeparationProperty = DependencyProperty.Register("SliderSeparation", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(1d));
 		public double SliderSeparation
 		{
 			get => (double)GetValue(SliderSeparationProperty);
-			set => SetValue(SliderSeparationProperty, value);
+			set 
+			{ 
+				SetValue(SliderSeparationProperty, value);
+				AdjustSliderRangeBorderValues();
+			}
 		}
 
 		public static readonly DependencyProperty LowerValueProperty = DependencyProperty.Register("LowerValue", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d));
@@ -45,6 +57,7 @@ namespace ModernThemables.Controls
 				{
 					UpperValue = Math.Min(Maximum, LowerValue + SliderSeparation);
 				}
+				AdjustSliderRangeBorderValues();
 			}
 		}
 
@@ -65,6 +78,7 @@ namespace ModernThemables.Controls
 				{
 					LowerValue = Math.Max(Minimum, UpperValue - SliderSeparation);
 				}
+				AdjustSliderRangeBorderValues();
 			}
 		}
 
@@ -89,22 +103,25 @@ namespace ModernThemables.Controls
 		private void LowerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
 			LowerValue = e.NewValue;
-			LowerSlider.Value = LowerValue;
-			AdjustSliderRangeBorderValues();
 		}
 
 		private void UpperSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
 			UpperValue = e.NewValue;
-			UpperSlider.Value = UpperValue;
-			AdjustSliderRangeBorderValues();
 		}
 
 		private void AdjustSliderRangeBorderValues()
 		{
 			double width = BaseGrid.ActualWidth - borderPadding;
 			double range = Maximum - Minimum;
-			OuterBorder.Margin = new Thickness(LowerValue / range * width + 10, 0, width - UpperValue / range * width + 7, 0);
+			OuterBorder.Margin = range == 0 
+				? new Thickness(width,0,10,0) 
+				: new Thickness((LowerValue - Minimum) / range * width + 10, 0, width - (UpperValue - Minimum) / range * width + 7, 0);
+		}
+
+		private void LowerSlider_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			AdjustSliderRangeBorderValues();
 		}
 	}
 }

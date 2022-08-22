@@ -49,10 +49,6 @@
 
 	<!--#region Converters-->
 
-	<converters:RangeSliderThumbSeparationConverter x:Key="RangeSliderThumbSeparationConverter" />
-	<converters:RangeSliderMaxValueConverter x:Key="RangeSliderMaxValueConverter" />
-	<converters:RangeSliderThumbValueConverter x:Key="RangeSliderThumbUpperValueConverter" />
-	<converters:RangeSliderThumbValueConverter x:Key="RangeSliderThumbLowerValueConverter" />
 	<converters:CentreToolTipConverter x:Key="CentreToolTipConverter" />
 	<converters:ColourRgbConverter x:Key="ColourRgbConverter" />
 
