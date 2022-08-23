@@ -89,6 +89,8 @@ namespace ModernThemables.Controls
 		private bool isThemingGridOpen;
 		private bool isWindowMaximised;
 		private bool isDockedOrMaximised;
+		private bool preventTrigger;
+		private bool minimisedWhileMaximised;
 
 		private Window mainWindow;
 		private static CurrentMonitorInfo currentMonitorInfo;
@@ -141,12 +143,22 @@ namespace ModernThemables.Controls
 			this.Loaded += MainWindowControl_Loaded;
 		}
 
-		private void ChangeWindowState()
+		private async void ChangeWindowState()
 		{
 			isWindowMaximised = !isWindowMaximised;
 
-			mainWindow.WindowState = !isWindowMaximised ? WindowState.Normal : WindowState.Maximized;
-			RootGrid.Margin = isWindowMaximised ? new Thickness(7) : new Thickness(0);
+			preventTrigger = true;
+			if (!isWindowMaximised) mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+			mainWindow.WindowState = isWindowMaximised ? WindowState.Maximized : WindowState.Normal;
+			if (isWindowMaximised)
+			{
+				await Task.Delay(150);
+				mainWindow.WindowStyle = WindowStyle.None;
+				mainWindow.WindowState = WindowState.Normal;
+				mainWindow.WindowState = WindowState.Maximized;
+			}
+			preventTrigger = false;
+			//RootGrid.Margin = isWindowMaximised ? new Thickness(7) : new Thickness(0);
 			var logicalElements = new List<FrameworkElement>();
 			logicalElements = (this as FrameworkElement).GetLogicalElements();
 			var grid = (Grid)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "RestoreDownGrid");
@@ -260,6 +272,7 @@ namespace ModernThemables.Controls
 
 			OnSourceInitialized();
 			mainWindow.SizeChanged += MainWindow_SizeChanged;
+			mainWindow.StateChanged += MainWindow_StateChanged;
 			this.SetBinding(IconProperty, new Binding("Icon") { Source = mainWindow });
 			this.SetBinding(TitleProperty, new Binding("Title") { Source = mainWindow });
 			this.SetBinding(IsMainWindowFocusedProperty, new Binding("IsActive") { Source = mainWindow });
@@ -274,7 +287,11 @@ namespace ModernThemables.Controls
 
 		private void MinimiseButton_Click(object sender, RoutedEventArgs e)
 		{
+			preventTrigger = true;
+			minimisedWhileMaximised = mainWindow.WindowState == WindowState.Maximized;
+			mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
 			mainWindow.WindowState = WindowState.Minimized;
+			preventTrigger = false;
 		}
 
 		private void ChangeStateButton_Click(object sender, RoutedEventArgs e)
@@ -284,6 +301,7 @@ namespace ModernThemables.Controls
 
 		private void CloseButton_Click(object sender, RoutedEventArgs e)
 		{
+			mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
 			mainWindow?.Close();
 		}
 
@@ -299,6 +317,8 @@ namespace ModernThemables.Controls
 
 		private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
+			if (preventTrigger) return;
+
 			var isDockedTop = !isWindowMaximised && (mainWindow.WindowState == WindowState.Maximized);
 			var isDockedSide = mainWindow.WindowState == WindowState.Normal
 				&& mainWindow.Width != mainWindow.RestoreBounds.Width
@@ -312,6 +332,20 @@ namespace ModernThemables.Controls
 				ChangeWindowState();
 			}
 			isDockedOrMaximised = isDockedTop || isDockedSide || (mainWindow.WindowState == WindowState.Maximized);
+		}
+
+		private async void MainWindow_StateChanged(object? sender, EventArgs e)
+		{
+			if (minimisedWhileMaximised && !preventTrigger)
+			{
+				preventTrigger = true;
+				await Task.Delay(200);
+				mainWindow.WindowStyle = WindowStyle.None;
+				mainWindow.WindowState = WindowState.Normal;
+				mainWindow.WindowState = WindowState.Maximized;
+				preventTrigger = false;
+				minimisedWhileMaximised = false;
+			}
 		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
