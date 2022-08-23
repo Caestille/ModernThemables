@@ -51,8 +51,8 @@
 
 		<Slider
 			x:Name="LowerSlider"
-			Focusable="False"
 			DataContextChanged="LowerSlider_DataContextChanged"
+			Focusable="False"
 			Maximum="{Binding ElementName=root, Path=Maximum}"
 			Minimum="{Binding ElementName=root, Path=Minimum}"
 			Template="{StaticResource SimpleSlider}"
@@ -60,8 +60,8 @@
 
 		<Slider
 			x:Name="UpperSlider"
-			Focusable="False"
 			DataContextChanged="LowerSlider_DataContextChanged"
+			Focusable="False"
 			Maximum="{Binding ElementName=root, Path=Maximum}"
 			Minimum="{Binding ElementName=root, Path=Minimum}"
 			Template="{StaticResource SimpleSlider}"
