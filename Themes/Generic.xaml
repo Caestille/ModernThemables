@@ -54,6 +54,30 @@
 
 	<!--#endregion End Converters-->
 
+	<Style x:Key="ThemableFocusStyle">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Grid>
+						<Border
+							Margin="-3"
+							Background="{DynamicResource StatusTextBrush}"
+							CornerRadius="3"
+							Opacity="0.2"
+							SnapsToDevicePixels="true" />
+						<Border
+							Margin="-3"
+							Background="Transparent"
+							BorderBrush="{DynamicResource StatusTextBrush}"
+							BorderThickness="1"
+							CornerRadius="3"
+							SnapsToDevicePixels="true" />
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<!--#region Themable Tooltip Style-->
 
 	<Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
