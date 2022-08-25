@@ -9,33 +9,9 @@
 		<ResourceDictionary Source="Generic.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
-	<!--#region Themable Focus Style-->
+	<!--#region Controls-->
 
-	<Style x:Key="ThemableFocusStyle">
-		<Setter Property="Control.Template">
-			<Setter.Value>
-				<ControlTemplate>
-					<Grid>
-						<Border
-							Margin="-3"
-							Background="{DynamicResource StatusTextBrush}"
-							CornerRadius="3"
-							Opacity="0.2"
-							SnapsToDevicePixels="true" />
-						<Border
-							Margin="-3"
-							Background="Transparent"
-							BorderBrush="{DynamicResource StatusTextBrush}"
-							BorderThickness="1"
-							CornerRadius="3"
-							SnapsToDevicePixels="true" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-
-	<!--#endregion End Themable Focus Style-->
+	<!--#endregion End Controls-->
 
 	<!--#region Themable Info Tooltip Style-->
 
@@ -635,7 +611,7 @@
 	<Style x:Key="ThemableDatagridCell" TargetType="{x:Type DataGridCell}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="BorderBrush" Value="Transparent" />
-		<Style.Triggers>
+		<!--<Style.Triggers>
 			<Trigger Property="DataGridCell.IsSelected" Value="True">
 				<Setter Property="BorderBrush">
 					<Setter.Value>
@@ -649,7 +625,7 @@
 					</Setter.Value>
 				</Setter>
 			</Trigger>
-		</Style.Triggers>
+		</Style.Triggers>-->
 	</Style>
 
 	<Style x:Key="ThemableDatagridRowHeader" TargetType="{x:Type DataGridRowHeader}">
