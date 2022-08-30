@@ -612,11 +612,14 @@
 	<Style x:Key="ThemableDatagridCell" TargetType="{x:Type DataGridCell}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="0" />
 		<Setter Property="Padding" Value="0,5" />
+		<Setter Property="Margin" Value="-1,0" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type DataGridCell}">
-					<Border x:Name="Border">
+					<Border x:Name="Border" Background="Transparent">
 						<ContentPresenter Margin="5" />
 					</Border>
 					<ControlTemplate.Triggers>
@@ -670,8 +673,7 @@
 							Background="Transparent"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							BorderThickness="0,0,1,0"
-							Visibility="{TemplateBinding Content,
-							                             Converter={StaticResource VisibleIfNotNullConverter}}" />
+							Visibility="{TemplateBinding Content, Converter={StaticResource VisibleIfNotNullConverter}}" />
 						<ContentPresenter
 							Margin="5"
 							HorizontalAlignment="Left"
@@ -732,8 +734,8 @@
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="VerticalScrollBarVisibility" Value="Auto" />
 		<Setter Property="EnableRowVirtualization" Value="True" />
-		<Setter Property="RowBackground" Value="{DynamicResource DatagridRowBrush}" />
 		<Setter Property="FontSize" Value="12" />
+		<Setter Property="RowBackground" Value="Transparent" />
 		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
 		<Setter Property="ItemsSource" Value="{Binding VirtualisedLogRows}" />
 		<Setter Property="AutoGenerateColumns" Value="False" />
@@ -789,9 +791,6 @@
 												Grid.Row="1"
 												Grid.ColumnSpan="2"
 												CanContentScroll="{TemplateBinding CanContentScroll}" >
-												<ScrollContentPresenter.OpacityMask>
-													<VisualBrush Visual="{Binding ElementName=rootBorder}" />
-												</ScrollContentPresenter.OpacityMask>
 											</ScrollContentPresenter>
 											<ScrollBar
 												x:Name="PART_VerticalScrollBar"
