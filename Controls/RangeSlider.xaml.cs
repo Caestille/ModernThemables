@@ -116,7 +116,11 @@ namespace ModernThemables.Controls
 			double range = Maximum - Minimum;
 			OuterBorder.Margin = range == 0 
 				? new Thickness(width,0,10,0) 
-				: new Thickness((LowerValue - Minimum) / range * width + 10, 0, width - (UpperValue - Minimum) / range * width + 7, 0);
+				: new Thickness(
+					(LowerValue - Minimum) / range * width + borderPadding * (1 - (LowerValue - Minimum) / range), 
+					0, 
+					width - (UpperValue - Minimum) / range * width + borderPadding * (UpperValue - Minimum) / range,
+					0);
 		}
 
 		private void LowerSlider_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
