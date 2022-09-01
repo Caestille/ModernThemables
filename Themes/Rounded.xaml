@@ -264,6 +264,26 @@
 		</Setter>
 	</Style>
 
+	<Style x:Key="SliderRepeatButton2" TargetType="RepeatButton">
+		<Setter Property="SnapsToDevicePixels" Value="true" />
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="IsTabStop" Value="false" />
+		<Setter Property="Focusable" Value="false" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="RepeatButton">
+					<Border
+						Height="4"
+						Margin="7,-1,-10,0"
+						Background="{DynamicResource DisabledControlNonClickablePartBrush}"
+						BorderBrush="{DynamicResource DisabledControlNonClickablePartBrush}"
+						BorderThickness="1"
+						CornerRadius="1" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<ControlTemplate x:Key="SliderRound" TargetType="Slider">
 		<Grid>
 			<Grid.RowDefinitions>
@@ -528,6 +548,88 @@
 
 	<!--#endregion End Combobox-->
 
+	<ControlTemplate x:Key="SliderTemplate" TargetType="{x:Type Slider}">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Track x:Name="PART_Track" Grid.Row="1">
+				<Track.DecreaseRepeatButton>
+					<RepeatButton Command="Slider.DecreaseLarge" Style="{StaticResource SliderRepeatButton2}" />
+				</Track.DecreaseRepeatButton>
+				<Track.Thumb>
+					<Thumb Template="{StaticResource SliderThumbHorizontalDefault}" />
+				</Track.Thumb>
+			</Track>
+		</Grid>
+	</ControlTemplate>
+
+	<ControlTemplate x:Key="SliderTemplate2" TargetType="{x:Type Slider}">
+		<Track x:Name="PART_Track" Orientation="{TemplateBinding Orientation}">
+			<Track.IncreaseRepeatButton>
+				<RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource SliderRepeatButton}" />
+			</Track.IncreaseRepeatButton>
+			<Track.Thumb>
+				<Thumb
+					x:Name="thumb"
+					Background="{TemplateBinding Background}"
+					Focusable="True"
+					Template="{StaticResource SliderThumbHorizontalDefault}" />
+			</Track.Thumb>
+		</Track>
+	</ControlTemplate>
+
+	<Style TargetType="{x:Type controls:RangeSlider}">
+		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:RangeSlider}">
+					<Border
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}">
+						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+							<Grid.RowDefinitions>
+								<RowDefinition x:Name="TopRow" Height="0" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition x:Name="BottomRow" Height="0" />
+							</Grid.RowDefinitions>
+
+							<RepeatButton
+								Grid.Row="1"
+								x:Name="PART_MidRange"
+								Width="{TemplateBinding RangeWidth}"
+								Margin="{TemplateBinding RangeMargin}"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								Height="5"
+								SnapsToDevicePixels="True"
+								Style="{StaticResource SliderRepeatButton1}" />
+
+							<Slider
+								x:Name="PART_LowerSlider"
+								Grid.Row="1"
+								AutoToolTipPlacement="{TemplateBinding AutoToolTipPlacement}"
+								AutoToolTipPrecision="{TemplateBinding AutoToolTipPrecision}"
+								Focusable="False"
+								Template="{StaticResource SliderTemplate}" />
+
+							<Slider
+								x:Name="PART_HigherSlider"
+								Grid.Row="1"
+								AutoToolTipPlacement="{TemplateBinding AutoToolTipPlacement}"
+								AutoToolTipPrecision="{TemplateBinding AutoToolTipPrecision}"
+								Focusable="False"
+								Template="{StaticResource SliderTemplate2}" />
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<!--#region ScrollBar-->
 
 	<Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
@@ -698,11 +800,11 @@
 						</Grid.ColumnDefinitions>
 						<Border
 							x:Name="BackgroundBorder"
-							CornerRadius="5"
 							Grid.ColumnSpan="2"
 							Background="{DynamicResource DatagridHeaderBrush}"
 							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="0" />
+							BorderThickness="0"
+							CornerRadius="5" />
 						<Border
 							Grid.ColumnSpan="2"
 							Margin="0,3,0,3"
@@ -809,8 +911,14 @@
 												<GeometryGroup FillRule="Nonzero">
 													<GeometryGroup.Children>
 														<MultiBinding Converter="{StaticResource RoundedGeometryGroupConverter}" ConverterParameter="5">
-															<Binding ElementName="Border" Path="ActualWidth" UpdateSourceTrigger="PropertyChanged" />
-															<Binding ElementName="Border" Path="ActualHeight" UpdateSourceTrigger="PropertyChanged" />
+															<Binding
+																ElementName="Border"
+																Path="ActualWidth"
+																UpdateSourceTrigger="PropertyChanged" />
+															<Binding
+																ElementName="Border"
+																Path="ActualHeight"
+																UpdateSourceTrigger="PropertyChanged" />
 														</MultiBinding>
 													</GeometryGroup.Children>
 												</GeometryGroup>
