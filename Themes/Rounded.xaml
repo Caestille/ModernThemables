@@ -11,8 +11,6 @@
 
 	<!--#region Controls-->
 
-	<!--#endregion End Controls-->
-
 	<!--#region Themable Tooltip Style-->
 
 	<Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
@@ -548,6 +546,8 @@
 
 	<!--#endregion End Combobox-->
 
+	<!--#region RangeSlider-->
+
 	<ControlTemplate x:Key="SliderTemplate" TargetType="{x:Type Slider}">
 		<Grid>
 			<Grid.RowDefinitions>
@@ -598,13 +598,13 @@
 							</Grid.RowDefinitions>
 
 							<RepeatButton
-								Grid.Row="1"
 								x:Name="PART_MidRange"
+								Grid.Row="1"
 								Width="{TemplateBinding RangeWidth}"
+								Height="5"
 								Margin="{TemplateBinding RangeMargin}"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Center"
-								Height="5"
 								SnapsToDevicePixels="True"
 								Style="{StaticResource SliderRepeatButton1}" />
 
@@ -629,6 +629,8 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+
+	<!--#endregion-->
 
 	<!--#region ScrollBar-->
 
@@ -774,6 +776,15 @@
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Control.Background" Value="{DynamicResource DatagridHeaderBrush}" />
 		<Setter Property="Control.HorizontalContentAlignment" Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Border Background="{TemplateBinding Background}" CornerRadius="5">
+						<ContentPresenter />
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
 	</Style>
 
 	<Style x:Key="ThemableDatagridColumnHeader" TargetType="{x:Type DataGridColumnHeader}">
@@ -1287,5 +1298,7 @@
 	</Style>
 
 	<!--#endregion End Custom Checkbox-->
+
+	<!--#endregion End Controls-->
 
 </ResourceDictionary>
