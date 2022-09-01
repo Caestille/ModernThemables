@@ -13,6 +13,40 @@
 
 	<!--#endregion End Controls-->
 
+	<!--#region Themable Tooltip Style-->
+
+	<Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="HasDropShadow" Value="False" />
+		<Setter Property="FontSize" Value="12" />
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ToolTip">
+					<Grid>
+						<Border
+							Margin="10,10,10,10"
+							Background="{DynamicResource MenuBrush}"
+							BorderBrush="{DynamicResource StatusTextBrush}"
+							BorderThickness="0"
+							CornerRadius="10">
+							<ContentPresenter Margin="6" />
+							<Border.Effect>
+								<DropShadowEffect
+									BlurRadius="10"
+									Opacity="0.6"
+									ShadowDepth="0"
+									Color="Black" />
+							</Border.Effect>
+						</Border>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--#endregion-->
+
 	<!--#region Themable Info Tooltip Style-->
 
 	<Style x:Key="InfoTooltip" TargetType="ToolTip">
@@ -70,7 +104,6 @@
 								</Polygon.Clip>
 							</Polygon>
 						</Grid>
-
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
@@ -138,6 +171,8 @@
 
 	<!--#endregion-->
 
+	<!--#region Slider-->
+
 	<!--#region Slider thumb-->
 
 	<ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
@@ -188,7 +223,7 @@
 		</Setter>
 	</Style>
 
-	<!--#endregion End slider thumb-->
+	<!--#endregion-->
 
 	<Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
 		<Setter Property="SnapsToDevicePixels" Value="true" />
@@ -262,6 +297,8 @@
 			</Trigger>
 		</Style.Triggers>
 	</Style>
+
+	<!--#endregion-->
 
 	<!--#region Combobox-->
 	<ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
@@ -569,16 +606,14 @@
 							</Track.DecreaseRepeatButton>
 						</Track>
 					</Grid>
-
 					<ControlTemplate.Triggers>
 						<Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
 							<Setter TargetName="Thumb" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
-							<Setter TargetName="GridRoot" Property="Width" Value="8" />
+							<Setter TargetName="GridRoot" Property="Width" Value="9" />
 						</Trigger>
 						<Trigger SourceName="Thumb" Property="IsDragging" Value="true">
 							<Setter TargetName="Thumb" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
 						</Trigger>
-
 						<Trigger Property="IsEnabled" Value="false">
 							<Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
 						</Trigger>
@@ -663,6 +698,7 @@
 						</Grid.ColumnDefinitions>
 						<Border
 							x:Name="BackgroundBorder"
+							CornerRadius="5"
 							Grid.ColumnSpan="2"
 							Background="{DynamicResource DatagridHeaderBrush}"
 							BorderBrush="{TemplateBinding BorderBrush}"
@@ -673,7 +709,8 @@
 							Background="Transparent"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							BorderThickness="0,0,1,0"
-							Visibility="{TemplateBinding Content, Converter={StaticResource VisibleIfNotNullConverter}}" />
+							Visibility="{TemplateBinding Content,
+							                             Converter={StaticResource VisibleIfNotNullConverter}}" />
 						<ContentPresenter
 							Margin="5"
 							HorizontalAlignment="Left"
@@ -746,6 +783,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type DataGrid}">
 					<Border
+						x:Name="Border"
 						Padding="{TemplateBinding Padding}"
 						Background="{TemplateBinding Background}"
 						BorderBrush="{TemplateBinding BorderBrush}"
@@ -756,14 +794,7 @@
 							<ScrollViewer.Template>
 								<ControlTemplate TargetType="{x:Type ScrollViewer}">
 									<Grid>
-										<Border
-											x:Name="rootBorder"
-											Background="{DynamicResource MainBackgroundBrush}"
-											CornerRadius="5" />
 										<Grid>
-											<Grid.OpacityMask>
-												<VisualBrush Visual="{Binding ElementName=rootBorder}" />
-											</Grid.OpacityMask>
 											<Grid.ColumnDefinitions>
 												<ColumnDefinition Width="Auto" />
 												<ColumnDefinition Width="*" />
@@ -774,6 +805,16 @@
 												<RowDefinition Height="*" />
 												<RowDefinition Height="Auto" />
 											</Grid.RowDefinitions>
+											<Grid.Clip>
+												<GeometryGroup FillRule="Nonzero">
+													<GeometryGroup.Children>
+														<MultiBinding Converter="{StaticResource RoundedGeometryGroupConverter}" ConverterParameter="5">
+															<Binding ElementName="Border" Path="ActualWidth" UpdateSourceTrigger="PropertyChanged" />
+															<Binding ElementName="Border" Path="ActualHeight" UpdateSourceTrigger="PropertyChanged" />
+														</MultiBinding>
+													</GeometryGroup.Children>
+												</GeometryGroup>
+											</Grid.Clip>
 											<Button
 												Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
 												Command="{x:Static DataGrid.SelectAllCommand}"
@@ -790,8 +831,7 @@
 												x:Name="PART_ScrollContentPresenter"
 												Grid.Row="1"
 												Grid.ColumnSpan="2"
-												CanContentScroll="{TemplateBinding CanContentScroll}" >
-											</ScrollContentPresenter>
+												CanContentScroll="{TemplateBinding CanContentScroll}" />
 											<ScrollBar
 												x:Name="PART_VerticalScrollBar"
 												Grid.Row="1"

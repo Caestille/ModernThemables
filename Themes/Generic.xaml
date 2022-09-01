@@ -51,6 +51,7 @@
 
 	<converters:CentreToolTipConverter x:Key="CentreToolTipConverter" />
 	<converters:ColourRgbConverter x:Key="ColourRgbConverter" />
+	<converters:RoundedGeometryGroupConverter x:Key="RoundedGeometryGroupConverter" />
 
 	<!--#endregion End Converters-->
 
@@ -77,29 +78,6 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-
-	<!--#region Themable Tooltip Style-->
-
-	<Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
-		<Setter Property="OverridesDefaultStyle" Value="true" />
-		<Setter Property="HasDropShadow" Value="False" />
-		<Setter Property="FontSize" Value="12" />
-		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="ToolTip">
-					<Border
-						Background="{DynamicResource MenuBrush}"
-						BorderBrush="{DynamicResource StatusTextBrush}"
-						BorderThickness="1">
-						<ContentPresenter Margin="3" />
-					</Border>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-
-	<!--#endregion-->
 
 	<Style TargetType="{x:Type controls:BlurHost}">
 		<Setter Property="Template">
