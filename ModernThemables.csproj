@@ -67,4 +67,8 @@
     </Page>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ScalableIcons\" />
+  </ItemGroup>
+
 </Project>

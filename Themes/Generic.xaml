@@ -53,6 +53,12 @@
 	<converters:RoundedGeometryGroupConverter x:Key="RoundedGeometryGroupConverter" />
 
 	<!--#endregion End Converters-->
+	
+	<!--#region Icons-->
+	
+	
+	
+	<!--#endregion-->
 
 	<Style x:Key="ThemableFocusStyle">
 		<Setter Property="Control.Template">
@@ -142,6 +148,8 @@
 	</Style>
 
 	<!--#endregion-->
+	
+	<!--#region Base range slider-->
 
 	<Style x:Key="DefaultRangeStyle" TargetType="{x:Type RepeatButton}">
 		<Setter Property="Focusable" Value="False" />
@@ -215,4 +223,6 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+	
+	<!--#endregion-->
 </ResourceDictionary>
