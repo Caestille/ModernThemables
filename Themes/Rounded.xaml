@@ -1095,9 +1095,10 @@
 							<ContentPresenter
 								x:Name="content"
 								Grid.Column="1"
-								Margin="5,0,0,0"
+								Margin="5,0,5,0"
 								HorizontalAlignment="Left"
-								VerticalAlignment="Top" />
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								TextBlock.FontSize="{TemplateBinding FontSize}" />
 
 						</Grid>
 					</Border>
