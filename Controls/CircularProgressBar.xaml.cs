@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
@@ -176,7 +177,7 @@ namespace ModernThemables.Controls
 						}
 						catch { break; }
 
-						Thread.Sleep(1000 / 30);
+						Thread.Sleep(1000 / 60);
 					}
 				}));
 				thread.Start();
@@ -188,7 +189,7 @@ namespace ModernThemables.Controls
 					while (true && !this_.breakAll)
 					{
 						var nextAngle2 = (this_.indeterminateAngle2 + lowSpeed) % 360;
-						var nextAngle1 = (this_.indeterminateAngle1 + lowSpeed) % 360;
+						var nextAngle1 = (this_.indeterminateAngle1 + highSpeed) % 360;
 						var diff = 360 - Math.Abs((nextAngle2 < nextAngle1 ? nextAngle1 - (nextAngle2 + 360) : nextAngle1 - nextAngle2));
 						if (this_.indeterminateAngle1 > 360 - highSpeed && diff < 30)
 						{
@@ -202,6 +203,7 @@ namespace ModernThemables.Controls
 						{
 							this_.indeterminateAngle2 = 360 - 1;
 						}
+						Debug.WriteLine($"Angle bois: {this_.indeterminateAngle1}, {this_.indeterminateAngle2}");
 						try { Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2)); } catch { break; }
 						Thread.Sleep(1000 / 30);
 					}
