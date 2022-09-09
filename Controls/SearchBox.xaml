@@ -4,6 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:scalableicons="clr-namespace:ModernThemables.ScalableIcons"
 	x:Name="root"
 	mc:Ignorable="d">
 	<Grid>
@@ -38,27 +39,12 @@
 				</Style>
 			</TextBox.Style>
 		</TextBox>
-		<Grid
-			Width="20"
+		<scalableicons:MagnifyingGlassIcon
+			Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+			Margin="2"
 			HorizontalAlignment="Left"
-			IsHitTestVisible="False">
-			<Border
-				Width="11"
-				Height="11"
-				Margin="2"
-				HorizontalAlignment="Left"
-				VerticalAlignment="Top"
-				Background="Transparent"
-				BorderBrush="{Binding DefaultForegroundBrush, ElementName=root}"
-				BorderThickness="1"
-				CornerRadius="5.5" />
-			<Line
-				Stroke="{Binding DefaultForegroundBrush, ElementName=root}"
-				StrokeThickness="1.5"
-				X1="11"
-				X2="17"
-				Y1="11"
-				Y2="17" />
-		</Grid>
+			Foreground="{Binding DefaultForegroundBrush, ElementName=root}"
+			StrokeStyle="Round"
+			StrokeThickness="1.5" />
 	</Grid>
 </UserControl>

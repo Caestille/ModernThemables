@@ -5,6 +5,7 @@
 	xmlns:controls="clr-namespace:ModernThemables.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:scalableicons="clr-namespace:ModernThemables.ScalableIcons"
 	xmlns:viewmodels="clr-namespace:ModernThemables.ViewModels"
 	x:Name="WindowControl"
 	Width="Auto"
@@ -52,39 +53,18 @@
 			Height="30"
 			HorizontalAlignment="Left"
 			Focusable="False">
-			<Grid
-				x:Name="LightModeIconGrid"
+			<scalableicons:SunIcon
 				Grid.Row="1"
-				Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfFalseConverter}}">
-				<Ellipse
-					Width="7"
-					Height="7"
-					Stroke="{DynamicResource StatusTextBrush}"
-					StrokeThickness="4" />
-				<Ellipse
-					Width="15"
-					Height="15"
-					Stroke="{DynamicResource StatusTextBrush}"
-					StrokeDashArray="0.5,0.88"
-					StrokeThickness="3" />
-			</Grid>
-			<Grid x:Name="DarkModeIconGrid" Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfTrueConverter}}">
-				<Border
-					Width="15"
-					Height="15"
-					BorderBrush="{DynamicResource StatusTextBrush}"
-					BorderThickness="5,0,0,5"
-					CornerRadius="30">
-					<Border.Clip>
-						<GeometryGroup FillRule="Nonzero">
-							<RectangleGeometry Rect="0,0,10,10" />
-							<RectangleGeometry Rect="10,8,10,10" />
-							<RectangleGeometry Rect="0,10,10,10" />
-						</GeometryGroup>
-					</Border.Clip>
-				</Border>
-
-			</Grid>
+				Width="15"
+				Height="15"
+				Foreground="{DynamicResource StatusTextBrush}"
+				Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfFalseConverter}}" />
+			<scalableicons:MoonIcon
+				Grid.Row="1"
+				Width="15"
+				Height="15"
+				Foreground="{DynamicResource StatusTextBrush}"
+				Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfTrueConverter}}" />
 		</Grid>
 		<Label
 			Grid.Row="0"

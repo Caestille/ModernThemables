@@ -12,6 +12,7 @@ using System.Windows.Media.Animation;
 using CoreUtilities.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
+using ModernThemables.ScalableIcons;
 
 namespace ModernThemables.Controls
 {
@@ -149,22 +150,23 @@ namespace ModernThemables.Controls
 
 			preventTrigger = true;
 			if (!isWindowMaximised) mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+			ContentGrid.Margin = isWindowMaximised ? new Thickness(0, 31, 0, 0) : new Thickness(1, 31, 1, 1);
+			var logicalElements = new List<FrameworkElement>();
+			logicalElements = (this as FrameworkElement).GetLogicalElements();
+			var grid = (RestoreIcon)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "RestoreDownGrid");
+			grid.Visibility = !isWindowMaximised ? Visibility.Collapsed : Visibility.Visible;
+			var border = (MaximiseIcon)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "MaximiseBorder");
+			border.Visibility = !isWindowMaximised ? Visibility.Visible : Visibility.Collapsed;
 			mainWindow.WindowState = isWindowMaximised ? WindowState.Maximized : WindowState.Normal;
 			if (isWindowMaximised)
 			{
-				await Task.Delay(150);
+				await Task.Delay(1);
 				mainWindow.WindowStyle = WindowStyle.None;
 				mainWindow.WindowState = WindowState.Normal;
 				mainWindow.WindowState = WindowState.Maximized;
 			}
 			preventTrigger = false;
 			//RootGrid.Margin = isWindowMaximised ? new Thickness(7) : new Thickness(0);
-			var logicalElements = new List<FrameworkElement>();
-			logicalElements = (this as FrameworkElement).GetLogicalElements();
-			var grid = (Grid)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "RestoreDownGrid");
-			grid.Visibility = !isWindowMaximised ? Visibility.Collapsed : Visibility.Visible;
-			var border = (Border)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "MaximiseBorder");
-			border.Visibility = !isWindowMaximised ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		private async void OpenThemingMenu(bool open)

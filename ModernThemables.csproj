@@ -61,13 +61,13 @@
     <Page Update="Themes\Rounded.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
+    <Page Update="Themes\Icons.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Themes\Windows10.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ScalableIcons\" />
   </ItemGroup>
 
 </Project>

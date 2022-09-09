@@ -2,11 +2,10 @@
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
-    [TemplatePart(Name = PART_MidRange, Type = typeof(RepeatButton))]
+	[TemplatePart(Name = PART_MidRange, Type = typeof(RepeatButton))]
     [TemplatePart(Name = PART_HigherSlider, Type = typeof(Slider))]
     [TemplatePart(Name = PART_LowerSlider, Type = typeof(Slider))]
     [TemplatePart(Name = PART_Track, Type = typeof(Track))]

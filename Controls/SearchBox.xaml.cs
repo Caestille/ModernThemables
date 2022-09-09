@@ -1,13 +1,12 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
-    /// <summary>
-    /// Interaction logic for SearchBox.xaml
-    /// </summary>
-    public partial class SearchBox
+	/// <summary>
+	/// Interaction logic for SearchBox.xaml
+	/// </summary>
+	public partial class SearchBox
     {
         private const string DefaultSearchText = "Search";
 
