@@ -64,6 +64,7 @@
 				Width="15"
 				Height="15"
 				Foreground="{DynamicResource StatusTextBrush}"
+				Background="{DynamicResource MenuBrush}"
 				Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfTrueConverter}}" />
 		</Grid>
 		<Label
