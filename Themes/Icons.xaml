@@ -697,16 +697,8 @@
 									Fill="{TemplateBinding Foreground}" />
 								<Border
 									Grid.Column="1"
-									Width="{TemplateBinding StrokeThickness,
-									                        Converter={StaticResource ValueMultiplierConverter},
-									                        ConverterParameter=0.5}"
+									Width="{TemplateBinding StrokeThickness}"
 									HorizontalAlignment="Left"
-									Background="{TemplateBinding Background}" />
-								<Border
-									Width="{TemplateBinding StrokeThickness,
-									                        Converter={StaticResource ValueMultiplierConverter},
-									                        ConverterParameter=0.5}"
-									HorizontalAlignment="Right"
 									Background="{TemplateBinding Background}" />
 								<Border
 									Grid.Row="1"
