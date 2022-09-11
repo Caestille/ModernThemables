@@ -19,7 +19,7 @@
 							Background="{TemplateBinding Foreground}"
 							CornerRadius="2">
 							<Border.RenderTransform>
-								<RotateTransform Angle="45" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
+								<RotateTransform Angle="0" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
 							</Border.RenderTransform>
 							<Border.Style>
 								<Style>
@@ -56,6 +56,7 @@
 						</Border>
 						<Border
 							Height="{TemplateBinding StrokeThickness}"
+							Margin="0,3,0,0"
 							VerticalAlignment="Top"
 							Background="{TemplateBinding Foreground}"
 							CornerRadius="2">
@@ -94,6 +95,7 @@
 						</Border>
 						<Border
 							Height="{TemplateBinding StrokeThickness}"
+							Margin="0,0,0,2"
 							VerticalAlignment="Bottom"
 							Background="{TemplateBinding Foreground}"
 							CornerRadius="2">
@@ -136,7 +138,7 @@
 							Background="{TemplateBinding Foreground}"
 							CornerRadius="2">
 							<Border.RenderTransform>
-								<RotateTransform Angle="-45" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
+								<RotateTransform Angle="0" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
 							</Border.RenderTransform>
 							<Border.Style>
 								<Style>

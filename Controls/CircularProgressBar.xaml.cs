@@ -203,7 +203,10 @@ namespace ModernThemables.Controls
 						{
 							this_.indeterminateAngle2 = 360 - 1;
 						}
-						Debug.WriteLine($"Angle bois: {this_.indeterminateAngle1}, {this_.indeterminateAngle2}");
+						if (this_.indeterminateAngle1 > this_.indeterminateAngle2)
+						{
+							this_.indeterminateAngle1 = this_.indeterminateAngle2 - 1;
+						}
 						try { Application.Current.Dispatcher.Invoke(() => this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2)); } catch { break; }
 						Thread.Sleep(1000 / 30);
 					}
