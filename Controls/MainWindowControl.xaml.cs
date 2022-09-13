@@ -21,8 +21,13 @@ namespace ModernThemables.Controls
 	/// </summary>
 	public partial class MainWindowControl : UserControl
 	{
+		#region Dll imports and structs
+
 		[DllImport("user32.dll")]
-		private static extern IntPtr MonitorFromWindow(IntPtr handle, uint flags);
+		private static extern IntPtr MonitorFromWindow(IntPtr handle, uint flags); 
+		
+		[DllImport("user32.dll")]
+		public static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
 
 		[DllImport("user32.dll")]
 		private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
@@ -84,14 +89,30 @@ namespace ModernThemables.Controls
 			public int WorkingAreaHeight;
 		}
 
-		private const int WM_GETMINMAXINFO = 0x0024;
-		private const uint MONITOR_DEFAULTTONEAREST = 0x00000002;
+
+		internal class NativeMethods
+		{
+			public const int SC_RESTORE = 0xF120;
+			public const int SC_MINIMIZE = 0xF020;
+			public const int SC_CHANGESTATE = 0xF220;
+			public const int SC_CLOSE = 0xF060;
+			public const int WM_SYSCOMMAND = 0x0112;
+			public const int WS_SYSMENU = 0x80000;
+			public const int WS_MINIMIZEBOX = 0x20000;
+			public const int CS_DBLCLKS = 0x8;
+			public const int WM_GETMINMAXINFO = 0x0024;
+			public const uint MONITOR_DEFAULTTONEAREST = 0x00000002;
+			NativeMethods() { }
+		}
+
+		#endregion
+
+		#region Members and dependency properties
 
 		private bool isThemingGridOpen;
 		private bool isWindowMaximised;
 		private bool isDockedOrMaximised;
 		private bool preventTrigger;
-		private bool minimisedWhileMaximised;
 
 		private Window mainWindow;
 		private static CurrentMonitorInfo currentMonitorInfo;
@@ -136,37 +157,14 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty VisibleViewModelProperty = DependencyProperty.Register(
 		  "VisibleViewModel", typeof(ObservableObject), typeof(MainWindowControl), new PropertyMetadata(null));
 
+		#endregion
+
 		public MainWindowControl()
 		{
 			InitializeComponent();
 			SettingsClippingStackPanel.ClipToBounds = true;
 			SettingsBorderBlur.Opacity = 0;
 			this.Loaded += MainWindowControl_Loaded;
-		}
-
-		private async void ChangeWindowState()
-		{
-			isWindowMaximised = !isWindowMaximised;
-
-			preventTrigger = true;
-			if (!isWindowMaximised) mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
-			ContentGrid.Margin = isWindowMaximised ? new Thickness(0, 31, 0, 0) : new Thickness(1, 31, 1, 1);
-			var logicalElements = new List<FrameworkElement>();
-			logicalElements = (this as FrameworkElement).GetLogicalElements();
-			var grid = (RestoreIcon)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "RestoreDownGrid");
-			grid.Visibility = !isWindowMaximised ? Visibility.Collapsed : Visibility.Visible;
-			var border = (MaximiseIcon)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "MaximiseBorder");
-			border.Visibility = !isWindowMaximised ? Visibility.Visible : Visibility.Collapsed;
-			mainWindow.WindowState = isWindowMaximised ? WindowState.Maximized : WindowState.Normal;
-			if (isWindowMaximised)
-			{
-				await Task.Delay(1);
-				mainWindow.WindowStyle = WindowStyle.None;
-				mainWindow.WindowState = WindowState.Normal;
-				mainWindow.WindowState = WindowState.Maximized;
-			}
-			preventTrigger = false;
-			//RootGrid.Margin = isWindowMaximised ? new Thickness(7) : new Thickness(0);
 		}
 
 		private async void OpenThemingMenu(bool open)
@@ -179,16 +177,10 @@ namespace ModernThemables.Controls
 			var menuHiddenTopMargin = 5;
 			var menuStart = open ? SettingsGrid.ActualHeight * -1 : menuHiddenTopMargin;
 			var menuEnd = open ? menuHiddenTopMargin : SettingsGrid.ActualHeight * -1;
-			var settingsOpacityStart = open ? 0 : 1;
-			var settingsOpacityEnd = open ? 1 : 0;
-			var settingsOpacityTimespan = open ? 0.3 : 0.1;
-			var blackoutGridOpacityStart = open ? 0 : 0.3;
 			var blackoutGridOpacityEnd = open ? 0.3 : 0;
 			var buttonRotate = open ? 180 : 0;
 
 			ThemeSetButton.RenderTransform = new RotateTransform(buttonRotate) { CenterX = ThemeSetButton.ActualWidth / 2, CenterY = ThemeSetButton.ActualHeight / 2 };
-			//SettingsGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(settingsOpacityStart, settingsOpacityEnd, new Duration(TimeSpan.FromSeconds(settingsOpacityTimespan))));
-			//BlackoutGrid.BeginAnimation(OpacityProperty, new DoubleAnimation(blackoutGridOpacityStart, blackoutGridOpacityEnd, new Duration(TimeSpan.FromSeconds(0.1))));
 			BlackoutGrid.Opacity = blackoutGridOpacityEnd;
 			SettingsGrid.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(menuStart, menuEnd, new Duration(TimeSpan.FromSeconds(0.1))));
 
@@ -209,13 +201,13 @@ namespace ModernThemables.Controls
 			}
 		}
 
-		private static IntPtr HookProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		private IntPtr HookProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
-			if (msg == WM_GETMINMAXINFO)
+			if (msg == NativeMethods.WM_GETMINMAXINFO)
 			{
 				var mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
 
-				var monitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+				var monitor = MonitorFromWindow(hwnd, NativeMethods.MONITOR_DEFAULTTONEAREST);
 
 				if (monitor != IntPtr.Zero)
 				{
@@ -239,7 +231,62 @@ namespace ModernThemables.Controls
 				Marshal.StructureToPtr(mmi, lParam, true);
 			}
 
+			if (msg == NativeMethods.WM_SYSCOMMAND)
+			{
+				if (wParam.ToInt32() == NativeMethods.SC_MINIMIZE)
+				{
+					mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+					mainWindow.WindowState = WindowState.Minimized;
+
+					handled = true;
+				}
+				else if (wParam.ToInt32() == NativeMethods.SC_RESTORE)
+				{
+					mainWindow.WindowState = WindowState.Normal;
+					mainWindow.WindowStyle = WindowStyle.None;
+
+					handled = true;
+				}
+				else if (wParam.ToInt32() == NativeMethods.SC_CHANGESTATE)
+				{
+					mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+
+					isWindowMaximised = !isWindowMaximised;
+					ContentGrid.Margin = isWindowMaximised ? new Thickness(0, 31, 0, 0) : new Thickness(1, 31, 1, 1);
+					SetChangeStateButtonAppearance(isWindowMaximised);
+					mainWindow.WindowState = isWindowMaximised
+						? WindowState.Maximized
+						: WindowState.Normal;
+
+					mainWindow.WindowStyle = WindowStyle.None;
+					if (isWindowMaximised)
+					{
+						mainWindow.WindowState = WindowState.Minimized;
+						mainWindow.WindowState = WindowState.Maximized;
+					}
+
+					handled = true;
+				}
+				else if (wParam.ToInt32() == NativeMethods.SC_CLOSE)
+				{
+					mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+					mainWindow.Close();
+
+					handled = true;
+				}
+			}
+
 			return IntPtr.Zero;
+		}
+
+		private void SetChangeStateButtonAppearance(bool isWindowMaximised)
+		{
+			var logicalElements = new List<FrameworkElement>();
+			logicalElements = (this as FrameworkElement).GetLogicalElements();
+			var grid = (RestoreIcon)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "RestoreDownGrid");
+			grid.Visibility = !isWindowMaximised ? Visibility.Collapsed : Visibility.Visible;
+			var border = (MaximiseIcon)logicalElements.First(x => x.Tag != null && x.Tag.ToString() == "MaximiseBorder");
+			border.Visibility = !isWindowMaximised ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		protected void OnSourceInitialized()
@@ -266,6 +313,7 @@ namespace ModernThemables.Controls
 				mainWindow.Height = this.Height;
 				mainWindow.SizeToContent = SizeToContent.WidthAndHeight;
 			}
+
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			this.Loaded -= MainWindowControl_Loaded;
 
@@ -274,7 +322,6 @@ namespace ModernThemables.Controls
 
 			OnSourceInitialized();
 			mainWindow.SizeChanged += MainWindow_SizeChanged;
-			mainWindow.StateChanged += MainWindow_StateChanged;
 			this.SetBinding(IconProperty, new Binding("Icon") { Source = mainWindow });
 			this.SetBinding(TitleProperty, new Binding("Title") { Source = mainWindow });
 			this.SetBinding(IsMainWindowFocusedProperty, new Binding("IsActive") { Source = mainWindow });
@@ -289,22 +336,20 @@ namespace ModernThemables.Controls
 
 		private void MinimiseButton_Click(object sender, RoutedEventArgs e)
 		{
-			preventTrigger = true;
-			minimisedWhileMaximised = mainWindow.WindowState == WindowState.Maximized;
-			mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
-			mainWindow.WindowState = WindowState.Minimized;
-			preventTrigger = false;
+			var m_hWnd = new WindowInteropHelper(mainWindow).Handle;
+			SendMessage(m_hWnd, NativeMethods.WM_SYSCOMMAND, new IntPtr(NativeMethods.SC_MINIMIZE), IntPtr.Zero);
 		}
 
 		private void ChangeStateButton_Click(object sender, RoutedEventArgs e)
 		{
-			ChangeWindowState();
+			var m_hWnd = new WindowInteropHelper(mainWindow).Handle;
+			SendMessage(m_hWnd, NativeMethods.WM_SYSCOMMAND, new IntPtr(NativeMethods.SC_CHANGESTATE), IntPtr.Zero);
 		}
 
 		private void CloseButton_Click(object sender, RoutedEventArgs e)
 		{
-			mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
-			mainWindow?.Close();
+			var m_hWnd = new WindowInteropHelper(mainWindow).Handle;
+			SendMessage(m_hWnd, NativeMethods.WM_SYSCOMMAND, new IntPtr(NativeMethods.SC_CLOSE), IntPtr.Zero);
 		}
 
 		private void ThemeSetButton_Click(object sender, RoutedEventArgs e)
@@ -331,23 +376,10 @@ namespace ModernThemables.Controls
 
 			if (isDockedTop || wasDocked)
 			{
-				ChangeWindowState();
+				var m_hWnd = new WindowInteropHelper(mainWindow).Handle;
+				SendMessage(m_hWnd, NativeMethods.WM_SYSCOMMAND, new IntPtr(NativeMethods.SC_CHANGESTATE), IntPtr.Zero);
 			}
 			isDockedOrMaximised = isDockedTop || isDockedSide || (mainWindow.WindowState == WindowState.Maximized);
-		}
-
-		private async void MainWindow_StateChanged(object? sender, EventArgs e)
-		{
-			if (minimisedWhileMaximised && !preventTrigger)
-			{
-				preventTrigger = true;
-				await Task.Delay(200);
-				mainWindow.WindowStyle = WindowStyle.None;
-				mainWindow.WindowState = WindowState.Normal;
-				mainWindow.WindowState = WindowState.Maximized;
-				preventTrigger = false;
-				minimisedWhileMaximised = false;
-			}
 		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
