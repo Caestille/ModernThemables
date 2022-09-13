@@ -289,13 +289,12 @@ namespace ModernThemables.Controls
 			border.Visibility = !isWindowMaximised ? Visibility.Visible : Visibility.Collapsed;
 		}
 
-		protected void OnSourceInitialized()
-		{
-			((HwndSource)PresentationSource.FromVisual(this)).AddHook(HookProc);
-		}
-
 		private async void MainWindowControl_Loaded(object sender, RoutedEventArgs e)
 		{
+			this.Loaded -= MainWindowControl_Loaded;
+			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+			ThemingControl.InternalRequestClose += ThemingControl_InternalRequestClose;
+
 			if (IsToolWindow)
 			{
 				ChangeStateButton.Visibility = Visibility.Collapsed;
@@ -303,7 +302,6 @@ namespace ModernThemables.Controls
 				Splitter.Visibility = Visibility.Collapsed;
 				ThemeSetButton.Visibility = Visibility.Collapsed;
 			}
-
 			await Task.Run(() => Thread.Sleep(300));
 			mainWindow = Window.GetWindow(this);
 			if (IsToolWindow)
@@ -314,19 +312,17 @@ namespace ModernThemables.Controls
 				mainWindow.SizeToContent = SizeToContent.WidthAndHeight;
 			}
 
-			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
-			this.Loaded -= MainWindowControl_Loaded;
 
 			if (mainWindow == null)
 				return;
 
-			OnSourceInitialized();
+			((HwndSource)PresentationSource.FromVisual(this)).AddHook(HookProc);
+
 			mainWindow.SizeChanged += MainWindow_SizeChanged;
+
 			this.SetBinding(IconProperty, new Binding("Icon") { Source = mainWindow });
 			this.SetBinding(TitleProperty, new Binding("Title") { Source = mainWindow });
 			this.SetBinding(IsMainWindowFocusedProperty, new Binding("IsActive") { Source = mainWindow });
-
-			ThemingControl.InternalRequestClose += ThemingControl_InternalRequestClose;
 		}
 
 		private void ThemingControl_InternalRequestClose(object? sender, EventArgs e)
