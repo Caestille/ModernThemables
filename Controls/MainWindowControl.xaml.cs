@@ -245,6 +245,12 @@ namespace ModernThemables.Controls
 					mainWindow.WindowState = WindowState.Normal;
 					mainWindow.WindowStyle = WindowStyle.None;
 
+					if (isWindowMaximised)
+					{
+						mainWindow.WindowState = WindowState.Minimized;
+						mainWindow.WindowState = WindowState.Maximized;
+					}
+
 					handled = true;
 				}
 				else if (wParam.ToInt32() == NativeMethods.SC_CHANGESTATE)
