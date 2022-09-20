@@ -865,6 +865,20 @@
 		</Setter>
 	</Style>
 
+	<Style TargetType="{x:Type icons:PlayIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:PlayIcon}">
+					<Grid x:Name="Grid">
+						<Viewbox Stretch="Fill">
+							<Polygon Fill="{TemplateBinding Foreground}" Points="0,0 15,15 0,30" />
+						</Viewbox>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<Style TargetType="{x:Type icons:PlusIcon}">
 		<Setter Property="Template">
 			<Setter.Value>
@@ -977,6 +991,52 @@
 							<Border Background="{TemplateBinding Foreground}" />
 							<Border Grid.Row="2" Background="{TemplateBinding Foreground}" />
 						</Grid>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type icons:TagIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:TagIcon}">
+					<Grid x:Name="Grid">
+						<Viewbox Stretch="Fill">
+							<Grid>
+								<Path Data="M0 42 L22 64 L56 30 L56 8 L34 8Z" Fill="{TemplateBinding Foreground}" />
+								<Ellipse
+									Width="9"
+									Height="9"
+									Margin="4,14"
+									HorizontalAlignment="Right"
+									VerticalAlignment="Top"
+									Fill="{TemplateBinding Background}" />
+								<Border
+									Width="10"
+									Height="17"
+									Margin="0,4,0,0"
+									HorizontalAlignment="Right"
+									VerticalAlignment="Top"
+									BorderBrush="{TemplateBinding Background}"
+									BorderThickness="0,0,2,0"
+									CornerRadius="5"
+									RenderTransformOrigin="0.5,0.5">
+									<Border.RenderTransform>
+										<RotateTransform Angle="45" />
+									</Border.RenderTransform>
+									<Border
+										BorderBrush="{TemplateBinding Foreground}"
+										BorderThickness="0,0,3,0"
+										CornerRadius="4">
+										<Border
+											BorderBrush="{TemplateBinding Background}"
+											BorderThickness="0,0,2,0"
+											CornerRadius="3" />
+									</Border>
+								</Border>
+							</Grid>
+						</Viewbox>
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
