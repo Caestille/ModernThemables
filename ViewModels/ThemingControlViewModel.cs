@@ -1,6 +1,4 @@
-﻿using CoreUtilities.Interfaces;
-using CoreUtilities.Services;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -8,10 +6,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using ModernThemables.Extensions;
+using CoreUtilities.Interfaces.RegistryInteraction;
+using CoreUtilities.Services.RegistryInteraction;
 
 namespace ModernThemables.ViewModels
 {
-	public class ThemingControlViewModel : ObservableObject
+    public class ThemingControlViewModel : ObservableObject
 	{
 		[DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
 		public static extern bool ShouldSystemUseDarkMode();

@@ -1,5 +1,4 @@
-﻿using CoreUtilities.Interfaces;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -8,10 +7,11 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shell;
 using ModernThemables.Controls;
+using CoreUtilities.Interfaces.Dialogues;
 
 namespace ModernThemables.Services
 {
-	public class DialogueService : IDialogueService
+    public class DialogueService : IDialogueService
 	{
 		public Dictionary<Type, Type> registeredViews = new();
 
