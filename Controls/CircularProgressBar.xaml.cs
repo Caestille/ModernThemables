@@ -10,10 +10,10 @@ namespace ModernThemables.Controls
 		private double indeterminateAngle1;
 		private double indeterminateAngle2;
 		private bool isIndeterminate;
-		private const int lowSpeed = 15;
-		private const int highSpeed = 24;
-		private int indeterminateAngle1Speed = 15;
-		private int indeterminateAngle2Speed = 24;
+		private const int lowSpeed = 8;
+		private const int highSpeed = 15;
+		private int indeterminateAngle1Speed = 8;
+		private int indeterminateAngle2Speed = 15;
 		private int sameSpeedCount;
 		private bool setHigh;
 		private bool breakAll = false;

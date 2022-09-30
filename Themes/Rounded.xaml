@@ -759,7 +759,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type DataGridCell}">
 					<Border x:Name="Border" Background="Transparent">
-						<ContentPresenter Margin="5" />
+						<ContentPresenter Margin="5,10" />
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="DataGridCell.IsSelected" Value="True">
@@ -792,19 +792,20 @@
 		<Setter Property="SnapsToDevicePixels" Value="True" />
 		<Setter Property="MinWidth" Value="0" />
 		<Setter Property="MinHeight" Value="0" />
-		<Setter Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="Foreground" Value="{DynamicResource StatusTextBrush}" />
 		<Setter Property="Cursor" Value="Hand" />
 		<Setter Property="Padding" Value="5" />
 		<Setter Property="BorderThickness" Value="0,0,1,0" />
 		<Setter Property="BorderBrush" Value="DarkGray" />
 		<Setter Property="HorizontalContentAlignment" Value="Left" />
 		<Setter Property="TextBlock.TextAlignment" Value="Center" />
-		<Setter Property="FontWeight" Value="DemiBold" />
-		<Setter Property="FontSize" Value="14" />
+		<Setter Property="FontWeight" Value="Light" />
+		<Setter Property="FontSize" Value="10" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="DataGridColumnHeader">
-					<Grid>
+					<Grid Margin="0,0,0,0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="Auto" />
@@ -812,7 +813,7 @@
 						<Border
 							x:Name="BackgroundBorder"
 							Grid.ColumnSpan="2"
-							Background="{DynamicResource DatagridHeaderBrush}"
+							Background="Transparent"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							BorderThickness="0"
 							CornerRadius="5" />
@@ -882,7 +883,7 @@
 		<Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource StatusTextBrush}" />
 		<Setter Property="VerticalGridLinesBrush" Value="{DynamicResource StatusTextBrush}" />
 		<Setter Property="Background" Value="Transparent" />
-		<Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+		<Setter Property="VerticalScrollBarVisibility" Value="Visible" />
 		<Setter Property="EnableRowVirtualization" Value="True" />
 		<Setter Property="FontSize" Value="12" />
 		<Setter Property="RowBackground" Value="Transparent" />

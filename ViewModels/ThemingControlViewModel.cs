@@ -111,7 +111,7 @@ namespace ModernThemables.ViewModels
 		#region Colour stores
 		// Background
 		private static readonly Color MainBackgroundColourLight = ColourHelpers.MonoColour(255);
-		private static readonly Color MainBackgroundColourDark = ColourHelpers.MonoColour(20);
+		private static readonly Color MainBackgroundColourDark = ColourHelpers.MonoColour(10);
 
 		// Main text colour
 		private static readonly Color TextColourLight = Colors.Black;
