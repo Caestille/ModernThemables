@@ -96,8 +96,6 @@
 		</Setter>
 	</Style>
 
-	<!--#region Base themable button-->
-
 	<Style BasedOn="{StaticResource ResourceKey={x:Type Button}}" TargetType="{x:Type controls:ExtendedButton}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
@@ -145,8 +143,6 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-
-	<!--#endregion-->
 
 	<!--#region Base range slider-->
 
@@ -224,6 +220,5 @@
 	</Style>
 
 	<!--#endregion-->
-
 
 </ResourceDictionary>

@@ -34,7 +34,7 @@
 									BlurRadius="10"
 									Opacity="0.6"
 									ShadowDepth="0"
-									Color="Black" />
+									Color="{DynamicResource InvertedTextColour}" />
 							</Border.Effect>
 						</Border>
 					</Grid>
@@ -78,7 +78,7 @@
 									BlurRadius="10"
 									Opacity="0.6"
 									ShadowDepth="0"
-									Color="Black" />
+									Color="{DynamicResource InvertedTextColour}" />
 							</Border.Effect>
 						</Border>
 						<Grid
@@ -102,9 +102,9 @@
 								</Polygon.Clip>
 							</Polygon>
 							<Border
-								Margin="0,0,0,-2"
 								Width="7"
 								Height="3"
+								Margin="0,0,0,-2"
 								HorizontalAlignment="Center"
 								VerticalAlignment="Bottom"
 								Background="{DynamicResource MenuBrush}" />
@@ -146,7 +146,7 @@
 									BlurRadius="10"
 									Opacity="0.6"
 									ShadowDepth="0"
-									Color="Black" />
+									Color="{DynamicResource InvertedTextColour}" />
 							</Border.Effect>
 						</Border>
 						<Grid
@@ -167,9 +167,9 @@
 								</Polygon.Effect>
 							</Polygon>
 							<Border
-								Margin="0,0,-2,0"
 								Width="3"
 								Height="7"
+								Margin="0,0,-2,0"
 								HorizontalAlignment="Right"
 								VerticalAlignment="Center"
 								Background="{DynamicResource MenuBrush}" />
