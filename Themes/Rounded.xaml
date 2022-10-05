@@ -1005,7 +1005,7 @@
 
 	<!--#region Custom ListBox-->
 
-	<Style x:Key="ThemableListBox" TargetType="{x:Type ListBox}">
+	<Style TargetType="{x:Type ListBox}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
 		<Setter Property="Background" Value="Black" />
 		<Setter Property="BorderBrush" Value="Black" />

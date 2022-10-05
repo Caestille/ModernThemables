@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
-	public partial class CircularProgressBar
+	public partial class CircularProgressBar : UserControl
 	{
 		private double indeterminateAngle1;
 		private double indeterminateAngle2;
