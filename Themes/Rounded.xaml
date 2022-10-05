@@ -25,9 +25,9 @@
 						<Border
 							Margin="10,10,10,10"
 							Background="{DynamicResource MenuBrush}"
-							BorderBrush="{DynamicResource StatusTextBrush}"
-							BorderThickness="0"
-							CornerRadius="10">
+							BorderBrush="{DynamicResource MenuBorderBrush}"
+							BorderThickness="1"
+							CornerRadius="5">
 							<ContentPresenter Margin="6" />
 							<Border.Effect>
 								<DropShadowEffect
@@ -69,8 +69,8 @@
 						<Border
 							Margin="10,10,10,10"
 							Background="{DynamicResource MenuBrush}"
-							BorderBrush="{DynamicResource StatusTextBrush}"
-							BorderThickness="0"
+							BorderBrush="{DynamicResource MenuBorderBrush}"
+							BorderThickness="1"
 							CornerRadius="10">
 							<ContentPresenter Margin="6" />
 							<Border.Effect>
@@ -88,7 +88,7 @@
 							<Polygon
 								Fill="{DynamicResource MenuBrush}"
 								Points="10,0,20,10,0,10"
-								Stroke="{DynamicResource MenuBrush}"
+								Stroke="{DynamicResource MenuBorderBrush}"
 								StrokeThickness="1">
 								<Polygon.Effect>
 									<DropShadowEffect
@@ -391,7 +391,7 @@
 				<Setter TargetName="Border" Property="Background" Value="{DynamicResource StatusTextLightBrush}" />
 				<Setter Property="Foreground" Value="Gray" />
 				<Setter TargetName="Border2" Property="Background" Value="Gray" />
-				<Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource DatagridHeaderBrush}" />
+				<Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource DisabledControlClickablePartBrush}" />
 			</Trigger>
 			<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">
 				<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
@@ -534,7 +534,7 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -774,7 +774,7 @@
 
 	<Style x:Key="ThemableDatagridRowHeader" TargetType="{x:Type DataGridRowHeader}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
-		<Setter Property="Control.Background" Value="{DynamicResource DatagridHeaderBrush}" />
+		<Setter Property="Control.Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
 		<Setter Property="Control.HorizontalContentAlignment" Value="Center" />
 		<Setter Property="Template">
 			<Setter.Value>
@@ -1034,8 +1034,8 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsEnabled" Value="false">
-							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
-							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource DatagridHeaderBrush}" />
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource DisabledControlClickablePartBrush}" />
 						</Trigger>
 						<MultiTrigger>
 							<MultiTrigger.Conditions>
@@ -1113,10 +1113,10 @@
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="True">
 							<Setter TargetName="highlightCircle" Property="Background" Value="Gray" />
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
+							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
 							<Setter TargetName="highlightCircle" Property="BorderBrush" Value="Gray" />
 						</Trigger>
 						<MultiTrigger>
@@ -1196,10 +1196,10 @@
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="True">
 							<Setter TargetName="highlightCircle" Property="Background" Value="Gray" />
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource DatagridHeaderBrush}" />
+							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
 							<Setter TargetName="highlightCircle" Property="BorderBrush" Value="Gray" />
 						</Trigger>
 						<MultiTrigger>

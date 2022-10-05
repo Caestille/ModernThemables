@@ -70,7 +70,7 @@
 						Width="Auto"
 						Height="Auto"
 						Background="{DynamicResource MenuBrush}"
-						BorderBrush="{DynamicResource StatusTextLightBrush}"
+						BorderBrush="{DynamicResource MenuBorderBrush}"
 						BorderThickness="1"
 						CornerRadius="5"
 						Focusable="False">
