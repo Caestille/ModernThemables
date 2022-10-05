@@ -11,7 +11,7 @@ using CoreUtilities.Interfaces.Dialogues;
 
 namespace ModernThemables.Services
 {
-    public class DialogueService : IDialogueService
+	public class DialogueService : IDialogueService
 	{
 		public Dictionary<Type, Type> registeredViews = new();
 
@@ -24,8 +24,8 @@ namespace ModernThemables.Services
 		{
 			Window window = new Window();
 			window.AllowsTransparency = false;
-			window.FontFamily = (FontFamily)Application.Current.Resources["OpenSans"];
 			window.FontSize = 13;
+			window.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Fonts/#Inter");
 			window.UseLayoutRounding = true;
 			window.SnapsToDevicePixels = true;
 			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
