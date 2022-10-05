@@ -130,8 +130,12 @@ namespace ModernThemables.ViewModels
 		private static readonly Color StatusTextLightColourDark = ColourHelpers.MonoColour(40);
 
 		// Menu colour
-		private static readonly Color MenuColourLight = ColourHelpers.MonoColour(225);
-		private static readonly Color MenuColourDark = ColourHelpers.MonoColour(30);
+		private static readonly Color MenuColourLight = ColourHelpers.MonoColour(233);
+		private static readonly Color MenuColourDark = ColourHelpers.MonoColour(22);
+
+		// Menu outline
+		private static readonly Color MenuBorderColourLight = ColourHelpers.MonoColour(218);
+		private static readonly Color MenuBorderColourDark = ColourHelpers.MonoColour(37);
 
 		// Menu colour
 		private static readonly Color MenuMouseOverColourLight = ColourHelpers.MonoColour(140);
@@ -142,38 +146,30 @@ namespace ModernThemables.ViewModels
 		private static readonly Color MenuMouseDownColourLight = ColourHelpers.MonoColour(100);
 
 		// Control clickable part colour
-		private static readonly Color ControlClickablePartColourLight = ColourHelpers.MonoColour(155);
-		private static readonly Color ControlClickablePartColourDark = ColourHelpers.MonoColour(100);
+		private static readonly Color ControlClickablePartColourLight = ColourHelpers.MonoColour(195);
+		private static readonly Color ControlClickablePartColourDark = ColourHelpers.MonoColour(60);
 		// Mouse over
-		private static readonly Color ControlClickablePartMouseOverColourLight = ColourHelpers.MonoColour(175);
-		private static readonly Color ControlClickablePartMouseOverColourDark = ColourHelpers.MonoColour(120);
+		private static readonly Color ControlClickablePartMouseOverColourLight = ColourHelpers.MonoColour(215);
+		private static readonly Color ControlClickablePartMouseOverColourDark = ColourHelpers.MonoColour(80);
 		// Mouse down
-		private static readonly Color ControlClickablePartMouseDownColourLight = ColourHelpers.MonoColour(145);
-		private static readonly Color ControlClickablePartMouseDownColourDark = ColourHelpers.MonoColour(90);
+		private static readonly Color ControlClickablePartMouseDownColourLight = ColourHelpers.MonoColour(185);
+		private static readonly Color ControlClickablePartMouseDownColourDark = ColourHelpers.MonoColour(50);
 
 		// Control non clickable part colour
-		private static readonly Color ControlNonClickablePartColourLight = ColourHelpers.MonoColour(195);
-		private static readonly Color ControlNonClickablePartColourDark = ColourHelpers.MonoColour(60);
+		private static readonly Color ControlNonClickablePartColourLight = ColourHelpers.MonoColour(235);
+		private static readonly Color ControlNonClickablePartColourDark = ColourHelpers.MonoColour(20);
 
 		// Disabled control clickable part colour
 		private static readonly Color DisabledControlClickablePartColourLight = ColourHelpers.MonoColour(215);
 		private static readonly Color DisabledControlClickablePartColourDark = ColourHelpers.MonoColour(40);
 
 		// Disabled control non clickable part colour
-		private static readonly Color DisabledControlNonClickablePartColourLight = ColourHelpers.MonoColour(195);
-		private static readonly Color DisabledControlNonClickablePartColourDark = ColourHelpers.MonoColour(60);
-
-		// Datagrid header
-		private static readonly Color DatagridHeaderColourLight = ColourHelpers.MonoColour(237);
-		private static readonly Color DatagridHeaderColourDark = ColourHelpers.MonoColour(85);
-
-		// Datagrid row
-		private static readonly Color DatagridRowColourLight = Colors.White;
-		private static readonly Color DatagridRowColourDark = ColourHelpers.MonoColour(30);
+		private static readonly Color DisabledControlNonClickablePartColourLight = ColourHelpers.MonoColour(245);
+		private static readonly Color DisabledControlNonClickablePartColourDark = ColourHelpers.MonoColour(10);
 
 		// Button foreground
-		private static readonly Color ButtonForegroundColourLight = ColourHelpers.MonoColour(100);
-		private static readonly Color ButtonForegroundColourDark = Colors.DarkGray;
+		private static readonly Color ButtonForegroundColourLight = ColourHelpers.MonoColour(130);
+		private static readonly Color ButtonForegroundColourDark = ColourHelpers.MonoColour(125);
 
 		// Theme colour
 		private static Color ThemeColour = Color.FromArgb(255, 47, 47, 74);
@@ -263,12 +259,9 @@ namespace ModernThemables.ViewModels
 			Application.Current.Resources["MenuMouseDownBrush"] = isDarkMode
 				? new SolidColorBrush(MenuMouseDownColourDark)
 				: new SolidColorBrush(MenuMouseDownColourLight);
-			Application.Current.Resources["DatagridHeaderBrush"] = isDarkMode 
-				? new SolidColorBrush(DatagridHeaderColourDark) 
-				: new SolidColorBrush(DatagridHeaderColourLight);
-			Application.Current.Resources["DatagridRowBrush"] = isDarkMode 
-				? new SolidColorBrush(DatagridRowColourDark) 
-				: new SolidColorBrush(DatagridRowColourLight);
+			Application.Current.Resources["MenuBorderBrush"] = isDarkMode 
+				? new SolidColorBrush(MenuBorderColourDark) 
+				: new SolidColorBrush(MenuBorderColourLight);
 			Application.Current.Resources["DisabledControlClickablePartBrush"] = isDarkMode 
 				? new SolidColorBrush(DisabledControlClickablePartColourDark) 
 				: new SolidColorBrush(DisabledControlClickablePartColourLight);

@@ -21,6 +21,7 @@
 	<SolidColorBrush x:Key="StatusTextBrush" Color="DarkGray" />
 	<SolidColorBrush x:Key="StatusTextLightBrush" Color="#282828" />
 	<SolidColorBrush x:Key="MenuBrush" Color="#1e1e1e" />
+	<SolidColorBrush x:Key="MenuBorderBrush" Color="#1e1e1e" />
 	<SolidColorBrush x:Key="MenuMouseOverBrush" Color="#1e1e1e" />
 	<SolidColorBrush x:Key="MenuMouseDownBrush" Color="#1e1e1e" />
 	<SolidColorBrush x:Key="ControlClickablePartBrush" Color="#8c8c8c" />
@@ -29,8 +30,6 @@
 	<SolidColorBrush x:Key="ControlNonClickablePartBrush" Color="#505050" />
 	<SolidColorBrush x:Key="DisabledControlClickablePartBrush" Color="#282828" />
 	<SolidColorBrush x:Key="DisabledControlNonClickablePartBrush" Color="#3c3c3c" />
-	<SolidColorBrush x:Key="DatagridHeaderBrush" Color="#555555" />
-	<SolidColorBrush x:Key="DatagridRowBrush" Color="#1e1e1e" />
 	<SolidColorBrush x:Key="ThemeBrush" Color="#2f2f4a" />
 	<SolidColorBrush x:Key="ThemeMouseOverBrush" Color="#3d3d5f" />
 	<SolidColorBrush x:Key="ThemeMouseDownBrush" Color="#2f2f4a" />
