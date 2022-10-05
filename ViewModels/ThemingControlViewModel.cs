@@ -11,7 +11,7 @@ using CoreUtilities.Services.RegistryInteraction;
 
 namespace ModernThemables.ViewModels
 {
-    public class ThemingControlViewModel : ObservableObject
+	public class ThemingControlViewModel : ObservableObject
 	{
 		[DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
 		public static extern bool ShouldSystemUseDarkMode();
@@ -138,12 +138,12 @@ namespace ModernThemables.ViewModels
 		private static readonly Color MenuBorderColourDark = ColourHelpers.MonoColour(37);
 
 		// Menu colour
-		private static readonly Color MenuMouseOverColourLight = ColourHelpers.MonoColour(140);
-		private static readonly Color MenuMouseOverColourDark = ColourHelpers.MonoColour(120);
+		private static readonly Color MenuMouseOverColourLight = ColourHelpers.MonoColour(195);
+		private static readonly Color MenuMouseOverColourDark = ColourHelpers.MonoColour(60);
 
 		// Menu colour
-		private static readonly Color MenuMouseDownColourDark = ColourHelpers.MonoColour(120);
-		private static readonly Color MenuMouseDownColourLight = ColourHelpers.MonoColour(100);
+		private static readonly Color MenuMouseDownColourLight = ColourHelpers.MonoColour(215);
+		private static readonly Color MenuMouseDownColourDark = ColourHelpers.MonoColour(40);
 
 		// Control clickable part colour
 		private static readonly Color ControlClickablePartColourLight = ColourHelpers.MonoColour(195);

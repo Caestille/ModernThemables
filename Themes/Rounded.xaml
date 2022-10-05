@@ -101,6 +101,13 @@
 									<RectangleGeometry Rect="-10,-20,50,30" />
 								</Polygon.Clip>
 							</Polygon>
+							<Border
+								Margin="0,0,0,-2"
+								Width="7"
+								Height="3"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Bottom"
+								Background="{DynamicResource MenuBrush}" />
 						</Grid>
 					</Grid>
 				</ControlTemplate>
@@ -130,8 +137,8 @@
 						<Border
 							Margin="5,10,10,10"
 							Background="{DynamicResource MenuBrush}"
-							BorderBrush="{DynamicResource StatusTextBrush}"
-							BorderThickness="0"
+							BorderBrush="{DynamicResource MenuBorderBrush}"
+							BorderThickness="1"
 							CornerRadius="10">
 							<ContentPresenter Margin="6" />
 							<Border.Effect>
@@ -149,7 +156,7 @@
 							<Polygon
 								Fill="{DynamicResource MenuBrush}"
 								Points="0,5,5,0,5,10"
-								Stroke="{DynamicResource MenuBrush}"
+								Stroke="{DynamicResource MenuBorderBrush}"
 								StrokeThickness="1">
 								<Polygon.Effect>
 									<DropShadowEffect
@@ -159,8 +166,14 @@
 										Color="Black" />
 								</Polygon.Effect>
 							</Polygon>
+							<Border
+								Margin="0,0,-2,0"
+								Width="3"
+								Height="7"
+								HorizontalAlignment="Right"
+								VerticalAlignment="Center"
+								Background="{DynamicResource MenuBrush}" />
 						</Grid>
-
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
