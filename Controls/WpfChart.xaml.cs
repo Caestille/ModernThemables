@@ -1,46 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Input;
-using System.Threading.Tasks;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.Defaults;
+using System.ComponentModel;
+using System.Collections.Specialized;
+using System.Windows.Media;
+using System.Windows.Input;
 
 namespace ModernThemables.Controls
 {
-	public record PriceData(
-		decimal Price,
-		DateTimeOffset Timestamp,
-		string Date,
-		string Time
-	);
-
-	public record TimeRange(TimeSpan Range, string Name);
-
-	public class DecimalToVariablePrecision : IValueConverter
+	public struct ValueWithHeight
 	{
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		public string Value { get; set; }
+		public double Height { get; set; }
+
+		public ValueWithHeight(string value, double height)
 		{
-			var price = (decimal)value;
-
-			if (price <= 0) return string.Empty;
-
-			int precision;
-			if (price >= 1) precision = 2;
-			else if (price > 0.099M) precision = 4;
-			else precision = (int)Math.Log10((double)(1M / price)) * 2;
-			return string.Format(CultureInfo.CurrentCulture, "{0:N" + precision + "}", price);
+			Value = value;
+			Height = height;
 		}
+	}
 
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+	public struct WpfSeries
+	{
+		public string PathData { get; set; }
+		public Brush Stroke { get; set; }
+		public Brush Fill { get; set; }
+
+		public WpfSeries(string pathData, Brush stroke, Brush fill)
 		{
-			throw new NotImplementedException();
+			PathData = pathData;
+			Stroke = stroke;
+			Fill = fill;
 		}
 	}
 
@@ -49,363 +44,245 @@ namespace ModernThemables.Controls
 	/// </summary>
 	public partial class WpfChart : UserControl
 	{
-		public Thickness YOpenMargin
+		private double zoomFactor = 1;
+		private double zoomCentre;
+		private double plotAreaHeight => DrawableChartSectionBorder.ActualHeight;
+		private double plotAreaWidth => DrawableChartSectionBorder.ActualWidth;
+
+		private DateTime timeLastUpdated;
+		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 60d);
+
+		private bool hasSetSeries;
+
+		public ObservableCollection<LineSeries<DateTimePoint>> Series
 		{
-			get { return (Thickness)GetValue(YOpenMarginProperty); }
-			set { SetValue(YOpenMarginProperty, value); }
-		}
-		public static readonly DependencyProperty YOpenMarginProperty = DependencyProperty.Register(
-		  "YOpenMargin", typeof(Thickness), typeof(WpfChart), new PropertyMetadata(new Thickness(0)));
-
-		public Thickness YAxisMargin
-		{
-			get { return (Thickness)GetValue(YAxisMarginProperty); }
-			set { SetValue(YAxisMarginProperty, value); }
-		}
-		public static readonly DependencyProperty YAxisMarginProperty = DependencyProperty.Register(
-		  "YAxisMargin", typeof(Thickness), typeof(WpfChart), new PropertyMetadata(new Thickness(0)));
-
-		public string YPointPrice
-		{
-			get { return (string)GetValue(YPointPriceProperty); }
-			set { SetValue(YPointPriceProperty, value); }
-		}
-		public static readonly DependencyProperty YPointPriceProperty = DependencyProperty.Register(
-		  "YPointPrice", typeof(string), typeof(WpfChart), new PropertyMetadata(""));
-
-		public Point ChartPoint
-		{
-			get { return (Point)GetValue(ChartPointProperty); }
-			set { SetValue(ChartPointProperty, value); }
-		}
-		public static readonly DependencyProperty ChartPointProperty = DependencyProperty.Register(
-		  "ChartPoint", typeof(Point), typeof(WpfChart), new PropertyMetadata(new Point(0, 0)));
-
-		public ObservableCollection<string> Timesteps
-		{
-			get { return (ObservableCollection<string>)GetValue(TimestepsProperty); }
-			set { SetValue(TimestepsProperty, value); }
-		}
-		public static readonly DependencyProperty TimestepsProperty = DependencyProperty.Register(
-		  "Timesteps", typeof(ObservableCollection<string>), typeof(WpfChart), new PropertyMetadata(new ObservableCollection<string>()));
-
-		public TimeRange TimeRange
-		{
-			get { return (TimeRange)GetValue(TimeRangeProperty); }
-			set { SetValue(TimeRangeProperty, value); }
-		}
-		public static readonly DependencyProperty TimeRangeProperty = DependencyProperty.Register(
-		  "TimeRange", typeof(TimeRange), typeof(WpfChart), new PropertyMetadata(new TimeRange(TimeSpan.Zero, "")));
-
-		public string FormattedOpen
-		{
-			get { return FormatMixed(open, CultureInfo.CurrentCulture); }
-		}
-		public static readonly DependencyProperty FormattedOpenProperty = DependencyProperty.Register(
-		  "FormattedOpen", typeof(string), typeof(WpfChart), new PropertyMetadata(""));
-
-		public string ChartPointFill
-		{
-			get { return PriceAtPoint?.Price >= open ? "#16C784" : "#EA3943"; }
-		}
-		public static readonly DependencyProperty ChartPointFillProperty = DependencyProperty.Register(
-		  "ChartPointFill", typeof(string), typeof(WpfChart), new PropertyMetadata(""));
-
-		public PriceData PriceAtPoint
-		{
-			get
-			{
-				var price = priceData.GetValueOrDefault(decimal.Round((decimal)ChartPoint.X, 3));
-				if (price is not null)
-				{
-					priceAtPoint = price;
-				}
-
-				return priceAtPoint;
-			}
-		}
-		public static readonly DependencyProperty PriceAtPointProperty = DependencyProperty.Register(
-		  "PriceAtPoint", typeof(PriceData), typeof(WpfChart), new PropertyMetadata(null));
-
-		public string Sparkline
-		{
-			get
-			{
-				if (Series is null || !resyncChart) return string.Empty;
-
-				decimal index = 0;
-				var scale = horizontalResolution / (max - min);
-
-				return Series.Values.Aggregate("", (path, price) =>
-				{
-					var instruction = index == 0 ? 'M' : 'L';
-					path = string.Format(
-						CultureInfo.InvariantCulture,
-						"{0} {1}{2} {3:0.###}",
-						path,
-						instruction,
-						index,
-						decimal.Round((max - (decimal?)price?.Value ?? 0) * scale, 3)
-					);
-					index += step;
-					return path;
-				}) +
-				string.Format(
-					CultureInfo.InvariantCulture,
-					" {0}{1} {2:0.###}",
-					'L',
-					index,
-					(max - open) * scale
-				);
-			}
-		}
-		public static readonly DependencyProperty SparklineProperty = DependencyProperty.Register(
-		  "Sparkline", typeof(string), typeof(WpfChart), new PropertyMetadata(""));
-
-		public Brush Stroke
-		{
-			get
-			{
-				if (Series is null) return Brushes.Transparent;
-
-				var ratio = (double)(1 - (open - min) / (max - min));
-
-				var green = (Color)ColorConverter.ConvertFromString("#16C784")!;
-				var red = (Color)ColorConverter.ConvertFromString("#EA3943")!;
-
-				GradientStopCollection collection = new()
-			{
-				new GradientStop(green, 0),
-				new GradientStop(green, ratio),
-				new GradientStop(red, ratio),
-				new GradientStop(red, 1.0)
-			};
-
-				return new LinearGradientBrush(collection, angle: 90);
-			}
-		}
-		public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-		  "Stroke", typeof(Brush), typeof(WpfChart), new PropertyMetadata(null));
-
-		public Brush Fill
-		{
-			get
-			{
-				if (Series is null) return Brushes.Transparent;
-
-				var ratio = (double)(1 - (open - min) / (max - min));
-
-				var green = (Color)ColorConverter.ConvertFromString("#16C784");
-				var red = (Color)ColorConverter.ConvertFromString("#EA3943");
-
-				GradientStopCollection collection = new();
-
-				collection.Add(new GradientStop(green, -0.95));
-				collection.Add(new GradientStop(Color.FromArgb(3, 131, 214, 183), ratio));
-				collection.Add(new GradientStop(Color.FromArgb(3, 247, 153, 159), ratio));
-				collection.Add(new GradientStop(red, 1.95));
-
-				return new LinearGradientBrush(collection, angle: 90);
-			}
-		}
-		public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-		  "Fill", typeof(Brush), typeof(WpfChart), new PropertyMetadata(null));
-
-		public List<string> YPrices
-		{
-			get
-			{
-				if (Series is null) return new();
-
-				var step = (max - min) / 6;
-
-				return Enumerable.Range(0, 7)
-					.Select(i => max - i * step)
-					.Select(v => FormatMixed(v, CultureInfo.CurrentCulture))
-					.ToList();
-			}
-		}
-		public static readonly DependencyProperty YPricesProperty = DependencyProperty.Register(
-		  "YPrices", typeof(List<string>), typeof(WpfChart), new PropertyMetadata(null));
-
-		public LineSeries<DateTimePoint> Series
-		{
-			get { return (LineSeries<DateTimePoint>)GetValue(SeriesProperty); }
-			set { SetValue(SeriesProperty, value); SetChartValues(); }
+			get { return (ObservableCollection<LineSeries<DateTimePoint>>)GetValue(SeriesProperty); }
+			set { SetValue(SeriesProperty, value); }
 		}
 		public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-		  "Series", typeof(LineSeries<DateTimePoint>), typeof(WpfChart), new PropertyMetadata(null));
+		  "Series", typeof(ObservableCollection<LineSeries<DateTimePoint>>), typeof(WpfChart), new FrameworkPropertyMetadata(null, SetChartValues));
 
-		private Dictionary<int, Point> pathPoints = new();
-		private decimal min;
-		private decimal max;
-		private decimal open;
-		private bool resyncChart;
-		private const decimal horizontalResolution = 360;
-		private const decimal verticalResolution = 740;
-		private Dictionary<decimal, PriceData> priceData = new();
-		private PriceData priceAtPoint;
-		private decimal step = 2.75m;
-		private readonly DecimalToVariablePrecision variablePrecisionConverter = new();
+		public ObservableCollection<WpfSeries> ConvertedSeries
+		{
+			get { return (ObservableCollection<WpfSeries>)GetValue(ConvertedSeriesProperty); }
+			set { SetValue(ConvertedSeriesProperty, value); }
+		}
+		public static readonly DependencyProperty ConvertedSeriesProperty = DependencyProperty.Register(
+		  "ConvertedSeries", typeof(ObservableCollection<WpfSeries>), typeof(WpfChart), new PropertyMetadata(new ObservableCollection<WpfSeries>()));
+
+		public ObservableCollection<string> XAxisLabels
+		{
+			get { return (ObservableCollection<string>)GetValue(XAxisLabelsProperty); }
+			set { SetValue(XAxisLabelsProperty, value); }
+		}
+		public static readonly DependencyProperty XAxisLabelsProperty = DependencyProperty.Register(
+		  "XAxisLabels", typeof(ObservableCollection<string>), typeof(WpfChart), new PropertyMetadata(new ObservableCollection<string>()));
+
+		public ObservableCollection<ValueWithHeight> YAxisLabels
+		{
+			get { return (ObservableCollection<ValueWithHeight>)GetValue(YAxisLabelsProperty); }
+			set { SetValue(YAxisLabelsProperty, value); }
+		}
+		public static readonly DependencyProperty YAxisLabelsProperty = DependencyProperty.Register(
+		  "YAxisLabels", typeof(ObservableCollection<ValueWithHeight>), typeof(WpfChart), new PropertyMetadata(new ObservableCollection<ValueWithHeight>()));
+
+		public double XAxisLabelsWidth
+		{
+			get { return (double)GetValue(XAxisLabelsWidthProperty); }
+			set { SetValue(XAxisLabelsWidthProperty, value); }
+		}
+		public static readonly DependencyProperty XAxisLabelsWidthProperty = DependencyProperty.Register(
+		  "XAxisLabelsWidth", typeof(double), typeof(WpfChart), new PropertyMetadata(0d));
+
+		public string PathData
+		{
+			get { return (string)GetValue(PathDataProperty); }
+			set { SetValue(PathDataProperty, value); }
+		}
+		public static readonly DependencyProperty PathDataProperty = DependencyProperty.Register(
+		  "PathData", typeof(string), typeof(WpfChart), new PropertyMetadata(""));
 
 		public WpfChart()
 		{
 			InitializeComponent();
 		}
 
-		string FormatMixed(decimal number, CultureInfo culture)
+		private static void SetChartValues(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			return number switch
-			{
-				> 9_999 => number.ToString("0,.00K", culture),
-				> 999 => number.ToString("N0", culture),
-				_ => (string)variablePrecisionConverter.Convert(number, typeof(string), null, culture)
-			};
+			if (sender is not WpfChart chart) return;
+			chart.Subscribe(chart.Series);
+			chart.hasSetSeries = true;
 		}
 
-		private async Task SetChartValues()
+		private void Subscribe(ObservableCollection<LineSeries<DateTimePoint>> series)
 		{
-			var from = DateTimeOffset.UtcNow - TimeRange.Range;
-			var to = DateTimeOffset.UtcNow;
-
-			step = verticalResolution / Series.Values.Count();
-
-			var open = (decimal)Series.Values.First().Value;
-			var max = (decimal)Series.Values.Max(x => x.Value);
-			var min = (decimal)Series.Values.Min(x => x.Value);
-			var avg = (decimal)Series.Values.Average(x => x.Value);
-
-			var dateTimeCulture = new CultureInfo("en-US");
-
-			await Dispatcher.InvokeAsync(() =>
+			series.CollectionChanged += Series_CollectionChanged;
+			if (!hasSetSeries)
 			{
-				resyncChart = false;
-				priceData = new();
-
-				for (var i = 0; i < Series.Values.Count(); i++)
+				foreach (LineSeries<DateTimePoint> item in series)
 				{
-					var timestamp = DateTimeOffset.FromUnixTimeMilliseconds((long)Series.Values.ToList()[i].DateTime.Ticks) + TimeSpan.FromHours(2);
-					priceData.Add(
-						decimal.Round(i * step, 3),
-						new PriceData(
-							(decimal)Series.Values.ToList()[i].Value,
-							timestamp,
-							timestamp.DateTime.ToString("d", dateTimeCulture),
-							timestamp.DateTime.ToString("T", dateTimeCulture)
-						)
-					);
+					item.PropertyChanged += Series_PropertyChanged;
+				}
+			}
+			Series_PropertyChanged(this, new PropertyChangedEventArgs(nameof(Series)));
+		}
+
+		private void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+		{
+			foreach (LineSeries<DateTimePoint> series in e.OldItems)
+			{
+				series.PropertyChanged -= Series_PropertyChanged;
+			}
+
+			foreach (LineSeries<DateTimePoint> series in e.NewItems)
+			{
+				series.PropertyChanged += Series_PropertyChanged;
+			}
+		}
+
+		private void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			Application.Current.Dispatcher.BeginInvoke(() =>
+			{
+				var series = Series;
+				var chart = this;
+
+				if (Series is null) return;
+
+				var xAxisItemCount = Math.Floor(plotAreaWidth / 60);
+				var yAxisItemsCount = Math.Floor(plotAreaHeight / 50);
+
+				var xMin = series.First().Values.Min(x => x.DateTime);
+				var xMax = series.First().Values.Max(x => x.DateTime);
+				var yMin = series.First().Values.Min(x => x.Value).Value;
+				var yMax = series.First().Values.Max(x => x.Value).Value;
+
+				var xRange = xMax - xMin;
+				var yRange = yMax - yMin;
+				yMin -= yRange * 0.1;
+				yMax += yRange * 0.1;
+				yRange = yMax - yMin;
+
+				var xLabelStep = xRange / xAxisItemCount;
+				var yLabelStep = yRange / yAxisItemsCount;
+				chart.XAxisLabels.Clear();
+				DateTime currentXStep = xMin;
+				double currentYStep = yMin;
+				for (int i = 0; i < xAxisItemCount; i++)
+				{
+					currentXStep += i == 0 || i == xAxisItemCount ? xLabelStep / 2 : xLabelStep;
+					chart.XAxisLabels.Add(currentXStep.ToString("MMM yy"));
 				}
 
-				this.open = open;
-				this.max = max;
-				this.min = min;
-				YAxisMargin = new Thickness(0, 0, 0, (double)decimal.Round(horizontalResolution / (max - min) * (max - min) / 7, 3) + 2);
-				YOpenMargin = new Thickness(0, (double)(horizontalResolution / (max - min)) * (double)(max - open) + 24, 0, 0);
+				var labels = chart.GetYSteps(yRange, yAxisItemsCount, yMin, yMax).ToList();
+				var labels2 = labels.Select(y => new ValueWithHeight() 
+					{ 
+						Value = Math.Round(y / 1000, 2).ToString() + " K",
+						Height = ((y - yMin) / yRange * plotAreaHeight) - (labels.ToList().IndexOf(y) > 0 ? (labels[labels.ToList().IndexOf(y) - 1] - yMin) / yRange * plotAreaHeight : 0),
+					});
+				chart.YAxisLabels = new ObservableCollection<ValueWithHeight>(labels2.Reverse());
 
-				resyncChart = true;
+				chart.XAxisLabelsWidth = plotAreaWidth / xAxisItemCount;
 
-				pathPoints = ChartPath.Data
-				.GetFlattenedPathGeometry()
-				.Figures.SelectMany(f => f.Segments)
-				.SelectMany(s => ((PolyLineSegment)s).Points)
-				.DistinctBy(p => (int)p.X)
-				.ToDictionary(p => (int)p.X, p => p);
-
-				int steps = TimeRange.Range.TotalDays switch
+				string pathData = string.Empty;
+				bool setM = true;
+				foreach (var point in series.First().Values.OrderBy(x => x.DateTime))
 				{
-					>= 365 => 12,
-					>= 7 => 7,
-					1 or _ => 8
-				};
-
-				var timestep = (to - from) / steps;
-
-				var timeFormat = TimeRange.Range.TotalDays switch
-				{
-					1 => "h:mm tt",
-					>= 7 => "MMM d",
-					_ => "T"
-				};
-
-				Timesteps.Clear();
-
-				var dateTimeSteps = Enumerable.Range(0, steps + 1)
-								  .Select(i => from + TimeSpan.FromHours(3) + i * timestep)
-								  .ToList();
-
-				for (var i = 0; i < dateTimeSteps.Count - 1; i++)
-				{
-					if (TimeRange.Range >= TimeSpan.FromDays(7) &&
-						dateTimeSteps[i].Month != dateTimeSteps[i + 1].Month)
-					{
-						Timesteps.Add(dateTimeSteps[i + 1].ToString("MMM"));
-					}
-					else if (TimeRange.Range == TimeSpan.FromDays(1) &&
-							 dateTimeSteps[i].DayOfYear != dateTimeSteps[i + 1].DayOfYear)
-					{
-						Timesteps.Add(dateTimeSteps[i + 1].ToString("MMM d"));
-					}
-					else
-					{
-						Timesteps.Add(dateTimeSteps[i].ToString(timeFormat, dateTimeCulture));
-					}
+					var pointType = setM ? "M" : "L";
+					setM = false;
+					double x = (double)(point.DateTime - xMin).Ticks / (double)xRange.Ticks * (double)plotAreaWidth;
+					double y = plotAreaHeight - (point.Value.Value - yMin) / yRange * plotAreaHeight;
+					pathData += $" {pointType}{x} {y}";
 				}
+
+				ConvertedSeries = new ObservableCollection<WpfSeries>() 
+				{ 
+					new WpfSeries(pathData,
+						new LinearGradientBrush(),
+						new LinearGradientBrush()) 
+				};
+
+				PathData = pathData;
 			});
 		}
 
-		private void ChartMouseMove(object sender, MouseEventArgs e)
+		private List<double> GetYSteps(double yRange, double yAxisItemsCount, double yMin, double yMax)
 		{
-			var position = e.GetPosition(ChartPath);
-			var pathPoint = pathPoints.GetValueOrDefault((int)position.X);
-
-			double width = ChartPanel.ActualWidth;
-			double timestampWidth = Math.Max(XAxisTimestampPanel.ActualWidth, 150);
-
-			if (pathPoint != default)
+			var idealStep = yRange / yAxisItemsCount;
+			double min = double.MaxValue;
+			int stepAtMin = 1;
+			var roundedSteps = new List<int>() { 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
+			roundedSteps.Reverse();
+			foreach (var step in roundedSteps)
 			{
-				ChartPoint = pathPoint;
-
-				var xTimestampMargin = XAxisTimestampPanel.Margin;
-				xTimestampMargin.Left = Math.Clamp(
-					position.X - timestampWidth / 2,
-					0,
-					width - timestampWidth - 6
-				);
-				XAxisTimestampPanel.Margin = xTimestampMargin;
+				var val = Math.Abs(idealStep - step);
+				if (val < min)
+				{
+					min = val;
+					stepAtMin = step;
+				}
 			}
 
-			var yPointMargin = YPointPricePanel.Margin;
-			var chartTooltipMargin = ChartTooltip.Margin;
-
-			if (position.X > width - 280)
+			List<double> yVals = new();
+			bool startAt0 = yMin <= 0 && yMax >= 0;
+			if (startAt0)
 			{
-				chartTooltipMargin.Left = position.X - 220;
+				double currVal = 0;
+				while (currVal > yMin)
+				{
+					yVals.Insert(0, currVal);
+					currVal -= stepAtMin;
+				}
+
+				currVal = stepAtMin;
+
+				while (currVal < yMax)
+				{
+					yVals.Add(currVal);
+					currVal += stepAtMin;
+				}
 			}
 			else
 			{
-				chartTooltipMargin.Left = position.X + 80;
+				int dir = yMax < 0 ? -1 : 1;
+				double currVal = 0;
+				bool adding = true;
+				bool hasStartedAdding = false;
+				while (adding)
+				{
+					if (currVal < yMax && currVal > yMin)
+					{
+						hasStartedAdding = true;
+						yVals.Add(currVal);
+					}
+					else if (hasStartedAdding)
+					{
+						adding = false;
+					}
+
+					currVal += dir * stepAtMin;
+				}
 			}
 
-			if (position.Y < 110)
+			return yVals;
+		}
+
+		private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			Series_PropertyChanged(this, new PropertyChangedEventArgs(nameof(Series)));
+		}
+
+		private void DrawableChartSectionBorder_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (DateTime.Now - timeLastUpdated > updateLimit)
 			{
-				chartTooltipMargin.Top = position.Y + 52;
+				timeLastUpdated = DateTime.Now;
+				var mouseLoc = e.GetPosition(Grid);
+				XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
+				YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
+				XCrosshairValueDisplay.Margin = new Thickness(mouseLoc.X - 50, 0, 0, -20);
+				YCrosshairValueDisplay.Margin = new Thickness(-35, mouseLoc.Y - 10, 0, 0);
 			}
-			else
-			{
-				chartTooltipMargin.Top = position.Y - 92;
-			}
-
-			HorizontalChartLine.Y1 = HorizontalChartLine.Y2 = yPointMargin.Top = position.Y + 24;
-
-			ChartTooltipWrapper.Margin = chartTooltipMargin;
-			ChartTooltip.Margin = chartTooltipMargin;
-			YPointPricePanel.Margin = yPointMargin;
-
-			YPointPrice = FormatMixed(
-				min + (max - min) *
-				(1 - (decimal)(position.Y / ChartPath.ActualHeight)),
-				CultureInfo.CurrentCulture
-			);
 		}
 	}
 }

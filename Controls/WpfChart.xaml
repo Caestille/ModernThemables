@@ -9,268 +9,144 @@
 	d:DesignHeight="450"
 	d:DesignWidth="800"
 	mc:Ignorable="d">
-	<Grid
-		MaxHeight="{Binding ActualHeight, ElementName=ChartPanel}"
-		HorizontalAlignment="Left"
-		VerticalAlignment="Top">
-		<!--#region Chart tooltip-->
-		<Canvas Panel.ZIndex="100" RenderOptions.ClearTypeHint="Enabled">
-			<Grid Visibility="{Binding ElementName=ChartPanel, Path=IsMouseOver, Mode=OneWay, Converter={StaticResource VisibleIfTrueConverter}}">
-				<Border
-					x:Name="ChartTooltipWrapper"
-					Width="260"
-					Height="103"
-					Padding="18,16"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Top"
-					Background="{DynamicResource MenuBrush}"
-					BorderBrush="{DynamicResource MenuBorderBrush}"
-					BorderThickness="0.5"
-					CornerRadius="6">
-					<Border.Effect>
-						<DropShadowEffect
-							BlurRadius="30"
-							Opacity="0.15"
-							ShadowDepth="0"
-							Color="Gray" />
-					</Border.Effect>
-				</Border>
-				<StackPanel
-					x:Name="ChartTooltip"
-					Width="224"
-					Height="71">
-					<Grid>
+	<Grid SizeChanged="Grid_SizeChanged">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" MinHeight="5" x:Name="XAxisRow" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" MinWidth="5" x:Name="YAxisColumn" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<ItemsControl
+			Width="25"
+			Margin="0,0,5,0"
+			ItemsSource="{Binding YAxisLabels, ElementName=root}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel VerticalAlignment="Bottom" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Grid Height="{Binding Height}">
 						<TextBlock
-							FontSize="11.5"
-							FontWeight="SemiBold"
-							Foreground="{DynamicResource TextBrush}"
-							Text="{Binding PriceAtPoint.Date, ElementName=root}" />
-						<TextBlock
-							HorizontalAlignment="Right"
-							FontSize="11"
-							FontWeight="SemiBold"
-							Foreground="{DynamicResource StatusTextBrush}"
-							Text="{Binding PriceAtPoint.Time, ElementName=root}" />
-					</Grid>
-					<WrapPanel Margin="0,14,0,0">
-						<Ellipse
-							Width="10"
-							Height="10"
-							Margin="0,0,10,0"
-							Fill="{Binding ChartPointFill, ElementName=root}" />
-						<TextBlock FontWeight="Medium" Foreground="{DynamicResource StatusTextBrush}">
-							Price:<Run
-								FontWeight="SemiBold"
-								Foreground="{DynamicResource TextBrush}"
-								Text="{Binding PriceAtPoint.Price}" />
-						</TextBlock>
-					</WrapPanel>
-				</StackPanel>
-			</Grid>
-		</Canvas>
-		<!--#endregion-->
-		<StackPanel Orientation="Horizontal">
-			<!--#region Y axis-->
-			<Grid Margin="0,24,0,0" HorizontalAlignment="Right">
-				<!--#region Y axis labels-->
-				<ItemsControl Margin="0,0,0,0" ItemsSource="{Binding YPrices, ElementName=root}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Border Margin="{Binding YAxisMargin, RelativeSource={RelativeSource AncestorType=Window}}" Padding="14,0,0,0">
-								<TextBlock
-									Margin="0,0,8,-8.25"
-									HorizontalAlignment="Right"
-									FontSize="11"
-									FontWeight="Medium"
-									Foreground="#8690a2"
-									Text="{Binding}"
-									TextAlignment="Right" />
-							</Border>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-				<!--#endregion-->
-				<!--#region Open price marker-->
-				<Grid Margin="{Binding YOpenMargin, ElementName=root}">
-					<Border
-						Name="OpenBorder"
-						Margin="0,-26,0,0"
-						Padding="9,3"
-						HorizontalAlignment="Right"
-						VerticalAlignment="Top"
-						Background="{DynamicResource StatusTextLightBrush}"
-						CornerRadius="2">
-						<TextBlock
-							VerticalAlignment="Center"
-							FontSize="11"
-							FontWeight="SemiBold"
-							Foreground="{DynamicResource TextBrush}"
-							Text="{Binding FormattedOpen, ElementName=root}"
-							TextAlignment="Center" />
-					</Border>
-				</Grid>
-				<!--#endregion-->
-				<!--#region Cursor Y axis value tooltip-->
-				<Border x:Name="YPointPricePanel" Margin="-16,0,0,0">
-					<Border
-						Margin="0,-26,0,0"
-						Padding="9,3"
-						HorizontalAlignment="Right"
-						VerticalAlignment="Top"
-						Background="{DynamicResource MenuBrush}"
-						CornerRadius="2"
-						Visibility="{Binding ElementName=ChartPanel, Path=IsMouseOver, Mode=OneWay, Converter={StaticResource VisibleIfTrueConverter}}">
-						<TextBlock
-							VerticalAlignment="Center"
-							FontSize="11"
-							FontWeight="SemiBold"
-							Foreground="{DynamicResource TextBrush}"
-							Text="{Binding YPointPrice, ElementName=root}"
-							TextAlignment="Center" />
-					</Border>
-				</Border>
-				<!--#endregion-->
-			</Grid>
-			<!--#endregion-->
-			<Border
-				Margin="0,8.5,0,0"
-				HorizontalAlignment="Left"
-				BorderBrush="{DynamicResource StatusTextBrush}"
-				BorderThickness="1,0,0,0">
-				<Grid>
-					<!--#region Y axis chart separators-->
-					<StackPanel
-						Width="{Binding ActualWidth, ElementName=ChartPanel}"
-						Margin="0,20,0,0"
-						HorizontalAlignment="Left">
-						<ItemsControl ItemsSource="{Binding YPrices, ElementName=root}">
-							<ItemsControl.ItemTemplate>
-								<DataTemplate>
-									<Grid Margin="{Binding YAxisMargin, RelativeSource={RelativeSource AncestorType=Window}}">
-										<Separator Background="{DynamicResource StatusTextBrush}" />
-									</Grid>
-								</DataTemplate>
-							</ItemsControl.ItemTemplate>
-						</ItemsControl>
-					</StackPanel>
-					<!--#endregion-->
-					<!--#region Y axis open price dashed line-->
-					<Line
-						Margin="{Binding YOpenMargin, ElementName=root}"
-						Stroke="#979da8"
-						StrokeDashArray="1 4"
-						StrokeThickness="1"
-						X2="{Binding ActualWidth, ElementName=ChartPanel}" />
-					<!--#endregion-->
-					<!--#region X axis crosshair-->
-					<Line
-						x:Name="VerticalChartLine"
-						Stroke="#979da8"
-						StrokeDashArray="1 4"
-						StrokeThickness="1"
-						Visibility="{Binding ElementName=ChartPanel, Path=IsMouseOver, Mode=OneWay, Converter={StaticResource VisibleIfTrueConverter}}"
-						X1="{Binding ChartPoint.X, ElementName=root}"
-						X2="{Binding ChartPoint.X, ElementName=root}"
-						Y2="{Binding ActualHeight, ElementName=ChartPanel}" />
-					<!--#endregion-->
-					<!--#region Y axis crosshair-->
-					<Line
-						x:Name="HorizontalChartLine"
-						Stroke="#979da8"
-						StrokeDashArray="1 4"
-						StrokeThickness="1"
-						Visibility="{Binding ElementName=ChartPanel, Path=IsMouseOver, Mode=OneWay, Converter={StaticResource VisibleIfTrueConverter}}"
-						X2="{Binding ActualWidth, ElementName=ChartPanel}" />
-					<!--#endregion-->
-					<StackPanel Margin="0,0,0,0" Orientation="Horizontal">
-						<StackPanel
-							x:Name="ChartPanel"
-							Background="Transparent"
-							MouseMove="ChartMouseMove">
-							<Grid Margin="0,24,0,0">
-								<!--#region Chart line-->
-								<Path
-									x:Name="ChartPath"
-									Margin="0,0,0,8"
-									Data="{Binding Sparkline, ElementName=root}"
-									Fill="{Binding Fill, ElementName=root}"
-									IsHitTestVisible="False"
-									Stroke="{Binding Stroke, ElementName=root}"
-									StrokeEndLineCap="Round"
-									StrokeLineJoin="Bevel"
-									StrokeThickness="2" />
-								<!--#endregion-->
-								<!--#region Highighted point-->
-								<Path
-									Fill="{Binding ChartPointFill, ElementName=root}"
-									Stroke="{DynamicResource TextBrush}"
-									StrokeThickness="2"
-									Visibility="{Binding ElementName=ChartPanel, Path=IsMouseOver, Mode=OneWay, Converter={StaticResource VisibleIfTrueConverter}}">
-									<Path.Data>
-										<EllipseGeometry
-											Center="{Binding ChartPoint, ElementName=root}"
-											RadiusX="5"
-											RadiusY="5" />
-									</Path.Data>
-								</Path>
-								<!--#endregion-->
-							</Grid>
-							<!--#region X axis-->
-							<Grid Margin="0,0,0,8">
-								<!--#region X axis labels-->
-								<ItemsControl Margin="-10,-6,0,0" ItemsSource="{Binding Timesteps, ElementName=root}">
-									<ItemsControl.ItemsPanel>
-										<ItemsPanelTemplate>
-											<UniformGrid Rows="1" />
-										</ItemsPanelTemplate>
-									</ItemsControl.ItemsPanel>
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<TextBlock
-												HorizontalAlignment="Center"
-												FontSize="11"
-												Foreground="#8690a2"
-												Text="{Binding}" />
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-								<!--#endregion-->
-								<!--#region Cursor X axis value tooltip-->
-								<StackPanel Height="21" Margin="0,-11,0,0">
-									<Border
-										x:Name="XAxisTimestampPanel"
-										MinWidth="150"
-										Margin="0,0,0,0"
-										Padding="8,4"
-										HorizontalAlignment="Left"
-										VerticalAlignment="Top"
-										Background="{DynamicResource StatusTextBrush}"
-										CornerRadius="2"
-										Visibility="{Binding ElementName=ChartPanel, Path=IsMouseOver, Mode=OneWay, Converter={StaticResource VisibleIfTrueConverter}}">
-										<TextBlock
-											HorizontalAlignment="Center"
-											FontSize="11"
-											FontWeight="Medium"
-											Foreground="{DynamicResource TextBrush}">
-											<Run Text="{Binding PriceAtPoint.Date, ElementName=root}" />
-											<Run Text="{Binding PriceAtPoint.Time, ElementName=root}" />
-										</TextBlock>
-									</Border>
-								</StackPanel>
-								<!--#endregion-->
-							</Grid>
-							<!--#endregion-->
-						</StackPanel>
-						<StackPanel
-							Width="12"
-							Height="{Binding ActualHeight, ElementName=ChartPanel}"
-							Margin="-6.5,0,0,0"
+							Height="12"
+							Margin="0,-6,0,0"
 							VerticalAlignment="Top"
-							Panel.ZIndex="0"
-							Background="{DynamicResource MainBackgroundBrush}" />
-					</StackPanel>
-				</Grid>
-			</Border>
-		</StackPanel>
+							FontSize="11"
+							FontWeight="Medium"
+							Foreground="{DynamicResource StatusTextBrush}"
+							Text="{Binding Value}"
+							TextAlignment="Right" />
+					</Grid>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		<ItemsControl
+			Grid.Row="1"
+			Grid.Column="1"
+			Height="16"
+			Margin="0,3,0,2"
+			ItemsSource="{Binding XAxisLabels, ElementName=root}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<TextBlock
+						Width="{Binding XAxisLabelsWidth, ElementName=root}"
+						FontSize="11"
+						FontWeight="Medium"
+						Foreground="{DynamicResource StatusTextBrush}"
+						Text="{Binding}"
+						TextAlignment="Center" />
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		<Grid x:Name="Grid" Grid.Column="1">
+			<ItemsControl ItemsSource="{Binding YAxisLabels, ElementName=root}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel VerticalAlignment="Bottom" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Border
+							Height="{Binding Height}"
+							BorderBrush="{DynamicResource StatusTextLightBrush}"
+							BorderThickness="0,1,0,0" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Path
+							Data="{Binding PathData}"
+							IsHitTestVisible="False"
+							Stroke="LimeGreen"
+							StrokeLineJoin="Bevel"
+							StrokeThickness="1.5" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<Line
+				x:Name="XCrosshair"
+				Margin="0,50,0,0"
+				Stroke="{DynamicResource StatusTextBrush}"
+				StrokeDashArray="8,8"
+				StrokeThickness="1"
+				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}"
+				X2="{Binding ActualWidth, ElementName=Grid}" />
+			<Line
+				x:Name="YCrosshair"
+				Margin="50,0,0,0"
+				Stroke="{DynamicResource StatusTextBrush}"
+				StrokeDashArray="8,8"
+				StrokeThickness="1"
+				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}"
+				Y2="{Binding ActualHeight, ElementName=Grid}" />
+			<Line
+				x:Name="XPointHighlighter"
+				Margin="0,100,0,0"
+				Stroke="{DynamicResource StatusTextBrush}"
+				StrokeThickness="1"
+				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}"
+				X2="{Binding ActualWidth, ElementName=Grid}" />
+			<Grid
+				Background="{DynamicResource MainBackgroundBrush}"
+				MouseMove="DrawableChartSectionBorder_MouseMove"
+				Opacity="0.001" />
+			<Border
+				x:Name="DrawableChartSectionBorder"
+				BorderBrush="{DynamicResource StatusTextBrush}"
+				BorderThickness="1,0,0,1" />
+			<Border
+				VerticalAlignment="Bottom"
+				HorizontalAlignment="Left"
+				IsHitTestVisible="False"
+				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}"
+				Margin="0,0,0,-20"
+				CornerRadius="5"
+				Width="100"
+				Height="20"
+				x:Name="XCrosshairValueDisplay"
+				Background="{DynamicResource MenuBrush}" />
+			<Border
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				IsHitTestVisible="False"
+				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}"
+				Margin="-35,0,0,0"
+				CornerRadius="5"
+				Width="100"
+				Height="20"
+				x:Name="YCrosshairValueDisplay"
+				Background="{DynamicResource MenuBrush}" />
+		</Grid>
 	</Grid>
 </UserControl>
