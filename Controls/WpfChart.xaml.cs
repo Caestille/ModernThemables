@@ -54,6 +54,8 @@ namespace ModernThemables.Controls
 
 		private bool hasSetSeries;
 
+		private List<LineSeries<DateTimePoint>> subscribedSeries = new();
+
 		public ObservableCollection<LineSeries<DateTimePoint>> Series
 		{
 			get { return (ObservableCollection<LineSeries<DateTimePoint>>)GetValue(SeriesProperty); }
@@ -110,6 +112,15 @@ namespace ModernThemables.Controls
 		private static void SetChartValues(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not WpfChart chart) return;
+
+			if (chart.Series == null)
+			{
+				foreach (var series in chart.subscribedSeries)
+				{
+					series.PropertyChanged -= chart.Series_PropertyChanged;
+                }
+			}
+
 			chart.Subscribe(chart.Series);
 			chart.hasSetSeries = true;
 		}
@@ -122,7 +133,8 @@ namespace ModernThemables.Controls
 				foreach (LineSeries<DateTimePoint> item in series)
 				{
 					item.PropertyChanged += Series_PropertyChanged;
-				}
+					subscribedSeries.Add(item);
+                }
 			}
 			Series_PropertyChanged(this, new PropertyChangedEventArgs(nameof(Series)));
 		}
@@ -132,12 +144,14 @@ namespace ModernThemables.Controls
 			foreach (LineSeries<DateTimePoint> series in e.OldItems)
 			{
 				series.PropertyChanged -= Series_PropertyChanged;
-			}
+                subscribedSeries.Add(series);
+            }
 
 			foreach (LineSeries<DateTimePoint> series in e.NewItems)
 			{
 				series.PropertyChanged += Series_PropertyChanged;
-			}
+                subscribedSeries.Remove(series);
+            }
 		}
 
 		private void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -178,7 +192,9 @@ namespace ModernThemables.Controls
 				var labels2 = labels.Select(y => new ValueWithHeight() 
 					{ 
 						Value = Math.Round(y / 1000, 2).ToString() + " K",
-						Height = ((y - yMin) / yRange * plotAreaHeight) - (labels.ToList().IndexOf(y) > 0 ? (labels[labels.ToList().IndexOf(y) - 1] - yMin) / yRange * plotAreaHeight : 0),
+						Height = ((y - yMin) / yRange * plotAreaHeight) - (labels.ToList().IndexOf(y) > 0 
+							? (labels[labels.ToList().IndexOf(y) - 1] - yMin) / yRange * plotAreaHeight 
+							: 0),
 					});
 				chart.YAxisLabels = new ObservableCollection<ValueWithHeight>(labels2.Reverse());
 
@@ -211,7 +227,9 @@ namespace ModernThemables.Controls
 			var idealStep = yRange / yAxisItemsCount;
 			double min = double.MaxValue;
 			int stepAtMin = 1;
-			var roundedSteps = new List<int>() { 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
+			var roundedSteps 
+				= new List<int>() 
+					{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
 			roundedSteps.Reverse();
 			foreach (var step in roundedSteps)
 			{
