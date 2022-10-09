@@ -12,15 +12,22 @@
 	<Grid SizeChanged="Grid_SizeChanged">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" MinHeight="5" x:Name="XAxisRow" />
+			<RowDefinition
+				x:Name="XAxisRow"
+				Height="Auto"
+				MinHeight="5" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" MinWidth="5" x:Name="YAxisColumn" />
+			<ColumnDefinition
+				x:Name="YAxisColumn"
+				Width="Auto"
+				MinWidth="5" />
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
 		<ItemsControl
-			Width="25"
-			Margin="0,0,5,0"
+			x:Name="YAxisItemsControl"
+			Width="Auto"
+			Margin="5,0,5,0"
 			ItemsSource="{Binding YAxisLabels, ElementName=root}">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
@@ -44,10 +51,11 @@
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 		<ItemsControl
+			x:Name="XAxisItemsControl"
 			Grid.Row="1"
 			Grid.Column="1"
 			Height="16"
-			Margin="0,3,0,2"
+			Margin="0,3,-5,2"
 			ItemsSource="{Binding XAxisLabels, ElementName=root}">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
@@ -82,13 +90,14 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-			<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root}">
+			<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root, IsAsync=True}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Path
 							Data="{Binding PathData}"
+							Fill="{Binding Fill}"
 							IsHitTestVisible="False"
-							Stroke="LimeGreen"
+							Stroke="{Binding Stroke}"
 							StrokeLineJoin="Bevel"
 							StrokeThickness="1.5" />
 					</DataTemplate>
@@ -126,27 +135,43 @@
 				BorderBrush="{DynamicResource StatusTextBrush}"
 				BorderThickness="1,0,0,1" />
 			<Border
-				VerticalAlignment="Bottom"
-				HorizontalAlignment="Left"
-				IsHitTestVisible="False"
-				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}"
-				Margin="0,0,0,-20"
-				CornerRadius="5"
-				Width="100"
-				Height="20"
 				x:Name="XCrosshairValueDisplay"
-				Background="{DynamicResource MenuBrush}" />
+				Width="Auto"
+				Height="20"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Bottom"
+				Background="{DynamicResource StatusTextLightBrush}"
+				CornerRadius="5"
+				IsHitTestVisible="False"
+				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}">
+				<TextBlock
+					x:Name="XCrosshairValueLabel"
+					Margin="6,0"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					FontSize="11"
+					Foreground="{DynamicResource TextBrush}"
+					Text="15/07/69 23:02:11" />
+			</Border>
 			<Border
+				x:Name="YCrosshairValueDisplay"
+				Width="Auto"
+				Height="20"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Top"
-				IsHitTestVisible="False"
-				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}"
-				Margin="-35,0,0,0"
+				Background="{DynamicResource StatusTextLightBrush}"
 				CornerRadius="5"
-				Width="100"
-				Height="20"
-				x:Name="YCrosshairValueDisplay"
-				Background="{DynamicResource MenuBrush}" />
+				IsHitTestVisible="False"
+				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}">
+				<TextBlock
+					x:Name="YCrosshairValueLabel"
+					Margin="6,0"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					FontSize="11"
+					Foreground="{DynamicResource TextBrush}"
+					Text="£15234.23" />
+			</Border>
 		</Grid>
 	</Grid>
 </UserControl>
