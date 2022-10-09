@@ -74,7 +74,7 @@
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
-		<Grid x:Name="Grid" Grid.Column="1">
+		<Grid x:Name="Grid" Grid.Column="1" ClipToBounds="True">
 			<ItemsControl ItemsSource="{Binding YAxisLabels, ElementName=root}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
@@ -90,19 +90,21 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-			<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root, IsAsync=True}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<Path
+			<Viewbox StretchDirection="Both">
+				<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root, IsAsync=True}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Path
 							Data="{Binding PathData}"
 							Fill="{Binding Fill}"
 							IsHitTestVisible="False"
 							Stroke="{Binding Stroke}"
 							StrokeLineJoin="Bevel"
 							StrokeThickness="1.5" />
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</Viewbox>
 			<Line
 				x:Name="XCrosshair"
 				Margin="0,50,0,0"
@@ -150,8 +152,7 @@
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
 					FontSize="11"
-					Foreground="{DynamicResource TextBrush}"
-					Text="15/07/69 23:02:11" />
+					Foreground="{DynamicResource TextBrush}" />
 			</Border>
 			<Border
 				x:Name="YCrosshairValueDisplay"
@@ -169,9 +170,41 @@
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
 					FontSize="11"
-					Foreground="{DynamicResource TextBrush}"
-					Text="£15234.23" />
+					Foreground="{DynamicResource TextBrush}" />
 			</Border>
+			<Border
+				x:Name="TooltipBorder"
+				Width="Auto"
+				Height="Auto"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				IsHitTestVisible="False">
+				<Border.Visibility>
+					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+						<Binding
+							Converter="{StaticResource IsNotNullConverter}"
+							ElementName="root"
+							Path="HoveredPoint" />
+						<Binding ElementName="Grid" Path="IsMouseOver" />
+					</MultiBinding>
+				</Border.Visibility>
+				<Grid>
+					<TextBlock Foreground="{DynamicResource TextBrush}" Text="{Binding ElementName=root, Path=TooltipString}" Visibility="{Binding ElementName=ContentControl, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}"/>
+					<ContentControl
+						x:Name="ContentControl"
+						Content="{Binding ElementName=root, Path=TooltipString, UpdateSourceTrigger=PropertyChanged}"
+						ContentTemplate="{Binding ElementName=root, Path=TooltipTemplate}"
+						Visibility="{Binding ElementName=root, Path=TooltipTemplate, Converter={StaticResource VisibleIfNotNullConverter}}" />
+				</Grid>
+			</Border>
+			<Ellipse
+				x:Name="HoveredPointEllipse"
+				Visibility="{Binding ElementName=TooltipBorder, Path=Visibility}"
+				Width="6"
+				Height="6"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Fill="White" />
 		</Grid>
 	</Grid>
 </UserControl>

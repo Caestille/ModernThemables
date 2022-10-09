@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Windows.Media;
 using System.Windows.Input;
+using CoreUtilities.HelperClasses;
 
 namespace ModernThemables.Controls
 {
@@ -52,11 +53,13 @@ namespace ModernThemables.Controls
 		{
 			public double X { get; set; }
 			public double Y { get; set; }
+			public DateTimePoint BackingPoint { get; }
 
-			public ChartPoint(double x, double y)
+			public ChartPoint(double x, double y, DateTimePoint backingPoint)
 			{
 				X = x;
 				Y = y;
+				BackingPoint = backingPoint;
 			}
 		}
 
@@ -98,14 +101,6 @@ namespace ModernThemables.Controls
 		}
 		public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
 		  "Series", typeof(ObservableCollection<LineSeries<DateTimePoint>>), typeof(WpfChart), new FrameworkPropertyMetadata(null, OnSeriesSet));
-
-		public Func<IEnumerable<DateTimePoint>, DateTimePoint, string> TooltipLabelFormatter
-		{
-			get { return (Func<IEnumerable<DateTimePoint>, DateTimePoint, string>)GetValue(TooltipLabelFormatterProperty); }
-			set { SetValue(TooltipLabelFormatterProperty, value); }
-		}
-		public static readonly DependencyProperty TooltipLabelFormatterProperty = DependencyProperty.Register(
-		  "TooltipLabelFormatter", typeof(Func<IEnumerable<DateTimePoint>, DateTimePoint, string>), typeof(WpfChart), new PropertyMetadata(null));
 
 		public Func<DateTime, string> XAxisFormatter
 		{
@@ -155,6 +150,30 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty ShowYSeparatorLinesProperty = DependencyProperty.Register(
 		  "ShowYSeparatorLines", typeof(bool), typeof(WpfChart), new PropertyMetadata(true));
 
+		public DataTemplate TooltipTemplate
+		{
+			get { return (DataTemplate)GetValue(TooltipTemplateProperty); }
+			set { SetValue(TooltipTemplateProperty, value); }
+		}
+		public static readonly DependencyProperty TooltipTemplateProperty = DependencyProperty.Register(
+		  "TooltipTemplate", typeof(DataTemplate), typeof(WpfChart), new PropertyMetadata(null));
+
+		private string TooltipString
+		{
+			get { return (string)GetValue(TooltipStringProperty); }
+			set { SetValue(TooltipStringProperty, value); }
+		}
+		public static readonly DependencyProperty TooltipStringProperty = DependencyProperty.Register(
+		  "TooltipString", typeof(string), typeof(WpfChart));
+
+		private DateTimePoint HoveredPoint
+		{
+			get { return (DateTimePoint)GetValue(HoveredPointProperty); }
+			set { SetValue(HoveredPointProperty, value); }
+		}
+		public static readonly DependencyProperty HoveredPointProperty = DependencyProperty.Register(
+		  "HoveredPoint", typeof(DateTimePoint), typeof(WpfChart), new PropertyMetadata(null));
+
 		private ObservableCollection<WpfChartSeries> ConvertedSeries
 		{
 			get { return (ObservableCollection<WpfChartSeries>)GetValue(ConvertedSeriesProperty); }
@@ -190,6 +209,13 @@ namespace ModernThemables.Controls
 		public WpfChart()
 		{
 			InitializeComponent();
+			this.Loaded += WpfChart_Loaded;
+		}
+
+		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
+		{
+			RenderChart(false);
+			this.Loaded -= WpfChart_Loaded;
 		}
 
 		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -208,6 +234,8 @@ namespace ModernThemables.Controls
 
 			chart.Subscribe(chart.Series);
 			chart.hasSetSeries = true;
+
+			chart.RenderChart(false);
 		}
 
 		private void Subscribe(ObservableCollection<LineSeries<DateTimePoint>> series)
@@ -237,6 +265,7 @@ namespace ModernThemables.Controls
 				series.PropertyChanged += Series_PropertyChanged;
 				subscribedSeries.Remove(series);
 			}
+			RenderChart(false);
 		}
 
 		private void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -317,11 +346,11 @@ namespace ModernThemables.Controls
 			DateTime xMin, TimeSpan xRange, double yMin, double yRange, LineSeries<DateTimePoint> series)
 		{
 			List<ChartPoint> points = new();
-			foreach (var point in series.Values.OrderBy(x => x.DateTime))
+			foreach (var point in series.Values/*.OrderBy(x => x.DateTime)*/)
 			{
 				double x = (double)(point.DateTime - xMin).Ticks / (double)xRange.Ticks * (double)plotAreaWidth;
 				double y = plotAreaHeight - (point.Value.Value - yMin) / yRange * plotAreaHeight;
-				points.Add(new ChartPoint(x, y));
+				points.Add(new ChartPoint(x, y, point));
 			}
 			return points;
 		}
@@ -331,9 +360,8 @@ namespace ModernThemables.Controls
 			var idealStep = yRange / yAxisItemsCount;
 			double min = double.MaxValue;
 			int stepAtMin = 1;
-			var roundedSteps 
-				= new List<int>() 
-					{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
+			var roundedSteps = new List<int>() 
+				{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
 			roundedSteps.Reverse();
 			foreach (var step in roundedSteps)
 			{
@@ -396,24 +424,52 @@ namespace ModernThemables.Controls
 
 		private void DrawableChartSectionBorder_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (DateTime.Now - timeLastUpdated > updateLimit)
+			if (DateTime.Now - timeLastUpdated < updateLimit) return;
+			
+			timeLastUpdated = DateTime.Now;
+			var mouseLoc = e.GetPosition(Grid);
+			var isTop = mouseLoc.Y < plotAreaHeight / 2;
+			var isLeft = mouseLoc.X < plotAreaWidth / 2;
+			XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
+			YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
+			XCrosshairValueDisplay.Margin = new Thickness(mouseLoc.X - 50, 0, 0, -XAxisRow.ActualHeight);
+			YCrosshairValueDisplay.Margin = new Thickness(-YAxisColumn.ActualWidth, mouseLoc.Y - 10, 0, 0);
+
+			(var xMin, var yMin, var xMax, var yMax, var xRange, var yRange) = GetAxisValues(Series.First());
+			var xPercent = mouseLoc.X / plotAreaWidth;
+			var yPercent = mouseLoc.Y / plotAreaHeight;
+
+			var xVal = xMin.Add(xPercent * xRange);
+			var yVal = ((1 - yPercent) * yRange + yMin);
+
+			XCrosshairValueLabel.Text
+				= XAxisCursorLabelFormatter == null ? xVal.ToString() : XAxisCursorLabelFormatter(xVal);
+			YCrosshairValueLabel.Text = YAxisCursorLabelFormatter == null
+				? Math.Round(yVal, 2).ToString() 
+				: YAxisCursorLabelFormatter(yVal);
+
+			var chartPoints = ConvertedSeries.First().Data;
+			var nearestPoint = chartPoints.First(x => Math.Abs(x.X - mouseLoc.X) == chartPoints.Min(x => Math.Abs(x.X - mouseLoc.X)));
+			var hoveredChartPoints = chartPoints.Where(x => x.X == nearestPoint.X);
+			ChartPoint hoveredChartPoint = null;
+			if (hoveredChartPoints.Count() > 1)
 			{
-				timeLastUpdated = DateTime.Now;
-				var mouseLoc = e.GetPosition(Grid);
-				XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
-				YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
-				XCrosshairValueDisplay.Margin = new Thickness(mouseLoc.X - 50, 0, 0, -XAxisRow.ActualHeight);
-				YCrosshairValueDisplay.Margin = new Thickness(-YAxisColumn.ActualWidth, mouseLoc.Y - 10, 0, 0);
-
-				(var xMin, var yMin, var xMax, var yMax, var xRange, var yRange) = GetAxisValues(Series.First());
-				var xPercent = mouseLoc.X / plotAreaWidth;
-				var yPercent = mouseLoc.Y / plotAreaHeight;
-
-				var xVal = xMin.Add(xPercent * xRange);
-				var yVal = ((1 - yPercent) * yRange + yMin);
-
-				XCrosshairValueLabel.Text = XAxisCursorLabelFormatter == null ? xVal.ToString() : XAxisCursorLabelFormatter(xVal);
-				YCrosshairValueLabel.Text = YAxisCursorLabelFormatter == null ? Math.Round(yVal, 2).ToString() : YAxisCursorLabelFormatter(yVal);
+				hoveredChartPoint = hoveredChartPoints.First(x => Math.Abs(x.Y - mouseLoc.Y) == hoveredChartPoints.Min(x => Math.Abs(x.Y - mouseLoc.Y)));
+			}
+			else if (hoveredChartPoints.Any())
+			{
+				hoveredChartPoint = hoveredChartPoints.First();
+			}
+			
+			if (hoveredChartPoint != null)
+			{
+				TooltipBorder.Margin = new Thickness(isLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipBorder.ActualWidth - 5, isTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipBorder.ActualHeight - 5, 0, 0);
+				HoveredPointEllipse.Margin = new Thickness(hoveredChartPoint.X - 3, hoveredChartPoint.Y - 3, 0, 0);
+				HoveredPoint = hoveredChartPoint.BackingPoint;
+				if (Series.First().TooltipLabelFormatter != null)
+				{
+					TooltipString = Series.First().TooltipLabelFormatter(Series.First().Values, HoveredPoint);
+				}
 			}
 		}
 	}
