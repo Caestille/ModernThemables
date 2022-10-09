@@ -74,7 +74,7 @@
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
-		<Grid x:Name="Grid" Grid.Column="1" ClipToBounds="True">
+		<Grid x:Name="Grid" Grid.Column="1" >
 			<ItemsControl ItemsSource="{Binding YAxisLabels, ElementName=root}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
@@ -90,10 +90,10 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-			<Viewbox StretchDirection="Both">
-				<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root, IsAsync=True}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
+			<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root, IsAsync=True}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Viewbox>
 							<Path
 							Data="{Binding PathData}"
 							Fill="{Binding Fill}"
@@ -101,10 +101,10 @@
 							Stroke="{Binding Stroke}"
 							StrokeLineJoin="Bevel"
 							StrokeThickness="1.5" />
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</Viewbox>
+						</Viewbox>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 			<Line
 				x:Name="XCrosshair"
 				Margin="0,50,0,0"
