@@ -10,6 +10,8 @@ using System.Collections.Specialized;
 using System.Windows.Media;
 using System.Windows.Input;
 using CoreUtilities.HelperClasses;
+using System.Windows.Threading;
+using CoreUtilities.Services;
 
 namespace ModernThemables.Controls
 {
@@ -94,7 +96,10 @@ namespace ModernThemables.Controls
 		private bool hasSetSeries;
 		private List<LineSeries<DateTimePoint>> subscribedSeries = new();
 
-		public ObservableCollection<LineSeries<DateTimePoint>> Series
+		private KeepAliveTriggerService resizeTrigger;
+        private KeepAliveTriggerService zoomTrigger;
+
+        public ObservableCollection<LineSeries<DateTimePoint>> Series
 		{
 			get { return (ObservableCollection<LineSeries<DateTimePoint>>)GetValue(SeriesProperty); }
 			set { SetValue(SeriesProperty, value); }
@@ -210,7 +215,10 @@ namespace ModernThemables.Controls
 		{
 			InitializeComponent();
 			this.Loaded += WpfChart_Loaded;
-		}
+
+            resizeTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
+            zoomTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
+        }
 
 		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
 		{
@@ -279,12 +287,18 @@ namespace ModernThemables.Controls
 			{
 				if (Series is null || !Series.Any()) return;
 
+				var series = Series.First();
+				if (!series.Values.Any()) return;
+
 				(var xMin, var yMin, var xMax, var yMax, var xRange, var yRange) = GetAxisValues(Series.First());
 
 				SetXAxisLabels(xMin, xRange, isResize);
 				SetYAxisLabels(yMin, yMax, yRange, isResize);
 
-				var points = GetPointsForSeries(xMin, xRange, yMin, yRange, Series.First());
+				// Force layout update so sizes are correct before rendering points
+                this.Dispatcher.Invoke(DispatcherPriority.Render, delegate() { });
+
+                var points = GetPointsForSeries(xMin, xRange, yMin, yRange, Series.First());
 
 				ConvertedSeries = new ObservableCollection<WpfChartSeries>()
 					{ new WpfChartSeries(points, Series.First().Stroke, Series.First().Fill), };
@@ -419,7 +433,7 @@ namespace ModernThemables.Controls
 
 		private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			Series_PropertyChanged(this, new PropertyChangedEventArgs(nameof(Series)));
+			resizeTrigger.Refresh();
 		}
 
 		private void DrawableChartSectionBorder_MouseMove(object sender, MouseEventArgs e)
