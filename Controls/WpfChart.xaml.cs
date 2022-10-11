@@ -9,18 +9,94 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Windows.Media;
 using System.Windows.Input;
-using CoreUtilities.HelperClasses;
+using CoreUtilities.HelperClasses.Extensions;
 using System.Windows.Threading;
 using CoreUtilities.Services;
 
 namespace ModernThemables.Controls
 {
+	public interface IChartBrush
+	{
+		Brush CoreBrush { get; }
+		void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre);
+		Color ColourAtPoint(double x, double y);
+	}
+
+	public class SwitchBrush : IChartBrush
+	{
+		public Brush CoreBrush { get; private set; }
+
+		private Color topColour;
+		private Color bottomColour;
+		private Color topCentreColour;
+		private Color bottomCentreColour;
+
+		private double yMax;
+		private double yMin;
+		private double yCentre;
+
+		public SwitchBrush(Color topColour, Color topCentreColour, Color bottomCentreColour, Color bottomColour)
+		{
+			CoreBrush = new LinearGradientBrush();
+			this.topColour = topColour;
+			this.bottomColour = bottomColour;
+			this.topCentreColour = topCentreColour;
+			this.bottomCentreColour = bottomCentreColour;
+		}
+
+		public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre)
+		{
+			this.yMax = yMax;
+			this.yMin = yMin;
+			this.yCentre = yCentre;
+
+			yCentre = Math.Min(Math.Max(yCentre, yMin), yMax);
+			var ratio = (double)(1 - (yCentre - yMin) / (yMax - yMin));
+
+			GradientStopCollection collection = new()
+			{
+				new GradientStop(topColour, 0),
+				new GradientStop(topCentreColour, ratio),
+				new GradientStop(bottomCentreColour, ratio),
+				new GradientStop(bottomColour, 1.0)
+			};
+
+			CoreBrush = new LinearGradientBrush(collection, angle: 90);
+		}
+
+		public Color ColourAtPoint(double x, double y)
+		{
+			if (y >= yMax)
+			{
+				return topColour;
+			}
+			else if (y < yMax && y >= yCentre)
+			{
+				var ratio = (double)(1 - (y - yCentre) / (yMax - yCentre));
+				return topColour.Combine(topCentreColour, ratio);
+			}
+			else if (y > yMin && y <= yCentre)
+			{
+				var ratio = (double)(1 - (y - yMin) / (yCentre - yMin));
+				return bottomColour.Combine(bottomCentreColour, ratio);
+			}
+			else if (y <= yMin)
+			{
+				return bottomColour;
+			}
+			else
+			{
+				return topColour;
+			}
+		}
+	}
+
 	public class LineSeries<TModel>
 	{
 		public event EventHandler<PropertyChangedEventArgs> PropertyChanged;
 		public Func<IEnumerable<TModel>, TModel, string> TooltipLabelFormatter { get; set; }
-		public Brush Stroke { get; set; }
-		public Brush Fill { get; set; }
+		public IChartBrush Stroke { get; set; }
+		public IChartBrush Fill { get; set; }
 
 		private IEnumerable<TModel> values;
 		public IEnumerable<TModel> Values 
@@ -68,24 +144,34 @@ namespace ModernThemables.Controls
 		private class WpfChartSeries
 		{
 			public IEnumerable<ChartPoint> Data;
-			public string PathData { get; }
-			public Brush Stroke { get; set; }
-			public Brush Fill { get; set; }
+			public string PathStrokeData { get; }
+			public string PathFillData { get; }
+			public IChartBrush Stroke { get; }
+			public IChartBrush Fill { get; }
+			public double Height => Data.Max(x => x.Y) - Data.Min(x => x.Y);
 
-			public WpfChartSeries(IEnumerable<ChartPoint> data, Brush stroke, Brush fill)
+			public WpfChartSeries(IEnumerable<ChartPoint> data, IChartBrush stroke, IChartBrush fill)
 			{
 				Data = data;
 				Stroke = stroke;
 				Fill = fill;
 
-				PathData = string.Empty;
+				PathStrokeData = string.Empty;
 				bool setM = true;
 				foreach (var point in data)
 				{
 					var pointType = setM ? "M" : "L";
 					setM = false;
-					PathData += $" {pointType}{point.X} {point.Y}";
+					PathStrokeData += $" {pointType}{point.X} {point.Y}";
 				}
+				PathStrokeData += $" L{Data.Last().X} {Data.First().Y}";
+				var dataMin = Data.Min(x => x.BackingPoint.Value).Value;
+				var dataMax = Data.Max(x => x.BackingPoint.Value).Value;
+				var range = dataMax - dataMin;
+				var zero = Math.Min(Math.Max(0d, dataMin), dataMax);
+				var ratio = (double)(1 - (zero - dataMin) / range);
+				var zeroPoint = ratio * (Data.Max(x => x.Y) - Data.Min(x => x.Y)) * 1.1;
+				PathFillData = $"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
 			}
 		}
 
@@ -97,9 +183,12 @@ namespace ModernThemables.Controls
 		private List<LineSeries<DateTimePoint>> subscribedSeries = new();
 
 		private KeepAliveTriggerService resizeTrigger;
-        private KeepAliveTriggerService zoomTrigger;
+		private KeepAliveTriggerService zoomTrigger;
 
-        public ObservableCollection<LineSeries<DateTimePoint>> Series
+		private bool tooltipLeft;
+		private bool tooltipTop = true;
+
+		public ObservableCollection<LineSeries<DateTimePoint>> Series
 		{
 			get { return (ObservableCollection<LineSeries<DateTimePoint>>)GetValue(SeriesProperty); }
 			set { SetValue(SeriesProperty, value); }
@@ -216,14 +305,25 @@ namespace ModernThemables.Controls
 			InitializeComponent();
 			this.Loaded += WpfChart_Loaded;
 
-            resizeTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
-            zoomTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
-        }
+			resizeTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
+			zoomTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
+		}
 
 		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
 		{
 			RenderChart(false);
 			this.Loaded -= WpfChart_Loaded;
+			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+		}
+
+		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
+		{
+			resizeTrigger.Stop();
+			zoomTrigger.Stop();
+			foreach (var series in subscribedSeries)
+			{
+				series.PropertyChanged -= Series_PropertyChanged;
+			}
 		}
 
 		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -296,12 +396,21 @@ namespace ModernThemables.Controls
 				SetYAxisLabels(yMin, yMax, yRange, isResize);
 
 				// Force layout update so sizes are correct before rendering points
-                this.Dispatcher.Invoke(DispatcherPriority.Render, delegate() { });
+				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate() { });
 
-                var points = GetPointsForSeries(xMin, xRange, yMin, yRange, Series.First());
+				var points = GetPointsForSeries(xMin, xRange, yMin, yRange, Series.First());
 
 				ConvertedSeries = new ObservableCollection<WpfChartSeries>()
 					{ new WpfChartSeries(points, Series.First().Stroke, Series.First().Fill), };
+
+				Series.First().Stroke?.Reevaluate(
+					series.Values.Max(x => x.Value).Value,
+					series.Values.Min(x => x.Value).Value,
+					0, xMax.Ticks, xMin.Ticks, 0);
+				Series.First().Fill?.Reevaluate(
+					series.Values.Max(x => x.Value).Value,
+					series.Values.Min(x => x.Value).Value,
+					0, xMax.Ticks, xMin.Ticks, 0);
 			});
 		}
 
@@ -325,7 +434,7 @@ namespace ModernThemables.Controls
 		private void SetXAxisLabels(DateTime xMin, TimeSpan xRange, bool isResize)
 		{
 			var xAxisItemCount = Math.Floor(plotAreaWidth / 60);
-			if (!isResize)
+			if (!isResize || XAxisLabels.Count != xAxisItemCount)
 			{
 				var xLabelStep = xRange / xAxisItemCount;
 				XAxisLabels.Clear();
@@ -442,8 +551,6 @@ namespace ModernThemables.Controls
 			
 			timeLastUpdated = DateTime.Now;
 			var mouseLoc = e.GetPosition(Grid);
-			var isTop = mouseLoc.Y < plotAreaHeight / 2;
-			var isLeft = mouseLoc.X < plotAreaWidth / 2;
 			XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
 			YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
 			XCrosshairValueDisplay.Margin = new Thickness(mouseLoc.X - 50, 0, 0, -XAxisRow.ActualHeight);
@@ -477,8 +584,14 @@ namespace ModernThemables.Controls
 			
 			if (hoveredChartPoint != null)
 			{
-				TooltipBorder.Margin = new Thickness(isLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipBorder.ActualWidth - 5, isTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipBorder.ActualHeight - 5, 0, 0);
-				HoveredPointEllipse.Margin = new Thickness(hoveredChartPoint.X - 3, hoveredChartPoint.Y - 3, 0, 0);
+				if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipBorder.ActualWidth + 10)) tooltipLeft = true;
+				if (tooltipLeft && (mouseLoc.X) < (TooltipBorder.ActualWidth + 5)) tooltipLeft = false;
+				if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipBorder.ActualHeight + 10)) tooltipTop = true;
+				if (tooltipTop && (mouseLoc.Y) < (TooltipBorder.ActualHeight + 5)) tooltipTop = false;
+				TooltipBorder.Margin = new Thickness(!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipBorder.ActualWidth - 5, !tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipBorder.ActualHeight - 5, 0, 0);
+				HoveredPointEllipse.Margin = new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0);
+				HoveredPointEllipse.Fill = new SolidColorBrush(ConvertedSeries.First().Stroke.ColourAtPoint(hoveredChartPoint.BackingPoint.DateTime.Ticks, hoveredChartPoint.BackingPoint.Value.Value));
+				XPointHighlighter.Margin = new Thickness(0, hoveredChartPoint.Y, 0, 0);
 				HoveredPoint = hoveredChartPoint.BackingPoint;
 				if (Series.First().TooltipLabelFormatter != null)
 				{

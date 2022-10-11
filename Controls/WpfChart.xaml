@@ -6,8 +6,6 @@
 	xmlns:local="clr-namespace:ModernThemables.Controls"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	x:Name="root"
-	d:DesignHeight="450"
-	d:DesignWidth="800"
 	mc:Ignorable="d">
 	<Grid SizeChanged="Grid_SizeChanged">
 		<Grid.RowDefinitions>
@@ -50,31 +48,36 @@
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
-		<ItemsControl
-			x:Name="XAxisItemsControl"
+		<Border
 			Grid.Row="1"
 			Grid.Column="1"
-			Height="16"
-			Margin="0,3,-5,2"
-			ItemsSource="{Binding XAxisLabels, ElementName=root}">
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<WrapPanel />
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<TextBlock
-						Width="{Binding XAxisLabelsWidth, ElementName=root}"
-						FontSize="11"
-						FontWeight="Medium"
-						Foreground="{DynamicResource StatusTextBrush}"
-						Text="{Binding}"
-						TextAlignment="Center" />
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
-		<Grid x:Name="Grid" Grid.Column="1" >
+			BorderBrush="{DynamicResource StatusTextLightBrush}"
+			BorderThickness="1,0,0,0"
+			IsHitTestVisible="False">
+			<ItemsControl
+				x:Name="XAxisItemsControl"
+				Height="16"
+				Margin="0,3,-5,2"
+				ItemsSource="{Binding XAxisLabels, ElementName=root}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<TextBlock
+							Width="{Binding XAxisLabelsWidth, ElementName=root}"
+							FontSize="11"
+							FontWeight="Medium"
+							Foreground="{DynamicResource StatusTextBrush}"
+							Text="{Binding IsAsync=True}"
+							TextAlignment="Center" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</Border>
+		<Grid x:Name="Grid" Grid.Column="1">
 			<ItemsControl ItemsSource="{Binding YAxisLabels, ElementName=root}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
@@ -90,28 +93,34 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-			<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root, IsAsync=True}">
+			<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Viewbox>
-                            <Canvas Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualHeight}">
-                                <Path
-                                    Canvas.Left="0"
-                                    Canvas.Top="0"
-									Data="{Binding PathData}"
-									Fill="{Binding Fill}"
+						<Grid Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualHeight}">
+							<Grid Height="{Binding Height}" VerticalAlignment="Center">
+								<Path
+									Data="{Binding PathFillData}"
+									Fill="{Binding Fill.CoreBrush}"
 									IsHitTestVisible="False"
-									Stroke="{Binding Stroke}"
+									Stretch="Fill"
 									StrokeLineJoin="Bevel"
 									StrokeThickness="1.5" />
-                            </Canvas>
-                        </Viewbox>
+								<Path
+									Data="{Binding PathStrokeData}"
+									IsHitTestVisible="False"
+									Stretch="Fill"
+									Stroke="{Binding Stroke.CoreBrush}"
+									StrokeLineJoin="Bevel"
+									StrokeThickness="1.5" />
+							</Grid>
+						</Grid>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 			<Line
 				x:Name="XCrosshair"
 				Margin="0,50,0,0"
+				IsHitTestVisible="False"
 				Stroke="{DynamicResource StatusTextBrush}"
 				StrokeDashArray="8,8"
 				StrokeThickness="1"
@@ -120,6 +129,7 @@
 			<Line
 				x:Name="YCrosshair"
 				Margin="50,0,0,0"
+				IsHitTestVisible="False"
 				Stroke="{DynamicResource StatusTextBrush}"
 				StrokeDashArray="8,8"
 				StrokeThickness="1"
@@ -128,6 +138,7 @@
 			<Line
 				x:Name="XPointHighlighter"
 				Margin="0,100,0,0"
+				IsHitTestVisible="False"
 				Stroke="{DynamicResource StatusTextBrush}"
 				StrokeThickness="1"
 				Visibility="{Binding ElementName=Grid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}"
@@ -138,8 +149,9 @@
 				Opacity="0.001" />
 			<Border
 				x:Name="DrawableChartSectionBorder"
-				BorderBrush="{DynamicResource StatusTextBrush}"
-				BorderThickness="1,0,0,1" />
+				BorderBrush="{DynamicResource StatusTextLightBrush}"
+				BorderThickness="1,0,0,1"
+				IsHitTestVisible="False" />
 			<Border
 				x:Name="XCrosshairValueDisplay"
 				Width="Auto"
@@ -182,7 +194,8 @@
 				Height="Auto"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Top"
-				IsHitTestVisible="False">
+				IsHitTestVisible="False"
+				Opacity="0.8">
 				<Border.Visibility>
 					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
 						<Binding
@@ -193,7 +206,10 @@
 					</MultiBinding>
 				</Border.Visibility>
 				<Grid>
-					<TextBlock Foreground="{DynamicResource TextBrush}" Text="{Binding ElementName=root, Path=TooltipString}" Visibility="{Binding ElementName=ContentControl, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}"/>
+					<TextBlock
+						Foreground="{DynamicResource TextBrush}"
+						Text="{Binding ElementName=root, Path=TooltipString}"
+						Visibility="{Binding ElementName=ContentControl, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}" />
 					<ContentControl
 						x:Name="ContentControl"
 						Content="{Binding ElementName=root, Path=TooltipString, UpdateSourceTrigger=PropertyChanged}"
@@ -203,12 +219,14 @@
 			</Border>
 			<Ellipse
 				x:Name="HoveredPointEllipse"
-				Visibility="{Binding ElementName=TooltipBorder, Path=Visibility}"
-				Width="6"
-				Height="6"
+				Width="10"
+				Height="10"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Top"
-				Fill="White" />
+				IsHitTestVisible="False"
+				Stroke="{DynamicResource MainBackgroundBrush}"
+				StrokeThickness="1.5"
+				Visibility="{Binding ElementName=TooltipBorder, Path=Visibility}" />
 		</Grid>
 	</Grid>
 </UserControl>
