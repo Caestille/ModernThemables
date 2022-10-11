@@ -221,7 +221,6 @@ namespace ModernThemables.Controls
 		private List<LineSeries<DateTimePoint>> subscribedSeries = new();
 
 		private KeepAliveTriggerService resizeTrigger;
-		private KeepAliveTriggerService zoomTrigger;
 
 		private bool tooltipLeft;
 		private bool tooltipTop = true;
@@ -344,7 +343,6 @@ namespace ModernThemables.Controls
 			this.Loaded += WpfChart_Loaded;
 
 			resizeTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
-			zoomTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
 		}
 
 		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
@@ -357,7 +355,6 @@ namespace ModernThemables.Controls
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
 			resizeTrigger.Stop();
-			zoomTrigger.Stop();
 			foreach (var series in subscribedSeries)
 			{
 				series.PropertyChanged -= Series_PropertyChanged;
