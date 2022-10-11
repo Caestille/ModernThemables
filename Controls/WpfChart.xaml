@@ -103,8 +103,8 @@
 							<Grid Height="{Binding Height}" VerticalAlignment="Center">
 								<Grid.Margin>
 									<MultiBinding Converter="{StaticResource ChartZoomConverter}">
-										<Binding Path="PseudoZoomLevel" />
-										<Binding Path="PseudoZoomCentre" />
+										<Binding Path="ZoomLevel" />
+										<Binding Path="ZoomCentre" />
 										<Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
 									</MultiBinding>
 								</Grid.Margin>

@@ -12,8 +12,8 @@ using System.Windows.Input;
 using CoreUtilities.HelperClasses.Extensions;
 using System.Windows.Threading;
 using CoreUtilities.Services;
-using System.Diagnostics;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using System.Text;
 
 namespace ModernThemables.Controls
 {
@@ -155,14 +155,14 @@ namespace ModernThemables.Controls
 			public bool PreventTrigger { get; set; }
 
 			private double pseudoZoomLevel = 1;
-			public double PseudoZoomLevel
+			public double ZoomLevel
 			{
 				get => pseudoZoomLevel;
 				set => SetProperty(ref pseudoZoomLevel, value);
 			}
 
 			private double pseudoZoomCentre = 0.5;
-			public double PseudoZoomCentre
+			public double ZoomCentre
 			{
 				get => pseudoZoomCentre;
 				set => SetProperty(ref pseudoZoomCentre, value);
@@ -625,26 +625,27 @@ namespace ModernThemables.Controls
 			{
 				if (zoomIn)
 				{
-					series.PseudoZoomLevel *= 0.9;
+					series.ZoomLevel *= 0.9;
 				}
 				else
 				{
-					var zoomLevel = series.PseudoZoomLevel /= 0.9;
-					zoomLevel = Math.Min(series.PseudoZoomLevel, 1);
-					series.PseudoZoomLevel = zoomLevel;
-					if (series.PseudoZoomLevel == 1)
+					var zoomLevel = series.ZoomLevel /= 0.9;
+					zoomLevel = Math.Min(series.ZoomLevel, 1);
+					series.ZoomLevel = zoomLevel;
+					if (series.ZoomLevel == 1)
 					{
-						series.PseudoZoomCentre = 0.5;
+						series.ZoomCentre = 0.5;
 					}
 				}
 
-				var effectiveMin = Math.Max(plotAreaWidth * series.PseudoZoomCentre - (plotAreaWidth * series.PseudoZoomLevel / 2), 0);
-				var effectiveMax = Math.Min(plotAreaWidth * series.PseudoZoomCentre + (plotAreaWidth * series.PseudoZoomLevel / 2), plotAreaWidth);
+				var effectiveMin = Math.Max(plotAreaWidth * series.ZoomCentre - (plotAreaWidth * series.ZoomLevel / 2), 0);
+				var effectiveMax = Math.Min(plotAreaWidth * series.ZoomCentre + (plotAreaWidth * series.ZoomLevel / 2), plotAreaWidth);
 				var ratio = mouseLoc.X / plotAreaWidth;
-				series.PseudoZoomCentre = (effectiveMin + ratio * (effectiveMax - effectiveMin)) / plotAreaWidth;
+				series.ZoomCentre = (effectiveMin + ratio * (effectiveMax - effectiveMin)) / plotAreaWidth;
 			}
 
-			//zoomTrigger.Refresh();
+			HoveredPoint = null;
+			TooltipString = string.Empty;
 		}
 	}
 }
