@@ -165,14 +165,19 @@ namespace ModernThemables.Controls
 			public double ZoomCentre
 			{
 				get => pseudoZoomCentre;
-				set => SetProperty(ref pseudoZoomCentre, value);
+				set
+				{
+					SetProperty(ref pseudoZoomCentre, value);
+					SetZoomData();
+				}
 			}
 
-			private IEnumerable<ChartPoint> zoomData;
+			public IEnumerable<ChartPoint> ZoomData { get; private set; }
 
 			public WpfChartSeries(IEnumerable<ChartPoint> data, IChartBrush stroke, IChartBrush fill)
 			{
 				Data = data;
+				ZoomData = data;
 				Stroke = stroke;
 				Fill = fill;
 
@@ -194,6 +199,17 @@ namespace ModernThemables.Controls
 				var ratio = (double)(1 - (zero - dataMin) / range);
 				var zeroPoint = ratio * (Data.Max(x => x.Y) - Data.Min(x => x.Y)) * 1.1;
 				PathFillData = $"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
+			}
+
+			private void SetZoomData()
+			{
+				var zoomCentreX = Data.Min(x => x.X) + (Data.Max(x => x.X) - Data.Min(x => x.X)) * ZoomCentre;
+				var data = new List<ChartPoint>();
+				foreach (var point in Data)
+				{
+					data.Add(new ChartPoint(point.X + ((point.X - zoomCentreX) * (1 / ZoomLevel - 1)), point.Y, point.BackingPoint));
+				}
+				ZoomData = data;
 			}
 		}
 
@@ -593,7 +609,7 @@ namespace ModernThemables.Controls
 				: YAxisCursorLabelFormatter(yVal);
 
 			// Get chartpoint to display tooltip for
-			var chartPoints = ConvertedSeries.First().Data;
+			var chartPoints = ConvertedSeries.First().ZoomData;
 			var nearestPoint = chartPoints.First(x => Math.Abs(x.X - mouseLoc.X) == chartPoints.Min(x => Math.Abs(x.X - mouseLoc.X)));
 			var hoveredChartPoints = chartPoints.Where(x => x.X == nearestPoint.X);
 			var hoveredChartPoint = hoveredChartPoints.Count() > 1
