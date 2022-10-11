@@ -96,8 +96,18 @@
 			<ItemsControl ItemsSource="{Binding ConvertedSeries, ElementName=root}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Grid Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualHeight}">
+						<Grid
+							Width="{Binding ElementName=Grid, Path=ActualWidth}"
+							Height="{Binding ElementName=Grid, Path=ActualHeight}"
+							ClipToBounds="True">
 							<Grid Height="{Binding Height}" VerticalAlignment="Center">
+								<Grid.Margin>
+									<MultiBinding Converter="{StaticResource ChartZoomConverter}">
+										<Binding Path="PseudoZoomLevel" />
+										<Binding Path="PseudoZoomCentre" />
+										<Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+									</MultiBinding>
+								</Grid.Margin>
 								<Path
 									Data="{Binding PathFillData}"
 									Fill="{Binding Fill.CoreBrush}"
@@ -146,6 +156,7 @@
 			<Grid
 				Background="{DynamicResource MainBackgroundBrush}"
 				MouseMove="DrawableChartSectionBorder_MouseMove"
+				MouseWheel="DrawableChartSectionBorder_MouseWheel"
 				Opacity="0.001" />
 			<Border
 				x:Name="DrawableChartSectionBorder"

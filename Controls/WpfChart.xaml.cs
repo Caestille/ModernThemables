@@ -12,6 +12,8 @@ using System.Windows.Input;
 using CoreUtilities.HelperClasses.Extensions;
 using System.Windows.Threading;
 using CoreUtilities.Services;
+using System.Diagnostics;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace ModernThemables.Controls
 {
@@ -141,7 +143,7 @@ namespace ModernThemables.Controls
 			}
 		}
 
-		private class WpfChartSeries
+		private class WpfChartSeries : ObservableObject
 		{
 			public IEnumerable<ChartPoint> Data;
 			public string PathStrokeData { get; }
@@ -149,6 +151,24 @@ namespace ModernThemables.Controls
 			public IChartBrush Stroke { get; }
 			public IChartBrush Fill { get; }
 			public double Height => Data.Max(x => x.Y) - Data.Min(x => x.Y);
+
+			public bool PreventTrigger { get; set; }
+
+			private double pseudoZoomLevel = 1;
+			public double PseudoZoomLevel
+			{
+				get => pseudoZoomLevel;
+				set => SetProperty(ref pseudoZoomLevel, value);
+			}
+
+			private double pseudoZoomCentre = 0.5;
+			public double PseudoZoomCentre
+			{
+				get => pseudoZoomCentre;
+				set => SetProperty(ref pseudoZoomCentre, value);
+			}
+
+			private IEnumerable<ChartPoint> zoomData;
 
 			public WpfChartSeries(IEnumerable<ChartPoint> data, IChartBrush stroke, IChartBrush fill)
 			{
@@ -165,6 +185,7 @@ namespace ModernThemables.Controls
 					PathStrokeData += $" {pointType}{point.X} {point.Y}";
 				}
 				PathStrokeData += $" L{Data.Last().X} {Data.First().Y}";
+
 				var dataMin = Data.Min(x => x.BackingPoint.Value).Value;
 				var dataMax = Data.Max(x => x.BackingPoint.Value).Value;
 				var range = dataMax - dataMin;
@@ -551,53 +572,79 @@ namespace ModernThemables.Controls
 			
 			timeLastUpdated = DateTime.Now;
 			var mouseLoc = e.GetPosition(Grid);
+			(var xMin, var yMin, var xMax, var yMax, var xRange, var yRange) = GetAxisValues(Series.First());
+			var xPercent = mouseLoc.X / plotAreaWidth;
+			var yPercent = mouseLoc.Y / plotAreaHeight;
+			var xVal = xMin.Add(xPercent * xRange);
+			var yVal = ((1 - yPercent) * yRange + yMin);
+
+			// Move crosshairs
 			XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
 			YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
 			XCrosshairValueDisplay.Margin = new Thickness(mouseLoc.X - 50, 0, 0, -XAxisRow.ActualHeight);
 			YCrosshairValueDisplay.Margin = new Thickness(-YAxisColumn.ActualWidth, mouseLoc.Y - 10, 0, 0);
 
-			(var xMin, var yMin, var xMax, var yMax, var xRange, var yRange) = GetAxisValues(Series.First());
-			var xPercent = mouseLoc.X / plotAreaWidth;
-			var yPercent = mouseLoc.Y / plotAreaHeight;
-
-			var xVal = xMin.Add(xPercent * xRange);
-			var yVal = ((1 - yPercent) * yRange + yMin);
-
+			// Set value displays
 			XCrosshairValueLabel.Text
 				= XAxisCursorLabelFormatter == null ? xVal.ToString() : XAxisCursorLabelFormatter(xVal);
 			YCrosshairValueLabel.Text = YAxisCursorLabelFormatter == null
 				? Math.Round(yVal, 2).ToString() 
 				: YAxisCursorLabelFormatter(yVal);
 
+			// Get chartpoint to display tooltip for
 			var chartPoints = ConvertedSeries.First().Data;
 			var nearestPoint = chartPoints.First(x => Math.Abs(x.X - mouseLoc.X) == chartPoints.Min(x => Math.Abs(x.X - mouseLoc.X)));
 			var hoveredChartPoints = chartPoints.Where(x => x.X == nearestPoint.X);
-			ChartPoint hoveredChartPoint = null;
-			if (hoveredChartPoints.Count() > 1)
+			var hoveredChartPoint = hoveredChartPoints.Count() > 1
+				? hoveredChartPoints.First(x => Math.Abs(x.Y - mouseLoc.Y) == hoveredChartPoints.Min(x => Math.Abs(x.Y - mouseLoc.Y)))
+				: hoveredChartPoints.First();
+
+			if (hoveredChartPoint == null) return;
+
+			// Get tooltip position variables
+			if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipBorder.ActualWidth + 10)) tooltipLeft = true;
+			if (tooltipLeft && (mouseLoc.X) < (TooltipBorder.ActualWidth + 5)) tooltipLeft = false;
+			if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipBorder.ActualHeight + 10)) tooltipTop = true;
+			if (tooltipTop && (mouseLoc.Y) < (TooltipBorder.ActualHeight + 5)) tooltipTop = false;
+
+			// Set location of items related to the hoveredPoint
+			TooltipBorder.Margin = new Thickness(!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipBorder.ActualWidth - 5, !tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipBorder.ActualHeight - 5, 0, 0);
+			HoveredPointEllipse.Margin = new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0);
+			HoveredPointEllipse.Fill = new SolidColorBrush(
+				ConvertedSeries.First().Stroke.ColourAtPoint(hoveredChartPoint.BackingPoint.DateTime.Ticks, hoveredChartPoint.BackingPoint.Value.Value));
+			XPointHighlighter.Margin = new Thickness(0, hoveredChartPoint.Y, 0, 0);
+			HoveredPoint = hoveredChartPoint.BackingPoint;
+			if (Series.First().TooltipLabelFormatter != null) TooltipString = Series.First().TooltipLabelFormatter(Series.First().Values, HoveredPoint);
+		}
+
+		private void DrawableChartSectionBorder_MouseWheel(object sender, MouseWheelEventArgs e)
+		{
+			var zoomIn = e.Delta > 0;
+			var mouseLoc = e.GetPosition(Grid);
+			foreach (var series in ConvertedSeries)
 			{
-				hoveredChartPoint = hoveredChartPoints.First(x => Math.Abs(x.Y - mouseLoc.Y) == hoveredChartPoints.Min(x => Math.Abs(x.Y - mouseLoc.Y)));
-			}
-			else if (hoveredChartPoints.Any())
-			{
-				hoveredChartPoint = hoveredChartPoints.First();
-			}
-			
-			if (hoveredChartPoint != null)
-			{
-				if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipBorder.ActualWidth + 10)) tooltipLeft = true;
-				if (tooltipLeft && (mouseLoc.X) < (TooltipBorder.ActualWidth + 5)) tooltipLeft = false;
-				if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipBorder.ActualHeight + 10)) tooltipTop = true;
-				if (tooltipTop && (mouseLoc.Y) < (TooltipBorder.ActualHeight + 5)) tooltipTop = false;
-				TooltipBorder.Margin = new Thickness(!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipBorder.ActualWidth - 5, !tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipBorder.ActualHeight - 5, 0, 0);
-				HoveredPointEllipse.Margin = new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0);
-				HoveredPointEllipse.Fill = new SolidColorBrush(ConvertedSeries.First().Stroke.ColourAtPoint(hoveredChartPoint.BackingPoint.DateTime.Ticks, hoveredChartPoint.BackingPoint.Value.Value));
-				XPointHighlighter.Margin = new Thickness(0, hoveredChartPoint.Y, 0, 0);
-				HoveredPoint = hoveredChartPoint.BackingPoint;
-				if (Series.First().TooltipLabelFormatter != null)
+				if (zoomIn)
 				{
-					TooltipString = Series.First().TooltipLabelFormatter(Series.First().Values, HoveredPoint);
+					series.PseudoZoomLevel *= 0.9;
 				}
+				else
+				{
+					var zoomLevel = series.PseudoZoomLevel /= 0.9;
+					zoomLevel = Math.Min(series.PseudoZoomLevel, 1);
+					series.PseudoZoomLevel = zoomLevel;
+					if (series.PseudoZoomLevel == 1)
+					{
+						series.PseudoZoomCentre = 0.5;
+					}
+				}
+
+				var effectiveMin = Math.Max(plotAreaWidth * series.PseudoZoomCentre - (plotAreaWidth * series.PseudoZoomLevel / 2), 0);
+				var effectiveMax = Math.Min(plotAreaWidth * series.PseudoZoomCentre + (plotAreaWidth * series.PseudoZoomLevel / 2), plotAreaWidth);
+				var ratio = mouseLoc.X / plotAreaWidth;
+				series.PseudoZoomCentre = (effectiveMin + ratio * (effectiveMax - effectiveMin)) / plotAreaWidth;
 			}
+
+			//zoomTrigger.Refresh();
 		}
 	}
 }

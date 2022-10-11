@@ -13,6 +13,7 @@ using CoreUtilities.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
 using ModernThemables.ScalableIcons;
+using CoreUtilities.HelperClasses.Extensions;
 
 namespace ModernThemables.Controls
 {
