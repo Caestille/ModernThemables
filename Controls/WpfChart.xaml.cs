@@ -176,14 +176,15 @@ namespace ModernThemables.Controls
 				Stroke = stroke;
 				Fill = fill;
 
-				PathStrokeData = string.Empty;
+				var sb = new StringBuilder();
 				bool setM = true;
-				foreach (var point in data)
+				foreach (var point in Data)
 				{
 					var pointType = setM ? "M" : "L";
 					setM = false;
-					PathStrokeData += $" {pointType}{point.X} {point.Y}";
+					sb.Append($" {pointType}{point.X} {point.Y}");
 				}
+				PathStrokeData = sb.ToString();
 				PathStrokeData += $" L{Data.Last().X} {Data.First().Y}";
 
 				var dataMin = Data.Min(x => x.BackingPoint.Value).Value;
