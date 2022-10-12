@@ -29,6 +29,8 @@ namespace ModernThemables.Controls
 
 		private KeepAliveTriggerService resizeTrigger;
 
+		private AbstractChartPoint cachedPoint;
+
 		private bool tooltipLeft;
 		private bool tooltipTop = true;
 
@@ -444,6 +446,8 @@ namespace ModernThemables.Controls
 
 		private void DrawableChartSectionBorder_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
+			cachedPoint = HoveredPoint ?? cachedPoint;
+
 			var zoomIn = e.Delta > 0;
 			var mouseLoc = e.GetPosition(Grid);
 			foreach (var series in ConvertedSeries)
@@ -463,10 +467,9 @@ namespace ModernThemables.Controls
 					}
 				}
 
-				var effectiveMin = Math.Max(plotAreaWidth * series.ZoomCentre - (plotAreaWidth * series.ZoomLevel / 2), 0);
-				var effectiveMax = Math.Min(plotAreaWidth * series.ZoomCentre + (plotAreaWidth * series.ZoomLevel / 2), plotAreaWidth);
-				var ratio = mouseLoc.X / plotAreaWidth;
-				series.ZoomCentre = (effectiveMin + ratio * (effectiveMax - effectiveMin)) / plotAreaWidth;
+				var prevZoomCentre = series.ZoomCentre;
+				var newZoomCentre = (cachedPoint.ConvertedX - series.Data.Min(x => x.BackingPoint.ConvertedX)) / (series.Data.Max(x => x.BackingPoint.ConvertedX) - series.Data.Min(x => x.BackingPoint.ConvertedX));
+				series.ZoomCentre = (prevZoomCentre * 5 + newZoomCentre) / 6;
 			}
 
 			HoveredPoint = null;
