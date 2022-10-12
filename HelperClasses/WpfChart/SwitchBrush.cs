@@ -76,7 +76,28 @@ namespace ModernThemables.HelperClasses.WpfChart
 
         Color IChartBrush.ColourAtPoint(double x, double y)
         {
-            throw new NotImplementedException();
-        }
+			if (y >= yMax)
+			{
+				return topColour;
+			}
+			else if (y < yMax && y >= yCentre)
+			{
+				var ratio = (double)(1 - (y - yCentre) / (yMax - yCentre));
+				return topColour.Combine(topCentreColour, ratio);
+			}
+			else if (y > yMin && y <= yCentre)
+			{
+				var ratio = (double)(1 - (y - yMin) / (yCentre - yMin));
+				return bottomColour.Combine(bottomCentreColour, ratio);
+			}
+			else if (y <= yMin)
+			{
+				return bottomColour;
+			}
+			else
+			{
+				return topColour;
+			}
+		}
     }
 }
