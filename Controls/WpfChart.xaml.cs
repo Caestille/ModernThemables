@@ -9,210 +9,17 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Windows.Media;
 using System.Windows.Input;
-using CoreUtilities.HelperClasses.Extensions;
 using System.Windows.Threading;
 using CoreUtilities.Services;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using System.Text;
+using ModernThemables.HelperClasses.WpfChart;
 
 namespace ModernThemables.Controls
 {
-	public interface IChartBrush
-	{
-		Brush CoreBrush { get; }
-		void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre);
-		Color ColourAtPoint(double x, double y);
-	}
-
-	public class SwitchBrush : IChartBrush
-	{
-		public Brush CoreBrush { get; private set; }
-
-		private Color topColour;
-		private Color bottomColour;
-		private Color topCentreColour;
-		private Color bottomCentreColour;
-
-		private double yMax;
-		private double yMin;
-		private double yCentre;
-
-		public SwitchBrush(Color topColour, Color topCentreColour, Color bottomCentreColour, Color bottomColour)
-		{
-			CoreBrush = new LinearGradientBrush();
-			this.topColour = topColour;
-			this.bottomColour = bottomColour;
-			this.topCentreColour = topCentreColour;
-			this.bottomCentreColour = bottomCentreColour;
-		}
-
-		public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre)
-		{
-			this.yMax = yMax;
-			this.yMin = yMin;
-			this.yCentre = yCentre;
-
-			yCentre = Math.Min(Math.Max(yCentre, yMin), yMax);
-			var ratio = (double)(1 - (yCentre - yMin) / (yMax - yMin));
-
-			GradientStopCollection collection = new()
-			{
-				new GradientStop(topColour, 0),
-				new GradientStop(topCentreColour, ratio),
-				new GradientStop(bottomCentreColour, ratio),
-				new GradientStop(bottomColour, 1.0)
-			};
-
-			CoreBrush = new LinearGradientBrush(collection, angle: 90);
-		}
-
-		public Color ColourAtPoint(double x, double y)
-		{
-			if (y >= yMax)
-			{
-				return topColour;
-			}
-			else if (y < yMax && y >= yCentre)
-			{
-				var ratio = (double)(1 - (y - yCentre) / (yMax - yCentre));
-				return topColour.Combine(topCentreColour, ratio);
-			}
-			else if (y > yMin && y <= yCentre)
-			{
-				var ratio = (double)(1 - (y - yMin) / (yCentre - yMin));
-				return bottomColour.Combine(bottomCentreColour, ratio);
-			}
-			else if (y <= yMin)
-			{
-				return bottomColour;
-			}
-			else
-			{
-				return topColour;
-			}
-		}
-	}
-
-	public class LineSeries<TModel>
-	{
-		public event EventHandler<PropertyChangedEventArgs> PropertyChanged;
-		public Func<IEnumerable<TModel>, TModel, string> TooltipLabelFormatter { get; set; }
-		public IChartBrush Stroke { get; set; }
-		public IChartBrush Fill { get; set; }
-
-		private IEnumerable<TModel> values;
-		public IEnumerable<TModel> Values 
-		{
-			get => values;
-			set
-			{
-				values = value;
-				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Values)));
-			}
-		}
-	}
-
 	/// <summary>
 	/// Interaction logic for WpfChart.xaml
 	/// </summary>
 	public partial class WpfChart : UserControl
 	{
-		private struct ValueWithHeight
-		{
-			public string Value { get; set; }
-			public double Height { get; set; }
-
-			public ValueWithHeight(string value, double height)
-			{
-				Value = value;
-				Height = height;
-			}
-		}
-
-		private class ChartPoint
-		{
-			public double X { get; set; }
-			public double Y { get; set; }
-			public DateTimePoint BackingPoint { get; }
-
-			public ChartPoint(double x, double y, DateTimePoint backingPoint)
-			{
-				X = x;
-				Y = y;
-				BackingPoint = backingPoint;
-			}
-		}
-
-		private class WpfChartSeries : ObservableObject
-		{
-			public IEnumerable<ChartPoint> Data;
-			public string PathStrokeData { get; }
-			public string PathFillData { get; }
-			public IChartBrush Stroke { get; }
-			public IChartBrush Fill { get; }
-			public double Height => Data.Max(x => x.Y) - Data.Min(x => x.Y);
-
-			public bool PreventTrigger { get; set; }
-
-			private double pseudoZoomLevel = 1;
-			public double ZoomLevel
-			{
-				get => pseudoZoomLevel;
-				set => SetProperty(ref pseudoZoomLevel, value);
-			}
-
-			private double pseudoZoomCentre = 0.5;
-			public double ZoomCentre
-			{
-				get => pseudoZoomCentre;
-				set
-				{
-					SetProperty(ref pseudoZoomCentre, value);
-					SetZoomData();
-				}
-			}
-
-			public IEnumerable<ChartPoint> ZoomData { get; private set; }
-
-			public WpfChartSeries(IEnumerable<ChartPoint> data, IChartBrush stroke, IChartBrush fill)
-			{
-				Data = data;
-				ZoomData = data;
-				Stroke = stroke;
-				Fill = fill;
-
-				var sb = new StringBuilder();
-				bool setM = true;
-				foreach (var point in Data)
-				{
-					var pointType = setM ? "M" : "L";
-					setM = false;
-					sb.Append($" {pointType}{point.X} {point.Y}");
-				}
-				PathStrokeData = sb.ToString();
-				PathStrokeData += $" L{Data.Last().X} {Data.First().Y}";
-
-				var dataMin = Data.Min(x => x.BackingPoint.Value).Value;
-				var dataMax = Data.Max(x => x.BackingPoint.Value).Value;
-				var range = dataMax - dataMin;
-				var zero = Math.Min(Math.Max(0d, dataMin), dataMax);
-				var ratio = (double)(1 - (zero - dataMin) / range);
-				var zeroPoint = ratio * (Data.Max(x => x.Y) - Data.Min(x => x.Y)) * 1.1;
-				PathFillData = $"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
-			}
-
-			private void SetZoomData()
-			{
-				var zoomCentreX = Data.Min(x => x.X) + (Data.Max(x => x.X) - Data.Min(x => x.X)) * ZoomCentre;
-				var data = new List<ChartPoint>();
-				foreach (var point in Data)
-				{
-					data.Add(new ChartPoint(point.X + ((point.X - zoomCentreX) * (1 / ZoomLevel - 1)), point.Y, point.BackingPoint));
-				}
-				ZoomData = data;
-			}
-		}
-
 		private double plotAreaHeight => DrawableChartSectionBorder.ActualHeight;
 		private double plotAreaWidth => DrawableChartSectionBorder.ActualWidth;
 		private DateTime timeLastUpdated;
@@ -224,6 +31,8 @@ namespace ModernThemables.Controls
 
 		private bool tooltipLeft;
 		private bool tooltipTop = true;
+
+		#region Dependecy Properties
 
 		public ObservableCollection<LineSeries<DateTimePoint>> Series
 		{
@@ -305,13 +114,13 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty HoveredPointProperty = DependencyProperty.Register(
 		  "HoveredPoint", typeof(DateTimePoint), typeof(WpfChart), new PropertyMetadata(null));
 
-		private ObservableCollection<WpfChartSeries> ConvertedSeries
+		private ObservableCollection<WpfChartSeriesViewModel> ConvertedSeries
 		{
-			get { return (ObservableCollection<WpfChartSeries>)GetValue(ConvertedSeriesProperty); }
+			get { return (ObservableCollection<WpfChartSeriesViewModel>)GetValue(ConvertedSeriesProperty); }
 			set { SetValue(ConvertedSeriesProperty, value); }
 		}
 		public static readonly DependencyProperty ConvertedSeriesProperty = DependencyProperty.Register(
-		  "ConvertedSeries", typeof(ObservableCollection<WpfChartSeries>), typeof(WpfChart), new PropertyMetadata(new ObservableCollection<WpfChartSeries>()));
+		  "ConvertedSeries", typeof(ObservableCollection<WpfChartSeriesViewModel>), typeof(WpfChart), new PropertyMetadata(new ObservableCollection<WpfChartSeriesViewModel>()));
 
 		private ObservableCollection<string> XAxisLabels
 		{
@@ -336,6 +145,8 @@ namespace ModernThemables.Controls
 		}
 		public static readonly DependencyProperty XAxisLabelsWidthProperty = DependencyProperty.Register(
 		  "XAxisLabelsWidth", typeof(double), typeof(WpfChart), new PropertyMetadata(0d));
+
+		#endregion
 
 		public WpfChart()
 		{
@@ -435,8 +246,8 @@ namespace ModernThemables.Controls
 
 				var points = GetPointsForSeries(xMin, xRange, yMin, yRange, Series.First());
 
-				ConvertedSeries = new ObservableCollection<WpfChartSeries>()
-					{ new WpfChartSeries(points, Series.First().Stroke, Series.First().Fill), };
+				ConvertedSeries = new ObservableCollection<WpfChartSeriesViewModel>()
+					{ new WpfChartSeriesViewModel(points, Series.First().Stroke, Series.First().Fill), };
 
 				Series.First().Stroke?.Reevaluate(
 					series.Values.Max(x => x.Value).Value,
