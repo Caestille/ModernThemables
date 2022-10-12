@@ -29,7 +29,7 @@ namespace ModernThemables.Controls
 
 		private KeepAliveTriggerService resizeTrigger;
 
-		private AbstractChartPoint cachedPoint;
+		private DateTimePoint cachedPoint;
 
 		private bool tooltipLeft;
 		private bool tooltipTop = true;
@@ -468,7 +468,7 @@ namespace ModernThemables.Controls
 				}
 
 				var prevZoomCentre = series.ZoomCentre;
-				var newZoomCentre = (cachedPoint.ConvertedX - series.Data.Min(x => x.BackingPoint.ConvertedX)) / (series.Data.Max(x => x.BackingPoint.ConvertedX) - series.Data.Min(x => x.BackingPoint.ConvertedX));
+				var newZoomCentre = (cachedPoint.DateTime - series.Data.Min(x => x.BackingPoint.DateTime)).TotalMilliseconds / (series.Data.Max(x => x.BackingPoint.DateTime) - series.Data.Min(x => x.BackingPoint.DateTime)).TotalMilliseconds;
 				series.ZoomCentre = (prevZoomCentre * 5 + newZoomCentre) / 6;
 			}
 
