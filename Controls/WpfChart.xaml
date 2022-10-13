@@ -86,19 +86,24 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<TextBlock
-							Width="{Binding XAxisLabelsWidth, ElementName=root}"
-							FontSize="11"
-							FontWeight="Medium"
-							Foreground="{DynamicResource StatusTextBrush}"
-							Text="{Binding IsAsync=True}"
-							TextAlignment="Center" />
+						<Grid Width="{Binding Height}">
+							<TextBlock
+								Height="12"
+								Width="50"
+								HorizontalAlignment="Right"
+								Margin="0,0,-25,0"
+								FontSize="11"
+								FontWeight="Medium"
+								Foreground="{DynamicResource StatusTextBrush}"
+								Text="{Binding Value}"
+								TextAlignment="Center" />
+						</Grid>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</Border>
 		<Grid x:Name="Grid" Grid.Column="1">
-			<ItemsControl ItemsSource="{Binding YAxisLabels, ElementName=root}">
+			<ItemsControl ItemsSource="{Binding YAxisLabels, ElementName=root}" Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<StackPanel VerticalAlignment="Bottom" />
@@ -110,6 +115,22 @@
 							Height="{Binding Height}"
 							BorderBrush="{DynamicResource StatusTextLightBrush}"
 							BorderThickness="0,1,0,0" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<ItemsControl ItemsSource="{Binding XAxisLabels, ElementName=root}" Visibility="{Binding ElementName=root, Path=ShowXSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}" >
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel HorizontalAlignment="Left" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Border
+							Width="{Binding Height}"
+							Height="{Binding ElementName=Grid, Path=ActualHeight}"
+							BorderBrush="{DynamicResource StatusTextLightBrush}"
+							BorderThickness="0,0,1,0" />
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
@@ -310,6 +331,7 @@
 				RenderTransformOrigin="0.5,0.5"
 				Stroke="{DynamicResource TextBrush}"
 				StrokeThickness="1"
+				Opacity="0"
 				Visibility="{Binding ElementName=HoveredPointEllipse, Path=Visibility}">
 				<Ellipse.RenderTransform>
 					<ScaleTransform x:Name="ScaleTransform" />
