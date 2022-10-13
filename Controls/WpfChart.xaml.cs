@@ -12,6 +12,10 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using CoreUtilities.Services;
 using ModernThemables.HelperClasses.WpfChart;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
+using ModernThemables.Converters;
+using System.Threading.Tasks;
 
 namespace ModernThemables.Controls
 {
@@ -20,6 +24,9 @@ namespace ModernThemables.Controls
 	/// </summary>
 	public partial class WpfChart : UserControl
 	{
+		public event EventHandler<DateTimePoint> PointClicked;
+		public event EventHandler<Tuple<DateTimePoint, DateTimePoint>> PointRangeSelected;
+
 		private double plotAreaHeight => DrawableChartSectionBorder.ActualHeight;
 		private double plotAreaWidth => DrawableChartSectionBorder.ActualWidth;
 		private DateTime timeLastUpdated;
@@ -29,10 +36,18 @@ namespace ModernThemables.Controls
 
 		private KeepAliveTriggerService resizeTrigger;
 
-		private DateTimePoint cachedPoint;
+		private ChartPoint cachedPoint;
+		private Point? lastMouseMovePoint;
 
 		private bool tooltipLeft;
 		private bool tooltipTop = true;
+
+		private bool isMouseDown;
+		private bool isUserDragging;
+		private bool userCouldBePanning;
+		private bool isUserPanning;
+		private DateTimePoint lowerSelection;
+		private DateTimePoint upperSelection;
 
 		#region Dependecy Properties
 
@@ -92,6 +107,14 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty ShowYSeparatorLinesProperty = DependencyProperty.Register(
 		  "ShowYSeparatorLines", typeof(bool), typeof(WpfChart), new PropertyMetadata(true));
 
+		public bool IsZoomed
+		{
+			get { return (bool)GetValue(IsZoomedProperty); }
+			set { SetValue(IsZoomedProperty, value); }
+		}
+		public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
+		  "IsZoomed", typeof(bool), typeof(WpfChart), new PropertyMetadata(true));
+
 		public DataTemplate TooltipTemplate
 		{
 			get { return (DataTemplate)GetValue(TooltipTemplateProperty); }
@@ -108,13 +131,13 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipStringProperty = DependencyProperty.Register(
 		  "TooltipString", typeof(string), typeof(WpfChart));
 
-		private DateTimePoint HoveredPoint
+		private ChartPoint HoveredPoint
 		{
-			get { return (DateTimePoint)GetValue(HoveredPointProperty); }
+			get { return (ChartPoint)GetValue(HoveredPointProperty); }
 			set { SetValue(HoveredPointProperty, value); }
 		}
 		public static readonly DependencyProperty HoveredPointProperty = DependencyProperty.Register(
-		  "HoveredPoint", typeof(DateTimePoint), typeof(WpfChart), new PropertyMetadata(null));
+		  "HoveredPoint", typeof(ChartPoint), typeof(WpfChart), new PropertyMetadata(null));
 
 		private ObservableCollection<WpfChartSeriesViewModel> ConvertedSeries
 		{
@@ -148,12 +171,78 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty XAxisLabelsWidthProperty = DependencyProperty.Register(
 		  "XAxisLabelsWidth", typeof(double), typeof(WpfChart), new PropertyMetadata(0d));
 
+		private bool IsCrosshairVisible
+		{
+			get { return (bool)GetValue(IsCrosshairVisibleProperty); }
+			set { SetValue(IsCrosshairVisibleProperty, value); }
+		}
+		public static readonly DependencyProperty IsCrosshairVisibleProperty = DependencyProperty.Register(
+		  "IsCrosshairVisible", typeof(bool), typeof(WpfChart), new PropertyMetadata(true));
+
+		private bool IsTooltipVisible
+		{
+			get { return (bool)GetValue(IsTooltipVisibleProperty); }
+			set { SetValue(IsTooltipVisibleProperty, value); }
+		}
+		public static readonly DependencyProperty IsTooltipVisibleProperty = DependencyProperty.Register(
+		  "IsTooltipVisible", typeof(bool), typeof(WpfChart), new PropertyMetadata(true));
+
+		private bool IsAxisIndicatorsVisible
+		{
+			get { return (bool)GetValue(IsAxisIndicatorsVisibleProperty); }
+			set { SetValue(IsAxisIndicatorsVisibleProperty, value); }
+		}
+		public static readonly DependencyProperty IsAxisIndicatorsVisibleProperty = DependencyProperty.Register(
+		  "IsAxisIndicatorsVisible", typeof(bool), typeof(WpfChart), new PropertyMetadata(true));
+
+		private bool IsPointIndicatorsVisible
+		{
+			get { return (bool)GetValue(IsPointIndicatorsVisibleProperty); }
+			set { SetValue(IsPointIndicatorsVisibleProperty, value); }
+		}
+		public static readonly DependencyProperty IsPointIndicatorsVisibleProperty = DependencyProperty.Register(
+		  "IsPointIndicatorsVisible", typeof(bool), typeof(WpfChart), new PropertyMetadata(true));
+
+		private bool IsUserSelectingRange
+		{
+			get { return (bool)GetValue(IsUserSelectingRangeProperty); }
+			set { SetValue(IsUserSelectingRangeProperty, value); }
+		}
+		public static readonly DependencyProperty IsUserSelectingRangeProperty = DependencyProperty.Register(
+		  "IsUserSelectingRange", typeof(bool), typeof(WpfChart), new PropertyMetadata(false));
+
+		private double ZoomLevel
+		{
+			get { return (double)GetValue(ZoomLevelProperty); }
+			set { SetValue(ZoomLevelProperty, value); }
+		}
+		public static readonly DependencyProperty ZoomLevelProperty = DependencyProperty.Register(
+		  "ZoomLevel", typeof(double), typeof(WpfChart), new FrameworkPropertyMetadata(1d, OnZoomSet));
+
+		private double ZoomCentre
+		{
+			get { return (double)GetValue(ZoomCentreProperty); }
+			set { SetValue(ZoomCentreProperty, value); }
+		}
+		public static readonly DependencyProperty ZoomCentreProperty = DependencyProperty.Register(
+		  "ZoomCentre", typeof(double), typeof(WpfChart), new FrameworkPropertyMetadata(0.5d, OnZoomSet));
+
+		private double ZoomOffset
+		{
+			get { return (double)GetValue(ZoomOffsetProperty); }
+			set { SetValue(ZoomOffsetProperty, value); }
+		}
+		public static readonly DependencyProperty ZoomOffsetProperty = DependencyProperty.Register(
+		  "ZoomOffset", typeof(double), typeof(WpfChart), new FrameworkPropertyMetadata(0d, OnZoomSet));
+
 		#endregion
 
 		public WpfChart()
 		{
 			InitializeComponent();
 			this.Loaded += WpfChart_Loaded;
+
+			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
 
 			resizeTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
 		}
@@ -174,6 +263,14 @@ namespace ModernThemables.Controls
 			}
 		}
 
+		public void ResetZoom()
+		{
+			ZoomCentre = 0.5;
+			ZoomLevel = 1;
+			ZoomOffset = 0;
+			IsZoomed = false;
+		}
+
 		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not WpfChart chart) return;
@@ -192,6 +289,16 @@ namespace ModernThemables.Controls
 			chart.hasSetSeries = true;
 
 			chart.RenderChart(false);
+		}
+
+		private static void OnZoomSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not WpfChart chart) return;
+
+			foreach (var series in chart.ConvertedSeries)
+			{
+				series.SetZoomData(chart.ZoomLevel, chart.ZoomCentre, chart.ZoomOffset);
+			}
 		}
 
 		private void Subscribe(ObservableCollection<LineSeries<DateTimePoint>> series)
@@ -393,30 +500,68 @@ namespace ModernThemables.Controls
 			resizeTrigger.Refresh();
 		}
 
-		private void DrawableChartSectionBorder_MouseMove(object sender, MouseEventArgs e)
+		private void Grid_ContextMenuOpening(object sender, ContextMenuEventArgs e)
 		{
+			if (isUserPanning)
+			{
+				e.Handled = true;
+			}
+			isUserPanning = false;
+			userCouldBePanning = false;
+		}
+
+		#region Mouse events
+
+		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
+		{
+			IsZoomed = ZoomLevel != 1 || ZoomOffset != 0;
+
+			var mouseLoc = e.GetPosition(Grid);
+
+			if (isMouseDown)
+			{
+				isUserDragging = true;
+				IsUserSelectingRange = !(userCouldBePanning || isUserPanning);
+			}
+
+			if (userCouldBePanning)
+			{
+				isUserPanning = true;
+				if (lastMouseMovePoint != null)
+				{
+					ZoomOffset += lastMouseMovePoint.Value.X - mouseLoc.X;
+				}
+			}
+			lastMouseMovePoint = mouseLoc;
+
 			if (DateTime.Now - timeLastUpdated < updateLimit) return;
 			
 			timeLastUpdated = DateTime.Now;
-			var mouseLoc = e.GetPosition(Grid);
 			(var xMin, var yMin, var xMax, var yMax, var xRange, var yRange) = GetAxisValues(Series.First());
 			var xPercent = mouseLoc.X / plotAreaWidth;
 			var yPercent = mouseLoc.Y / plotAreaHeight;
 			var xVal = xMin.Add(xPercent * xRange);
 			var yVal = ((1 - yPercent) * yRange + yMin);
 
-			// Move crosshairs
-			XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
-			YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
-			XCrosshairValueDisplay.Margin = new Thickness(mouseLoc.X - 50, 0, 0, -XAxisRow.ActualHeight);
-			YCrosshairValueDisplay.Margin = new Thickness(-YAxisColumn.ActualWidth, mouseLoc.Y - 10, 0, 0);
+			if (IsCrosshairVisible)
+			{
+				// Move crosshairs
+				XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
+				YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
+			}
 
-			// Set value displays
-			XCrosshairValueLabel.Text
-				= XAxisCursorLabelFormatter == null ? xVal.ToString() : XAxisCursorLabelFormatter(xVal);
-			YCrosshairValueLabel.Text = YAxisCursorLabelFormatter == null
-				? Math.Round(yVal, 2).ToString() 
-				: YAxisCursorLabelFormatter(yVal);
+			if (IsAxisIndicatorsVisible)
+			{
+				XCrosshairValueDisplay.Margin = new Thickness(mouseLoc.X - 50, 0, 0, -XAxisRow.ActualHeight);
+				YCrosshairValueDisplay.Margin = new Thickness(-YAxisColumn.ActualWidth, mouseLoc.Y - 10, 0, 0);
+
+				// Set value displays
+				XCrosshairValueLabel.Text
+					= XAxisCursorLabelFormatter == null ? xVal.ToString() : XAxisCursorLabelFormatter(xVal);
+				YCrosshairValueLabel.Text = YAxisCursorLabelFormatter == null
+					? Math.Round(yVal, 2).ToString()
+					: YAxisCursorLabelFormatter(yVal);
+			}
 
 			// Get chartpoint to display tooltip for
 			var chartPoints = ConvertedSeries.First().ZoomData;
@@ -428,52 +573,114 @@ namespace ModernThemables.Controls
 
 			if (hoveredChartPoint == null) return;
 
-			// Get tooltip position variables
-			if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipBorder.ActualWidth + 10)) tooltipLeft = true;
-			if (tooltipLeft && (mouseLoc.X) < (TooltipBorder.ActualWidth + 5)) tooltipLeft = false;
-			if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipBorder.ActualHeight + 10)) tooltipTop = true;
-			if (tooltipTop && (mouseLoc.Y) < (TooltipBorder.ActualHeight + 5)) tooltipTop = false;
+			HoveredPoint = hoveredChartPoint;
 
-			// Set location of items related to the hoveredPoint
-			TooltipBorder.Margin = new Thickness(!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipBorder.ActualWidth - 5, !tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipBorder.ActualHeight - 5, 0, 0);
-			HoveredPointEllipse.Margin = new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0);
-			HoveredPointEllipse.Fill = new SolidColorBrush(
-				ConvertedSeries.First().Stroke.ColourAtPoint(hoveredChartPoint.BackingPoint.DateTime.Ticks, hoveredChartPoint.BackingPoint.Value.Value));
-			XPointHighlighter.Margin = new Thickness(0, hoveredChartPoint.Y, 0, 0);
-			HoveredPoint = hoveredChartPoint.BackingPoint;
-			if (Series.First().TooltipLabelFormatter != null) TooltipString = Series.First().TooltipLabelFormatter(Series.First().Values, HoveredPoint);
+			if (IsTooltipVisible)
+			{
+				// Get tooltip position variables
+				if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipBorder.ActualWidth + 10)) tooltipLeft = true;
+				if (tooltipLeft && (mouseLoc.X) < (TooltipBorder.ActualWidth + 5)) tooltipLeft = false;
+				if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipBorder.ActualHeight + 10)) tooltipTop = true;
+				if (tooltipTop && (mouseLoc.Y) < (TooltipBorder.ActualHeight + 5)) tooltipTop = false;
+
+				TooltipBorder.Margin = new Thickness(!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipBorder.ActualWidth - 5, !tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipBorder.ActualHeight - 5, 0, 0);
+				if (Series.First().TooltipLabelFormatter != null) TooltipString = Series.First().TooltipLabelFormatter(Series.First().Values, HoveredPoint.BackingPoint);
+			}
+
+			if (IsPointIndicatorsVisible)
+			{
+				// Set location of items related to the hoveredPoint
+				HoveredPointEllipse.Margin = new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0);
+				HoveredPointEllipse.Fill = new SolidColorBrush(
+					ConvertedSeries.First().Stroke.ColourAtPoint(hoveredChartPoint.BackingPoint.DateTime.Ticks, hoveredChartPoint.BackingPoint.Value.Value));
+				XPointHighlighter.Margin = new Thickness(0, hoveredChartPoint.Y, 0, 0);
+			}	
+
+			if (IsUserSelectingRange)
+			{
+				SelectionRangeBorder.Width = Math.Max(HoveredPoint.X - SelectionRangeBorder.Margin.Left, 0);
+			}
 		}
 
-		private void DrawableChartSectionBorder_MouseWheel(object sender, MouseWheelEventArgs e)
+		private void MouseCaptureGrid_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
+			IsZoomed = ZoomLevel != 1 || ZoomOffset != 0;
 			cachedPoint = HoveredPoint ?? cachedPoint;
 
 			var zoomIn = e.Delta > 0;
-			var mouseLoc = e.GetPosition(Grid);
-			foreach (var series in ConvertedSeries)
-			{
-				if (zoomIn)
-				{
-					series.ZoomLevel *= 0.9;
-				}
-				else
-				{
-					var zoomLevel = series.ZoomLevel /= 0.9;
-					zoomLevel = Math.Min(series.ZoomLevel, 1);
-					series.ZoomLevel = zoomLevel;
-					if (series.ZoomLevel == 1)
-					{
-						series.ZoomCentre = 0.5;
-					}
-				}
 
-				var prevZoomCentre = series.ZoomCentre;
-				var newZoomCentre = (cachedPoint.DateTime - series.Data.Min(x => x.BackingPoint.DateTime)).TotalMilliseconds / (series.Data.Max(x => x.BackingPoint.DateTime) - series.Data.Min(x => x.BackingPoint.DateTime)).TotalMilliseconds;
-				series.ZoomCentre = (prevZoomCentre * 5 + newZoomCentre) / 6;
+			if (zoomIn)
+			{
+				ZoomLevel *= 0.9;
 			}
+			else
+			{
+				var zoomLevel = ZoomLevel / 0.9;
+				zoomLevel = Math.Min(zoomLevel, 1);
+				ZoomLevel = zoomLevel;
+				if (ZoomLevel == 1)
+				{
+					ZoomCentre = 0.5;
+					ZoomOffset = 0;
+				}
+			}
+
+			(var xMin, var yMin, var xMax, var yMax, var xRange, var yRange) = GetAxisValues(Series.First());
+			var prevZoomCentre = ZoomCentre;
+			var newZoomCentre =
+				(cachedPoint.BackingPoint.DateTime - xMin).TotalMilliseconds / (xMax - xMin).TotalMilliseconds;
+			ZoomCentre = (prevZoomCentre * 3 + newZoomCentre) / 4;
 
 			HoveredPoint = null;
 			TooltipString = string.Empty;
 		}
+
+		private void MouseCaptureGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			isMouseDown = true;
+			if (e.ChangedButton == MouseButton.Left)
+			{
+				e.Handled = true;
+				lowerSelection = HoveredPoint.BackingPoint;
+				SelectionRangeBorder.Margin = new Thickness(HoveredPoint.X, 0, 0, 0);
+			}
+			else if (e.ChangedButton == MouseButton.Right)
+			{
+				userCouldBePanning = true;
+			}
+		}
+
+		private void MouseCaptureGrid_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+		{
+			isMouseDown = false;
+			IsUserSelectingRange = false;
+
+			if (e.ChangedButton != MouseButton.Left)
+			{
+				isUserDragging = false;
+				return;
+			}
+
+			if (isUserDragging)
+			{
+				upperSelection = HoveredPoint.BackingPoint;
+				PointRangeSelected?.Invoke(this, new Tuple<DateTimePoint, DateTimePoint>(lowerSelection, upperSelection));
+				isUserDragging = false;
+				isUserPanning = false;
+				userCouldBePanning = false;
+				return;
+			}
+
+			PointClicked?.Invoke(this, lowerSelection);
+			PointSelectionEllipse.Opacity = 1;
+			ScaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(1, 3, TimeSpan.FromMilliseconds(200)));
+			ScaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(1, 3, TimeSpan.FromMilliseconds(200)));
+			PointSelectionEllipse.BeginAnimation(Ellipse.OpacityProperty, new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(200)));
+			PointSelectionEllipse.BeginAnimation(Ellipse.StrokeThicknessProperty, new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(200)));
+
+			e.Handled = true;
+		}
+
+		#endregion
 	}
 }

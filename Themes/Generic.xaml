@@ -53,7 +53,6 @@
 	<converters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />
 	<converters:ChartZoomConverter x:Key="ChartZoomConverter" />
 
-
 	<!--#endregion End Converters-->
 
 	<Style x:Key="ThemableFocusStyle">
