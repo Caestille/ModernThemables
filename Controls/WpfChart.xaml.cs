@@ -407,8 +407,8 @@ namespace ModernThemables.Controls
 
 		private void SetYAxisLabels(double yMin, double yMax, double yRange, bool isResize)
 		{
-			var yAxisItemsCount = Math.Floor(plotAreaHeight / 50);
-			var yLabelStep = yRange / yAxisItemsCount;
+			var yAxisItemsCount = Math.Max(1, Math.Floor(plotAreaHeight / 50));
+			var yLabelStep = Math.Max(1, yRange / yAxisItemsCount);
 			var labels = GetYSteps(yRange, yAxisItemsCount, yMin, yMax).ToList();
 			var labels2 = labels.Select(y => new ValueWithHeight()
 			{
