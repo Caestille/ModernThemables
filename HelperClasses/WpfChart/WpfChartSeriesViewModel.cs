@@ -1,7 +1,9 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using ModernThemables.Controls;
 using ModernThemables.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -25,18 +27,9 @@ namespace ModernThemables.HelperClasses.WpfChart
 			Stroke = stroke;
 			Fill = fill;
 
-			var sb = new StringBuilder();
-			bool setM = true;
-			foreach (var point in Data)
-			{
-				var pointType = setM ? "M" : "L";
-				setM = false;
-				sb.Append($" {pointType}{point.X} {point.Y}");
-			}
-			PathStrokeData = sb.ToString();
-			PathStrokeData += $" L{Data.Last().X} {Data.First().Y}";
+			PathStrokeData = ConvertDataToPath(data);
 
-			var dataMin = Data.Min(x => x.BackingPoint.Value).Value;
+            var dataMin = Data.Min(x => x.BackingPoint.Value).Value;
 			var dataMax = Data.Max(x => x.BackingPoint.Value).Value;
 			var range = dataMax - dataMin;
 			var zero = Math.Min(Math.Max(0d, dataMin), dataMax);
@@ -45,15 +38,50 @@ namespace ModernThemables.HelperClasses.WpfChart
 			PathFillData = $"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
 		}
 
-		public void SetZoomData(double zoomLevel, double zoomCentre, double zoomOffset)
+		private string ConvertDataToPath(IEnumerable<ChartPoint> data)
 		{
-			var zoomCentreX = Data.Min(x => x.X) + (Data.Max(x => x.X) - Data.Min(x => x.X)) * zoomCentre;
+            var sb = new StringBuilder();
+            bool setM = true;
+            foreach (var point in data)
+            {
+                var pointType = setM ? "M" : "L";
+                setM = false;
+                sb.Append($" {pointType}{point.X} {point.Y}");
+            }
+            var ret = sb.ToString();
+            ret += $" L{data.Last().X} {data.First().Y}";
+			return ret;
+        }
+
+		public void SetZoomData(ZoomStep zoomDetails)
+		{
+			var zoomLevel = zoomDetails.Step;
+			var zoomCentre = zoomDetails.Centre;
+			var zoomOffset = zoomDetails.Offset;
+
+			var currentMin = ZoomData.Min(x => x.X);
+			var currentMax = ZoomData.Max(x => x.X);
+
+			var currentWidth = currentMax - currentMin;
+			var widthDiff = currentWidth / zoomLevel - currentWidth;
+			var leftDiff = widthDiff * zoomDetails.Centre;
+			var rightDiff = widthDiff * (1 - zoomDetails.Centre);
+
+			var newMin = currentMin - leftDiff;
+			var newMax = currentMax + rightDiff;
+
 			var data = new List<ChartPoint>();
-			foreach (var point in Data)
+			foreach (var point in ZoomData)
 			{
-				data.Add(new ChartPoint(point.X + ((point.X - zoomCentreX) * (1 / zoomLevel - 1)) - zoomOffset, point.Y, point.BackingPoint));
+				var percentThroughData = (point.X - currentMin) / (currentMax - currentMin);
+				data.Add(new ChartPoint(newMin + percentThroughData * (newMax - newMin) - zoomOffset, point.Y, point.BackingPoint));
 			}
 			ZoomData = data;
+        }
+
+		public void ResetZoomData()
+		{
+			ZoomData = Data;
 		}
 	}
 }

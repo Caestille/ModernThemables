@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ModernThemables.Controls;
+using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -9,11 +11,13 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is double zoomLevel && values[1] is double zoomCentre && values[2] is double zoomOffset && values[3] is double chartWidth)
+			if (values[0] is ZoomStep zoomDetails && values[1] is FrameworkElement chart)
 			{
-				var remainingGrid = chartWidth * zoomLevel;
-				var amount = chartWidth - remainingGrid;
-				return new Thickness(-amount * zoomCentre - zoomOffset, 0, -amount * (1 - zoomCentre) + zoomOffset, 0);
+				var widthDiff = chart.ActualWidth / zoomDetails.Step - chart.ActualWidth;
+				var leftDiff = widthDiff * zoomDetails.Centre;
+				var rightDiff = widthDiff * (1 - zoomDetails.Centre);
+
+				return new Thickness(chart.Margin.Left - leftDiff - zoomDetails.Offset, 0, chart.Margin.Right - rightDiff + zoomDetails.Offset, 0);
 			}
 			else
 			{

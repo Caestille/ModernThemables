@@ -88,10 +88,10 @@
 					<DataTemplate>
 						<Grid Width="{Binding Height}">
 							<TextBlock
-								Height="12"
 								Width="50"
-								HorizontalAlignment="Right"
+								Height="12"
 								Margin="0,0,-25,0"
+								HorizontalAlignment="Right"
 								FontSize="11"
 								FontWeight="Medium"
 								Foreground="{DynamicResource StatusTextBrush}"
@@ -118,7 +118,7 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-			<ItemsControl ItemsSource="{Binding XAxisLabels, ElementName=root}" Visibility="{Binding ElementName=root, Path=ShowXSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}" >
+			<ItemsControl ItemsSource="{Binding XAxisLabels, ElementName=root}" Visibility="{Binding ElementName=root, Path=ShowXSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel HorizontalAlignment="Left" />
@@ -144,11 +144,9 @@
 					VerticalAlignment="Center"
 					ItemsSource="{Binding ConvertedSeries, ElementName=root}">
 					<ItemsControl.Margin>
-						<MultiBinding Converter="{StaticResource ChartZoomConverter}">
-							<Binding ElementName="root" Path="ZoomLevel" />
-							<Binding ElementName="root" Path="ZoomCentre" />
-							<Binding ElementName="root" Path="ZoomOffset" />
-							<Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+						<MultiBinding x:Name="SeriesMultiBinding" Converter="{StaticResource ChartZoomConverter}">
+							<Binding ElementName="root" Path="CurrentZoomStep" />
+							<Binding RelativeSource="{RelativeSource Self}" />
 						</MultiBinding>
 					</ItemsControl.Margin>
 					<ItemsControl.ItemTemplate>
@@ -328,10 +326,10 @@
 				HorizontalAlignment="Left"
 				VerticalAlignment="Top"
 				IsHitTestVisible="False"
+				Opacity="0"
 				RenderTransformOrigin="0.5,0.5"
 				Stroke="{DynamicResource TextBrush}"
 				StrokeThickness="1"
-				Opacity="0"
 				Visibility="{Binding ElementName=HoveredPointEllipse, Path=Visibility}">
 				<Ellipse.RenderTransform>
 					<ScaleTransform x:Name="ScaleTransform" />
