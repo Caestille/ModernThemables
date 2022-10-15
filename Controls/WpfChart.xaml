@@ -145,8 +145,9 @@
 					ItemsSource="{Binding ConvertedSeries, ElementName=root}">
 					<ItemsControl.Margin>
 						<MultiBinding x:Name="SeriesMultiBinding" Converter="{StaticResource ChartZoomConverter}">
-							<Binding ElementName="root" Path="CurrentZoomStep" />
-							<Binding RelativeSource="{RelativeSource Self}" />
+							<Binding ElementName="root" Path="CurrentZoomState" />
+							<Binding ElementName="root" Path="Series" />
+							<Binding ElementName="Grid" />
 						</MultiBinding>
 					</ItemsControl.Margin>
 					<ItemsControl.ItemTemplate>

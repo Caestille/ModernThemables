@@ -1,9 +1,15 @@
-﻿using ModernThemables.Controls;
+﻿using LiveChartsCore.Kernel;
+using ModernThemables.Controls;
+using ModernThemables.HelperClasses.WpfChart;
 using System;
+using System.Collections;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace ModernThemables.Converters
 {
@@ -11,13 +17,22 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is ZoomStep zoomDetails && values[1] is FrameworkElement chart)
+			if (values[0] is ZoomState zoom && values[1] is ObservableCollection<LineSeries> series && values[2] is FrameworkElement grid)
 			{
-				var widthDiff = chart.ActualWidth / zoomDetails.Step - chart.ActualWidth;
-				var leftDiff = widthDiff * zoomDetails.Centre;
-				var rightDiff = widthDiff * (1 - zoomDetails.Centre);
+				var displayAreaWidth = grid.ActualWidth;
 
-				return new Thickness(chart.Margin.Left - leftDiff - zoomDetails.Offset, 0, chart.Margin.Right - rightDiff + zoomDetails.Offset, 0);
+				var min = series.Min(x => x.Values.Min(y => y.DateTime));
+				var max = series.Max(x => x.Values.Max(y => y.DateTime));
+
+				var leftFrac = (zoom.Min - min) / (max - min);
+				var rightFrac = (max - zoom.Max) / (max - min);
+
+				var newWidth = displayAreaWidth / (1 - (leftFrac + rightFrac));
+
+				var leftDiff = newWidth * leftFrac;
+				var rightDiff = newWidth * rightFrac;
+
+				return new Thickness(-leftDiff - zoom.Offset, 0, -rightDiff + zoom.Offset, 0);
 			}
 			else
 			{

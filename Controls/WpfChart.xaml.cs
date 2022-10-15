@@ -18,16 +18,16 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace ModernThemables.Controls
 {
-	internal class ZoomStep : ObservableObject
+	internal class ZoomState : ObservableObject
 	{
-		public double Step { get; }
-		public double Centre { get; }
+		public DateTime Min { get; }
+		public DateTime Max { get; }
 		public double Offset { get; }
 
-		public ZoomStep(double level, double centre, double offset)
+		public ZoomState(DateTime min, DateTime max, double offset)
 		{
-			Step = level;
-			Centre = centre;
+			Min = min;
+			Max = max;
 			Offset = offset;
 		}
 	}
@@ -49,7 +49,6 @@ namespace ModernThemables.Controls
 
 		private KeepAliveTriggerService resizeTrigger;
 
-		private ChartPoint cachedPoint;
 		private Point? lastMouseMovePoint;
 		private double currentZoomLevel = 1;
 
@@ -62,9 +61,6 @@ namespace ModernThemables.Controls
 		private bool isUserPanning;
 		private DateTimePoint lowerSelection;
 		private DateTimePoint upperSelection;
-
-		private DateTime min;
-		private DateTime max;
 
 		#region Dependecy Properties
 
@@ -220,13 +216,13 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IsUserSelectingRangeProperty = DependencyProperty.Register(
 		  "IsUserSelectingRange", typeof(bool), typeof(WpfChart), new PropertyMetadata(false));
 
-		private ZoomStep CurrentZoomStep
+		private ZoomState CurrentZoomState
 		{
-			get { return (ZoomStep)GetValue(CurrentZoomStepProperty); }
-			set { SetValue(CurrentZoomStepProperty, value); }
+			get { return (ZoomState)GetValue(CurrentZoomStateProperty); }
+			set { SetValue(CurrentZoomStateProperty, value); }
 		}
-		public static readonly DependencyProperty CurrentZoomStepProperty = DependencyProperty.Register(
-		  "CurrentZoomStep", typeof(ZoomStep), typeof(WpfChart), new FrameworkPropertyMetadata(new ZoomStep(1, 0.5, 0), OnZoomSet));
+		public static readonly DependencyProperty CurrentZoomStateProperty = DependencyProperty.Register(
+		  "CurrentZoomState", typeof(ZoomState), typeof(WpfChart), new PropertyMetadata(new ZoomState(DateTime.MinValue, DateTime.MaxValue, 0)));
 
 		#endregion
 
@@ -260,16 +256,8 @@ namespace ModernThemables.Controls
 		{
 			var binding = SeriesMultiBinding;
 			SeriesItemsControl.Margin = new Thickness(0);
-			CurrentZoomStep = new ZoomStep(1, 0.5, 0);
+			UpdateZoom(Series.Min(x => x.Values.Min(y => y.DateTime)), Series.Max(x => x.Values.Max(y => y.DateTime)), 0);
 			SeriesItemsControl.SetBinding(ItemsControl.MarginProperty, binding);
-
-			foreach (var series in ConvertedSeries)
-			{
-				series.ResetZoomData();
-			}
-
-			max = Series.Max(x => x.Values.Max(y => y.DateTime));
-			min = Series.Min(x => x.Values.Min(y => y.DateTime));
 
 			IsZoomed = false;
 
@@ -290,23 +278,12 @@ namespace ModernThemables.Controls
 				return;
 			}
 
-			chart.max = chart.Series.Max(x => x.Values.Max(y => y.DateTime));
-			chart.min = chart.Series.Min(x => x.Values.Min(y => y.DateTime));
+			chart.UpdateZoom(chart.Series.Min(x => x.Values.Min(y => y.DateTime)), chart.Series.Max(x => x.Values.Max(y => y.DateTime)), 0);
 
 			chart.Subscribe(chart.Series);
 			chart.hasSetSeries = true;
 
 			chart.RenderChart(false);
-		}
-
-		private static void OnZoomSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not WpfChart chart) return;
-
-			foreach (var series in chart.ConvertedSeries)
-			{
-				series.SetZoomData(chart.CurrentZoomStep);
-			}
 		}
 
 		private void Subscribe(ObservableCollection<LineSeries> series)
@@ -353,10 +330,10 @@ namespace ModernThemables.Controls
 				var series = Series.First();
 				if (!series.Values.Any()) return;
 
-				var axisValues = GetAxisValues();
+				var axisValues = GetDataBounds();
 
-				SetXAxisLabels(axisValues.ZoomedXMin, axisValues.ZoomedXMax, axisValues.ZoomedXRange);
-				SetYAxisLabels(axisValues.YMin, axisValues.YMax, axisValues.YRange);
+				SetXAxisLabels(CurrentZoomState.Min, CurrentZoomState.Max);
+				SetYAxisLabels(axisValues.YMin, axisValues.YMax);
 
 				// Force layout update so sizes are correct before rendering points
 				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate() { });
@@ -377,7 +354,7 @@ namespace ModernThemables.Controls
 			});
 		}
 
-		private AxisValues GetAxisValues()
+		private DataBounds GetDataBounds()
 		{
 			var xMin = Series.Min(x => x.Values.Min(y => y.DateTime));
 			var xMax = Series.Min(x => x.Values.Max(x => x.DateTime));
@@ -388,18 +365,14 @@ namespace ModernThemables.Controls
 			yMin -= yRange * 0.1;
 			yMax += yRange * 0.1;
 
-			var fracLeft = -SeriesItemsControl.Margin.Left / SeriesItemsControl.ActualWidth;
-			var fracRight = -SeriesItemsControl.Margin.Right / SeriesItemsControl.ActualWidth;
-			var zoomedXMin = xMin + (xMax - xMin) * fracLeft;
-			var zoomedXMax = xMax - (xMax - xMin) * fracRight;
-
-			return new AxisValues(xMin, xMax, yMin, yMax, zoomedXMin, zoomedXMax, yMin, yMax);
+			return new DataBounds(xMin, xMax, yMin, yMax);
 		}
 
-		private void SetXAxisLabels(DateTime xMin, DateTime xMax, TimeSpan xRange)
+		private void SetXAxisLabels(DateTime xMin, DateTime xMax)
 		{
+			var xRange = xMax - xMin;
 			var xAxisItemCount = Math.Floor(plotAreaWidth / 60);
-			var labels = GetXSteps(xRange, xAxisItemCount, xMin, xMax);
+			var labels = GetXSteps(xAxisItemCount, xMin, xMax);
 			var labels2 = labels.Select(x => new ValueWithHeight()
 			{
 				Value = XAxisFormatter == null ? x.ToString("MMM YY") : XAxisFormatter(x),
@@ -410,10 +383,11 @@ namespace ModernThemables.Controls
 			XAxisLabels = new ObservableCollection<ValueWithHeight>(labels2);
 		}
 
-		private void SetYAxisLabels(double yMin, double yMax, double yRange)
+		private void SetYAxisLabels(double yMin, double yMax)
 		{
+			var yRange = yMax - yMin;
 			var yAxisItemsCount = Math.Max(1, Math.Floor(plotAreaHeight / 50));
-			var labels = GetYSteps(yRange, yAxisItemsCount, yMin, yMax).ToList();
+			var labels = GetYSteps(yAxisItemsCount, yMin, yMax).ToList();
 			var labels2 = labels.Select(y => new ValueWithHeight()
 			{
 				Value = YAxisFormatter == null ? Math.Round(y, 2).ToString() : YAxisFormatter(y),
@@ -437,8 +411,9 @@ namespace ModernThemables.Controls
 			return points;
 		}
 
-		private List<DateTime> GetXSteps(TimeSpan xRange, double xAxisItemsCount, DateTime xMin, DateTime xMax)
+		private List<DateTime> GetXSteps(double xAxisItemsCount, DateTime xMin, DateTime xMax)
 		{
+			var xRange = xMax - xMin;
 			List<DateTime> xVals = new();
 
 			for (int i = 0; i < xRange.TotalDays; i++)
@@ -455,8 +430,9 @@ namespace ModernThemables.Controls
 			return xVals.Where(x => xVals.IndexOf(x) % fracOver == 0).ToList();
 		}
 
-		private List<double> GetYSteps(double yRange, double yAxisItemsCount, double yMin, double yMax)
+		private List<double> GetYSteps(double yAxisItemsCount, double yMin, double yMax)
 		{
+			var yRange = yMax - yMin;
 			var idealStep = yRange / yAxisItemsCount;
 			double min = double.MaxValue;
 			int stepAtMin = 1;
@@ -517,9 +493,9 @@ namespace ModernThemables.Controls
 			return yVals;
 		}
 
-		private void UpdateZoom(double zoomLevel, double zoomCentre, double zoomOffset)
+		private void UpdateZoom(DateTime min, DateTime max, double zoomOffset)
 		{
-			CurrentZoomStep = new ZoomStep(zoomLevel, zoomCentre, zoomOffset);
+			CurrentZoomState = new ZoomState(min, max, zoomOffset);
 		}
 
 		private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -551,27 +527,27 @@ namespace ModernThemables.Controls
 				IsUserSelectingRange = !(userCouldBePanning || isUserPanning);
 			}
 
-			AxisValues? axisValues = null;
+			DataBounds? axisValues = null;
 			if (userCouldBePanning)
 			{
 				isUserPanning = true;
 				if (lastMouseMovePoint != null)
 				{
-					axisValues = GetAxisValues();
+					axisValues = GetDataBounds();
 					var zoomOffset = lastMouseMovePoint.Value.X - mouseLoc.X;
-					UpdateZoom(CurrentZoomStep.Step, CurrentZoomStep.Centre, zoomOffset);
-					SetXAxisLabels(axisValues.ZoomedXMin, axisValues.ZoomedXMax, axisValues.ZoomedXRange);
+					UpdateZoom(CurrentZoomState.Min, CurrentZoomState.Max, zoomOffset);
+					SetXAxisLabels(CurrentZoomState.Min, CurrentZoomState.Max);
 				}
 			}
 			lastMouseMovePoint = mouseLoc;
 
 			if (DateTime.Now - timeLastUpdated < updateLimit) return;
 
-			axisValues = axisValues ?? GetAxisValues();
+			axisValues = axisValues ?? GetDataBounds();
 			timeLastUpdated = DateTime.Now;
 			var xPercent = mouseLoc.X / plotAreaWidth;
 			var yPercent = mouseLoc.Y / plotAreaHeight;
-			var xVal = axisValues.ZoomedXMin.Add(xPercent * axisValues.ZoomedXRange);
+			var xVal = CurrentZoomState.Min.Add(xPercent * (CurrentZoomState.Max - CurrentZoomState.Min));
 			var yVal = ((1 - yPercent) * axisValues.YRange + axisValues.YMin);
 
 			if (IsCrosshairVisible)
@@ -594,13 +570,8 @@ namespace ModernThemables.Controls
 					: YAxisCursorLabelFormatter(yVal);
 			}
 
-			// Get chartpoint to display tooltip for
-			var chartPoints = ConvertedSeries.First().ZoomData;
-			var nearestPoint = chartPoints.First(x => Math.Abs(x.X - mouseLoc.X) == chartPoints.Min(x => Math.Abs(x.X - mouseLoc.X)));
-			var hoveredChartPoints = chartPoints.Where(x => x.X == nearestPoint.X);
-			var hoveredChartPoint = hoveredChartPoints.Count() > 1
-				? hoveredChartPoints.First(x => Math.Abs(x.Y - mouseLoc.Y) == hoveredChartPoints.Min(x => Math.Abs(x.Y - mouseLoc.Y)))
-				: hoveredChartPoints.First();
+			var translatedMouseLoc = e.GetPosition(SeriesItemsControl);
+			var hoveredChartPoint = ConvertedSeries.First().GetChartPointUnderTranslatedMouse(translatedMouseLoc.X, translatedMouseLoc.Y, SeriesItemsControl.ActualWidth, -SeriesItemsControl.Margin.Left);
 
 			if (hoveredChartPoint == null) return;
 
@@ -636,9 +607,10 @@ namespace ModernThemables.Controls
 		private void MouseCaptureGrid_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
 			IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
-			cachedPoint = HoveredPoint ?? cachedPoint;
 
-			var zoomOffset = CurrentZoomStep.Offset;
+			var min = CurrentZoomState.Min;
+			var max = CurrentZoomState.Max;
+			var zoomOffset = CurrentZoomState.Offset;
 
 			var zoomStep = e.Delta > 0 ? 0.9d : 1d / 0.9d;
 			currentZoomLevel /= zoomStep;
@@ -647,25 +619,20 @@ namespace ModernThemables.Controls
 				ResetZoom();
 			}
 
-			var axisValues = GetAxisValues();
-			var zoomCentre =
-				(cachedPoint.BackingPoint.DateTime - axisValues.XMin).TotalMilliseconds / (axisValues.XMax - axisValues.XMin).TotalMilliseconds;
+			var zoomCentre = e.GetPosition(Grid).X / plotAreaWidth;
 
 			var currentRange = max - min;
 			var newRange = currentRange * zoomStep;
 			var diff = currentRange - newRange;
 			min = min + diff * zoomCentre;
 			max = max - diff * (1 - zoomCentre);
-			newRange = max - min;
 
 			if (Math.Round(currentZoomLevel, 1) != 1)
 			{
-				UpdateZoom(zoomStep, zoomCentre, zoomOffset);
+				UpdateZoom(min, max, zoomOffset);
 			}
 
-			axisValues = GetAxisValues();
-
-			SetXAxisLabels(axisValues.ZoomedXMin, axisValues.ZoomedXMax, axisValues.ZoomedXRange);
+			SetXAxisLabels(min, max);
 
 			HoveredPoint = null;
 			TooltipString = string.Empty;
