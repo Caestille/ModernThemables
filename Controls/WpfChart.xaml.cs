@@ -14,6 +14,7 @@ using ModernThemables.HelperClasses.WpfChart;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using ModernThemables.Interfaces;
+using System.Diagnostics;
 
 namespace ModernThemables.Controls
 {
@@ -46,6 +47,11 @@ namespace ModernThemables.Controls
 		private bool isUserPanning;
 		private IChartPoint lowerSelection;
 		private IChartPoint upperSelection;
+
+		double xMin => Series.Min(x => x.Values.Min(y => y.XValue));
+		double xMax => Series.Max(x => x.Values.Max(x => x.XValue));
+		double yMin => Series.Min(x => x.Values.Min(x => x.YValue)) - (Series.Max(x => x.Values.Max(x => x.YValue)) - Series.Min(x => x.Values.Min(x => x.YValue))) * 0.1;
+		double yMax => Series.Max(x => x.Values.Max(x => x.YValue)) + (Series.Max(x => x.Values.Max(x => x.YValue)) - Series.Min(x => x.Values.Min(x => x.YValue))) * 0.1;
 
 		#region Dependecy Properties
 
@@ -89,21 +95,21 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty YAxisCursorLabelFormatterProperty = DependencyProperty.Register(
 		  "YAxisCursorLabelFormatter", typeof(Func<object, string>), typeof(WpfChart), new PropertyMetadata(null));
 
-		public Func<double, bool> YAxisLabelIdentifier
+		public Func<object, bool> YAxisLabelIdentifier
 		{
-			get { return (Func<double, bool>)GetValue(YAxisLabelIdentifierProperty); }
+			get { return (Func<object, bool>)GetValue(YAxisLabelIdentifierProperty); }
 			set { SetValue(YAxisLabelIdentifierProperty, value); }
 		}
 		public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
-		  "YAxisLabelIdentifier", typeof(Func<double, bool>), typeof(WpfChart), new PropertyMetadata(null));
+		  "YAxisLabelIdentifier", typeof(Func<object, bool>), typeof(WpfChart), new PropertyMetadata(null));
 
-		public Func<double, bool> XAxisLabelIdentifier
+		public Func<object, bool> XAxisLabelIdentifier
 		{
-			get { return (Func<double, bool>)GetValue(XAxisLabelIdentifierProperty); }
+			get { return (Func<object, bool>)GetValue(XAxisLabelIdentifierProperty); }
 			set { SetValue(XAxisLabelIdentifierProperty, value); }
 		}
 		public static readonly DependencyProperty XAxisLabelIdentifierProperty = DependencyProperty.Register(
-		  "XAxisLabelIdentifier", typeof(Func<double, bool>), typeof(WpfChart), new PropertyMetadata(null));
+		  "XAxisLabelIdentifier", typeof(Func<object, bool>), typeof(WpfChart), new PropertyMetadata(null));
 
 		public bool ShowXSeparatorLines
 		{
@@ -223,7 +229,7 @@ namespace ModernThemables.Controls
 			set { SetValue(CurrentZoomStateProperty, value); }
 		}
 		public static readonly DependencyProperty CurrentZoomStateProperty = DependencyProperty.Register(
-		  "CurrentZoomState", typeof(ZoomState), typeof(WpfChart), new PropertyMetadata(new ZoomState(0, 0, 0)));
+		  "CurrentZoomState", typeof(ZoomState), typeof(WpfChart), new PropertyMetadata(new ZoomState(0, 0, 0, 0, 0)));
 
 		#endregion
 
@@ -234,12 +240,12 @@ namespace ModernThemables.Controls
 
 			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
 
-			resizeTrigger = new KeepAliveTriggerService(() => RenderChart(true), 100);
+			resizeTrigger = new KeepAliveTriggerService(() => RenderChart(), 100);
 		}
 
 		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
 		{
-			RenderChart(false);
+			RenderChart();
 			this.Loaded -= WpfChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
@@ -257,13 +263,18 @@ namespace ModernThemables.Controls
 		{
 			var binding = SeriesMultiBinding;
 			SeriesItemsControl.Margin = new Thickness(0);
-			UpdateZoom(Series.Min(x => x.Values.Min(y => y.XValue)), Series.Max(x => x.Values.Max(y => y.XValue)), 0);
-			SeriesItemsControl.SetBinding(ItemsControl.MarginProperty, binding);
-
+			CurrentZoomState = new ZoomState(
+				Series.Min(x => x.Values.Min(y => y.XValue)),
+				Series.Max(x => x.Values.Max(y => y.XValue)),
+				Series.Min(x => x.Values.Min(y => y.YValue)),
+				Series.Max(x => x.Values.Max(y => y.YValue)),
+				0);
+			SeriesItemsControl.SetBinding(MarginProperty, binding);
 			IsZoomed = false;
-
-			RenderChart(false);
+			RenderChart();
 		}
+
+		#region Subscribe to series'
 
 		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
@@ -279,12 +290,17 @@ namespace ModernThemables.Controls
 				return;
 			}
 
-			chart.UpdateZoom(chart.Series.Min(x => x.Values.Min(y => y.XValue)), chart.Series.Max(x => x.Values.Max(y => y.XValue)), 0);
+			chart.CurrentZoomState = new ZoomState(
+				chart.Series.Min(x => x.Values.Min(y => y.XValue)),
+				chart.Series.Max(x => x.Values.Max(y => y.XValue)),
+				chart.Series.Min(x => x.Values.Min(y => y.YValue)),
+				chart.Series.Max(x => x.Values.Max(y => y.YValue)),
+				0);
 
 			chart.Subscribe(chart.Series);
 			chart.hasSetSeries = true;
 
-			chart.RenderChart(false);
+			chart.RenderChart();
 		}
 
 		private void Subscribe(ObservableCollection<ISeries> series)
@@ -314,60 +330,51 @@ namespace ModernThemables.Controls
 				series.PropertyChanged += Series_PropertyChanged;
 				subscribedSeries.Remove(series);
 			}
-			RenderChart(false);
+			RenderChart();
 		}
 
 		private void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			RenderChart(false);
+			RenderChart();
 		}
 
-		private void RenderChart(bool isResize)
+		#endregion
+
+		private void RenderChart()
 		{
 			Application.Current.Dispatcher.BeginInvoke(() =>
 			{
 				if (Series is null || !Series.Any()) return;
 
-				var series = Series.First();
-				if (!series.Values.Any()) return;
+				var collection = new ObservableCollection<WpfChartSeriesViewModel>();
+				foreach (var series in Series)
+				{
+					if (!series.Values.Any()) continue;
 
-				var axisValues = GetDataBounds();
+					SetXAxisLabels(CurrentZoomState.XMin, CurrentZoomState.XMax);
+					SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
-				SetXAxisLabels(CurrentZoomState.Min, CurrentZoomState.Max);
-				SetYAxisLabels(axisValues.YMin, axisValues.YMax);
+					// Force layout update so sizes are correct before rendering points
+					this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
-				// Force layout update so sizes are correct before rendering points
-				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate() { });
+					var points = GetPointsForSeries(xMin, xMax - xMin, yMin, yMax - yMin, Series.First());
 
-				var points = GetPointsForSeries(axisValues.XMin, axisValues.XRange, axisValues.YMin, axisValues.YRange, Series.First());
+					collection.Add(new WpfChartSeriesViewModel(points, series.Stroke, series.Fill));
+					ConvertedSeries = collection;
 
-				ConvertedSeries = new ObservableCollection<WpfChartSeriesViewModel>()
-					{ new WpfChartSeriesViewModel(points, Series.First().Stroke, Series.First().Fill), };
-
-				Series.First().Stroke?.Reevaluate(
-					series.Values.Max(x => x.YValue),
-					series.Values.Min(x => x.YValue),
-					0, axisValues.XMax, axisValues.XMin, 0);
-				Series.First().Fill?.Reevaluate(
-					series.Values.Max(x => x.YValue),
-					series.Values.Min(x => x.YValue),
-					0, axisValues.XMax, axisValues.XMin, 0);
+					series.Stroke?.Reevaluate(
+						series.Values.Max(x => x.YValue),
+						series.Values.Min(x => x.YValue),
+						0, xMax, xMin, 0);
+					series.Fill?.Reevaluate(
+						series.Values.Max(x => x.YValue),
+						series.Values.Min(x => x.YValue),
+						0, xMax, xMin, 0);
+				}
 			});
 		}
 
-		private DataBounds GetDataBounds()
-		{
-			var xMin = Series.Min(x => x.Values.Min(y => y.XValue));
-			var xMax = Series.Min(x => x.Values.Max(x => x.XValue));
-			var yMin = Series.Min(x => x.Values.Min(x => x.YValue));
-			var yMax = Series.Min(x => x.Values.Max(x => x.YValue));
-
-			var yRange = yMax - yMin;
-			yMin -= yRange * 0.1;
-			yMax += yRange * 0.1;
-
-			return new DataBounds(xMin, xMax, yMin, yMax);
-		}
+		#region Calculations
 
 		private void SetXAxisLabels(double xMin, double xMax)
 		{
@@ -399,6 +406,133 @@ namespace ModernThemables.Controls
 			YAxisLabels = new ObservableCollection<ValueWithHeight>(labels2.Reverse());
 		}
 
+		private List<double> GetXSteps(double xAxisItemsCount, double xMin, double xMax)
+		{
+			List<double> xVals = new();
+
+			if (XAxisLabelIdentifier != null)
+			{
+				var currVal = xMin;
+				while (currVal < xMax)
+				{
+					if (XAxisLabelIdentifier(Series.First().Values.First().XValueToImplementation(currVal)))
+					{
+						xVals.Add(currVal);
+					}
+					currVal++;
+				}
+			}
+			else
+			{
+				var xRange = xMax - xMin;
+				var idealStep = xRange / xAxisItemsCount;
+				var min = double.MaxValue;
+				var stepAtMin = 1;
+				var roundedSteps = new List<int>()
+				{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
+				roundedSteps.Reverse();
+				foreach (var step in roundedSteps)
+				{
+					var val = Math.Abs(idealStep - step);
+					if (val < min)
+					{
+						min = val;
+						stepAtMin = step;
+					}
+				}
+
+				var currVal = xMin;
+				while (currVal < xMax)
+				{
+					currVal += stepAtMin;
+					xVals.Add(currVal);
+				}
+			}
+
+			var fracOver = (int)Math.Ceiling(xVals.Count() / (decimal)Math.Round(xAxisItemsCount));
+
+			return xVals.Where(x => xVals.IndexOf(x) % fracOver == 0).ToList();
+		}
+
+		private List<double> GetYSteps(double yAxisItemsCount, double yMin, double yMax)
+		{
+			List<double> yVals = new();
+			
+			if (YAxisLabelIdentifier != null)
+			{
+				var currVal = yMin;
+				while (currVal < yMax)
+				{
+					if (XAxisLabelIdentifier(Series.First().Values.First().YValueToImplementation(currVal)))
+					{
+						yVals.Add(currVal);
+					}
+					currVal++;
+				}
+			}
+			else
+			{
+				var yRange = yMax - yMin;
+				var idealStep = yRange / yAxisItemsCount;
+				double min = double.MaxValue;
+				int stepAtMin = 1;
+				var roundedSteps = new List<int>()
+				{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
+				roundedSteps.Reverse();
+				foreach (var step in roundedSteps)
+				{
+					var val = Math.Abs(idealStep - step);
+					if (val < min)
+					{
+						min = val;
+						stepAtMin = step;
+					}
+				}
+
+				bool startAt0 = yMin <= 0 && yMax >= 0;
+				if (startAt0)
+				{
+					double currVal = 0;
+					while (currVal > yMin)
+					{
+						yVals.Insert(0, currVal);
+						currVal -= stepAtMin;
+					}
+
+					currVal = stepAtMin;
+
+					while (currVal < yMax)
+					{
+						yVals.Add(currVal);
+						currVal += stepAtMin;
+					}
+				}
+				else
+				{
+					int dir = yMax < 0 ? -1 : 1;
+					double currVal = 0;
+					bool adding = true;
+					bool hasStartedAdding = false;
+					while (adding)
+					{
+						if (currVal < yMax && currVal > yMin)
+						{
+							hasStartedAdding = true;
+							yVals.Add(currVal);
+						}
+						else if (hasStartedAdding)
+						{
+							adding = false;
+						}
+
+						currVal += dir * stepAtMin;
+					}
+				}
+			}			
+
+			return yVals;
+		}
+
 		private List<InternalChartPointRepresentation> GetPointsForSeries(
 			double xMin, double xRange, double yMin, double yRange, ISeries series)
 		{
@@ -412,106 +546,9 @@ namespace ModernThemables.Controls
 			return points;
 		}
 
-		private List<double> GetXSteps(double xAxisItemsCount, double xMin, double xMax)
-		{
-			var xRange = xMax - xMin;
-			var idealStep = xRange / xAxisItemsCount;
-			double min = double.MaxValue;
-			int stepAtMin = 1;
-			var roundedSteps = new List<int>()
-				{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
-			roundedSteps.Reverse();
-			foreach (var step in roundedSteps)
-			{
-				var val = Math.Abs(idealStep - step);
-				if (val < min)
-				{
-					min = val;
-					stepAtMin = step;
-				}
-			}
+		#endregion
 
-			List<double> xVals = new();
-
-			double currVal = xMin;
-			while (currVal < xMax)
-			{
-				currVal += stepAtMin;
-				xVals.Add(currVal);
-			}
-
-			int fracOver = (int)Math.Ceiling(xVals.Count() / (decimal)Math.Round(xAxisItemsCount));
-
-			return xVals.Where(x => xVals.IndexOf(x) % fracOver == 0).ToList();
-		}
-
-		private List<double> GetYSteps(double yAxisItemsCount, double yMin, double yMax)
-		{
-			var yRange = yMax - yMin;
-			var idealStep = yRange / yAxisItemsCount;
-			double min = double.MaxValue;
-			int stepAtMin = 1;
-			var roundedSteps = new List<int>() 
-				{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
-			roundedSteps.Reverse();
-			foreach (var step in roundedSteps)
-			{
-				var val = Math.Abs(idealStep - step);
-				if (val < min)
-				{
-					min = val;
-					stepAtMin = step;
-				}
-			}
-
-			List<double> yVals = new();
-			bool startAt0 = yMin <= 0 && yMax >= 0;
-			if (startAt0)
-			{
-				double currVal = 0;
-				while (currVal > yMin)
-				{
-					yVals.Insert(0, currVal);
-					currVal -= stepAtMin;
-				}
-
-				currVal = stepAtMin;
-
-				while (currVal < yMax)
-				{
-					yVals.Add(currVal);
-					currVal += stepAtMin;
-				}
-			}
-			else
-			{
-				int dir = yMax < 0 ? -1 : 1;
-				double currVal = 0;
-				bool adding = true;
-				bool hasStartedAdding = false;
-				while (adding)
-				{
-					if (currVal < yMax && currVal > yMin)
-					{
-						hasStartedAdding = true;
-						yVals.Add(currVal);
-					}
-					else if (hasStartedAdding)
-					{
-						adding = false;
-					}
-
-					currVal += dir * stepAtMin;
-				}
-			}
-
-			return yVals;
-		}
-
-		private void UpdateZoom(double min, double max, double zoomOffset)
-		{
-			CurrentZoomState = new ZoomState(min, max, zoomOffset);
-		}
+		#region Grid events
 
 		private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
@@ -528,6 +565,8 @@ namespace ModernThemables.Controls
 			userCouldBePanning = false;
 		}
 
+		#endregion
+
 		#region Mouse events
 
 		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
@@ -542,28 +581,25 @@ namespace ModernThemables.Controls
 				IsUserSelectingRange = !(userCouldBePanning || isUserPanning);
 			}
 
-			DataBounds? axisValues = null;
 			if (userCouldBePanning)
 			{
 				isUserPanning = true;
 				if (lastMouseMovePoint != null)
 				{
-					axisValues = GetDataBounds();
-					var zoomOffset = lastMouseMovePoint.Value.X - mouseLoc.X;
-					UpdateZoom(CurrentZoomState.Min, CurrentZoomState.Max, zoomOffset);
-					SetXAxisLabels(CurrentZoomState.Min, CurrentZoomState.Max);
+					var zoomOffset = CurrentZoomState.XOffset + lastMouseMovePoint.Value.X - mouseLoc.X;
+					CurrentZoomState = new ZoomState(CurrentZoomState.XMin, CurrentZoomState.XMax, CurrentZoomState.YMin, CurrentZoomState.YMax, zoomOffset, false);
+					SetXAxisLabels(CurrentZoomState.XMin, CurrentZoomState.XMax);
 				}
 			}
 			lastMouseMovePoint = mouseLoc;
 
 			if (DateTime.Now - timeLastUpdated < updateLimit) return;
 
-			axisValues = axisValues ?? GetDataBounds();
 			timeLastUpdated = DateTime.Now;
 			var xPercent = mouseLoc.X / plotAreaWidth;
-			var yPercent = mouseLoc.Y / plotAreaHeight;
-			var xVal = CurrentZoomState.Min + (xPercent * (CurrentZoomState.Max - CurrentZoomState.Min));
-			var yVal = ((1 - yPercent) * axisValues.YRange + axisValues.YMin);
+			var yPercent = 1 - mouseLoc.Y / plotAreaHeight;
+			var xVal = CurrentZoomState.XMin + (xPercent * (CurrentZoomState.XMax - CurrentZoomState.XMin));
+			var yVal = CurrentZoomState.YMin + (yPercent * (CurrentZoomState.YMax - CurrentZoomState.YMin));
 
 			if (IsCrosshairVisible)
 			{
@@ -623,9 +659,9 @@ namespace ModernThemables.Controls
 		{
 			IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
 
-			var min = CurrentZoomState.Min;
-			var max = CurrentZoomState.Max;
-			var zoomOffset = CurrentZoomState.Offset;
+			var xMin = CurrentZoomState.XMin;
+			var xMax = CurrentZoomState.XMax;
+			var zoomOffset = CurrentZoomState.XOffset;
 
 			var zoomStep = e.Delta > 0 ? 0.9d : 1d / 0.9d;
 			currentZoomLevel /= zoomStep;
@@ -636,18 +672,21 @@ namespace ModernThemables.Controls
 
 			var zoomCentre = e.GetPosition(Grid).X / plotAreaWidth;
 
-			var currentRange = max - min;
-			var newRange = currentRange * zoomStep;
-			var diff = currentRange - newRange;
-			min = min + diff * zoomCentre;
-			max = max - diff * (1 - zoomCentre);
+			var currXRange = xMax - xMin;
+			var newXRange = currXRange * zoomStep;
+			var xDiff = currXRange - newXRange;
+			xMin = xMin + xDiff * zoomCentre;
+			xMax = xMax - xDiff * (1 - zoomCentre);
+			var yMin = Series.Min(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
+			var yMax = Series.Max(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue));
 
 			if (Math.Round(currentZoomLevel, 1) != 1)
 			{
-				UpdateZoom(min, max, zoomOffset);
+				CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, zoomOffset);
 			}
 
-			SetXAxisLabels(min, max);
+			SetXAxisLabels(xMin, xMax);
+			SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
 			HoveredPoint = null;
 			TooltipString = string.Empty;

@@ -141,7 +141,7 @@
 				<ItemsControl
 					x:Name="SeriesItemsControl"
 					HorizontalAlignment="Stretch"
-					VerticalAlignment="Center"
+					VerticalAlignment="Stretch"
 					ItemsSource="{Binding ConvertedSeries, ElementName=root}">
 					<ItemsControl.Margin>
 						<MultiBinding x:Name="SeriesMultiBinding" Converter="{StaticResource ChartZoomConverter}">
@@ -152,23 +152,21 @@
 					</ItemsControl.Margin>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<Grid>
-								<Grid Height="{Binding Height}" VerticalAlignment="Center">
-									<Path
-										Data="{Binding PathFillData}"
-										Fill="{Binding Fill.CoreBrush}"
-										IsHitTestVisible="False"
-										Stretch="Fill"
-										StrokeLineJoin="Bevel"
-										StrokeThickness="1.5" />
-									<Path
-										Data="{Binding PathStrokeData}"
-										IsHitTestVisible="False"
-										Stretch="Fill"
-										Stroke="{Binding Stroke.CoreBrush}"
-										StrokeLineJoin="Bevel"
-										StrokeThickness="1.5" />
-								</Grid>
+							<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
+								<Path
+									Data="{Binding PathFillData}"
+									Fill="{Binding Fill.CoreBrush}"
+									IsHitTestVisible="False"
+									Stretch="Fill"
+									StrokeLineJoin="Bevel"
+									StrokeThickness="1.5" />
+								<Path
+									Data="{Binding PathStrokeData}"
+									IsHitTestVisible="False"
+									Stretch="Fill"
+									Stroke="{Binding Stroke.CoreBrush}"
+									StrokeLineJoin="Bevel"
+									StrokeThickness="1.5" />
 							</Grid>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>

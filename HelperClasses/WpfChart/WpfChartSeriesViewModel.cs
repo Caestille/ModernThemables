@@ -14,7 +14,6 @@ namespace ModernThemables.HelperClasses.WpfChart
 		public string PathFillData { get; }
 		public IChartBrush Stroke { get; }
 		public IChartBrush Fill { get; }
-		public double Height => Data.Max(x => x.Y) - Data.Min(x => x.Y);
 
 		public WpfChartSeriesViewModel(IEnumerable<InternalChartPointRepresentation> data, IChartBrush stroke, IChartBrush fill)
 		{

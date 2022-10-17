@@ -2,6 +2,7 @@
 using ModernThemables.Interfaces;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -17,18 +18,31 @@ namespace ModernThemables.Converters
 			{
 				var displayAreaWidth = grid.ActualWidth;
 
-				var min = series.Min(x => x.Values.Min(y => y.XValue));
-				var max = series.Max(x => x.Values.Max(y => y.XValue));
+				var xMin = series.Min(x => x.Values.Min(y => y.XValue));
+				var xMax = series.Max(x => x.Values.Max(y => y.XValue));
 
-				var leftFrac = (zoom.Min - min) / (max - min);
-				var rightFrac = (max - zoom.Max) / (max - min);
+				var leftFrac = (zoom.XMin - xMin) / (xMax - xMin);
+				var rightFrac = (xMax - zoom.XMax) / (xMax - xMin);
 
 				var newWidth = displayAreaWidth / (1 - (leftFrac + rightFrac));
 
 				var leftDiff = newWidth * leftFrac;
 				var rightDiff = newWidth * rightFrac;
 
-				return new Thickness(-leftDiff - zoom.Offset, 0, -rightDiff + zoom.Offset, 0);
+				var displayAreaHeight = grid.ActualHeight;
+
+				var yMin = series.Min(x => x.Values.Min(y => y.YValue));
+				var yMax = series.Max(x => x.Values.Max(y => y.YValue));
+
+				var bottomFrac = (zoom.YMin - yMin) / (yMax - yMin);
+				var topFrac = (yMax - zoom.YMax) / (yMax - yMin);
+
+				var newHeight = displayAreaHeight / (1 - (topFrac + bottomFrac));
+
+				var topDiff = newHeight * topFrac;
+				var bottomDiff = newHeight * bottomFrac;
+
+				return new Thickness(-leftDiff - zoom.XOffset, -topDiff, -rightDiff + zoom.XOffset, -bottomDiff);
 			}
 			else
 			{
