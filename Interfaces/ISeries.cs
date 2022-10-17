@@ -1,6 +1,6 @@
-﻿using ModernThemables.HelperClasses.WpfChart;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
@@ -13,6 +13,6 @@ namespace ModernThemables.Interfaces
 		Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter { get; set; }
 		IChartBrush Stroke { get; set; }
 		IChartBrush Fill { get; set; }
-		IEnumerable<IChartPoint> Values { get; set; }
+		ObservableCollection<IChartPoint> Values { get; set; }
 	}
 }
