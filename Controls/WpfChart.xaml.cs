@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using LiveChartsCore.Defaults;
 using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Windows.Media;
@@ -14,38 +13,24 @@ using CoreUtilities.Services;
 using ModernThemables.HelperClasses.WpfChart;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using ModernThemables.Interfaces;
 
 namespace ModernThemables.Controls
 {
-	internal class ZoomState : ObservableObject
-	{
-		public DateTime Min { get; }
-		public DateTime Max { get; }
-		public double Offset { get; }
-
-		public ZoomState(DateTime min, DateTime max, double offset)
-		{
-			Min = min;
-			Max = max;
-			Offset = offset;
-		}
-	}
-
 	/// <summary>
 	/// Interaction logic for WpfChart.xaml
 	/// </summary>
 	public partial class WpfChart : UserControl
 	{
-		public event EventHandler<DateTimePoint> PointClicked;
-		public event EventHandler<Tuple<DateTimePoint, DateTimePoint>> PointRangeSelected;
+		public event EventHandler<IChartPoint> PointClicked;
+		public event EventHandler<Tuple<IChartPoint, IChartPoint>> PointRangeSelected;
 
 		private double plotAreaHeight => DrawableChartSectionBorder.ActualHeight;
 		private double plotAreaWidth => DrawableChartSectionBorder.ActualWidth;
 		private DateTime timeLastUpdated;
 		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 60d);
 		private bool hasSetSeries;
-		private List<LineSeries> subscribedSeries = new();
+		private List<ISeries> subscribedSeries = new();
 
 		private KeepAliveTriggerService resizeTrigger;
 
@@ -59,50 +44,66 @@ namespace ModernThemables.Controls
 		private bool isUserDragging;
 		private bool userCouldBePanning;
 		private bool isUserPanning;
-		private DateTimePoint lowerSelection;
-		private DateTimePoint upperSelection;
+		private IChartPoint lowerSelection;
+		private IChartPoint upperSelection;
 
 		#region Dependecy Properties
 
-		public ObservableCollection<LineSeries> Series
+		public ObservableCollection<ISeries> Series
 		{
-			get { return (ObservableCollection<LineSeries>)GetValue(SeriesProperty); }
+			get { return (ObservableCollection<ISeries>)GetValue(SeriesProperty); }
 			set { SetValue(SeriesProperty, value); }
 		}
 		public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-		  "Series", typeof(ObservableCollection<LineSeries>), typeof(WpfChart), new FrameworkPropertyMetadata(null, OnSeriesSet));
+		  "Series", typeof(ObservableCollection<ISeries>), typeof(WpfChart), new FrameworkPropertyMetadata(null, OnSeriesSet));
 
-		public Func<DateTime, string> XAxisFormatter
+		public Func<object, string> XAxisFormatter
 		{
-			get { return (Func<DateTime, string>)GetValue(XAxisFormatterProperty); }
+			get { return (Func<object, string>)GetValue(XAxisFormatterProperty); }
 			set { SetValue(XAxisFormatterProperty, value); }
 		}
 		public static readonly DependencyProperty XAxisFormatterProperty = DependencyProperty.Register(
-		  "XAxisFormatter", typeof(Func<DateTime, string>), typeof(WpfChart), new PropertyMetadata(null));
+		  "XAxisFormatter", typeof(Func<object, string>), typeof(WpfChart), new PropertyMetadata(null));
 
-		public Func<DateTime, string> XAxisCursorLabelFormatter
+		public Func<object, string> XAxisCursorLabelFormatter
 		{
-			get { return (Func<DateTime, string>)GetValue(XAxisCursorLabelFormatterProperty); }
+			get { return (Func<object, string>)GetValue(XAxisCursorLabelFormatterProperty); }
 			set { SetValue(XAxisCursorLabelFormatterProperty, value); }
 		}
 		public static readonly DependencyProperty XAxisCursorLabelFormatterProperty = DependencyProperty.Register(
-		  "XAxisCursorLabelFormatter", typeof(Func<DateTime, string>), typeof(WpfChart), new PropertyMetadata(null));
+		  "XAxisCursorLabelFormatter", typeof(Func<object, string>), typeof(WpfChart), new PropertyMetadata(null));
 
-		public Func<double, string> YAxisFormatter
+		public Func<object, string> YAxisFormatter
 		{
-			get { return (Func<double, string>)GetValue(YAxisFormatterProperty); }
+			get { return (Func<object, string>)GetValue(YAxisFormatterProperty); }
 			set { SetValue(YAxisFormatterProperty, value); }
 		}
 		public static readonly DependencyProperty YAxisFormatterProperty = DependencyProperty.Register(
-		  "YAxisFormatter", typeof(Func<double, string>), typeof(WpfChart), new PropertyMetadata(null));
+		  "YAxisFormatter", typeof(Func<object, string>), typeof(WpfChart), new PropertyMetadata(null));
 
-		public Func<double, string> YAxisCursorLabelFormatter
+		public Func<object, string> YAxisCursorLabelFormatter
 		{
-			get { return (Func<double, string>)GetValue(YAxisCursorLabelFormatterProperty); }
+			get { return (Func<object, string>)GetValue(YAxisCursorLabelFormatterProperty); }
 			set { SetValue(YAxisCursorLabelFormatterProperty, value); }
 		}
 		public static readonly DependencyProperty YAxisCursorLabelFormatterProperty = DependencyProperty.Register(
-		  "YAxisCursorLabelFormatter", typeof(Func<double, string>), typeof(WpfChart), new PropertyMetadata(null));
+		  "YAxisCursorLabelFormatter", typeof(Func<object, string>), typeof(WpfChart), new PropertyMetadata(null));
+
+		public Func<double, bool> YAxisLabelIdentifier
+		{
+			get { return (Func<double, bool>)GetValue(YAxisLabelIdentifierProperty); }
+			set { SetValue(YAxisLabelIdentifierProperty, value); }
+		}
+		public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
+		  "YAxisLabelIdentifier", typeof(Func<double, bool>), typeof(WpfChart), new PropertyMetadata(null));
+
+		public Func<double, bool> XAxisLabelIdentifier
+		{
+			get { return (Func<double, bool>)GetValue(XAxisLabelIdentifierProperty); }
+			set { SetValue(XAxisLabelIdentifierProperty, value); }
+		}
+		public static readonly DependencyProperty XAxisLabelIdentifierProperty = DependencyProperty.Register(
+		  "XAxisLabelIdentifier", typeof(Func<double, bool>), typeof(WpfChart), new PropertyMetadata(null));
 
 		public bool ShowXSeparatorLines
 		{
@@ -144,13 +145,13 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipStringProperty = DependencyProperty.Register(
 		  "TooltipString", typeof(string), typeof(WpfChart));
 
-		private ChartPoint HoveredPoint
+		private InternalChartPointRepresentation HoveredPoint
 		{
-			get { return (ChartPoint)GetValue(HoveredPointProperty); }
+			get { return (InternalChartPointRepresentation)GetValue(HoveredPointProperty); }
 			set { SetValue(HoveredPointProperty, value); }
 		}
 		public static readonly DependencyProperty HoveredPointProperty = DependencyProperty.Register(
-		  "HoveredPoint", typeof(ChartPoint), typeof(WpfChart), new PropertyMetadata(null));
+		  "HoveredPoint", typeof(InternalChartPointRepresentation), typeof(WpfChart), new PropertyMetadata(null));
 
 		private ObservableCollection<WpfChartSeriesViewModel> ConvertedSeries
 		{
@@ -222,7 +223,7 @@ namespace ModernThemables.Controls
 			set { SetValue(CurrentZoomStateProperty, value); }
 		}
 		public static readonly DependencyProperty CurrentZoomStateProperty = DependencyProperty.Register(
-		  "CurrentZoomState", typeof(ZoomState), typeof(WpfChart), new PropertyMetadata(new ZoomState(DateTime.MinValue, DateTime.MaxValue, 0)));
+		  "CurrentZoomState", typeof(ZoomState), typeof(WpfChart), new PropertyMetadata(new ZoomState(0, 0, 0)));
 
 		#endregion
 
@@ -256,7 +257,7 @@ namespace ModernThemables.Controls
 		{
 			var binding = SeriesMultiBinding;
 			SeriesItemsControl.Margin = new Thickness(0);
-			UpdateZoom(Series.Min(x => x.Values.Min(y => y.DateTime)), Series.Max(x => x.Values.Max(y => y.DateTime)), 0);
+			UpdateZoom(Series.Min(x => x.Values.Min(y => y.XValue)), Series.Max(x => x.Values.Max(y => y.XValue)), 0);
 			SeriesItemsControl.SetBinding(ItemsControl.MarginProperty, binding);
 
 			IsZoomed = false;
@@ -278,7 +279,7 @@ namespace ModernThemables.Controls
 				return;
 			}
 
-			chart.UpdateZoom(chart.Series.Min(x => x.Values.Min(y => y.DateTime)), chart.Series.Max(x => x.Values.Max(y => y.DateTime)), 0);
+			chart.UpdateZoom(chart.Series.Min(x => x.Values.Min(y => y.XValue)), chart.Series.Max(x => x.Values.Max(y => y.XValue)), 0);
 
 			chart.Subscribe(chart.Series);
 			chart.hasSetSeries = true;
@@ -286,12 +287,12 @@ namespace ModernThemables.Controls
 			chart.RenderChart(false);
 		}
 
-		private void Subscribe(ObservableCollection<LineSeries> series)
+		private void Subscribe(ObservableCollection<ISeries> series)
 		{
 			series.CollectionChanged += Series_CollectionChanged;
 			if (!hasSetSeries)
 			{
-				foreach (LineSeries item in series)
+				foreach (ISeries item in series)
 				{
 					item.PropertyChanged += Series_PropertyChanged;
 					subscribedSeries.Add(item);
@@ -302,13 +303,13 @@ namespace ModernThemables.Controls
 
 		private void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
-			foreach (LineSeries series in e.OldItems)
+			foreach (ISeries series in e.OldItems)
 			{
 				series.PropertyChanged -= Series_PropertyChanged;
 				subscribedSeries.Add(series);
 			}
 
-			foreach (LineSeries series in e.NewItems)
+			foreach (ISeries series in e.NewItems)
 			{
 				series.PropertyChanged += Series_PropertyChanged;
 				subscribedSeries.Remove(series);
@@ -344,22 +345,22 @@ namespace ModernThemables.Controls
 					{ new WpfChartSeriesViewModel(points, Series.First().Stroke, Series.First().Fill), };
 
 				Series.First().Stroke?.Reevaluate(
-					series.Values.Max(x => x.Value).Value,
-					series.Values.Min(x => x.Value).Value,
-					0, axisValues.XMax.Ticks, axisValues.XMin.Ticks, 0);
+					series.Values.Max(x => x.YValue),
+					series.Values.Min(x => x.YValue),
+					0, axisValues.XMax, axisValues.XMin, 0);
 				Series.First().Fill?.Reevaluate(
-					series.Values.Max(x => x.Value).Value,
-					series.Values.Min(x => x.Value).Value,
-					0, axisValues.XMax.Ticks, axisValues.XMin.Ticks, 0);
+					series.Values.Max(x => x.YValue),
+					series.Values.Min(x => x.YValue),
+					0, axisValues.XMax, axisValues.XMin, 0);
 			});
 		}
 
 		private DataBounds GetDataBounds()
 		{
-			var xMin = Series.Min(x => x.Values.Min(y => y.DateTime));
-			var xMax = Series.Min(x => x.Values.Max(x => x.DateTime));
-			var yMin = Series.Min(x => x.Values.Min(x => x.Value)).Value;
-			var yMax = Series.Min(x => x.Values.Max(x => x.Value)).Value;
+			var xMin = Series.Min(x => x.Values.Min(y => y.XValue));
+			var xMax = Series.Min(x => x.Values.Max(x => x.XValue));
+			var yMin = Series.Min(x => x.Values.Min(x => x.YValue));
+			var yMax = Series.Min(x => x.Values.Max(x => x.YValue));
 
 			var yRange = yMax - yMin;
 			yMin -= yRange * 0.1;
@@ -368,14 +369,14 @@ namespace ModernThemables.Controls
 			return new DataBounds(xMin, xMax, yMin, yMax);
 		}
 
-		private void SetXAxisLabels(DateTime xMin, DateTime xMax)
+		private void SetXAxisLabels(double xMin, double xMax)
 		{
 			var xRange = xMax - xMin;
 			var xAxisItemCount = Math.Floor(plotAreaWidth / 60);
 			var labels = GetXSteps(xAxisItemCount, xMin, xMax);
 			var labels2 = labels.Select(x => new ValueWithHeight()
 			{
-				Value = XAxisFormatter == null ? x.ToString("MMM YY") : XAxisFormatter(x),
+				Value = XAxisFormatter == null ? x.ToString("MMM YY") : XAxisFormatter(Series.First().Values.First().XValueToImplementation(x)),
 				Height = ((x - xMin) / xRange * plotAreaWidth) - (labels.ToList().IndexOf(x) > 0
 					? (labels[labels.ToList().IndexOf(x) - 1] - xMin) / xRange * plotAreaWidth
 					: 0),
@@ -390,7 +391,7 @@ namespace ModernThemables.Controls
 			var labels = GetYSteps(yAxisItemsCount, yMin, yMax).ToList();
 			var labels2 = labels.Select(y => new ValueWithHeight()
 			{
-				Value = YAxisFormatter == null ? Math.Round(y, 2).ToString() : YAxisFormatter(y),
+				Value = YAxisFormatter == null ? Math.Round(y, 2).ToString() : YAxisFormatter(Series.First().Values.First().YValueToImplementation(y)),
 				Height = ((y - yMin) / yRange * plotAreaHeight) - (labels.ToList().IndexOf(y) > 0
 					? (labels[labels.ToList().IndexOf(y) - 1] - yMin) / yRange * plotAreaHeight
 					: 0),
@@ -398,31 +399,45 @@ namespace ModernThemables.Controls
 			YAxisLabels = new ObservableCollection<ValueWithHeight>(labels2.Reverse());
 		}
 
-		private List<ChartPoint> GetPointsForSeries(
-			DateTime xMin, TimeSpan xRange, double yMin, double yRange, LineSeries series)
+		private List<InternalChartPointRepresentation> GetPointsForSeries(
+			double xMin, double xRange, double yMin, double yRange, ISeries series)
 		{
-			List<ChartPoint> points = new();
-			foreach (var point in series.Values/*.OrderBy(x => x.DateTime)*/)
+			List<InternalChartPointRepresentation> points = new();
+			foreach (var point in series.Values)
 			{
-				double x = (double)(point.DateTime - xMin).Ticks / (double)xRange.Ticks * (double)plotAreaWidth;
-				double y = plotAreaHeight - (point.Value.Value - yMin) / yRange * plotAreaHeight;
-				points.Add(new ChartPoint(x, y, point));
+				double x = (double)(point.XValue - xMin) / (double)xRange * (double)plotAreaWidth;
+				double y = plotAreaHeight - (point.YValue - yMin) / yRange * plotAreaHeight;
+				points.Add(new InternalChartPointRepresentation(x, y, point));
 			}
 			return points;
 		}
 
-		private List<DateTime> GetXSteps(double xAxisItemsCount, DateTime xMin, DateTime xMax)
+		private List<double> GetXSteps(double xAxisItemsCount, double xMin, double xMax)
 		{
 			var xRange = xMax - xMin;
-			List<DateTime> xVals = new();
-
-			for (int i = 0; i < xRange.TotalDays; i++)
+			var idealStep = xRange / xAxisItemsCount;
+			double min = double.MaxValue;
+			int stepAtMin = 1;
+			var roundedSteps = new List<int>()
+				{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
+			roundedSteps.Reverse();
+			foreach (var step in roundedSteps)
 			{
-				var date = xMin + TimeSpan.FromDays(i);
-				if (date.Day == 1)
+				var val = Math.Abs(idealStep - step);
+				if (val < min)
 				{
-					xVals.Add(date);
+					min = val;
+					stepAtMin = step;
 				}
+			}
+
+			List<double> xVals = new();
+
+			double currVal = xMin;
+			while (currVal < xMax)
+			{
+				currVal += stepAtMin;
+				xVals.Add(currVal);
 			}
 
 			int fracOver = (int)Math.Ceiling(xVals.Count() / (decimal)Math.Round(xAxisItemsCount));
@@ -493,7 +508,7 @@ namespace ModernThemables.Controls
 			return yVals;
 		}
 
-		private void UpdateZoom(DateTime min, DateTime max, double zoomOffset)
+		private void UpdateZoom(double min, double max, double zoomOffset)
 		{
 			CurrentZoomState = new ZoomState(min, max, zoomOffset);
 		}
@@ -547,7 +562,7 @@ namespace ModernThemables.Controls
 			timeLastUpdated = DateTime.Now;
 			var xPercent = mouseLoc.X / plotAreaWidth;
 			var yPercent = mouseLoc.Y / plotAreaHeight;
-			var xVal = CurrentZoomState.Min.Add(xPercent * (CurrentZoomState.Max - CurrentZoomState.Min));
+			var xVal = CurrentZoomState.Min + (xPercent * (CurrentZoomState.Max - CurrentZoomState.Min));
 			var yVal = ((1 - yPercent) * axisValues.YRange + axisValues.YMin);
 
 			if (IsCrosshairVisible)
@@ -564,10 +579,10 @@ namespace ModernThemables.Controls
 
 				// Set value displays
 				XCrosshairValueLabel.Text
-					= XAxisCursorLabelFormatter == null ? xVal.ToString() : XAxisCursorLabelFormatter(xVal);
+					= XAxisCursorLabelFormatter == null ? xVal.ToString() : XAxisCursorLabelFormatter(Series.First().Values.First().XValueToImplementation(xVal));
 				YCrosshairValueLabel.Text = YAxisCursorLabelFormatter == null
 					? Math.Round(yVal, 2).ToString()
-					: YAxisCursorLabelFormatter(yVal);
+					: YAxisCursorLabelFormatter(Series.First().Values.First().YValueToImplementation(yVal));
 			}
 
 			var translatedMouseLoc = e.GetPosition(SeriesItemsControl);
@@ -594,7 +609,7 @@ namespace ModernThemables.Controls
 				// Set location of items related to the hoveredPoint
 				HoveredPointEllipse.Margin = new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0);
 				HoveredPointEllipse.Fill = new SolidColorBrush(
-					ConvertedSeries.First().Stroke.ColourAtPoint(hoveredChartPoint.BackingPoint.DateTime.Ticks, hoveredChartPoint.BackingPoint.Value.Value));
+					ConvertedSeries.First().Stroke.ColourAtPoint(hoveredChartPoint.BackingPoint.XValue, hoveredChartPoint.BackingPoint.YValue));
 				XPointHighlighter.Margin = new Thickness(0, hoveredChartPoint.Y, 0, 0);
 			}	
 
@@ -667,7 +682,7 @@ namespace ModernThemables.Controls
 			if (isUserDragging)
 			{
 				upperSelection = HoveredPoint.BackingPoint;
-				PointRangeSelected?.Invoke(this, new Tuple<DateTimePoint, DateTimePoint>(lowerSelection, upperSelection));
+				PointRangeSelected?.Invoke(this, new Tuple<IChartPoint, IChartPoint>(lowerSelection, upperSelection));
 				isUserDragging = false;
 				isUserPanning = false;
 				userCouldBePanning = false;

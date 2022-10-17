@@ -4,14 +4,14 @@ namespace ModernThemables.HelperClasses.WpfChart
 {
     internal class DataBounds
     {
-        public DateTime XMin { get; }
-        public DateTime XMax { get; }
+        public double XMin { get; }
+        public double XMax { get; }
         public double YMin { get; }
         public double YMax { get; }
-        public TimeSpan XRange { get; }
+        public double XRange { get; }
         public double YRange { get; }
 
-        public DataBounds(DateTime xMin, DateTime xMax, double yMin, double yMax)
+        public DataBounds(double xMin, double xMax, double yMin, double yMax)
         {
             XMin = xMin;
             XMax = xMax;

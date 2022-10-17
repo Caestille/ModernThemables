@@ -1,20 +1,22 @@
-﻿using LiveChartsCore.Defaults;
-using ModernThemables.Interfaces;
+﻿using ModernThemables.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace ModernThemables.HelperClasses.WpfChart
 {
-    public class LineSeries
+    public class PathSeries<TModel> : ISeries where TModel : IChartPoint
     {
         public event EventHandler<PropertyChangedEventArgs> PropertyChanged;
-        public Func<IEnumerable<DateTimePoint>, DateTimePoint, string> TooltipLabelFormatter { get; set; }
-        public IChartBrush Stroke { get; set; }
+        public event EventHandler<NotifyCollectionChangedEventArgs> CollectionChanged;
+
+        public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter { get; set; }
+		public IChartBrush Stroke { get; set; }
         public IChartBrush Fill { get; set; }
 
-        private IEnumerable<DateTimePoint> values;
-        public IEnumerable<DateTimePoint> Values
+        private IEnumerable<IChartPoint> values;
+        public IEnumerable<IChartPoint> Values
         {
             get => values;
             set

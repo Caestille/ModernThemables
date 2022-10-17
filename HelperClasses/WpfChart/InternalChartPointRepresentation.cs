@@ -1,14 +1,14 @@
-﻿using LiveChartsCore.Defaults;
+﻿using ModernThemables.Interfaces;
 
 namespace ModernThemables.HelperClasses.WpfChart
 {
-    internal class ChartPoint
+    internal class InternalChartPointRepresentation
     {
         public double X { get; set; }
         public double Y { get; set; }
-        public DateTimePoint BackingPoint { get; }
+        public IChartPoint BackingPoint { get; }
 
-        public ChartPoint(double x, double y, DateTimePoint backingPoint)
+        public InternalChartPointRepresentation(double x, double y, IChartPoint backingPoint)
         {
             X = x;
             Y = y;

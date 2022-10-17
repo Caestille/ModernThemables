@@ -1,15 +1,11 @@
-﻿using LiveChartsCore.Kernel;
-using ModernThemables.Controls;
-using ModernThemables.HelperClasses.WpfChart;
+﻿using ModernThemables.HelperClasses.WpfChart;
+using ModernThemables.Interfaces;
 using System;
-using System.Collections;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Markup;
 
 namespace ModernThemables.Converters
 {
@@ -17,12 +13,12 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is ZoomState zoom && values[1] is ObservableCollection<LineSeries> series && values[2] is FrameworkElement grid)
+			if (values[0] is ZoomState zoom && values[1] is ObservableCollection<ISeries> series && values[2] is FrameworkElement grid)
 			{
 				var displayAreaWidth = grid.ActualWidth;
 
-				var min = series.Min(x => x.Values.Min(y => y.DateTime));
-				var max = series.Max(x => x.Values.Max(y => y.DateTime));
+				var min = series.Min(x => x.Values.Min(y => y.XValue));
+				var max = series.Max(x => x.Values.Max(y => y.XValue));
 
 				var leftFrac = (zoom.Min - min) / (max - min);
 				var rightFrac = (max - zoom.Max) / (max - min);
