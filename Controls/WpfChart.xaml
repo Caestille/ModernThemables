@@ -69,6 +69,7 @@
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 		<Border
+			ClipToBounds="True"
 			Grid.Row="1"
 			Grid.Column="1"
 			BorderBrush="{DynamicResource StatusTextLightBrush}"
@@ -350,7 +351,6 @@
 							ElementName="root"
 							Path="HoveredPoint" />
 						<Binding ElementName="Grid" Path="IsMouseOver" />
-						<Binding ElementName="root" Path="IsTooltipVisible" />
 						<Binding ElementName="root" Path="IsPointIndicatorsVisible" />
 					</MultiBinding>
 				</Ellipse.Visibility>

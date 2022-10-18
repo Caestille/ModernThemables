@@ -129,7 +129,7 @@
 				<controls:ExtendedButton
 					x:Name="CloseButton"
 					Width="40"
-					Margin="1,0,0,0"
+					Margin="1,1,1,0"
 					HorizontalAlignment="Right"
 					Background="Transparent"
 					BorderThickness="0"
@@ -147,7 +147,7 @@
 				<controls:ExtendedButton
 					x:Name="ChangeStateButton"
 					Width="40"
-					Margin="1,0"
+					Margin="1,1,1,0"
 					Background="Transparent"
 					BorderThickness="0"
 					Click="ChangeStateButton_Click"
@@ -167,7 +167,7 @@
 				<controls:ExtendedButton
 					x:Name="MinimiseButton"
 					Width="40"
-					Margin="1,0"
+					Margin="1,1,1,0"
 					HorizontalAlignment="Right"
 					Background="Transparent"
 					BorderThickness="0"
@@ -192,7 +192,7 @@
 				<controls:ExtendedButton
 					x:Name="ThemeSetButton"
 					Width="40"
-					Margin="1,0"
+					Margin="1,1,1,0"
 					HorizontalAlignment="Right"
 					Background="Transparent"
 					BorderThickness="0"
@@ -213,6 +213,8 @@
 					Source="{Binding Path=Icon, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}" />
 				<Label
 					Margin="2"
+					VerticalAlignment="Center"
+					VerticalContentAlignment="Center"
 					Content="{Binding Path=Title, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}"
 					FontSize="11.5">
 					<Label.Foreground>

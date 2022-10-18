@@ -1,5 +1,4 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using System;
 
 namespace ModernThemables.HelperClasses.WpfChart
 {

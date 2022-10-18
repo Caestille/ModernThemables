@@ -2,6 +2,7 @@
 using ModernThemables.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -15,7 +16,10 @@ namespace ModernThemables.HelperClasses.WpfChart
 		public IChartBrush Stroke { get; }
 		public IChartBrush Fill { get; }
 
-		public WpfChartSeriesViewModel(IEnumerable<InternalChartPointRepresentation> data, IChartBrush stroke, IChartBrush fill)
+		public WpfChartSeriesViewModel(
+			IEnumerable<InternalChartPointRepresentation> data,
+			IChartBrush stroke,
+			IChartBrush fill)
 		{
 			Data = data;
 			Stroke = stroke;
@@ -29,24 +33,37 @@ namespace ModernThemables.HelperClasses.WpfChart
 			var zero = Math.Min(Math.Max(0d, dataMin), dataMax);
 			var ratio = (double)(1 - (zero - dataMin) / range);
 			var zeroPoint = ratio * (Data.Max(x => x.Y) - Data.Min(x => x.Y)) * 1.1;
-			PathFillData = $"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
+			PathFillData = 
+				$"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
 		}
 
-		public InternalChartPointRepresentation GetChartPointUnderTranslatedMouse(double mouseX, double mouseY, double zoomWidth, double zoomToStandardOffset)
+		public InternalChartPointRepresentation GetChartPointUnderTranslatedMouse(
+			double mouseX,
+			double mouseY,
+			double zoomWidth,
+			double zoomHeight,
+			double xLeftOffset,
+			double yTopOffset)
 		{
 			var dataWidth = Data.Max(x => x.X) - Data.Min(x => x.X);
-			var standardToZoomMultiplier = dataWidth / zoomWidth;
+			var dataHeight = (Data.Max(x => x.Y) - Data.Min(x => x.Y));
+			var xZoom = zoomWidth / dataWidth;
+			var yZoom = zoomHeight / dataHeight;
 
-			var translatedX = mouseX * standardToZoomMultiplier;
-			var translatedY = mouseY;
+			var translatedX = mouseX / xZoom;
+			var translatedY = (mouseY + 0.1 * dataHeight * yZoom) / yZoom;
 
-			var nearestPoint = Data.First(x => Math.Abs(x.X - translatedX) == Data.Min(x => Math.Abs(x.X - translatedX)));
+			var nearestPoint = Data.First(
+				x => Math.Abs(x.X - translatedX) == Data.Min(x => Math.Abs(x.X - translatedX)));
 			var hoveredChartPoints = Data.Where(x => x.X == nearestPoint.X);
 			var hoveredChartPoint = hoveredChartPoints.Count() > 1
-				? hoveredChartPoints.First(x => Math.Abs(x.Y - translatedY) == hoveredChartPoints.Min(x => Math.Abs(x.Y - translatedY)))
+				? hoveredChartPoints.First(
+					x => Math.Abs(x.Y - translatedY) == hoveredChartPoints.Min(x => Math.Abs(x.Y - translatedY)))
 				: hoveredChartPoints.First();
 
-			return new InternalChartPointRepresentation(hoveredChartPoint.X / standardToZoomMultiplier - zoomToStandardOffset, hoveredChartPoint.Y, hoveredChartPoint.BackingPoint);
+			var x = hoveredChartPoint.X * xZoom - xLeftOffset;
+			var y = hoveredChartPoint.Y * yZoom - yTopOffset - 0.1 * dataHeight * yZoom;
+			return new InternalChartPointRepresentation(x, y, hoveredChartPoint.BackingPoint);
 		}
 
 		private string ConvertDataToPath(IEnumerable<InternalChartPointRepresentation> data)

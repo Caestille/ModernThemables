@@ -14,7 +14,6 @@ using ModernThemables.HelperClasses.WpfChart;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using ModernThemables.Interfaces;
-using System.Diagnostics;
 
 namespace ModernThemables.Controls
 {
@@ -48,10 +47,11 @@ namespace ModernThemables.Controls
 		private IChartPoint lowerSelection;
 		private IChartPoint upperSelection;
 
-		double xMin => Series.Min(x => x.Values.Min(y => y.XValue));
-		double xMax => Series.Max(x => x.Values.Max(x => x.XValue));
-		double yMin => Series.Min(x => x.Values.Min(x => x.YValue)) - (Series.Max(x => x.Values.Max(x => x.YValue)) - Series.Min(x => x.Values.Min(x => x.YValue))) * 0.1;
-		double yMax => Series.Max(x => x.Values.Max(x => x.YValue)) + (Series.Max(x => x.Values.Max(x => x.YValue)) - Series.Min(x => x.Values.Min(x => x.YValue))) * 0.1;
+		private double xMin => Series.Min(x => x.Values.Min(y => y.XValue));
+		private double xMax => Series.Max(x => x.Values.Max(x => x.XValue));
+		private double yMin => Series.Min(x => x.Values.Min(x => x.YValue)) - (Series.Max(x => x.Values.Max(x => x.YValue)) - Series.Min(x => x.Values.Min(x => x.YValue))) * 0.1;
+		private double yMax => Series.Max(x => x.Values.Max(x => x.YValue)) + (Series.Max(x => x.Values.Max(x => x.YValue)) - Series.Min(x => x.Values.Min(x => x.YValue))) * 0.1;
+		private double xDataOffset => CurrentZoomState.XOffset / plotAreaWidth * (xMax - xMin);
 
 		#region Dependecy Properties
 
@@ -351,25 +351,27 @@ namespace ModernThemables.Controls
 				{
 					if (!series.Values.Any()) continue;
 
-					SetXAxisLabels(CurrentZoomState.XMin, CurrentZoomState.XMax);
+					SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
 					SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
+
+					var yMin = Series.Min(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
+					var yMax = Series.Max(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue));
+
+					if (Math.Round(currentZoomLevel, 1) != 1)
+					{
+						CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, CurrentZoomState.XOffset, true);
+					}
 
 					// Force layout update so sizes are correct before rendering points
 					this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
-					var points = GetPointsForSeries(xMin, xMax - xMin, yMin, yMax - yMin, Series.First());
+					var points = GetPointsForSeries(xMin, xMax - xMin, this.yMin, this.yMax - this.yMin, series);
 
 					collection.Add(new WpfChartSeriesViewModel(points, series.Stroke, series.Fill));
 					ConvertedSeries = collection;
 
-					series.Stroke?.Reevaluate(
-						series.Values.Max(x => x.YValue),
-						series.Values.Min(x => x.YValue),
-						0, xMax, xMin, 0);
-					series.Fill?.Reevaluate(
-						series.Values.Max(x => x.YValue),
-						series.Values.Min(x => x.YValue),
-						0, xMax, xMin, 0);
+					series.Stroke?.Reevaluate(yMax, yMin, 0, xMax, xMin, 0);
+					series.Fill?.Reevaluate(yMax, yMin, 0, xMax, xMin, 0);
 				}
 			});
 		}
@@ -588,7 +590,7 @@ namespace ModernThemables.Controls
 				{
 					var zoomOffset = CurrentZoomState.XOffset + lastMouseMovePoint.Value.X - mouseLoc.X;
 					CurrentZoomState = new ZoomState(CurrentZoomState.XMin, CurrentZoomState.XMax, CurrentZoomState.YMin, CurrentZoomState.YMax, zoomOffset, false);
-					SetXAxisLabels(CurrentZoomState.XMin, CurrentZoomState.XMax);
+					SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
 				}
 			}
 			lastMouseMovePoint = mouseLoc;
@@ -598,7 +600,7 @@ namespace ModernThemables.Controls
 			timeLastUpdated = DateTime.Now;
 			var xPercent = mouseLoc.X / plotAreaWidth;
 			var yPercent = 1 - mouseLoc.Y / plotAreaHeight;
-			var xVal = CurrentZoomState.XMin + (xPercent * (CurrentZoomState.XMax - CurrentZoomState.XMin));
+			var xVal = CurrentZoomState.XMin + (xPercent * (CurrentZoomState.XMax - CurrentZoomState.XMin)) + xDataOffset;
 			var yVal = CurrentZoomState.YMin + (yPercent * (CurrentZoomState.YMax - CurrentZoomState.YMin));
 
 			if (IsCrosshairVisible)
@@ -622,7 +624,7 @@ namespace ModernThemables.Controls
 			}
 
 			var translatedMouseLoc = e.GetPosition(SeriesItemsControl);
-			var hoveredChartPoint = ConvertedSeries.First().GetChartPointUnderTranslatedMouse(translatedMouseLoc.X, translatedMouseLoc.Y, SeriesItemsControl.ActualWidth, -SeriesItemsControl.Margin.Left);
+			var hoveredChartPoint = ConvertedSeries.First().GetChartPointUnderTranslatedMouse(translatedMouseLoc.X, translatedMouseLoc.Y, SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight, -SeriesItemsControl.Margin.Left, -SeriesItemsControl.Margin.Top);
 
 			if (hoveredChartPoint == null) return;
 
@@ -685,7 +687,7 @@ namespace ModernThemables.Controls
 				CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, zoomOffset);
 			}
 
-			SetXAxisLabels(xMin, xMax);
+			SetXAxisLabels(xMin + xDataOffset, xMax + xDataOffset);
 			SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
 			HoveredPoint = null;
