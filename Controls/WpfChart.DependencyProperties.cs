@@ -187,5 +187,13 @@ namespace ModernThemables.Controls
 		}
 		public static readonly DependencyProperty CurrentZoomStateProperty = DependencyProperty.Register(
 		  "CurrentZoomState", typeof(ZoomState), typeof(WpfChart), new PropertyMetadata(new ZoomState(0, 0, 0, 0, 0)));
+		
+		private bool HasData
+		{
+			get { return (bool)GetValue(HasDataProperty); }
+			set { SetValue(HasDataProperty, value); }
+		}
+		public static readonly DependencyProperty HasDataProperty = DependencyProperty.Register(
+		  "HasData", typeof(bool), typeof(WpfChart), new PropertyMetadata(false));
 	}
 }

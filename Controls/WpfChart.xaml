@@ -184,6 +184,7 @@
 					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
 						<Binding ElementName="Grid" Path="IsMouseOver" />
 						<Binding ElementName="root" Path="IsPointIndicatorsVisible" />
+						<Binding ElementName="root" Path="HasData" />
 						<Binding
 							Converter="{StaticResource IsNotNullConverter}"
 							ElementName="root"
@@ -211,6 +212,7 @@
 					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
 						<Binding ElementName="Grid" Path="IsMouseOver" />
 						<Binding ElementName="root" Path="IsCrosshairVisible" />
+						<Binding ElementName="root" Path="HasData" />
 					</MultiBinding>
 				</Line.Visibility>
 			</Line>
@@ -225,6 +227,7 @@
 				<Line.Visibility>
 					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
 						<Binding ElementName="Grid" Path="IsMouseOver" />
+						<Binding ElementName="root" Path="HasData" />
 						<Binding ElementName="root" Path="IsCrosshairVisible" />
 					</MultiBinding>
 				</Line.Visibility>
@@ -254,6 +257,7 @@
 				<Border.Visibility>
 					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
 						<Binding ElementName="Grid" Path="IsMouseOver" />
+						<Binding ElementName="root" Path="HasData" />
 						<Binding ElementName="root" Path="IsAxisIndicatorsVisible" />
 					</MultiBinding>
 				</Border.Visibility>
@@ -277,6 +281,7 @@
 				<Border.Visibility>
 					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
 						<Binding ElementName="Grid" Path="IsMouseOver" />
+						<Binding ElementName="root" Path="HasData" />
 						<Binding ElementName="root" Path="IsAxisIndicatorsVisible" />
 					</MultiBinding>
 				</Border.Visibility>
@@ -303,6 +308,7 @@
 							ElementName="root"
 							Path="HoveredPoint" />
 						<Binding ElementName="Grid" Path="IsMouseOver" />
+						<Binding ElementName="root" Path="HasData" />
 						<Binding ElementName="root" Path="IsTooltipVisible" />
 					</MultiBinding>
 				</Border.Visibility>
@@ -351,6 +357,7 @@
 							ElementName="root"
 							Path="HoveredPoint" />
 						<Binding ElementName="Grid" Path="IsMouseOver" />
+						<Binding ElementName="root" Path="HasData" />
 						<Binding ElementName="root" Path="IsPointIndicatorsVisible" />
 					</MultiBinding>
 				</Ellipse.Visibility>

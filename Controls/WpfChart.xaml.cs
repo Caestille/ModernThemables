@@ -47,22 +47,22 @@ namespace ModernThemables.Controls
 		private InternalChartPointRepresentation lowerSelection;
 		private InternalChartPointRepresentation upperSelection;
 
-		private double xMin => Series.Where(x => x.Values.Any()).Any()
+		private double xMin => Series != null && Series.Where(x => x.Values.Any()).Any()
 			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.XValue))
 			: 0;
-		private double xMax => Series.Where(x => x.Values.Any()).Any()
+		private double xMax => Series != null && Series.Where(x => x.Values.Any()).Any()
 			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.XValue))
 			: 0;
-		private double yMin => Series.Where(x => x.Values.Any()).Any()
+		private double yMin => Series != null && Series.Where(x => x.Values.Any()).Any()
 			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue))
 			: 0;
-		private double yMax => Series.Where(x => x.Values.Any()).Any()
+		private double yMax => Series != null && Series.Where(x => x.Values.Any()).Any()
 			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue))
 			: 0;
-		private double yMinExpanded => Series.Where(x => x.Values.Any()).Any()
+		private double yMinExpanded => Series != null && Series.Where(x => x.Values.Any()).Any()
 			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) + (yMax - yMin) * 0.1
 			: 0;
-		private double yMaxExpanded => Series.Where(x => x.Values.Any()).Any()
+		private double yMaxExpanded => Series != null && Series.Where(x => x.Values.Any()).Any()
 			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) + (yMax - yMin) * 0.1
 			: 0;
 		private double xDataOffset => CurrentZoomState.XOffset / plotAreaWidth * (xMax - xMin);
@@ -178,7 +178,7 @@ namespace ModernThemables.Controls
 		{
 			Application.Current.Dispatcher.BeginInvoke(() =>
 			{
-				if (Series is null || !Series.Any()) return;
+				if (!HasGotData()) return;
 
 				var collection = new ObservableCollection<WpfChartSeriesViewModel>();
 				foreach (var series in Series)
@@ -216,6 +216,8 @@ namespace ModernThemables.Controls
 
 		private void SetXAxisLabels(double xMin, double xMax)
 		{
+			if (!HasGotData()) return;
+
 			var xRange = xMax - xMin;
 			var xAxisItemCount = Math.Floor(plotAreaWidth / 60);
 			var labels = GetXSteps(xAxisItemCount, xMin, xMax);
@@ -233,6 +235,8 @@ namespace ModernThemables.Controls
 
 		private void SetYAxisLabels(double yMin, double yMax)
 		{
+			if (!HasGotData()) return;
+
 			var yRange = yMax - yMin;
 			var yAxisItemsCount = Math.Max(1, Math.Floor(plotAreaHeight / 50));
 			var labels = GetYSteps(yAxisItemsCount, yMin, yMax).ToList();
@@ -399,6 +403,8 @@ namespace ModernThemables.Controls
 
 		private void Grid_ContextMenuOpening(object sender, ContextMenuEventArgs e)
 		{
+			if (!HasGotData()) { e.Handled = true; return; }
+
 			if (isUserPanning)
 			{
 				e.Handled = true;
@@ -413,6 +419,8 @@ namespace ModernThemables.Controls
 
 		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
 		{
+			if (!HasGotData()) return;
+
 			IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
 
 			var mouseLoc = e.GetPosition(Grid);
@@ -533,6 +541,8 @@ namespace ModernThemables.Controls
 
 		private void MouseCaptureGrid_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
+			if (!HasGotData()) return;
+
 			IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
 
 			var xMin = CurrentZoomState.XMin;
@@ -572,6 +582,8 @@ namespace ModernThemables.Controls
 
 		private void MouseCaptureGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
 		{
+			if (!HasGotData()) return;
+
 			isMouseDown = true;
 			if (e.ChangedButton == MouseButton.Left)
 			{
@@ -587,6 +599,8 @@ namespace ModernThemables.Controls
 
 		private void MouseCaptureGrid_PreviewMouseUp(object sender, MouseButtonEventArgs e)
 		{
+			if (!HasGotData()) return;
+
 			isMouseDown = false;
 			IsUserSelectingRange = false;
 
@@ -624,5 +638,11 @@ namespace ModernThemables.Controls
 		}
 
 		#endregion
+
+		private bool HasGotData()
+		{
+			HasData = Series != null && Series.Any(x => x.Values.Any());
+			return HasData;
+		}
 	}
 }
