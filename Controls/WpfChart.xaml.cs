@@ -99,7 +99,7 @@ namespace ModernThemables.Controls
 			}
 		}
 
-		public void ResetZoom()
+		public async void ResetZoom()
 		{
 			var binding = SeriesMultiBinding;
 			SeriesItemsControl.Margin = new Thickness(-1,0,0,0);
@@ -111,12 +111,12 @@ namespace ModernThemables.Controls
 				0);
 			SeriesItemsControl.SetBinding(MarginProperty, binding);
 			IsZoomed = false;
-			RenderChart();
+			await RenderChart();
 		}
 
 		#region Subscribe to series'
 
-		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private async static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not WpfChart chart) return;
 
@@ -142,7 +142,7 @@ namespace ModernThemables.Controls
 				chart.Series.Max(x => x.Values.Max(y => y.YValue)),
 				0);
 
-			chart.RenderChart();
+			await chart.RenderChart();
 		}
 
 		private void Subscribe(ObservableCollection<ISeries> series)
@@ -159,11 +159,11 @@ namespace ModernThemables.Controls
 			Series_PropertyChanged(this, new PropertyChangedEventArgs(nameof(Series)));
 		}
 
-		private void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+		private async void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
-				RenderChart();
+				await RenderChart();
 				return;
 			}
 
@@ -184,12 +184,12 @@ namespace ModernThemables.Controls
 					subscribedSeries.Remove(series);
 				}
 			}
-			RenderChart();
+			await RenderChart();
 		}
 
-		private void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+		private async void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			RenderChart();
+			await RenderChart();
 		}
 
 		#endregion
@@ -199,46 +199,51 @@ namespace ModernThemables.Controls
 			tokenSource.Cancel();
 			tokenSource = new CancellationTokenSource();
 
-			await Task.Run(async () => {
-				await Application.Current.Dispatcher.BeginInvoke(async () =>
+			try
+			{
+				await Task.Run(async () =>
 				{
-					if (!HasGotData())
+					await Application.Current.Dispatcher.InvokeAsync(async () =>
 					{
-						ConvertedSeries.Clear();
-						return;
-					}
-
-					var collection = new ObservableCollection<WpfChartSeriesViewModel>();
-					foreach (var series in Series.Clone())
-					{
-						if (!series.Values.Any()) continue;
-
-						var yMin = Series.Min(
-							x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
-						var yMax = Series.Max(
-							x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue));
-
-						if (Math.Round(currentZoomLevel, 1) != 1)
+						if (!HasGotData())
 						{
-							CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, CurrentZoomState.XOffset);
+							ConvertedSeries.Clear();
+							return;
 						}
 
-						SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
-						SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
+						var collection = new ObservableCollection<WpfChartSeriesViewModel>();
+						foreach (var series in Series)
+						{
+							if (!series.Values.Any()) continue;
 
-						// Force layout update so sizes are correct before rendering points
-						this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+							var yMin = Series.Min(
+								x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
+							var yMax = Series.Max(
+								x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue));
 
-						var points = await GetPointsForSeries(xMin, xMax - xMin, this.yMinExpanded, this.yMaxExpanded - this.yMinExpanded, series);
+							if (Math.Round(currentZoomLevel, 1) != 1)
+							{
+								CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, CurrentZoomState.XOffset);
+							}
 
-						collection.Add(new WpfChartSeriesViewModel(points, series.Stroke, series.Fill));
-						ConvertedSeries = collection;
+							SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
+							SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
-						series.Stroke?.Reevaluate(yMax, yMin, 0, xMax, xMin, 0);
-						series.Fill?.Reevaluate(yMax, yMin, 0, xMax, xMin, 0);
-					}
-				});
-			}).AsCancellable(tokenSource.Token);
+							// Force layout update so sizes are correct before rendering points
+							this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+
+							var points = await GetPointsForSeries(xMin, xMax - xMin, this.yMinExpanded, this.yMaxExpanded - this.yMinExpanded, series);
+
+							collection.Add(new WpfChartSeriesViewModel(points, series.Stroke, series.Fill));
+							ConvertedSeries = collection;
+
+							series.Stroke?.Reevaluate(yMax, yMin, 0, xMax, xMin, 0);
+							series.Fill?.Reevaluate(yMax, yMin, 0, xMax, xMin, 0);
+						}
+					});
+				}).AsCancellable(tokenSource.Token);
+			}
+			catch (TaskCanceledException) { }
 		}
 
 		#region Calculations
