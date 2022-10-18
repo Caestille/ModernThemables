@@ -141,8 +141,6 @@ namespace ModernThemables.Controls
 				chart.Series.Min(x => x.Values.Min(y => y.YValue)),
 				chart.Series.Max(x => x.Values.Max(y => y.YValue)),
 				0);
-
-			await chart.RenderChart();
 		}
 
 		private void Subscribe(ObservableCollection<ISeries> series)
@@ -243,7 +241,10 @@ namespace ModernThemables.Controls
 					});
 				}).AsCancellable(tokenSource.Token);
 			}
-			catch (TaskCanceledException) { }
+			catch (TaskCanceledException) 
+			{ 
+			
+			}
 		}
 
 		#region Calculations
