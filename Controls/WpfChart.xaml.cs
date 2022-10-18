@@ -44,17 +44,27 @@ namespace ModernThemables.Controls
 		private bool isUserDragging;
 		private bool userCouldBePanning;
 		private bool isUserPanning;
-		private IChartPoint lowerSelection;
-		private IChartPoint upperSelection;
+		private InternalChartPointRepresentation lowerSelection;
+		private InternalChartPointRepresentation upperSelection;
 
-		private double xMin => Series.Min(x => x.Values.Min(y => y.XValue));
-		private double xMax => Series.Max(x => x.Values.Max(x => x.XValue));
-		private double yMin => Series.Min(x => x.Values.Min(x => x.YValue)) 
-			- (Series.Max(x => x.Values.Max(x => x.YValue))
-				- Series.Min(x => x.Values.Min(x => x.YValue))) * 0.1;
-		private double yMax => Series.Max(x => x.Values.Max(x => x.YValue)) 
-			+ (Series.Max(x => x.Values.Max(x => x.YValue))
-				- Series.Min(x => x.Values.Min(x => x.YValue))) * 0.1;
+		private double xMin => Series.Where(x => x.Values.Any()).Any()
+			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.XValue))
+			: 0;
+		private double xMax => Series.Where(x => x.Values.Any()).Any()
+			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.XValue))
+			: 0;
+		private double yMin => Series.Where(x => x.Values.Any()).Any()
+			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue))
+			: 0;
+		private double yMax => Series.Where(x => x.Values.Any()).Any()
+			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue))
+			: 0;
+		private double yMinExpanded => Series.Where(x => x.Values.Any()).Any()
+			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) + (yMax - yMin) * 0.1
+			: 0;
+		private double yMaxExpanded => Series.Where(x => x.Values.Any()).Any()
+			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) + (yMax - yMin) * 0.1
+			: 0;
 		private double xDataOffset => CurrentZoomState.XOffset / plotAreaWidth * (xMax - xMin);
 
 		public WpfChart()
@@ -191,7 +201,7 @@ namespace ModernThemables.Controls
 					// Force layout update so sizes are correct before rendering points
 					this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
-					var points = GetPointsForSeries(xMin, xMax - xMin, this.yMin, this.yMax - this.yMin, series);
+					var points = GetPointsForSeries(xMin, xMax - xMin, this.yMinExpanded, this.yMaxExpanded - this.yMinExpanded, series);
 
 					collection.Add(new WpfChartSeriesViewModel(points, series.Stroke, series.Fill));
 					ConvertedSeries = collection;
@@ -507,10 +517,18 @@ namespace ModernThemables.Controls
 						hoveredChartPoint.BackingPoint.XValue,
 						hoveredChartPoint.BackingPoint.YValue));
 				XPointHighlighter.Margin = new Thickness(0, hoveredChartPoint.Y, 0, 0);
-			}	
+			}
 
 			if (IsUserSelectingRange)
-				SelectionRangeBorder.Width = Math.Max(HoveredPoint.X - SelectionRangeBorder.Margin.Left, 0);
+			{
+				var negative = HoveredPoint.X < lowerSelection.X;
+				var margin = SelectionRangeBorder.Margin;
+				margin.Left = negative ? HoveredPoint.X : lowerSelection.X;
+				SelectionRangeBorder.Margin = margin;
+				SelectionRangeBorder.Width = negative
+					? Math.Max(lowerSelection.X - HoveredPoint.X, 0)
+					: Math.Max(HoveredPoint.X - lowerSelection.X, 0);
+			}
 		}
 
 		private void MouseCaptureGrid_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -533,10 +551,12 @@ namespace ModernThemables.Controls
 			var xDiff = currXRange - newXRange;
 			xMin = xMin + xDiff * zoomCentre;
 			xMax = xMax - xDiff * (1 - zoomCentre);
-			var yMin = Series.Min(
-				x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
-			var yMax = Series.Max(
-				x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue));
+			var yMin = Series.Min(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Any()
+				? Series.Min(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue))
+				: 0);
+			var yMax = Series.Max(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Any() 
+				? Series.Max(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue))
+				: 0);
 
 			if (Math.Round(currentZoomLevel, 1) != 1)
 			{
@@ -556,7 +576,7 @@ namespace ModernThemables.Controls
 			if (e.ChangedButton == MouseButton.Left)
 			{
 				e.Handled = true;
-				lowerSelection = HoveredPoint.BackingPoint;
+				lowerSelection = HoveredPoint;
 				SelectionRangeBorder.Margin = new Thickness(HoveredPoint.X, 0, 0, 0);
 			}
 			else if (e.ChangedButton == MouseButton.Right)
@@ -578,16 +598,18 @@ namespace ModernThemables.Controls
 
 			if (isUserDragging)
 			{
-				upperSelection = HoveredPoint.BackingPoint;
-				PointRangeSelected?.Invoke(
-					this, new Tuple<IChartPoint, IChartPoint>(lowerSelection, upperSelection));
+				upperSelection = HoveredPoint;
+				var eventData = upperSelection.X > lowerSelection.X
+					? new Tuple<IChartPoint, IChartPoint>(lowerSelection.BackingPoint, upperSelection.BackingPoint)
+					: new Tuple<IChartPoint, IChartPoint>(upperSelection.BackingPoint, lowerSelection.BackingPoint);
+				PointRangeSelected?.Invoke(this, eventData);
 				isUserDragging = false;
 				isUserPanning = false;
 				userCouldBePanning = false;
 				return;
 			}
 
-			PointClicked?.Invoke(this, lowerSelection);
+			PointClicked?.Invoke(this, lowerSelection.BackingPoint);
 			PointSelectionEllipse.Opacity = 1;
 			ScaleTransform.BeginAnimation(
 				ScaleTransform.ScaleXProperty, new DoubleAnimation(1, 3, TimeSpan.FromMilliseconds(300)));

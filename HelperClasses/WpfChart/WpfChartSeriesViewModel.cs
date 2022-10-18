@@ -37,7 +37,7 @@ namespace ModernThemables.HelperClasses.WpfChart
 				$"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
 		}
 
-		public InternalChartPointRepresentation GetChartPointUnderTranslatedMouse(
+		public InternalChartPointRepresentation? GetChartPointUnderTranslatedMouse(
 			double mouseX,
 			double mouseY,
 			double zoomWidth,
@@ -53,8 +53,10 @@ namespace ModernThemables.HelperClasses.WpfChart
 			var translatedX = mouseX / xZoom;
 			var translatedY = (mouseY + 0.1 * dataHeight * yZoom) / yZoom;
 
-			var nearestPoint = Data.First(
+			var nearestPoint = Data.FirstOrDefault(
 				x => Math.Abs(x.X - translatedX) == Data.Min(x => Math.Abs(x.X - translatedX)));
+			if (nearestPoint == null) return null;
+
 			var hoveredChartPoints = Data.Where(x => x.X == nearestPoint.X);
 			var hoveredChartPoint = hoveredChartPoints.Count() > 1
 				? hoveredChartPoints.First(
