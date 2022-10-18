@@ -96,7 +96,7 @@ namespace ModernThemables.Controls
 		public void ResetZoom()
 		{
 			var binding = SeriesMultiBinding;
-			SeriesItemsControl.Margin = new Thickness(0);
+			SeriesItemsControl.Margin = new Thickness(-1,0,0,0);
 			CurrentZoomState = new ZoomState(
 				Series.Min(x => x.Values.Min(y => y.XValue)),
 				Series.Max(x => x.Values.Max(y => y.XValue)),
@@ -421,7 +421,7 @@ namespace ModernThemables.Controls
 		{
 			if (!HasGotData()) return;
 
-			IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
+			IsZoomed = SeriesItemsControl.Margin.Left != -1 || SeriesItemsControl.Margin.Right != 0;
 
 			var mouseLoc = e.GetPosition(Grid);
 
@@ -543,8 +543,6 @@ namespace ModernThemables.Controls
 		{
 			if (!HasGotData()) return;
 
-			IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
-
 			var xMin = CurrentZoomState.XMin;
 			var xMax = CurrentZoomState.XMax;
 			var zoomOffset = CurrentZoomState.XOffset;
@@ -578,6 +576,8 @@ namespace ModernThemables.Controls
 
 			HoveredPoint = null;
 			TooltipString = string.Empty;
+
+			IsZoomed = SeriesItemsControl.Margin.Left != -1 || SeriesItemsControl.Margin.Right != 0;
 		}
 
 		private void MouseCaptureGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
