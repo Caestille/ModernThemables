@@ -247,8 +247,8 @@
 					<Border
 						Height="4"
 						Margin="-10,0,7,0"
-						Background="{DynamicResource DisabledControlNonClickablePartBrush}"
-						BorderBrush="{DynamicResource DisabledControlNonClickablePartBrush}"
+						Background="{DynamicResource ControlNonClickablePartBrush}"
+						BorderBrush="{DynamicResource ControlNonClickablePartBrush}"
 						BorderThickness="1"
 						CornerRadius="1" />
 				</ControlTemplate>
@@ -286,8 +286,8 @@
 					<Border
 						Height="4"
 						Margin="7,-1,-10,0"
-						Background="{DynamicResource DisabledControlNonClickablePartBrush}"
-						BorderBrush="{DynamicResource DisabledControlNonClickablePartBrush}"
+						Background="{DynamicResource ControlNonClickablePartBrush}"
+						BorderBrush="{DynamicResource ControlNonClickablePartBrush}"
 						BorderThickness="1"
 						CornerRadius="1" />
 				</ControlTemplate>
@@ -573,25 +573,34 @@
 					<RepeatButton Command="Slider.DecreaseLarge" Style="{StaticResource SliderRepeatButton2}" />
 				</Track.DecreaseRepeatButton>
 				<Track.Thumb>
-					<Thumb Template="{StaticResource SliderThumbHorizontalDefault}" />
+					<Thumb
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Template="{StaticResource SliderThumbHorizontalDefault}" />
 				</Track.Thumb>
 			</Track>
 		</Grid>
 	</ControlTemplate>
 
 	<ControlTemplate x:Key="SliderTemplate2" TargetType="{x:Type Slider}">
-		<Track x:Name="PART_Track" Orientation="{TemplateBinding Orientation}">
-			<Track.IncreaseRepeatButton>
-				<RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource SliderRepeatButton}" />
-			</Track.IncreaseRepeatButton>
-			<Track.Thumb>
-				<Thumb
-					x:Name="thumb"
-					Background="{TemplateBinding Background}"
-					Focusable="True"
-					Template="{StaticResource SliderThumbHorizontalDefault}" />
-			</Track.Thumb>
-		</Track>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Track x:Name="PART_Track" Grid.Row="1">
+				<Track.IncreaseRepeatButton>
+					<RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource SliderRepeatButton}" />
+				</Track.IncreaseRepeatButton>
+				<Track.Thumb>
+					<Thumb
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Template="{StaticResource SliderThumbHorizontalDefault}" />
+				</Track.Thumb>
+			</Track>
+		</Grid>
 	</ControlTemplate>
 
 	<Style TargetType="{x:Type controls:RangeSlider}">
@@ -605,9 +614,9 @@
 						BorderThickness="{TemplateBinding BorderThickness}">
 						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 							<Grid.RowDefinitions>
-								<RowDefinition x:Name="TopRow" Height="0" />
 								<RowDefinition Height="Auto" />
-								<RowDefinition x:Name="BottomRow" Height="0" />
+								<RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+								<RowDefinition Height="Auto" />
 							</Grid.RowDefinitions>
 
 							<RepeatButton
@@ -624,6 +633,8 @@
 							<Slider
 								x:Name="PART_LowerSlider"
 								Grid.Row="1"
+								Margin="0,0,0,1"
+								VerticalAlignment="Center"
 								AutoToolTipPlacement="{TemplateBinding AutoToolTipPlacement}"
 								AutoToolTipPrecision="{TemplateBinding AutoToolTipPrecision}"
 								Focusable="False"
@@ -632,6 +643,8 @@
 							<Slider
 								x:Name="PART_HigherSlider"
 								Grid.Row="1"
+								Margin="0,0,0,1"
+								VerticalAlignment="Center"
 								AutoToolTipPlacement="{TemplateBinding AutoToolTipPlacement}"
 								AutoToolTipPrecision="{TemplateBinding AutoToolTipPrecision}"
 								Focusable="False"
