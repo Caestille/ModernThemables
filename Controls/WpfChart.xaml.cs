@@ -124,15 +124,17 @@ namespace ModernThemables.Controls
 				return;
 			}
 
+			chart.Subscribe(chart.Series);
+			chart.hasSetSeries = true;
+
+			if (!chart.Series.Any()) return;
+
 			chart.CurrentZoomState = new ZoomState(
 				chart.Series.Min(x => x.Values.Min(y => y.XValue)),
 				chart.Series.Max(x => x.Values.Max(y => y.XValue)),
 				chart.Series.Min(x => x.Values.Min(y => y.YValue)),
 				chart.Series.Max(x => x.Values.Max(y => y.YValue)),
 				0);
-
-			chart.Subscribe(chart.Series);
-			chart.hasSetSeries = true;
 
 			chart.RenderChart();
 		}
