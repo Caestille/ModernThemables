@@ -69,11 +69,11 @@
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 		<Border
-			ClipToBounds="True"
 			Grid.Row="1"
 			Grid.Column="1"
 			BorderBrush="{DynamicResource StatusTextLightBrush}"
 			BorderThickness="1,0,0,0"
+			ClipToBounds="True"
 			IsHitTestVisible="False">
 			<ItemsControl
 				x:Name="XAxisItemsControl"
