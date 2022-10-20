@@ -52,6 +52,8 @@
 	<converters:RoundedGeometryGroupConverter x:Key="RoundedGeometryGroupConverter" />
 	<converters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />
 	<converters:ChartZoomConverter x:Key="ChartZoomConverter" />
+	<converters:SeriesHeightMarginConverter x:Key="SeriesHeightMarginConverter" />
+	<converters:SeriesOverlapMarginConverter x:Key="SeriesOverlapMarginConverter" />
 
 	<!--#endregion End Converters-->
 

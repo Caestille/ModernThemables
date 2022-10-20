@@ -154,33 +154,52 @@
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
 							<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
-								<Path
-									Data="{Binding PathFillData}"
-									Fill="{Binding Fill.CoreBrush}"
-									IsHitTestVisible="False"
-									Stretch="Fill"
-									StrokeLineJoin="Bevel"
-									StrokeThickness="1.5" />
-								<Path
-									Data="{Binding PathStrokeData}"
-									IsHitTestVisible="False"
-									Stretch="Fill"
-									Stroke="{Binding Stroke.CoreBrush}"
-									StrokeLineJoin="Bevel"
-									StrokeThickness="1.5" />
+								<Grid.Margin>
+									<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
+										<Binding Path="." />
+										<Binding ElementName="root" Path="ConvertedSeries" />
+										<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+									</MultiBinding>
+								</Grid.Margin>
+								<Grid>
+									<Grid.Margin>
+										<MultiBinding Converter="{StaticResource SeriesHeightMarginConverter}">
+											<Binding Path="." />
+											<Binding ElementName="root" Path="ConvertedSeries" />
+											<Binding ElementName="Grid" Path="ActualWidth" />
+											<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
+											<Binding ElementName="Grid" Path="ActualHeight" />
+											<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+										</MultiBinding>
+									</Grid.Margin>
+									<Path
+										Data="{Binding PathFillData}"
+										Fill="{Binding Fill.CoreBrush}"
+										IsHitTestVisible="False"
+										Stretch="Fill"
+										StrokeLineJoin="Bevel"
+										StrokeThickness="1.5" />
+									<Path
+										Data="{Binding PathStrokeData}"
+										IsHitTestVisible="False"
+										Stretch="Fill"
+										Stroke="{Binding Stroke.CoreBrush}"
+										StrokeLineJoin="Bevel"
+										StrokeThickness="1.5" />
+								</Grid>
 							</Grid>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 			</Grid>
-			<Line
+			<Border
 				x:Name="XPointHighlighter"
-				Margin="0,100,0,0"
-				IsHitTestVisible="False"
-				Stroke="{DynamicResource StatusTextBrush}"
-				StrokeThickness="1"
-				X2="{Binding ActualWidth, ElementName=Grid}">
-				<Line.Visibility>
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Top"
+				BorderBrush="{DynamicResource StatusTextBrush}"
+				BorderThickness="0,1,0,0"
+				IsHitTestVisible="False">
+				<Border.Visibility>
 					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
 						<Binding ElementName="Grid" Path="IsMouseOver" />
 						<Binding ElementName="root" Path="IsPointIndicatorsVisible" />
@@ -190,8 +209,8 @@
 							ElementName="root"
 							Path="HoveredPoint" />
 					</MultiBinding>
-				</Line.Visibility>
-			</Line>
+				</Border.Visibility>
+			</Border>
 			<Border
 				x:Name="SelectionRangeBorder"
 				HorizontalAlignment="Left"
@@ -200,38 +219,72 @@
 				BorderThickness="1,0,1,0"
 				Opacity="0.3"
 				Visibility="{Binding ElementName=root, Path=IsUserSelectingRange, Converter={StaticResource VisibleIfTrueConverter}}" />
-			<Line
+			<Border
 				x:Name="XCrosshair"
-				Margin="0,50,0,0"
-				IsHitTestVisible="False"
-				Stroke="{DynamicResource StatusTextBrush}"
-				StrokeDashArray="8,8"
-				StrokeThickness="1"
-				X2="{Binding ActualWidth, ElementName=Grid}">
-				<Line.Visibility>
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Top"
+				BorderThickness="0,1,0,0"
+				IsHitTestVisible="False">
+				<Border.BorderBrush>
+					<DrawingBrush
+						TileMode="Tile"
+						Viewport="0,0,12,12"
+						ViewportUnits="Absolute">
+						<DrawingBrush.Drawing>
+							<DrawingGroup>
+								<GeometryDrawing Brush="{DynamicResource StatusTextBrush}">
+									<GeometryDrawing.Geometry>
+										<GeometryGroup>
+											<RectangleGeometry Rect="0,0,50,50" />
+											<RectangleGeometry Rect="50,50,50,50" />
+										</GeometryGroup>
+									</GeometryDrawing.Geometry>
+								</GeometryDrawing>
+							</DrawingGroup>
+						</DrawingBrush.Drawing>
+					</DrawingBrush>
+				</Border.BorderBrush>
+				<Border.Visibility>
 					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
 						<Binding ElementName="Grid" Path="IsMouseOver" />
 						<Binding ElementName="root" Path="IsCrosshairVisible" />
 						<Binding ElementName="root" Path="HasData" />
 					</MultiBinding>
-				</Line.Visibility>
-			</Line>
-			<Line
+				</Border.Visibility>
+			</Border>
+			<Border
 				x:Name="YCrosshair"
-				Margin="50,0,0,0"
-				IsHitTestVisible="False"
-				Stroke="{DynamicResource StatusTextBrush}"
-				StrokeDashArray="8,8"
-				StrokeThickness="1"
-				Y2="{Binding ActualHeight, ElementName=Grid}">
-				<Line.Visibility>
+				HorizontalAlignment="Left"
+				VerticalAlignment="Stretch"
+				BorderThickness="0,0,1,0"
+				IsHitTestVisible="False">
+				<Border.BorderBrush>
+					<DrawingBrush
+						TileMode="Tile"
+						Viewport="0,0,12,12"
+						ViewportUnits="Absolute">
+						<DrawingBrush.Drawing>
+							<DrawingGroup>
+								<GeometryDrawing Brush="{DynamicResource StatusTextBrush}">
+									<GeometryDrawing.Geometry>
+										<GeometryGroup>
+											<RectangleGeometry Rect="0,0,50,50" />
+											<RectangleGeometry Rect="50,50,50,50" />
+										</GeometryGroup>
+									</GeometryDrawing.Geometry>
+								</GeometryDrawing>
+							</DrawingGroup>
+						</DrawingBrush.Drawing>
+					</DrawingBrush>
+				</Border.BorderBrush>
+				<Border.Visibility>
 					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
 						<Binding ElementName="Grid" Path="IsMouseOver" />
-						<Binding ElementName="root" Path="HasData" />
 						<Binding ElementName="root" Path="IsCrosshairVisible" />
+						<Binding ElementName="root" Path="HasData" />
 					</MultiBinding>
-				</Line.Visibility>
-			</Line>
+				</Border.Visibility>
+			</Border>
 			<Grid
 				x:Name="MouseCaptureGrid"
 				Background="{DynamicResource MainBackgroundBrush}"

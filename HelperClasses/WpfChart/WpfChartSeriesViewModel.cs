@@ -19,7 +19,8 @@ namespace ModernThemables.HelperClasses.WpfChart
 		public WpfChartSeriesViewModel(
 			IEnumerable<InternalChartPointRepresentation> data,
 			IChartBrush stroke,
-			IChartBrush fill)
+			IChartBrush fill,
+			double yBuffer)
 		{
 			Data = data;
 			Stroke = stroke;
@@ -32,7 +33,9 @@ namespace ModernThemables.HelperClasses.WpfChart
 			var range = dataMax - dataMin;
 			var zero = Math.Min(Math.Max(0d, dataMin), dataMax);
 			var ratio = (double)(1 - (zero - dataMin) / range);
-			var zeroPoint = ratio * (Data.Max(x => x.Y) - Data.Min(x => x.Y)) * 1.1;
+			var min = Data.Min(x => x.Y);
+			var max = Data.Max(x => x.Y);
+			var zeroPoint = min - (max - min) * 0.1 + ratio * (max - min) * (1 + yBuffer);
 			PathFillData = 
 				$"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
 		}
@@ -43,7 +46,8 @@ namespace ModernThemables.HelperClasses.WpfChart
 			double zoomWidth,
 			double zoomHeight,
 			double xLeftOffset,
-			double yTopOffset)
+			double yTopOffset,
+			double yBuffer)
 		{
 			var dataWidth = Data.Max(x => x.X) - Data.Min(x => x.X);
 			var dataHeight = (Data.Max(x => x.Y) - Data.Min(x => x.Y));

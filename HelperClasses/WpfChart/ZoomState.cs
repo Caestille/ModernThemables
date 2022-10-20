@@ -10,15 +10,15 @@ namespace ModernThemables.HelperClasses.WpfChart
 		public double YMax { get; }
 		public double XOffset { get; }
 
-		public ZoomState(double xMin, double xMax, double yMin, double yMax, double xOffset, bool expandY = true)
+		public ZoomState(double xMin, double xMax, double yMin, double yMax, double xOffset, double yBuffer, bool expandY = true)
 		{
 			XMin = xMin;
 			XMax = xMax;
 			if (expandY)
 			{
 				var yRange = yMax - yMin;
-				YMin = yMin - yRange * 0.1;
-				YMax = yMax + yRange * 0.1;
+				YMin = yMin - yRange * yBuffer;
+				YMax = yMax + yRange * yBuffer;
 			}
 			else
 			{
