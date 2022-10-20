@@ -54,6 +54,7 @@
 	<converters:ChartZoomConverter x:Key="ChartZoomConverter" />
 	<converters:SeriesHeightMarginConverter x:Key="SeriesHeightMarginConverter" />
 	<converters:SeriesOverlapMarginConverter x:Key="SeriesOverlapMarginConverter" />
+	<converters:PointOverlapMarginConverter x:Key="PointOverlapMarginConverter" />
 
 	<!--#endregion End Converters-->
 

@@ -8,23 +8,26 @@ using System.Text;
 
 namespace ModernThemables.HelperClasses.WpfChart
 {
-	internal class WpfChartSeriesViewModel : ObservableObject
+	internal class ConvertedSeriesViewModel : ObservableObject
 	{
-		public IEnumerable<InternalChartPointRepresentation> Data;
+		public IEnumerable<InternalChartPoint> Data;
 		public string PathStrokeData { get; }
 		public string PathFillData { get; }
 		public IChartBrush Stroke { get; }
 		public IChartBrush Fill { get; }
+		public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter;
 
-		public WpfChartSeriesViewModel(
-			IEnumerable<InternalChartPointRepresentation> data,
+		public ConvertedSeriesViewModel(
+			IEnumerable<InternalChartPoint> data,
 			IChartBrush stroke,
 			IChartBrush fill,
-			double yBuffer)
+			double yBuffer,
+			Func<IEnumerable<IChartPoint>, IChartPoint, string> tooltipFormatter)
 		{
 			Data = data;
 			Stroke = stroke;
 			Fill = fill;
+			TooltipLabelFormatter = tooltipFormatter;
 
 			PathStrokeData = ConvertDataToPath(data);
 
@@ -35,12 +38,14 @@ namespace ModernThemables.HelperClasses.WpfChart
 			var ratio = (double)(1 - (zero - dataMin) / range);
 			var min = Data.Min(x => x.Y);
 			var max = Data.Max(x => x.Y);
-			var zeroPoint = min - (max - min) * 0.1 + ratio * (max - min) * (1 + yBuffer);
+			var zeroPoint = min - (max - min) * yBuffer + ratio * (max - min) * (1 + yBuffer);
 			PathFillData = 
 				$"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
 		}
 
-		public InternalChartPointRepresentation? GetChartPointUnderTranslatedMouse(
+		public InternalChartPoint? GetChartPointUnderTranslatedMouse(
+			double dataWidth,
+			double dataHeight,
 			double mouseX,
 			double mouseY,
 			double zoomWidth,
@@ -49,13 +54,11 @@ namespace ModernThemables.HelperClasses.WpfChart
 			double yTopOffset,
 			double yBuffer)
 		{
-			var dataWidth = Data.Max(x => x.X) - Data.Min(x => x.X);
-			var dataHeight = (Data.Max(x => x.Y) - Data.Min(x => x.Y));
 			var xZoom = zoomWidth / dataWidth;
 			var yZoom = zoomHeight / dataHeight;
 
 			var translatedX = mouseX / xZoom;
-			var translatedY = (mouseY + 0.1 * dataHeight * yZoom) / yZoom;
+			var translatedY = (mouseY + yBuffer * dataHeight * yZoom) / yZoom;
 
 			var nearestPoint = Data.FirstOrDefault(
 				x => Math.Abs(x.X - translatedX) == Data.Min(x => Math.Abs(x.X - translatedX)));
@@ -68,11 +71,11 @@ namespace ModernThemables.HelperClasses.WpfChart
 				: hoveredChartPoints.First();
 
 			var x = hoveredChartPoint.X * xZoom - xLeftOffset;
-			var y = hoveredChartPoint.Y * yZoom - yTopOffset - 0.1 * dataHeight * yZoom;
-			return new InternalChartPointRepresentation(x, y, hoveredChartPoint.BackingPoint);
+			var y = hoveredChartPoint.Y * yZoom - yTopOffset - yBuffer * dataHeight * yZoom;
+			return new InternalChartPoint(x, y, hoveredChartPoint.BackingPoint);
 		}
 
-		private string ConvertDataToPath(IEnumerable<InternalChartPointRepresentation> data)
+		private string ConvertDataToPath(IEnumerable<InternalChartPoint> data)
 		{
 			var sb = new StringBuilder();
 			bool setM = true;

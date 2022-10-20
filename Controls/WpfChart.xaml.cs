@@ -18,6 +18,7 @@ using CoreUtilities.HelperClasses.Extensions;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace ModernThemables.Controls
 {
@@ -48,10 +49,10 @@ namespace ModernThemables.Controls
 		private bool isUserDragging;
 		private bool userCouldBePanning;
 		private bool isUserPanning;
-		private InternalChartPointRepresentation lowerSelection;
-		private InternalChartPointRepresentation upperSelection;
+		private InternalChartPoint lowerSelection;
+		private InternalChartPoint upperSelection;
 
-		double yBuffer = 0.1;
+		private static double yBuffer => 0.1;
 
 		private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -63,6 +64,10 @@ namespace ModernThemables.Controls
 			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) : 0;
 		private double yMax => Series != null && Series.Where(x => x.Values.Any()).Any()
 			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) : 0;
+		private double yMinExpanded => Series != null && Series.Where(x => x.Values.Any()).Any()
+			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) - (yMax - yMin) * yBuffer : 0;
+		private double yMaxExpanded => Series != null && Series.Where(x => x.Values.Any()).Any()
+			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) + (yMax - yMin) * yBuffer : 0;
 		private double xDataOffset => CurrentZoomState.XOffset / plotAreaWidth * (xMax - xMin);
 
 		public WpfChart()
@@ -125,7 +130,7 @@ namespace ModernThemables.Controls
 				chart.Series.Min(x => x.Values.Min(y => y.YValue)),
 				chart.Series.Max(x => x.Values.Max(y => y.YValue)),
 				0,
-				chart.yBuffer);
+				yBuffer);
 		}
 
 		private void Subscribe(ObservableCollection<ISeries> series)
@@ -194,7 +199,7 @@ namespace ModernThemables.Controls
 							return;
 						}
 
-						var collection = new ObservableCollection<WpfChartSeriesViewModel>();
+						var collection = new ObservableCollection<ConvertedSeriesViewModel>();
 						foreach (var series in Series)
 						{
 							if (!series.Values.Any()) continue;
@@ -219,9 +224,9 @@ namespace ModernThemables.Controls
 							this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
 							var points = await GetPointsForSeries(
-								xMin, xMax - xMin, yMin - (yMin - yMax) * yBuffer, (yMax + (yMin - yMax) * yBuffer) - (yMin - (yMin - yMax) * yBuffer), series);
+								xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, series);
 
-							collection.Add(new WpfChartSeriesViewModel(points, series.Stroke, series.Fill, yBuffer));
+							collection.Add(new ConvertedSeriesViewModel(points, series.Stroke, series.Fill, yBuffer, series.TooltipLabelFormatter));
 
 							series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 							series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
@@ -405,17 +410,17 @@ namespace ModernThemables.Controls
 			return yVals;
 		}
 
-		private async Task<List<InternalChartPointRepresentation>> GetPointsForSeries(
+		private async Task<List<InternalChartPoint>> GetPointsForSeries(
 			double xMin, double xRange, double yMin, double yRange, ISeries series)
 		{
 			return await Task.Run(() =>
 			{
-				List<InternalChartPointRepresentation> points = new();
+				List<InternalChartPoint> points = new();
 				foreach (var point in series.Values)
 				{
 					double x = (double)(point.XValue - xMin) / (double)xRange * (double)plotAreaWidth;
 					double y = plotAreaHeight - (point.YValue - yMin) / yRange * plotAreaHeight;
-					points.Add(new InternalChartPointRepresentation(x, y, point));
+					points.Add(new InternalChartPoint(x, y, point));
 				}
 				return points;
 			});
@@ -501,7 +506,7 @@ namespace ModernThemables.Controls
 				YCrosshairValueDisplay.Margin = new Thickness(-YAxisColumn.ActualWidth, mouseLoc.Y - 10, 0, 0);
 
 				// Set value displays
-				XCrosshairValueLabel.Text = XAxisCursorLabelFormatter == null 
+				XCrosshairValueLabel.Text = XAxisCursorLabelFormatter == null
 						? xVal.ToString() 
 						: XAxisCursorLabelFormatter(Series.First().Values.First().XValueToImplementation(xVal));
 				YCrosshairValueLabel.Text = YAxisCursorLabelFormatter == null
@@ -510,52 +515,67 @@ namespace ModernThemables.Controls
 			}
 
 			var translatedMouseLoc = e.GetPosition(SeriesItemsControl);
-			var hoveredChartPoint = ConvertedSeries.First().GetChartPointUnderTranslatedMouse(
-				translatedMouseLoc.X,
-				translatedMouseLoc.Y,
-				SeriesItemsControl.ActualWidth,
-				SeriesItemsControl.ActualHeight,
-				-SeriesItemsControl.Margin.Left,
-				-SeriesItemsControl.Margin.Top,
-				yBuffer);
 
-			if (hoveredChartPoint == null) return;
-
-			HoveredPoint = hoveredChartPoint;
-
-			if (IsTooltipVisible)
+			var hoveredPoints = new List<HoveredPointViewModel>();
+			foreach (var series in ConvertedSeries)
 			{
-				// Get tooltip position variables
-				if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipBorder.ActualWidth + 10)) 
-					tooltipLeft = true;
-				if (tooltipLeft && (mouseLoc.X) < (TooltipBorder.ActualWidth + 5)) 
-					tooltipLeft = false;
-				if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipBorder.ActualHeight + 10)) 
-					tooltipTop = true;
-				if (tooltipTop && (mouseLoc.Y) < (TooltipBorder.ActualHeight + 5)) 
-					tooltipTop = false;
+				var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
+					ConvertedSeries.Max(x => x.Data.Max(y => y.X)) - ConvertedSeries.Min(x => x.Data.Min(y => y.X)),
+					ConvertedSeries.Max(x => x.Data.Max(y => y.Y)) - ConvertedSeries.Min(x => x.Data.Min(y => y.Y)),
+					translatedMouseLoc.X,
+					translatedMouseLoc.Y,
+					SeriesItemsControl.ActualWidth,
+					SeriesItemsControl.ActualHeight,
+					-SeriesItemsControl.Margin.Left,
+					-SeriesItemsControl.Margin.Top,
+					yBuffer);
 
-				TooltipBorder.Margin = new Thickness(
-					!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipBorder.ActualWidth - 5,
-					!tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipBorder.ActualHeight - 5,
-					0, 0);
-				if (Series.First().TooltipLabelFormatter != null) 
-					TooltipString = Series.First().TooltipLabelFormatter(
-						Series.First().Values, HoveredPoint.BackingPoint);
+				if (hoveredChartPoint == null) continue;
+
+				hoveredPoints.Add(new HoveredPointViewModel(
+					hoveredChartPoint,
+					new Thickness(
+						hoveredChartPoint.X - 5,
+						hoveredChartPoint.Y - 5,
+						0, 0),
+					new SolidColorBrush(series.Stroke.ColourAtPoint(
+						hoveredChartPoint.BackingPoint.XValue,
+						hoveredChartPoint.BackingPoint.YValue)),
+					series.TooltipLabelFormatter != null
+						? series.TooltipLabelFormatter(series.Data.Select(x => x.BackingPoint), hoveredChartPoint.BackingPoint)
+						: hoveredChartPoint.BackingPoint.YValue.ToString()
+					));
 			}
 
 			if (IsPointIndicatorsVisible)
 			{
-				// Set location of items related to the hoveredPoint
-				HoveredPointEllipse.Margin = new Thickness(
-					hoveredChartPoint.X - 5,
-					hoveredChartPoint.Y - 5,
-					0, 0);
-				HoveredPointEllipse.Fill = new SolidColorBrush(
-					ConvertedSeries.First().Stroke.ColourAtPoint(
-						hoveredChartPoint.BackingPoint.XValue,
-						hoveredChartPoint.BackingPoint.YValue));
-				XPointHighlighter.Margin = new Thickness(0, hoveredChartPoint.Y, 0, 0);
+				HoveredPoints = new ObservableCollection<HoveredPointViewModel>(hoveredPoints);
+			}
+			else
+			{
+				HoveredPoints.Clear();
+			}
+
+			HoveredPoint = hoveredPoints.First(x => Math.Abs(x.BackingPoint.X - mouseLoc.X) == hoveredPoints.Min(x => Math.Abs(x.BackingPoint.X - mouseLoc.X))).BackingPoint;
+			TooltipPoint = hoveredPoints.FirstOrDefault(x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y) == hoveredPoints.Min(x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y)));
+			if (TooltipPoint != null) TooltipPoint.IsNearest = HoveredPoints.Count > 1;
+
+			if (IsTooltipVisible)
+			{
+				// Get tooltip position variables
+				if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipBorder.ActualWidth + 10))
+					tooltipLeft = true;
+				if (tooltipLeft && (mouseLoc.X) < (TooltipBorder.ActualWidth + 5))
+					tooltipLeft = false;
+				if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipBorder.ActualHeight + 10))
+					tooltipTop = true;
+				if (tooltipTop && (mouseLoc.Y) < (TooltipBorder.ActualHeight + 5))
+					tooltipTop = false;
+
+				TooltipBorder.Margin=/*.BeginAnimation(MarginProperty, new ThicknessAnimation(*/new Thickness(
+					!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipBorder.ActualWidth - 5,
+					!tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipBorder.ActualHeight - 5,
+					0, 0)/*, TimeSpan.FromMilliseconds(50)))*/;
 			}
 
 			if (IsUserSelectingRange)
@@ -619,7 +639,7 @@ namespace ModernThemables.Controls
 			if (e.ChangedButton == MouseButton.Left)
 			{
 				e.Handled = true;
-				lowerSelection = HoveredPoint;
+				lowerSelection = TooltipPoint.BackingPoint ?? HoveredPoint;
 				SelectionRangeBorder.Margin = new Thickness(HoveredPoint.X, 0, 0, 0);
 			}
 			else if (e.ChangedButton == MouseButton.Right)
@@ -654,16 +674,10 @@ namespace ModernThemables.Controls
 				return;
 			}
 
+			TooltipPoint.WasClicked = true;
+			TooltipPoint.WasClicked = false;
 			PointClicked?.Invoke(this, lowerSelection.BackingPoint);
-			PointSelectionEllipse.Opacity = 1;
-			ScaleTransform.BeginAnimation(
-				ScaleTransform.ScaleXProperty, new DoubleAnimation(1, 3, TimeSpan.FromMilliseconds(300)));
-			ScaleTransform.BeginAnimation(
-				ScaleTransform.ScaleYProperty, new DoubleAnimation(1, 3, TimeSpan.FromMilliseconds(300)));
-			PointSelectionEllipse.BeginAnimation(
-				Ellipse.OpacityProperty, new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(300)));
-			PointSelectionEllipse.BeginAnimation(
-				Ellipse.StrokeThicknessProperty, new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(300)));
+			TooltipPoint.WasClicked = false;
 
 			e.Handled = true;
 		}

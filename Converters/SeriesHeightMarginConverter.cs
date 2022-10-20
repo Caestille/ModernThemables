@@ -14,7 +14,7 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is WpfChartSeriesViewModel vm && values[1] is ObservableCollection<WpfChartSeriesViewModel> vms && values[2] is double gridWidth && values[3] is double itemsControlWidth && values[4] is double gridHeight && values[5] is double itemsControlHeight)
+			if (values[0] is ConvertedSeriesViewModel vm && values[1] is ObservableCollection<ConvertedSeriesViewModel> vms && values[2] is double gridWidth && values[3] is double itemsControlWidth && values[4] is double gridHeight && values[5] is double itemsControlHeight)
 			{
 				var minDataYMin = vms.Min(x => x.Data.Min(x => x.Y));
 				var maxDataYMax = vms.Max(x => x.Data.Max(x => x.Y));
@@ -38,8 +38,8 @@ namespace ModernThemables.Converters
 
 				var maxXRange = maxDataXMax - minDataXMin;
 
-				var xScale = itemsControlWidth / gridWidth;
-				var yScale = itemsControlHeight / gridHeight;
+				var xScale = (maxDataXMax - minDataXMin) / itemsControlWidth;
+				var yScale = (maxDataYMax - minDataYMin) / itemsControlHeight;
 
 				return new Thickness(
 					leftFrac * maxXRange * xScale,

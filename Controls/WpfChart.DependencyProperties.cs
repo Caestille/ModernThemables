@@ -100,6 +100,22 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipTemplateProperty = DependencyProperty.Register(
 		  "TooltipTemplate", typeof(DataTemplate), typeof(WpfChart), new PropertyMetadata(null));
 
+		private HoveredPointViewModel TooltipPoint
+		{
+			get { return (HoveredPointViewModel)GetValue(TooltipPointProperty); }
+			set { SetValue(TooltipPointProperty, value); }
+		}
+		public static readonly DependencyProperty TooltipPointProperty = DependencyProperty.Register(
+		  "TooltipPoint", typeof(HoveredPointViewModel), typeof(WpfChart), new PropertyMetadata(null));
+
+		private ObservableCollection<HoveredPointViewModel> HoveredPoints
+		{
+			get { return (ObservableCollection<HoveredPointViewModel>)GetValue(HoveredPointsProperty); }
+			set { SetValue(HoveredPointsProperty, value); }
+		}
+		public static readonly DependencyProperty HoveredPointsProperty = DependencyProperty.Register(
+		  "HoveredPoints", typeof(ObservableCollection<HoveredPointViewModel>), typeof(WpfChart), new PropertyMetadata(new ObservableCollection<HoveredPointViewModel>()));
+
 		private string TooltipString
 		{
 			get { return (string)GetValue(TooltipStringProperty); }
@@ -108,21 +124,21 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipStringProperty = DependencyProperty.Register(
 		  "TooltipString", typeof(string), typeof(WpfChart));
 
-		private InternalChartPointRepresentation HoveredPoint
+		private InternalChartPoint HoveredPoint
 		{
-			get { return (InternalChartPointRepresentation)GetValue(HoveredPointProperty); }
+			get { return (InternalChartPoint)GetValue(HoveredPointProperty); }
 			set { SetValue(HoveredPointProperty, value); }
 		}
 		public static readonly DependencyProperty HoveredPointProperty = DependencyProperty.Register(
-		  "HoveredPoint", typeof(InternalChartPointRepresentation), typeof(WpfChart), new PropertyMetadata(null));
+		  "HoveredPoint", typeof(InternalChartPoint), typeof(WpfChart), new PropertyMetadata(null));
 
-		private ObservableCollection<WpfChartSeriesViewModel> ConvertedSeries
+		private ObservableCollection<ConvertedSeriesViewModel> ConvertedSeries
 		{
-			get { return (ObservableCollection<WpfChartSeriesViewModel>)GetValue(ConvertedSeriesProperty); }
+			get { return (ObservableCollection<ConvertedSeriesViewModel>)GetValue(ConvertedSeriesProperty); }
 			set { SetValue(ConvertedSeriesProperty, value); }
 		}
 		public static readonly DependencyProperty ConvertedSeriesProperty = DependencyProperty.Register(
-		  "ConvertedSeries", typeof(ObservableCollection<WpfChartSeriesViewModel>), typeof(WpfChart), new PropertyMetadata(new ObservableCollection<WpfChartSeriesViewModel>()));
+		  "ConvertedSeries", typeof(ObservableCollection<ConvertedSeriesViewModel>), typeof(WpfChart), new PropertyMetadata(new ObservableCollection<ConvertedSeriesViewModel>()));
 
 		private ObservableCollection<ValueWithHeight> XAxisLabels
 		{
@@ -186,7 +202,7 @@ namespace ModernThemables.Controls
 			set { SetValue(CurrentZoomStateProperty, value); }
 		}
 		public static readonly DependencyProperty CurrentZoomStateProperty = DependencyProperty.Register(
-		  "CurrentZoomState", typeof(ZoomState), typeof(WpfChart), new PropertyMetadata(new ZoomState(0, 0, 0, 0, 0, 0.1)));
+		  "CurrentZoomState", typeof(ZoomState), typeof(WpfChart), new PropertyMetadata(new ZoomState(0, 0, 0, 0, 0, yBuffer)));
 		
 		private bool HasData
 		{

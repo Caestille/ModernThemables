@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace ModernThemables.HelperClasses.WpfChart
 {
-    public sealed class GradientBrush : IChartBrush
+    public sealed class SingleGradientBrush : IChartBrush
     {
         public Brush CoreBrush { get; private set; }
 
@@ -15,7 +15,7 @@ namespace ModernThemables.HelperClasses.WpfChart
         private double yMax;
         private double yMin;
 
-        public GradientBrush(Color topColour, Color bottomColour)
+        public SingleGradientBrush(Color topColour, Color bottomColour)
         {
             this.topColour = topColour;
             this.bottomColour = bottomColour;

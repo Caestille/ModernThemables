@@ -193,25 +193,6 @@
 				</ItemsControl>
 			</Grid>
 			<Border
-				x:Name="XPointHighlighter"
-				HorizontalAlignment="Stretch"
-				VerticalAlignment="Top"
-				BorderBrush="{DynamicResource StatusTextBrush}"
-				BorderThickness="0,1,0,0"
-				IsHitTestVisible="False">
-				<Border.Visibility>
-					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-						<Binding ElementName="Grid" Path="IsMouseOver" />
-						<Binding ElementName="root" Path="IsPointIndicatorsVisible" />
-						<Binding ElementName="root" Path="HasData" />
-						<Binding
-							Converter="{StaticResource IsNotNullConverter}"
-							ElementName="root"
-							Path="HoveredPoint" />
-					</MultiBinding>
-				</Border.Visibility>
-			</Border>
-			<Border
 				x:Name="SelectionRangeBorder"
 				HorizontalAlignment="Left"
 				Background="{DynamicResource StatusTextLightBrush}"
@@ -298,6 +279,176 @@
 				BorderBrush="{DynamicResource StatusTextLightBrush}"
 				BorderThickness="1,0,0,1"
 				IsHitTestVisible="False" />
+			<Grid>
+				<Grid.Visibility>
+					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+						<Binding ElementName="Grid" Path="IsMouseOver" />
+						<Binding ElementName="root" Path="HasData" />
+					</MultiBinding>
+				</Grid.Visibility>
+				<ItemsControl
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Stretch"
+					ItemsSource="{Binding HoveredPoints, ElementName=root}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
+								<Grid.Margin>
+									<MultiBinding Converter="{StaticResource PointOverlapMarginConverter}">
+										<Binding Path="." />
+										<Binding ElementName="root" Path="HoveredPoints" />
+										<Binding ElementName="Grid" Path="ActualHeight" />
+									</MultiBinding>
+								</Grid.Margin>
+								<Border
+									Height="{Binding IndicatorHeight}"
+									HorizontalAlignment="Stretch"
+									VerticalAlignment="Top"
+									BorderBrush="{DynamicResource StatusTextBrush}"
+									BorderThickness="0,0,0,1"
+									IsHitTestVisible="False" />
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+				<ItemsControl
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Stretch"
+					ItemsSource="{Binding HoveredPoints, ElementName=root}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
+								<Grid.Margin>
+									<MultiBinding Converter="{StaticResource PointOverlapMarginConverter}">
+										<Binding Path="." />
+										<Binding ElementName="root" Path="HoveredPoints" />
+										<Binding ElementName="Grid" Path="ActualHeight" />
+									</MultiBinding>
+								</Grid.Margin>
+								<Ellipse
+									x:Name="IsHighlightedEllipse"
+									Width="30"
+									Height="30"
+									Margin="{Binding LargeMargin}"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Top"
+									Fill="{DynamicResource TextBrush}"
+									IsHitTestVisible="False"
+									RenderTransformOrigin="0.5,0.5"
+									StrokeThickness="1">
+									<Ellipse.Style>
+										<Style>
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding Path=IsNearest}" Value="True">
+													<Setter Property="Ellipse.Opacity" Value="0.1" />
+												</DataTrigger>
+												<DataTrigger Binding="{Binding Path=IsNearest}" Value="False">
+													<Setter Property="Ellipse.Opacity" Value="0" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Ellipse.Style>
+								</Ellipse>
+								<Ellipse
+									Width="10"
+									Height="10"
+									Margin="{Binding Margin}"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Top"
+									IsHitTestVisible="False"
+									Opacity="0"
+									RenderTransformOrigin="0.5,0.5"
+									Stroke="{DynamicResource TextBrush}"
+									StrokeThickness="1">
+									<Ellipse.RenderTransform>
+										<ScaleTransform x:Name="Scale" ScaleX="1" ScaleY="1" />
+									</Ellipse.RenderTransform>
+									<Ellipse.Style>
+										<Style>
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding Path=WasClicked}" Value="True">
+													<DataTrigger.EnterActions>
+														<BeginStoryboard>
+															<Storyboard>
+																<DoubleAnimation
+																	AutoReverse="False"
+																	Storyboard.TargetProperty="RenderTransform.ScaleX"
+																	From="1"
+																	To="3"
+																	Duration="0:0:0.3">
+																	<DoubleAnimation.EasingFunction>
+																		<CubicEase />
+																	</DoubleAnimation.EasingFunction>
+																</DoubleAnimation>
+																<DoubleAnimation
+																	AutoReverse="False"
+																	Storyboard.TargetProperty="RenderTransform.ScaleY"
+																	From="1"
+																	To="3"
+																	Duration="0:0:0.3">
+																	<DoubleAnimation.EasingFunction>
+																		<CubicEase />
+																	</DoubleAnimation.EasingFunction>
+																</DoubleAnimation>
+																<DoubleAnimation
+																	AutoReverse="False"
+																	Storyboard.TargetProperty="Opacity"
+																	From="1"
+																	To="0"
+																	Duration="0:0:0.3" />
+																<DoubleAnimation
+																	AutoReverse="False"
+																	Storyboard.TargetProperty="StrokeThickness"
+																	From="1"
+																	To="0"
+																	Duration="0:0:0.3" />
+															</Storyboard>
+														</BeginStoryboard>
+													</DataTrigger.EnterActions>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Ellipse.Style>
+								</Ellipse>
+								<Ellipse
+									Width="10"
+									Height="10"
+									Margin="{Binding Margin}"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Top"
+									Fill="{Binding Fill}"
+									IsHitTestVisible="False"
+									Stroke="{DynamicResource MainBackgroundBrush}"
+									StrokeThickness="1.5" />
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+				<Border
+					x:Name="TooltipBorder"
+					Width="Auto"
+					Height="Auto"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Top"
+					BorderBrush="{Binding ElementName=root, Path=TooltipPoint.Fill}"
+					BorderThickness="2,0,0,0"
+					CornerRadius="5"
+					IsHitTestVisible="False"
+					Opacity="0.8"
+					Visibility="{Binding ElementName=root, Path=IsTooltipVisible, Converter={StaticResource VisibleIfTrueConverter}}">
+					<Grid>
+						<TextBlock
+							Foreground="{DynamicResource TextBrush}"
+							Text="{Binding ElementName=root, Path=TooltipPoint.TooltipString}"
+							Visibility="{Binding ElementName=ContentControl, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}" />
+						<ContentControl
+							x:Name="ContentControl"
+							Content="{Binding ElementName=root, Path=TooltipPoint.TooltipString, UpdateSourceTrigger=PropertyChanged}"
+							ContentTemplate="{Binding ElementName=root, Path=TooltipTemplate}"
+							Visibility="{Binding ElementName=root, Path=TooltipTemplate, Converter={StaticResource VisibleIfNotNullConverter}}" />
+					</Grid>
+				</Border>
+			</Grid>
 			<Border
 				x:Name="XCrosshairValueDisplay"
 				Width="Auto"
@@ -346,75 +497,6 @@
 					FontSize="11"
 					Foreground="{DynamicResource TextBrush}" />
 			</Border>
-			<Border
-				x:Name="TooltipBorder"
-				Width="Auto"
-				Height="Auto"
-				HorizontalAlignment="Left"
-				VerticalAlignment="Top"
-				IsHitTestVisible="False"
-				Opacity="0.8">
-				<Border.Visibility>
-					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-						<Binding
-							Converter="{StaticResource IsNotNullConverter}"
-							ElementName="root"
-							Path="HoveredPoint" />
-						<Binding ElementName="Grid" Path="IsMouseOver" />
-						<Binding ElementName="root" Path="HasData" />
-						<Binding ElementName="root" Path="IsTooltipVisible" />
-					</MultiBinding>
-				</Border.Visibility>
-				<Grid>
-					<TextBlock
-						Foreground="{DynamicResource TextBrush}"
-						Text="{Binding ElementName=root, Path=TooltipString}"
-						Visibility="{Binding ElementName=ContentControl, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}" />
-					<ContentControl
-						x:Name="ContentControl"
-						Content="{Binding ElementName=root, Path=TooltipString, UpdateSourceTrigger=PropertyChanged}"
-						ContentTemplate="{Binding ElementName=root, Path=TooltipTemplate}"
-						Visibility="{Binding ElementName=root, Path=TooltipTemplate, Converter={StaticResource VisibleIfNotNullConverter}}" />
-				</Grid>
-			</Border>
-			<Ellipse
-				x:Name="PointSelectionEllipse"
-				Width="10"
-				Height="10"
-				Margin="{Binding ElementName=HoveredPointEllipse, Path=Margin}"
-				HorizontalAlignment="Left"
-				VerticalAlignment="Top"
-				IsHitTestVisible="False"
-				Opacity="0"
-				RenderTransformOrigin="0.5,0.5"
-				Stroke="{DynamicResource TextBrush}"
-				StrokeThickness="1"
-				Visibility="{Binding ElementName=HoveredPointEllipse, Path=Visibility}">
-				<Ellipse.RenderTransform>
-					<ScaleTransform x:Name="ScaleTransform" />
-				</Ellipse.RenderTransform>
-			</Ellipse>
-			<Ellipse
-				x:Name="HoveredPointEllipse"
-				Width="10"
-				Height="10"
-				HorizontalAlignment="Left"
-				VerticalAlignment="Top"
-				IsHitTestVisible="False"
-				Stroke="{DynamicResource MainBackgroundBrush}"
-				StrokeThickness="1.5">
-				<Ellipse.Visibility>
-					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-						<Binding
-							Converter="{StaticResource IsNotNullConverter}"
-							ElementName="root"
-							Path="HoveredPoint" />
-						<Binding ElementName="Grid" Path="IsMouseOver" />
-						<Binding ElementName="root" Path="HasData" />
-						<Binding ElementName="root" Path="IsPointIndicatorsVisible" />
-					</MultiBinding>
-				</Ellipse.Visibility>
-			</Ellipse>
 		</Grid>
 	</Grid>
 </UserControl>

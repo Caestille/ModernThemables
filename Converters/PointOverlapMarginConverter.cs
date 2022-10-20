@@ -10,11 +10,11 @@ using System.Windows.Data;
 
 namespace ModernThemables.Converters
 {
-	public class SeriesOverlapMarginConverter : IMultiValueConverter
+	public class PointOverlapMarginConverter : IMultiValueConverter
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is ConvertedSeriesViewModel vm && values[1] is ObservableCollection<ConvertedSeriesViewModel> vms && values[2] is double height)
+			if (values[0] is HoveredPointViewModel vm && values[1] is ObservableCollection<HoveredPointViewModel> vms && values[2] is double height)
 			{
 				if (vms.IndexOf(vm) == 0)
 				{
