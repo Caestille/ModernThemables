@@ -219,7 +219,7 @@ namespace ModernThemables.Controls
 							this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
 							var points = await GetPointsForSeries(
-								xMin, xMax - xMin, yMin - (yMin - yMax) * yBuffer, (yMax - yMin) * (1 + 2 * yBuffer), series);
+								xMin, xMax - xMin, yMin - (yMin - yMax) * yBuffer, (yMax + (yMin - yMax) * yBuffer) - (yMin - (yMin - yMax) * yBuffer), series);
 
 							collection.Add(new WpfChartSeriesViewModel(points, series.Stroke, series.Fill, yBuffer));
 
