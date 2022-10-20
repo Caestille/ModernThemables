@@ -54,23 +54,17 @@ namespace ModernThemables.Controls
 		private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
 		private double xMin => Series != null && Series.Where(x => x.Values.Any()).Any()
-			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.XValue))
-			: 0;
+			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.XValue)) : 0;
 		private double xMax => Series != null && Series.Where(x => x.Values.Any()).Any()
-			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.XValue))
-			: 0;
+			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.XValue)) : 0;
 		private double yMin => Series != null && Series.Where(x => x.Values.Any()).Any()
-			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue))
-			: 0;
+			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) : 0;
 		private double yMax => Series != null && Series.Where(x => x.Values.Any()).Any()
-			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue))
-			: 0;
+			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) : 0;
 		private double yMinExpanded => Series != null && Series.Where(x => x.Values.Any()).Any()
-			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) + (yMax - yMin) * 0.1
-			: 0;
+			? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) + (yMax - yMin) * 0.1 : 0;
 		private double yMaxExpanded => Series != null && Series.Where(x => x.Values.Any()).Any()
-			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) + (yMax - yMin) * 0.1
-			: 0;
+			? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) + (yMax - yMin) * 0.1 : 0;
 		private double xDataOffset => CurrentZoomState.XOffset / plotAreaWidth * (xMax - xMin);
 
 		public WpfChart()
@@ -80,12 +74,12 @@ namespace ModernThemables.Controls
 
 			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
 
-			resizeTrigger = new KeepAliveTriggerService(() => RenderChart(), 100);
+			resizeTrigger = new KeepAliveTriggerService(async () => await RenderChart(), 100);
 		}
 
-		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
+		private async void WpfChart_Loaded(object sender, RoutedEventArgs e)
 		{
-			RenderChart();
+			await RenderChart();
 			this.Loaded -= WpfChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
@@ -101,15 +95,7 @@ namespace ModernThemables.Controls
 
 		public async void ResetZoom()
 		{
-			var binding = SeriesMultiBinding;
-			SeriesItemsControl.Margin = new Thickness(-1,0,0,0);
-			CurrentZoomState = new ZoomState(
-				Series.Min(x => x.Values.Min(y => y.XValue)),
-				Series.Max(x => x.Values.Max(y => y.XValue)),
-				Series.Min(x => x.Values.Min(y => y.YValue)),
-				Series.Max(x => x.Values.Max(y => y.YValue)),
-				0);
-			SeriesItemsControl.SetBinding(MarginProperty, binding);
+			CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, 0, false);
 			IsZoomed = false;
 			await RenderChart();
 		}
@@ -230,7 +216,8 @@ namespace ModernThemables.Controls
 							// Force layout update so sizes are correct before rendering points
 							this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
-							var points = await GetPointsForSeries(xMin, xMax - xMin, this.yMinExpanded, this.yMaxExpanded - this.yMinExpanded, series);
+							var points = await GetPointsForSeries(
+								xMin, xMax - xMin, this.yMinExpanded, this.yMaxExpanded - this.yMinExpanded, series);
 
 							collection.Add(new WpfChartSeriesViewModel(points, series.Stroke, series.Fill));
 							ConvertedSeries = collection;
@@ -241,21 +228,18 @@ namespace ModernThemables.Controls
 					});
 				}).AsCancellable(tokenSource.Token);
 			}
-			catch (TaskCanceledException) 
-			{ 
-			
-			}
+			catch (TaskCanceledException) { }
 		}
 
 		#region Calculations
 
-		private void SetXAxisLabels(double xMin, double xMax)
+		private async Task SetXAxisLabels(double xMin, double xMax)
 		{
 			if (!HasGotData()) return;
 
 			var xRange = xMax - xMin;
 			var xAxisItemCount = Math.Floor(plotAreaWidth / 60);
-			var labels = GetXSteps(xAxisItemCount, xMin, xMax);
+			var labels = await GetXSteps(xAxisItemCount, xMin, xMax);
 			var labels2 = labels.Select(x => new ValueWithHeight()
 			{
 				Value = XAxisFormatter == null 
@@ -268,13 +252,13 @@ namespace ModernThemables.Controls
 			XAxisLabels = new ObservableCollection<ValueWithHeight>(labels2);
 		}
 
-		private void SetYAxisLabels(double yMin, double yMax)
+		private async Task SetYAxisLabels(double yMin, double yMax)
 		{
 			if (!HasGotData()) return;
 
 			var yRange = yMax - yMin;
 			var yAxisItemsCount = Math.Max(1, Math.Floor(plotAreaHeight / 50));
-			var labels = GetYSteps(yAxisItemsCount, yMin, yMax).ToList();
+			var labels = await GetYSteps(yAxisItemsCount, yMin, yMax).ToList();
 			var labels2 = labels.Select(y => new ValueWithHeight()
 			{
 				Value = YAxisFormatter == null 
@@ -287,7 +271,7 @@ namespace ModernThemables.Controls
 			YAxisLabels = new ObservableCollection<ValueWithHeight>(labels2.Reverse());
 		}
 
-		private List<double> GetXSteps(double xAxisItemsCount, double xMin, double xMax)
+		private async Task<List<double>> GetXSteps(double xAxisItemsCount, double xMin, double xMax)
 		{
 			List<double> xVals = new();
 
@@ -305,29 +289,32 @@ namespace ModernThemables.Controls
 			}
 			else
 			{
-				var xRange = xMax - xMin;
-				var idealStep = xRange / xAxisItemsCount;
-				var min = double.MaxValue;
-				var stepAtMin = 1;
-				var roundedSteps = new List<int>()
-				{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
-				roundedSteps.Reverse();
-				foreach (var step in roundedSteps)
+				await Task.Run(() =>
 				{
-					var val = Math.Abs(idealStep - step);
-					if (val < min)
+					var xRange = xMax - xMin;
+					var idealStep = xRange / xAxisItemsCount;
+					var min = double.MaxValue;
+					var stepAtMin = 1;
+					var roundedSteps = new List<int>()
+						{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
+					roundedSteps.Reverse();
+					foreach (var step in roundedSteps)
 					{
-						min = val;
-						stepAtMin = step;
+						var val = Math.Abs(idealStep - step);
+						if (val < min)
+						{
+							min = val;
+							stepAtMin = step;
+						}
 					}
-				}
 
-				var currVal = xMin;
-				while (currVal < xMax)
-				{
-					currVal += stepAtMin;
-					xVals.Add(currVal);
-				}
+					var currVal = xMin;
+					while (currVal < xMax)
+					{
+						currVal += stepAtMin;
+						xVals.Add(currVal);
+					}
+				});
 			}
 
 			var fracOver = (int)Math.Ceiling(xVals.Count() / (decimal)Math.Round(xAxisItemsCount));
@@ -335,7 +322,7 @@ namespace ModernThemables.Controls
 			return xVals.Where(x => xVals.IndexOf(x) % fracOver == 0).ToList();
 		}
 
-		private List<double> GetYSteps(double yAxisItemsCount, double yMin, double yMax)
+		private async Task<List<double>> GetYSteps(double yAxisItemsCount, double yMin, double yMax)
 		{
 			List<double> yVals = new();
 			
@@ -353,62 +340,64 @@ namespace ModernThemables.Controls
 			}
 			else
 			{
-				var yRange = yMax - yMin;
-				var idealStep = yRange / yAxisItemsCount;
-				double min = double.MaxValue;
-				int stepAtMin = 1;
-				var roundedSteps = new List<int>()
-				{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
-				roundedSteps.Reverse();
-				foreach (var step in roundedSteps)
-				{
-					var val = Math.Abs(idealStep - step);
-					if (val < min)
+				await Task.Run(() => { 
+					var yRange = yMax - yMin;
+					var idealStep = yRange / yAxisItemsCount;
+					double min = double.MaxValue;
+					int stepAtMin = 1;
+					var roundedSteps = new List<int>()
+						{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
+					roundedSteps.Reverse();
+					foreach (var step in roundedSteps)
 					{
-						min = val;
-						stepAtMin = step;
-					}
-				}
-
-				bool startAt0 = yMin <= 0 && yMax >= 0;
-				if (startAt0)
-				{
-					double currVal = 0;
-					while (currVal > yMin)
-					{
-						yVals.Insert(0, currVal);
-						currVal -= stepAtMin;
-					}
-
-					currVal = stepAtMin;
-
-					while (currVal < yMax)
-					{
-						yVals.Add(currVal);
-						currVal += stepAtMin;
-					}
-				}
-				else
-				{
-					int dir = yMax < 0 ? -1 : 1;
-					double currVal = 0;
-					bool adding = true;
-					bool hasStartedAdding = false;
-					while (adding)
-					{
-						if (currVal < yMax && currVal > yMin)
+						var val = Math.Abs(idealStep - step);
+						if (val < min)
 						{
-							hasStartedAdding = true;
+							min = val;
+							stepAtMin = step;
+						}
+					}
+
+					bool startAt0 = yMin <= 0 && yMax >= 0;
+					if (startAt0)
+					{
+						double currVal = 0;
+						while (currVal > yMin)
+						{
+							yVals.Insert(0, currVal);
+							currVal -= stepAtMin;
+						}
+
+						currVal = stepAtMin;
+
+						while (currVal < yMax)
+						{
 							yVals.Add(currVal);
+							currVal += stepAtMin;
 						}
-						else if (hasStartedAdding)
-						{
-							adding = false;
-						}
-
-						currVal += dir * stepAtMin;
 					}
-				}
+					else
+					{
+						int dir = yMax < 0 ? -1 : 1;
+						double currVal = 0;
+						bool adding = true;
+						bool hasStartedAdding = false;
+						while (adding)
+						{
+							if (currVal < yMax && currVal > yMin)
+							{
+								hasStartedAdding = true;
+								yVals.Add(currVal);
+							}
+							else if (hasStartedAdding)
+							{
+								adding = false;
+							}
+
+							currVal += dir * stepAtMin;
+						}
+					}
+				});
 			}			
 
 			return yVals;

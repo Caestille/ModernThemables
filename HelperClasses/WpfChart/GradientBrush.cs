@@ -5,42 +5,38 @@ using System.Windows.Media;
 
 namespace ModernThemables.HelperClasses.WpfChart
 {
-    public sealed class MultiGradientBrush : IChartBrush
+    public sealed class GradientBrush : IChartBrush
     {
         public Brush CoreBrush { get; private set; }
 
         private Color topColour;
         private Color bottomColour;
-        private Color topCentreColour;
-        private Color bottomCentreColour;
 
         private double yMax;
         private double yMin;
-        private double yCentre;
 
-        public MultiGradientBrush(Color topColour, Color topCentreColour, Color bottomCentreColour, Color bottomColour)
+        public GradientBrush(Color topColour, Color bottomColour)
         {
-            CoreBrush = new LinearGradientBrush();
             this.topColour = topColour;
             this.bottomColour = bottomColour;
-            this.topCentreColour = topCentreColour;
-            this.bottomCentreColour = bottomCentreColour;
-        }
+
+			GradientStopCollection collection = new()
+			{
+				new GradientStop(topColour, 0),
+				new GradientStop(bottomColour, 1.0)
+			};
+
+			CoreBrush = new LinearGradientBrush(collection, angle: 90);
+		}
 
         public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre)
         {
             this.yMax = yMax;
             this.yMin = yMin;
-            this.yCentre = yCentre;
-
-            yCentre = Math.Min(Math.Max(yCentre, yMin), yMax);
-            var ratio = (double)(1 - (yCentre - yMin) / (yMax - yMin));
 
             GradientStopCollection collection = new()
             {
                 new GradientStop(topColour, 0),
-                new GradientStop(topCentreColour, ratio),
-                new GradientStop(bottomCentreColour, ratio),
                 new GradientStop(bottomColour, 1.0)
             };
 
@@ -53,15 +49,10 @@ namespace ModernThemables.HelperClasses.WpfChart
 			{
 				return topColour;
 			}
-			else if (y < yMax && y >= yCentre)
+			else if (y < yMax && y > yMin)
 			{
-				var ratio = (double)(1 - (y - yCentre) / (yMax - yCentre));
-				return topColour.Combine(topCentreColour, ratio);
-			}
-			else if (y > yMin && y <= yCentre)
-			{
-				var ratio = (double)(1 - (y - yMin) / (yCentre - yMin));
-				return bottomColour.Combine(bottomCentreColour, ratio);
+				var ratio = (double)(1 - (y - yMin) / (yMax - yMin));
+				return topColour.Combine(bottomColour, ratio);
 			}
 			else if (y <= yMin)
 			{
