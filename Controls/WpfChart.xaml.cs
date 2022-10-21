@@ -16,7 +16,6 @@ using CoreUtilities.HelperClasses.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
 using ModernThemables.ViewModels.WpfChart;
-using CoreUtilities.HelperClasses;
 
 namespace ModernThemables.Controls
 {
@@ -75,12 +74,11 @@ namespace ModernThemables.Controls
 
 			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
 
-			resizeTrigger = new KeepAliveTriggerService(async () => await RenderChart(), 100);
+			resizeTrigger = new KeepAliveTriggerService(async () => await RenderChart(null, null, true), 100);
 		}
 
 		private async void WpfChart_Loaded(object sender, RoutedEventArgs e)
 		{
-			await RenderChart();
 			this.Loaded -= WpfChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
@@ -98,7 +96,6 @@ namespace ModernThemables.Controls
 		{
 			CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, 0, yBuffer, expandY);
 			IsZoomed = false;
-			await RenderChart();
 		}
 
 		#region Subscribe to series'
@@ -129,6 +126,8 @@ namespace ModernThemables.Controls
 				chart.Series.Max(x => x.Values.Max(y => y.YValue)),
 				0,
 				yBuffer);
+
+			chart.RenderChart(null, null, true);
 		}
 
 		private void Subscribe(ObservableCollection<ISeries> series)
@@ -142,45 +141,59 @@ namespace ModernThemables.Controls
 					subscribedSeries.Add(item);
 				}
 			}
-			Series_PropertyChanged(this, new PropertyChangedEventArgs(nameof(Series)));
 		}
 
 		private async void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
-				await RenderChart();
+				await RenderChart(null, null, true);
 				return;
 			}
 
+			var oldItems = new List<ISeries>();
 			if (e.Action == NotifyCollectionChangedAction.Replace || e.Action == NotifyCollectionChangedAction.Remove)
 			{
 				foreach (ISeries series in e.OldItems)
 				{
 					series.PropertyChanged -= Series_PropertyChanged;
+					oldItems.Add(series);
 					subscribedSeries.Add(series);
 				}
 			}
 
+			var newItems = new List<ISeries>();
 			if (e.Action == NotifyCollectionChangedAction.Replace || e.Action == NotifyCollectionChangedAction.Add)
 			{
 				foreach (ISeries series in e.NewItems)
 				{
 					series.PropertyChanged += Series_PropertyChanged;
+					newItems.Add(series);
 					subscribedSeries.Remove(series);
 				}
 			}
-			await RenderChart();
+
+			CurrentZoomState = new ZoomState(
+				Series.Min(x => x.Values.Min(y => y.XValue)),
+				Series.Max(x => x.Values.Max(y => y.XValue)),
+				Series.Min(x => x.Values.Min(y => y.YValue)),
+				Series.Max(x => x.Values.Max(y => y.YValue)),
+				0,
+				yBuffer);
+
+			await RenderChart(newItems, oldItems);
 		}
 
 		private async void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			await RenderChart();
+			var list = new List<ISeries>() { sender as ISeries };
+			await RenderChart(list, list);
 		}
 
 		#endregion
 
-		private async Task RenderChart()
+		private async Task RenderChart(
+			IEnumerable<ISeries> addedSeries, IEnumerable<ISeries> removedSeries, bool invalidateAll = false)
 		{
 			tokenSource.Cancel();
 			tokenSource = new CancellationTokenSource();
@@ -191,47 +204,60 @@ namespace ModernThemables.Controls
 				{
 					await Application.Current.Dispatcher.InvokeAsync(async () =>
 					{
-						if (!HasGotData())
-						{
-							ConvertedSeries.Clear();
-							return;
-						}
+						SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
+						SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
-						var collection = new ObservableCollection<ConvertedSeriesViewModel>();
-						foreach (var series in Series)
+						// Force layout update so sizes are correct before rendering points
+						this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+
+						var collection = new List<ConvertedSeriesViewModel>();
+						foreach (var series in invalidateAll ? Series : addedSeries)
 						{
 							if (!series.Values.Any()) continue;
-
-							var zoomYMin = Series.Min(
-								x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
-							var zoomYMax = Series.Max(
-								x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue));
-
-							var seriesYMin = series.Values.Min(z => z.YValue);
-							var seriesYMax = series.Values.Max(z => z.YValue);
-
-							if (Math.Round(currentZoomLevel, 1) != 1)
-							{
-								CurrentZoomState 
-									= new ZoomState(xMin, xMax, zoomYMin, zoomYMax, CurrentZoomState.XOffset, yBuffer);
-							}
-
-							SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
-							SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
-
-							// Force layout update so sizes are correct before rendering points
-							this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
 							var points = await GetPointsForSeries(
 								xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, series);
 
 							collection.Add(new ConvertedSeriesViewModel(
-								points, series.Stroke, series.Fill, yBuffer, series.TooltipLabelFormatter));
+								series.Guid, points, series.Stroke, series.Fill, yBuffer, series.TooltipLabelFormatter));
+
+							var seriesYMin = series.Values.Min(z => z.YValue);
+							var seriesYMax = series.Values.Max(z => z.YValue);
 
 							series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 							series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 						}
-						ConvertedSeries = collection;
+
+						if (Series.Any())
+						{
+							var zoomYMin = Series.Min(
+								x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
+							var zoomYMax = Series.Max(
+								x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue));
+
+							if (Math.Round(currentZoomLevel, 1) != 1)
+							{
+								CurrentZoomState
+									= new ZoomState(xMin, xMax, zoomYMin, zoomYMax, CurrentZoomState.XOffset, yBuffer);
+							}
+						}
+
+						if (invalidateAll)
+						{
+							ConvertedSeries.Clear();
+						}
+						else
+						{
+							foreach (var series in removedSeries)
+							{
+								ConvertedSeries.Remove(ConvertedSeries.First(x => x.Guid == series.Guid));
+							}
+						}
+
+						foreach (var series in collection)
+						{
+							ConvertedSeries.Add(series);
+						}
 					});
 				}).AsCancellable(tokenSource.Token);
 			}
@@ -562,7 +588,7 @@ namespace ModernThemables.Controls
 
 			HoveredPoint = hoveredPoints.FirstOrDefault(
 				x => Math.Abs(x.BackingPoint.X - mouseLoc.X) == 
-					hoveredPoints.Min(x => Math.Abs(x.BackingPoint.X - mouseLoc.X))).BackingPoint;
+					hoveredPoints.Min(x => Math.Abs(x.BackingPoint.X - mouseLoc.X)))?.BackingPoint;
 			TooltipPoint = hoveredPoints.FirstOrDefault(
 				x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y) ==
 					hoveredPoints.Min(x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y)));
