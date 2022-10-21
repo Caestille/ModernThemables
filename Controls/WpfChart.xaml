@@ -306,7 +306,17 @@
 									VerticalAlignment="Top"
 									BorderBrush="{DynamicResource StatusTextBrush}"
 									BorderThickness="0,0,0,1"
-									IsHitTestVisible="False" />
+									IsHitTestVisible="False" >
+									<Border.Style>
+										<Style>
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsNearest}" Value="False">
+													<Setter Property="Border.Opacity" Value="0.5"/>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Border.Style>
+								</Border>
 							</Grid>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>

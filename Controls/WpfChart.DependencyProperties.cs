@@ -1,5 +1,7 @@
-﻿using ModernThemables.HelperClasses.WpfChart;
+﻿using CoreUtilities.HelperClasses;
+using ModernThemables.HelperClasses.WpfChart;
 using ModernThemables.Interfaces;
+using ModernThemables.ViewModels.WpfChart;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

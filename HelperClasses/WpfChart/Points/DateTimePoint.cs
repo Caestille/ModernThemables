@@ -1,7 +1,7 @@
 ﻿using ModernThemables.Interfaces;
 using System;
 
-namespace ModernThemables.HelperClasses.WpfChart
+namespace ModernThemables.HelperClasses.WpfChart.Points
 {
 	public class DateTimePoint : IChartPoint
 	{

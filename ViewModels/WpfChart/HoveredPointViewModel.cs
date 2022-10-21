@@ -1,8 +1,9 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using ModernThemables.HelperClasses.WpfChart;
 using System.Windows;
 using System.Windows.Media;
 
-namespace ModernThemables.HelperClasses.WpfChart
+namespace ModernThemables.ViewModels.WpfChart
 {
 	internal class HoveredPointViewModel : ObservableObject
 	{

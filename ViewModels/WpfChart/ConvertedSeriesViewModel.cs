@@ -1,12 +1,12 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using ModernThemables.HelperClasses.WpfChart;
 using ModernThemables.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ModernThemables.HelperClasses.WpfChart
+namespace ModernThemables.ViewModels.WpfChart
 {
 	internal class ConvertedSeriesViewModel : ObservableObject
 	{
@@ -15,15 +15,18 @@ namespace ModernThemables.HelperClasses.WpfChart
 		public string PathFillData { get; }
 		public IChartBrush Stroke { get; }
 		public IChartBrush Fill { get; }
+		public Guid Guid { get; }
 		public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter;
 
 		public ConvertedSeriesViewModel(
+			Guid guid,
 			IEnumerable<InternalChartPoint> data,
 			IChartBrush stroke,
 			IChartBrush fill,
 			double yBuffer,
 			Func<IEnumerable<IChartPoint>, IChartPoint, string> tooltipFormatter)
 		{
+			Guid = guid;
 			Data = data;
 			Stroke = stroke;
 			Fill = fill;

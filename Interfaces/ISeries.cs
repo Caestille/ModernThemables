@@ -14,5 +14,7 @@ namespace ModernThemables.Interfaces
 		IChartBrush Stroke { get; set; }
 		IChartBrush Fill { get; set; }
 		ObservableCollection<IChartPoint> Values { get; set; }
+		Guid Guid { get; }
+		string Name { get; set; }
 	}
 }

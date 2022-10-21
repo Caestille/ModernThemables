@@ -1,4 +1,4 @@
-﻿using ModernThemables.HelperClasses.WpfChart;
+﻿using ModernThemables.ViewModels.WpfChart;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;

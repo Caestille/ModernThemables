@@ -27,5 +27,10 @@ namespace ModernThemables.HelperClasses.WpfChart
 			}
 			XOffset = xOffset;
 		}
+
+		public bool IsPointInBounds(double x, double y)
+		{
+			return x <= XMax && x >= XMin && y <= YMax && y >= YMin;
+		}
 	}
 }
