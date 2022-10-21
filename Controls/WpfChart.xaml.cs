@@ -173,13 +173,16 @@ namespace ModernThemables.Controls
 				}
 			}
 
-			CurrentZoomState = new ZoomState(
-				Series.Min(x => x.Values.Min(y => y.XValue)),
-				Series.Max(x => x.Values.Max(y => y.XValue)),
-				Series.Min(x => x.Values.Min(y => y.YValue)),
-				Series.Max(x => x.Values.Max(y => y.YValue)),
-				0,
-				yBuffer);
+			if (Series.Any() && Series.Any(x => x.Values.Any()))
+			{
+				CurrentZoomState = new ZoomState(
+					Series.Min(x => x.Values.Min(y => y.XValue)),
+					Series.Max(x => x.Values.Max(y => y.XValue)),
+					Series.Min(x => x.Values.Min(y => y.YValue)),
+					Series.Max(x => x.Values.Max(y => y.YValue)),
+					0,
+					yBuffer);
+			}
 
 			await RenderChart(newItems, oldItems);
 		}
@@ -207,9 +210,6 @@ namespace ModernThemables.Controls
 						SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
 						SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
-						// Force layout update so sizes are correct before rendering points
-						this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
-
 						var collection = new List<ConvertedSeriesViewModel>();
 						foreach (var series in invalidateAll ? Series : addedSeries)
 						{
@@ -228,19 +228,18 @@ namespace ModernThemables.Controls
 							series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 						}
 
-						if (Series.Any())
+						if (Series.Any() && Math.Round(currentZoomLevel, 1) != 1)
 						{
 							var zoomYMin = Series.Min(
-								x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
+							x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
 							var zoomYMax = Series.Max(
 								x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue));
-
-							if (Math.Round(currentZoomLevel, 1) != 1)
-							{
-								CurrentZoomState
-									= new ZoomState(xMin, xMax, zoomYMin, zoomYMax, CurrentZoomState.XOffset, yBuffer);
-							}
+							CurrentZoomState
+								= new ZoomState(xMin, xMax, zoomYMin, zoomYMax, CurrentZoomState.XOffset, yBuffer);
 						}
+
+						// Force layout update so sizes are correct before rendering points
+						this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
 						if (invalidateAll)
 						{
