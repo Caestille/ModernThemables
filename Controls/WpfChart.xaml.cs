@@ -11,14 +11,12 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using CoreUtilities.Services;
 using ModernThemables.HelperClasses.WpfChart;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using ModernThemables.Interfaces;
 using CoreUtilities.HelperClasses.Extensions;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Runtime.InteropServices;
+using ModernThemables.ViewModels.WpfChart;
+using CoreUtilities.HelperClasses;
 
 namespace ModernThemables.Controls
 {
@@ -105,7 +103,7 @@ namespace ModernThemables.Controls
 
 		#region Subscribe to series'
 
-		private async static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not WpfChart chart) return;
 
@@ -122,7 +120,7 @@ namespace ModernThemables.Controls
 			chart.Subscribe(chart.Series);
 			chart.hasSetSeries = true;
 
-			if (!chart.Series.Any()) return;
+			if (!chart.Series.Any() || !chart.Series.Any(x => x.Values.Any())) return;
 
 			chart.CurrentZoomState = new ZoomState(
 				chart.Series.Min(x => x.Values.Min(y => y.XValue)),
@@ -532,7 +530,10 @@ namespace ModernThemables.Controls
 					-SeriesItemsControl.Margin.Top,
 					yBuffer);
 
-				if (hoveredChartPoint == null) continue;
+				if (hoveredChartPoint == null 
+					|| !CurrentZoomState.IsPointInBounds(
+						hoveredChartPoint.BackingPoint.XValue,
+						hoveredChartPoint.BackingPoint.YValue)) continue;
 
 				hoveredPoints.Add(new HoveredPointViewModel(
 					hoveredChartPoint,
@@ -544,7 +545,8 @@ namespace ModernThemables.Controls
 						hoveredChartPoint.BackingPoint.XValue,
 						hoveredChartPoint.BackingPoint.YValue)),
 					series.TooltipLabelFormatter != null
-						? series.TooltipLabelFormatter(series.Data.Select(x => x.BackingPoint), hoveredChartPoint.BackingPoint)
+						? series.TooltipLabelFormatter(
+							series.Data.Select(x => x.BackingPoint), hoveredChartPoint.BackingPoint)
 						: hoveredChartPoint.BackingPoint.YValue.ToString()
 					));
 			}
@@ -558,7 +560,7 @@ namespace ModernThemables.Controls
 				HoveredPoints.Clear();
 			}
 
-			HoveredPoint = hoveredPoints.First(
+			HoveredPoint = hoveredPoints.FirstOrDefault(
 				x => Math.Abs(x.BackingPoint.X - mouseLoc.X) == 
 					hoveredPoints.Min(x => Math.Abs(x.BackingPoint.X - mouseLoc.X))).BackingPoint;
 			TooltipPoint = hoveredPoints.FirstOrDefault(
@@ -616,12 +618,14 @@ namespace ModernThemables.Controls
 			var xDiff = currXRange - newXRange;
 			xMin = xMin + xDiff * zoomCentre;
 			xMax = xMax - xDiff * (1 - zoomCentre);
-			var yMin = Series.Min(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Any()
-				? Series.Min(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue))
-				: 0);
-			var yMax = Series.Max(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Any() 
-				? Series.Max(x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue))
-				: 0);
+			var seriesWithInRange = Series.Select(x => 
+				{ 
+					var list = new List<IChartPoint>();
+					list.AddRange(x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin));
+					return list; 
+				}).Where(x => x.Any());
+			var yMin = seriesWithInRange.Min(x => x.Min(y => y.YValue));
+			var yMax = seriesWithInRange.Max(x => x.Max(y => y.YValue));
 
 			if (Math.Round(currentZoomLevel, 1) != 1)
 			{
