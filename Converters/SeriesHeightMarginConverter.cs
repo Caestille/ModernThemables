@@ -16,36 +16,29 @@ namespace ModernThemables.Converters
 		{
 			if (values[0] is ConvertedSeriesViewModel vm && values[1] is ObservableCollection<ConvertedSeriesViewModel> vms && values[2] is double gridWidth && values[3] is double itemsControlWidth && values[4] is double gridHeight && values[5] is double itemsControlHeight)
 			{
-				var minDataYMin = vms.Min(x => x.Data.Min(x => x.Y));
-				var maxDataYMax = vms.Max(x => x.Data.Max(x => x.Y));
+				var minDataYMin = vms.Min(x => x.Data.Min(x => x.BackingPoint.YValue));
+				var maxDataYMax = vms.Max(x => x.Data.Max(x => x.BackingPoint.YValue));
 
-				var vmDataYMin = vm.Data.Min(x => x.Y);
-				var vmDataYMax = vm.Data.Max(x => x.Y);
+				var vmDataYMin = vm.Data.Min(x => x.BackingPoint.YValue);
+				var vmDataYMax = vm.Data.Max(x => x.BackingPoint.YValue);
 
 				var bottomFrac = (vmDataYMin - minDataYMin) / (maxDataYMax - minDataYMin);
 				var topFrac = (maxDataYMax - vmDataYMax) / (maxDataYMax - minDataYMin);
 
-				var maxYRange = maxDataYMax - minDataYMin;
+				var minDataXMin = vms.Min(x => x.Data.Min(x => x.BackingPoint.XValue));
+				var maxDataXMax = vms.Max(x => x.Data.Max(x => x.BackingPoint.XValue));
 
-				var minDataXMin = vms.Min(x => x.Data.Min(x => x.X));
-				var maxDataXMax = vms.Max(x => x.Data.Max(x => x.X));
-
-				var vmDataXMin = vm.Data.Min(x => x.X);
-				var vmDataXMax = vm.Data.Max(x => x.X);
+				var vmDataXMin = vm.Data.Min(x => x.BackingPoint.XValue);
+				var vmDataXMax = vm.Data.Max(x => x.BackingPoint.XValue);
 
 				var leftFrac = (vmDataXMin - minDataXMin) / (maxDataXMax - minDataXMin);
 				var rightFrac = (maxDataXMax - vmDataXMax) / (maxDataXMax - minDataXMin);
 
-				var maxXRange = maxDataXMax - minDataXMin;
-
-				var xScale = (maxDataXMax - minDataXMin) / itemsControlWidth;
-				var yScale = (maxDataYMax - minDataYMin) / itemsControlHeight;
-
 				return new Thickness(
-					leftFrac * maxXRange * xScale,
-					bottomFrac * maxYRange * yScale,
-					rightFrac * maxXRange * xScale,
-					topFrac * maxYRange * yScale);
+					leftFrac * itemsControlWidth,
+                    topFrac * itemsControlHeight,
+					rightFrac * itemsControlWidth,
+                    bottomFrac * itemsControlHeight);
 			}
 			else
 			{
