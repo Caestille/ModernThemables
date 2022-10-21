@@ -214,7 +214,8 @@ namespace ModernThemables.Controls
 
 							if (Math.Round(currentZoomLevel, 1) != 1)
 							{
-								CurrentZoomState = new ZoomState(xMin, xMax, zoomYMin, zoomYMax, CurrentZoomState.XOffset, yBuffer);
+								CurrentZoomState 
+									= new ZoomState(xMin, xMax, zoomYMin, zoomYMax, CurrentZoomState.XOffset, yBuffer);
 							}
 
 							SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
@@ -226,7 +227,8 @@ namespace ModernThemables.Controls
 							var points = await GetPointsForSeries(
 								xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, series);
 
-							collection.Add(new ConvertedSeriesViewModel(points, series.Stroke, series.Fill, yBuffer, series.TooltipLabelFormatter));
+							collection.Add(new ConvertedSeriesViewModel(
+								points, series.Stroke, series.Fill, yBuffer, series.TooltipLabelFormatter));
 
 							series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 							series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
@@ -556,8 +558,12 @@ namespace ModernThemables.Controls
 				HoveredPoints.Clear();
 			}
 
-			HoveredPoint = hoveredPoints.First(x => Math.Abs(x.BackingPoint.X - mouseLoc.X) == hoveredPoints.Min(x => Math.Abs(x.BackingPoint.X - mouseLoc.X))).BackingPoint;
-			TooltipPoint = hoveredPoints.FirstOrDefault(x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y) == hoveredPoints.Min(x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y)));
+			HoveredPoint = hoveredPoints.First(
+				x => Math.Abs(x.BackingPoint.X - mouseLoc.X) == 
+					hoveredPoints.Min(x => Math.Abs(x.BackingPoint.X - mouseLoc.X))).BackingPoint;
+			TooltipPoint = hoveredPoints.FirstOrDefault(
+				x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y) ==
+					hoveredPoints.Min(x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y)));
 			if (TooltipPoint != null) TooltipPoint.IsNearest = HoveredPoints.Count > 1;
 
 			if (IsTooltipVisible)

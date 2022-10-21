@@ -14,7 +14,12 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is ConvertedSeriesViewModel vm && values[1] is ObservableCollection<ConvertedSeriesViewModel> vms && values[2] is double gridWidth && values[3] is double itemsControlWidth && values[4] is double gridHeight && values[5] is double itemsControlHeight)
+			if (values[0] is ConvertedSeriesViewModel vm
+				&& values[1] is ObservableCollection<ConvertedSeriesViewModel> vms
+				&& values[2] is double gridWidth
+				&& values[3] is double itemsControlWidth
+				&& values[4] is double gridHeight
+				&& values[5] is double itemsControlHeight)
 			{
 				var minDataYMin = vms.Min(x => x.Data.Min(x => x.BackingPoint.YValue));
 				var maxDataYMax = vms.Max(x => x.Data.Max(x => x.BackingPoint.YValue));
@@ -48,7 +53,13 @@ namespace ModernThemables.Converters
 
 		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
 		{
-			return new object[] { Binding.DoNothing, Binding.DoNothing, Binding.DoNothing, Binding.DoNothing, Binding.DoNothing };
+			return new object[] { 
+				Binding.DoNothing,
+				Binding.DoNothing,
+				Binding.DoNothing,
+				Binding.DoNothing,
+				Binding.DoNothing,
+				Binding.DoNothing };
 		}
 	}
 }

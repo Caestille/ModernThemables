@@ -14,7 +14,9 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is ZoomState zoom && values[1] is ObservableCollection<ISeries> series && values[2] is FrameworkElement grid && series.Any())
+			if (values[0] is ZoomState zoom
+				&& values[1] is ObservableCollection<ISeries> series
+				&& values[2] is FrameworkElement grid && series.Any())
 			{
 				var displayAreaWidth = grid.ActualWidth;
 
@@ -52,7 +54,7 @@ namespace ModernThemables.Converters
 
 		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
 		{
-			return new object[] { Binding.DoNothing, Binding.DoNothing, Binding.DoNothing, Binding.DoNothing, Binding.DoNothing };
+			return new object[] { Binding.DoNothing, Binding.DoNothing, Binding.DoNothing };
 		}
 	}
 }
