@@ -257,6 +257,11 @@ namespace ModernThemables.Controls
 						{
 							ConvertedSeries.Add(series);
 						}
+
+						foreach (var series in ConvertedSeries)
+						{
+							series.ResizeTrigger = !series.ResizeTrigger;
+						}
 					});
 				}).AsCancellable(tokenSource.Token);
 			}

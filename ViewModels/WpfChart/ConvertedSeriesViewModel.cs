@@ -18,6 +18,13 @@ namespace ModernThemables.ViewModels.WpfChart
 		public Guid Guid { get; }
 		public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter;
 
+		private bool resizeTrigger;
+		public bool ResizeTrigger
+		{
+			get => resizeTrigger;
+			set => SetProperty(ref resizeTrigger, value);
+		}
+
 		public ConvertedSeriesViewModel(
 			Guid guid,
 			IEnumerable<InternalChartPoint> data,

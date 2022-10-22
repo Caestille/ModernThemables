@@ -159,6 +159,7 @@
 										<Binding Path="." />
 										<Binding ElementName="root" Path="ConvertedSeries" />
 										<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+										<Binding Path="ResizeTrigger" />
 									</MultiBinding>
 								</Grid.Margin>
 								<Grid>
@@ -170,6 +171,7 @@
 											<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
 											<Binding ElementName="Grid" Path="ActualHeight" />
 											<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+											<Binding Path="ResizeTrigger" />
 										</MultiBinding>
 									</Grid.Margin>
 									<Path

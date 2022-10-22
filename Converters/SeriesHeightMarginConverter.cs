@@ -42,9 +42,9 @@ namespace ModernThemables.Converters
 
 				return new Thickness(
 					leftFrac * itemsControlWidth,
-                    topFrac * itemsControlHeight,
+					topFrac * itemsControlHeight,
 					rightFrac * itemsControlWidth,
-                    bottomFrac * itemsControlHeight);
+					bottomFrac * itemsControlHeight);
 			}
 			else
 			{
