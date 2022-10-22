@@ -5,9 +5,13 @@ namespace ModernThemables.HelperClasses.WpfChart
 	internal class ZoomState : ObservableObject
 	{
 		public double XMin { get; }
+
 		public double XMax { get; }
+
 		public double YMin { get; }
+
 		public double YMax { get; }
+
 		public double XOffset { get; }
 
 		public ZoomState(double xMin, double xMax, double yMin, double yMax, double xOffset, double yBuffer, bool expandY = true)

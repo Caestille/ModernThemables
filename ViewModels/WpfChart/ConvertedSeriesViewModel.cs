@@ -11,11 +11,17 @@ namespace ModernThemables.ViewModels.WpfChart
 	internal class ConvertedSeriesViewModel : ObservableObject
 	{
 		public IEnumerable<InternalChartPoint> Data;
+
 		public string PathStrokeData { get; }
+
 		public string PathFillData { get; }
-		public IChartBrush Stroke { get; }
-		public IChartBrush Fill { get; }
+
+		public IChartBrush? Stroke { get; }
+
+		public IChartBrush? Fill { get; }
+
 		public Guid Guid { get; }
+
 		public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter;
 
 		private bool resizeTrigger;
@@ -28,8 +34,8 @@ namespace ModernThemables.ViewModels.WpfChart
 		public ConvertedSeriesViewModel(
 			Guid guid,
 			IEnumerable<InternalChartPoint> data,
-			IChartBrush stroke,
-			IChartBrush fill,
+			IChartBrush? stroke,
+			IChartBrush? fill,
 			double yBuffer,
 			Func<IEnumerable<IChartPoint>, IChartPoint, string> tooltipFormatter)
 		{
@@ -81,8 +87,22 @@ namespace ModernThemables.ViewModels.WpfChart
 				: hoveredChartPoints.First();
 
 			var x = hoveredChartPoint.X * xZoom - xLeftOffset;
-			var y = hoveredChartPoint.Y * yZoom - yTopOffset - yBuffer * dataHeight * yZoom;
+			var y = (hoveredChartPoint.Y * yZoom - yTopOffset - yBuffer * dataHeight * yZoom);
 			return new InternalChartPoint(x, y, hoveredChartPoint.BackingPoint);
+		}
+
+		public void UpdatePoints(IEnumerable<InternalChartPoint> data)
+		{
+			Data = data;
+		}
+
+		public bool IsTranslatedMouseInBounds(double dataWidth, double mouseX, double zoomWidth)
+		{
+			var xZoom = zoomWidth / dataWidth;
+			var translatedX = mouseX / xZoom;
+
+			return translatedX <= Data.Max(x => x.X)
+				&& translatedX >= Data.Min(x => x.X);
 		}
 
 		private string ConvertDataToPath(IEnumerable<InternalChartPoint> data)

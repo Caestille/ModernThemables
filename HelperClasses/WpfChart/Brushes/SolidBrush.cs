@@ -15,10 +15,7 @@ namespace ModernThemables.HelperClasses.WpfChart.Brushes
 			CoreBrush = new SolidColorBrush(colour);
 		}
 
-		public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre)
-		{
-
-		}
+		public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre) { }
 
 		public Color ColourAtPoint(double x, double y)
 		{
