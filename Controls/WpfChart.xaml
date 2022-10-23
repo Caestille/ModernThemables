@@ -144,7 +144,7 @@
 					x:Name="SeriesItemsControl"
 					HorizontalAlignment="Stretch"
 					VerticalAlignment="Stretch"
-					ItemsSource="{Binding ConvertedSeries, ElementName=root}">
+					ItemsSource="{Binding InternalSeries, ElementName=root}">
 					<ItemsControl.Margin>
 						<MultiBinding x:Name="SeriesMultiBinding" Converter="{StaticResource ChartZoomConverter}">
 							<Binding ElementName="root" Path="CurrentZoomState" />
@@ -158,7 +158,7 @@
 								<Grid.Margin>
 									<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
 										<Binding Path="." />
-										<Binding ElementName="root" Path="ConvertedSeries" />
+										<Binding ElementName="root" Path="InternalSeries" />
 										<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
 										<Binding Path="ResizeTrigger" />
 									</MultiBinding>
@@ -167,7 +167,7 @@
 									<Grid.Margin>
 										<MultiBinding Converter="{StaticResource SeriesHeightMarginConverter}">
 											<Binding Path="." />
-											<Binding ElementName="root" Path="ConvertedSeries" />
+											<Binding ElementName="root" Path="InternalSeries" />
 											<Binding ElementName="Grid" Path="ActualWidth" />
 											<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
 											<Binding ElementName="Grid" Path="ActualHeight" />
