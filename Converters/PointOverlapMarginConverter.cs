@@ -11,8 +11,8 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is HoveredPointViewModel vm
-				&& values[1] is ObservableCollection<HoveredPointViewModel> vms
+			if (values[0] is TooltipPointViewModel vm
+				&& values[1] is ObservableCollection<TooltipPointViewModel> vms
 				&& values[2] is double height)
 			{
 				if (vms.IndexOf(vm) == 0)

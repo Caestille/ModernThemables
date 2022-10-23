@@ -202,16 +202,16 @@ namespace ModernThemables.Controls
 
 		#region Private properties
 
-		private ObservableCollection<HoveredPointViewModel> TooltipPoints
+		private ObservableCollection<TooltipPointViewModel> TooltipPoints
 		{
-			get => (ObservableCollection<HoveredPointViewModel>)GetValue(TooltipPointsProperty);
+			get => (ObservableCollection<TooltipPointViewModel>)GetValue(TooltipPointsProperty);
 			set => SetValue(TooltipPointsProperty, value);
 		}
 		public static readonly DependencyProperty TooltipPointsProperty = DependencyProperty.Register(
 			"TooltipPoints",
-			typeof(ObservableCollection<HoveredPointViewModel>),
+			typeof(ObservableCollection<TooltipPointViewModel>),
 			typeof(WpfChart),
-			new PropertyMetadata(new ObservableCollection<HoveredPointViewModel>()));
+			new PropertyMetadata(new ObservableCollection<TooltipPointViewModel>()));
 
 		private bool IsTooltipByCursor
 		{
@@ -224,27 +224,27 @@ namespace ModernThemables.Controls
 			typeof(WpfChart),
 			new PropertyMetadata(true));
 
-		private InternalChartPoint? HoveredPoint
+		private InternalChartPoint? MouseOverPoint
 		{
-			get => (InternalChartPoint)GetValue(HoveredPointProperty);
-			set => SetValue(HoveredPointProperty, value);
+			get => (InternalChartPoint)GetValue(MouseOverPointProperty);
+			set => SetValue(MouseOverPointProperty, value);
 		}
-		public static readonly DependencyProperty HoveredPointProperty = DependencyProperty.Register(
-			"HoveredPoint",
+		public static readonly DependencyProperty MouseOverPointProperty = DependencyProperty.Register(
+			"MouseOverPoint",
 			typeof(InternalChartPoint),
 			typeof(WpfChart),
 			new PropertyMetadata(null));
 
-		private ObservableCollection<ConvertedSeriesViewModel> ConvertedSeries
+		private ObservableCollection<InternalSerieViewModel> InternalSeries
 		{
-			get => (ObservableCollection<ConvertedSeriesViewModel>)GetValue(ConvertedSeriesProperty);
-			set => SetValue(ConvertedSeriesProperty, value);
+			get => (ObservableCollection<InternalSerieViewModel>)GetValue(InternalSeriesProperty);
+			set => SetValue(InternalSeriesProperty, value);
 		}
-		public static readonly DependencyProperty ConvertedSeriesProperty = DependencyProperty.Register(
-			"ConvertedSeries",
-			typeof(ObservableCollection<ConvertedSeriesViewModel>),
+		public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
+			"InternalSeries",
+			typeof(ObservableCollection<InternalSerieViewModel>),
 			typeof(WpfChart),
-			new PropertyMetadata(new ObservableCollection<ConvertedSeriesViewModel>()));
+			new PropertyMetadata(new ObservableCollection<InternalSerieViewModel>()));
 
 		private ObservableCollection<ValueWithHeight> XAxisLabels
 		{

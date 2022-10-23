@@ -224,7 +224,7 @@ namespace ModernThemables.Controls
 						_ = SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
 						_ = SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
-						var collection = new List<ConvertedSeriesViewModel>();
+						var collection = new List<InternalSerieViewModel>();
 						foreach (var series in invalidateAll ? Series : (addedSeries ?? new List<ISeries>()))
 						{
 							if (!series.Values.Any()) continue;
@@ -232,7 +232,7 @@ namespace ModernThemables.Controls
 							var points = await GetPointsForSeries(
 								xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, series);
 
-							collection.Add(new ConvertedSeriesViewModel(
+							collection.Add(new InternalSerieViewModel(
 								series.Guid, points, series.Stroke, series.Fill, yBuffer, series.TooltipLabelFormatter));
 
 							var seriesYMin = series.Values.Min(z => z.YValue);
@@ -257,29 +257,30 @@ namespace ModernThemables.Controls
 
 						if (invalidateAll)
 						{
-							ConvertedSeries.Clear();
+							InternalSeries.Clear();
 						}
 						else
 						{
 							foreach (var series in (removedSeries ?? new List<ISeries>()))
 							{
-								ConvertedSeries.Remove(ConvertedSeries.First(x => x.Guid == series.Guid));
+								InternalSeries.Remove(InternalSeries.First(x => x.Identifier == series.Guid));
 							}
 						}
 
-						foreach (var series in ConvertedSeries)
+						foreach (var series in InternalSeries)
 						{
 							var points = await GetPointsForSeries(
-								xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, Series.First(x => x.Values.Count == series.Data.Count()));
+								xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, Series.First(
+										x => x.Values.Count == series.Data.Count()));
 							series.UpdatePoints(points);
 						}
 
 						foreach (var series in collection)
 						{
-							ConvertedSeries.Add(series);
+							InternalSeries.Add(series);
 						}
 
-						foreach (var series in ConvertedSeries)
+						foreach (var series in InternalSeries)
 						{
 							series.ResizeTrigger = !series.ResizeTrigger;
 						}
@@ -545,11 +546,9 @@ namespace ModernThemables.Controls
 			if (DateTime.Now - timeLastUpdated < updateLimit) return;
 
 			timeLastUpdated = DateTime.Now;
-			var xPercent = mouseLoc.X / plotAreaWidth;
-			var yPercent = 1 - mouseLoc.Y / plotAreaHeight;
 			var xVal = CurrentZoomState.XMin 
-				+ (xPercent * (CurrentZoomState.XMax - CurrentZoomState.XMin)) + xDataOffset;
-			var yVal = CurrentZoomState.YMin + (yPercent * (CurrentZoomState.YMax - CurrentZoomState.YMin));
+				+ (mouseLoc.X / plotAreaWidth * (CurrentZoomState.XMax - CurrentZoomState.XMin)) + xDataOffset;
+			var yVal = CurrentZoomState.YMin + ((1 - mouseLoc.Y / plotAreaHeight) * (CurrentZoomState.YMax - CurrentZoomState.YMin));
 
 			#region Crosshairs
 			if (IsCrosshairVisible)
@@ -577,12 +576,12 @@ namespace ModernThemables.Controls
 			#endregion
 
 			#region Find points under mouse
-			var pointsUnderMouse = new List<HoveredPointViewModel>();
-			foreach (var series in ConvertedSeries)
+			var pointsUnderMouse = new List<TooltipPointViewModel>();
+			foreach (var series in InternalSeries)
 			{
 				var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
-					ConvertedSeries.Max(x => x.Data.Max(y => y.X)) - ConvertedSeries.Min(x => x.Data.Min(y => y.X)),
-					ConvertedSeries.Max(x => x.Data.Max(y => y.Y)) - ConvertedSeries.Min(x => x.Data.Min(y => y.Y)),
+					InternalSeries.Max(x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)),
+					InternalSeries.Max(x => x.Data.Max(y => y.Y)) - InternalSeries.Min(x => x.Data.Min(y => y.Y)),
 					translatedMouseLoc.X,
 					translatedMouseLoc.Y,
 					SeriesItemsControl.ActualWidth,
@@ -596,11 +595,11 @@ namespace ModernThemables.Controls
 							hoveredChartPoint.BackingPoint.XValue,
 							hoveredChartPoint.BackingPoint.YValue)
 					|| !series.IsTranslatedMouseInBounds(
-							ConvertedSeries.Max(x => x.Data.Max(y => y.X)) - ConvertedSeries.Min(x => x.Data.Min(y => y.X)),
+							InternalSeries.Max(x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)),
 							translatedMouseLoc.X,
 							SeriesItemsControl.ActualWidth)) continue;
 
-				pointsUnderMouse.Add(new HoveredPointViewModel(
+				pointsUnderMouse.Add(new TooltipPointViewModel(
 					hoveredChartPoint,
 					new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0),
 					new SolidColorBrush(series.Stroke != null 
@@ -618,8 +617,8 @@ namespace ModernThemables.Controls
 
 			#region Tooltip
 			var nearestPoint = pointsUnderMouse.FirstOrDefault(
-				x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y)
-					== pointsUnderMouse.Min(x => Math.Abs(x.BackingPoint.Y - mouseLoc.Y)));
+				x => Math.Abs(x.Point.Y - mouseLoc.Y)
+					== pointsUnderMouse.Min(x => Math.Abs(x.Point.Y - mouseLoc.Y)));
 
 			switch (TooltipFindingStrategy)
 			{
@@ -627,18 +626,18 @@ namespace ModernThemables.Controls
 					TooltipPoints.Clear();
 					break;
 				case TooltipFindingStrategy.NearestXAllY:
-					TooltipPoints = new ObservableCollection<HoveredPointViewModel>(pointsUnderMouse);
+					TooltipPoints = new ObservableCollection<TooltipPointViewModel>(pointsUnderMouse);
 					break;
 				case TooltipFindingStrategy.NearestXNearestY:
 					if (nearestPoint != null)
-						TooltipPoints = new ObservableCollection<HoveredPointViewModel>() { nearestPoint };
+						TooltipPoints = new ObservableCollection<TooltipPointViewModel>() { nearestPoint };
 					else
 						TooltipPoints.Clear();
 					break;
 				case TooltipFindingStrategy.NearestXWithinThreshold:
-					TooltipPoints = new ObservableCollection<HoveredPointViewModel>(
+					TooltipPoints = new ObservableCollection<TooltipPointViewModel>(
 						pointsUnderMouse.Where(
-							x => Math.Abs(x.BackingPoint.X - mouseLoc.X) <= TooltipLocationThreshold));
+							x => Math.Abs(x.Point.X - mouseLoc.X) <= TooltipLocationThreshold));
 					break;
 			}
 
@@ -665,19 +664,19 @@ namespace ModernThemables.Controls
 			#endregion
 
 			#region Selected range
-			HoveredPoint = pointsUnderMouse.FirstOrDefault(
-				x => Math.Abs(x.BackingPoint.X - mouseLoc.X) == 
-					pointsUnderMouse.Min(x => Math.Abs(x.BackingPoint.X - mouseLoc.X)))?.BackingPoint;
+			MouseOverPoint = pointsUnderMouse.FirstOrDefault(
+				x => Math.Abs(x.Point.X - mouseLoc.X) == 
+					pointsUnderMouse.Min(x => Math.Abs(x.Point.X - mouseLoc.X)))?.Point;
 
-			if (IsUserSelectingRange && HoveredPoint != null && lowerSelection != null)
+			if (IsUserSelectingRange && MouseOverPoint != null && lowerSelection != null)
 			{
-				var negative = HoveredPoint.X < lowerSelection.X;
+				var negative = MouseOverPoint.X < lowerSelection.X;
 				var margin = SelectionRangeBorder.Margin;
-				margin.Left = negative ? HoveredPoint.X : lowerSelection.X;
+				margin.Left = negative ? MouseOverPoint.X : lowerSelection.X;
 				SelectionRangeBorder.Margin = margin;
 				SelectionRangeBorder.Width = negative
-					? Math.Max(lowerSelection.X - HoveredPoint.X, 0)
-					: Math.Max(HoveredPoint.X - lowerSelection.X, 0);
+					? Math.Max(lowerSelection.X - MouseOverPoint.X, 0)
+					: Math.Max(MouseOverPoint.X - lowerSelection.X, 0);
 			}
 			#endregion
 		}
@@ -719,7 +718,7 @@ namespace ModernThemables.Controls
 			_ = SetXAxisLabels(xMin + xDataOffset, xMax + xDataOffset);
 			_ = SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
-			HoveredPoint = null;
+			MouseOverPoint = null;
 			TooltipPoints.Clear();
 
 			IsZoomed = SeriesItemsControl.Margin.Left != -1 || SeriesItemsControl.Margin.Right != 0;
@@ -730,11 +729,11 @@ namespace ModernThemables.Controls
 			if (!HasGotData()) return;
 
 			isMouseDown = true;
-			if (e.ChangedButton == MouseButton.Left && HoveredPoint != null)
+			if (e.ChangedButton == MouseButton.Left && MouseOverPoint != null)
 			{
 				e.Handled = true;
-				lowerSelection = HoveredPoint;
-				SelectionRangeBorder.Margin = new Thickness(HoveredPoint.X, 0, 0, 0);
+				lowerSelection = MouseOverPoint;
+				SelectionRangeBorder.Margin = new Thickness(MouseOverPoint.X, 0, 0, 0);
 			}
 			else if (e.ChangedButton == MouseButton.Right)
 			{
@@ -755,9 +754,9 @@ namespace ModernThemables.Controls
 				return;
 			}
 
-			if (isUserDragging && lowerSelection != null && HoveredPoint != null)
+			if (isUserDragging && lowerSelection != null && MouseOverPoint != null)
 			{
-				upperSelection = HoveredPoint;
+				upperSelection = MouseOverPoint;
 				var eventData = upperSelection.X > lowerSelection.X
 					? new Tuple<IChartPoint, IChartPoint>(lowerSelection.BackingPoint, upperSelection.BackingPoint)
 					: new Tuple<IChartPoint, IChartPoint>(upperSelection.BackingPoint, lowerSelection.BackingPoint);

@@ -5,9 +5,9 @@ using System.Windows.Media;
 
 namespace ModernThemables.ViewModels.WpfChart
 {
-	internal class HoveredPointViewModel : ObservableObject
+	internal class TooltipPointViewModel : ObservableObject
 	{
-		public InternalChartPoint BackingPoint { get; }
+		public InternalChartPoint Point { get; }
 
 		public Brush Fill { get; }
 
@@ -30,14 +30,14 @@ namespace ModernThemables.ViewModels.WpfChart
 			set => SetProperty(ref wasClicked, value);
 		}
 
-		public HoveredPointViewModel(
-			InternalChartPoint hoveredPoint,
+		public TooltipPointViewModel(
+			InternalChartPoint point,
 			Thickness margin,
 			Brush fill,
 			string tooltipString,
 			double chartHeight)
 		{
-			BackingPoint = hoveredPoint;
+			Point = point;
 			Margin = margin;
 			LargeMargin = new Thickness(margin.Left - 10, margin.Top - 10, 0, 0);
 			TooltipMargin = new Thickness(margin.Left + 10, -1000, -1000, chartHeight - margin.Top);

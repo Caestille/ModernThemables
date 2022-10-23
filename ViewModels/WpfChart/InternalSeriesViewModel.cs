@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ModernThemables.ViewModels.WpfChart
 {
-	internal class ConvertedSeriesViewModel : ObservableObject
+	internal class InternalSerieViewModel : ObservableObject
 	{
 		public IEnumerable<InternalChartPoint> Data;
 
@@ -20,7 +20,7 @@ namespace ModernThemables.ViewModels.WpfChart
 
 		public IChartBrush? Fill { get; }
 
-		public Guid Guid { get; }
+		public Guid Identifier { get; }
 
 		public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter;
 
@@ -31,7 +31,7 @@ namespace ModernThemables.ViewModels.WpfChart
 			set => SetProperty(ref resizeTrigger, value);
 		}
 
-		public ConvertedSeriesViewModel(
+		public InternalSerieViewModel(
 			Guid guid,
 			IEnumerable<InternalChartPoint> data,
 			IChartBrush? stroke,
@@ -39,7 +39,7 @@ namespace ModernThemables.ViewModels.WpfChart
 			double yBuffer,
 			Func<IEnumerable<IChartPoint>, IChartPoint, string> tooltipFormatter)
 		{
-			Guid = guid;
+			Identifier = guid;
 			Data = data;
 			Stroke = stroke;
 			Fill = fill;
