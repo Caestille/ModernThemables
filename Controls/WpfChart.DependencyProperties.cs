@@ -152,7 +152,7 @@ namespace ModernThemables.Controls
 			"LegendLocation",
 			typeof(LegendLocation),
 			typeof(WpfChart),
-			new PropertyMetadata(LegendLocation.None));
+			new UIPropertyMetadata(LegendLocation.None, OnLegendLocationSet));
 
 		public TooltipFindingStrategy TooltipFindingStrategy
 		{
@@ -197,6 +197,17 @@ namespace ModernThemables.Controls
 			typeof(double),
 			typeof(WpfChart),
 			new PropertyMetadata(1d));
+
+		public new double FontSize
+		{
+			get => (double)GetValue(FontSizeProperty);
+			set => SetValue(FontSizeProperty, value);
+		}
+		public static readonly new DependencyProperty FontSizeProperty = DependencyProperty.Register(
+			"FontSize",
+			typeof(double),
+			typeof(WpfChart),
+			new PropertyMetadata(12d));
 
 		#endregion
 

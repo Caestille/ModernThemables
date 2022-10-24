@@ -22,6 +22,8 @@ namespace ModernThemables.ViewModels.WpfChart
 
 		public Guid Identifier { get; }
 
+		public string Name { get; }
+
 		public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter;
 
 		private bool resizeTrigger;
@@ -32,6 +34,7 @@ namespace ModernThemables.ViewModels.WpfChart
 		}
 
 		public InternalSerieViewModel(
+			string name,
 			Guid guid,
 			IEnumerable<InternalChartPoint> data,
 			IChartBrush? stroke,
@@ -39,6 +42,7 @@ namespace ModernThemables.ViewModels.WpfChart
 			double yBuffer,
 			Func<IEnumerable<IChartPoint>, IChartPoint, string> tooltipFormatter)
 		{
+			Name = name;
 			Identifier = guid;
 			Data = data;
 			Stroke = stroke;
