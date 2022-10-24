@@ -146,33 +146,33 @@ namespace ModernThemables.Controls
 
 			switch (chart.LegendLocation)
 			{
-				case LegendLocation.Bottom:
-					chart.LegendGrid.SetValue(Grid.RowProperty, 2);
-					chart.LegendGrid.SetValue(Grid.ColumnProperty, 1);
+				case LegendLocation.Left:
+					chart.LegendGrid.SetValue(Grid.RowProperty, 1);
+					chart.LegendGrid.SetValue(Grid.ColumnProperty, 0);
 					chart.LegendGrid.Visibility = Visibility.Visible;
-					chart.LegendGrid.Margin = new Thickness(0, 20, 0, 0);
-					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["WrapTemplate"];
+					chart.LegendGrid.Margin = new Thickness(0, 10, 15, 0);
+					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["StackTemplate"];
 					break;
 				case LegendLocation.Top:
 					chart.LegendGrid.SetValue(Grid.RowProperty, 0);
 					chart.LegendGrid.SetValue(Grid.ColumnProperty, 1);
 					chart.LegendGrid.Visibility = Visibility.Visible;
-					chart.LegendGrid.Margin = new Thickness(0, 0, 0, 20);
+					chart.LegendGrid.Margin = new Thickness(0, 0, 0, 15);
 					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["WrapTemplate"];
 					break;
 				case LegendLocation.Right:
 					chart.LegendGrid.SetValue(Grid.RowProperty, 1);
 					chart.LegendGrid.SetValue(Grid.ColumnProperty, 2);
 					chart.LegendGrid.Visibility = Visibility.Visible;
-					chart.LegendGrid.Margin = new Thickness(20, 10, 0, 0);
+					chart.LegendGrid.Margin = new Thickness(15, 10, 0, 0);
 					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["StackTemplate"];
 					break;
-				case LegendLocation.Left:
-					chart.LegendGrid.SetValue(Grid.RowProperty, 1);
-					chart.LegendGrid.SetValue(Grid.ColumnProperty, 0);
+				case LegendLocation.Bottom:
+					chart.LegendGrid.SetValue(Grid.RowProperty, 2);
+					chart.LegendGrid.SetValue(Grid.ColumnProperty, 1);
 					chart.LegendGrid.Visibility = Visibility.Visible;
-					chart.LegendGrid.Margin = new Thickness(0, 10, 20, 0);
-					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["StackTemplate"];
+					chart.LegendGrid.Margin = new Thickness(0, 15, 0, 0);
+					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["WrapTemplate"];
 					break;
 				case LegendLocation.None:
 					chart.LegendGrid.Visibility = Visibility.Collapsed;

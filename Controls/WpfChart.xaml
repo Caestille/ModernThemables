@@ -31,9 +31,9 @@
 			x:Name="LegendGrid"
 			Grid.Row="1"
 			Grid.Column="2"
-			Margin="20,10,0,10"
 			HorizontalAlignment="Left"
-			VerticalAlignment="Top">
+			VerticalAlignment="Top"
+			Cursor="Arrow">
 			<Border
 				Background="{DynamicResource MenuBrush}"
 				BorderBrush="{DynamicResource MenuBorderBrush}"
