@@ -16,7 +16,7 @@
 			<StackPanel />
 		</ItemsPanelTemplate>
 	</UserControl.Resources>
-	<Grid>
+	<Grid SizeChanged="Grid_SizeChanged">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="*" />
@@ -31,8 +31,9 @@
 			x:Name="LegendGrid"
 			Grid.Row="1"
 			Grid.Column="2"
-			HorizontalAlignment="Left"
-			VerticalAlignment="Top"
+			Margin="0"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
 			Cursor="Arrow">
 			<Border
 				Background="{DynamicResource MenuBrush}"
@@ -68,8 +69,8 @@
 		<Grid
 			Grid.Row="1"
 			Grid.Column="1"
-			ContextMenuOpening="Grid_ContextMenuOpening"
-			SizeChanged="Grid_SizeChanged">
+			Margin="0"
+			ContextMenuOpening="Grid_ContextMenuOpening">
 			<Grid.ContextMenu>
 				<ContextMenu x:Name="ContextMenu">
 					<MenuItem
