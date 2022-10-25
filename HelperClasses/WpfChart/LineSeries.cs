@@ -19,7 +19,7 @@ namespace ModernThemables.HelperClasses.WpfChart
 
 		public IChartBrush Fill { get; set; }
 
-		public Guid Guid { get; } = Guid.NewGuid();
+		public Guid Identifier { get; } = Guid.NewGuid();
 
 		public string Name { get; set; }
 

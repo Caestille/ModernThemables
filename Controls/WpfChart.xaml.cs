@@ -16,8 +16,7 @@ using CoreUtilities.HelperClasses.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
 using ModernThemables.ViewModels.WpfChart;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using ModernThemables.HelperClasses.WpfChart.Brushes;
 
 namespace ModernThemables.Controls
 {
@@ -77,13 +76,14 @@ namespace ModernThemables.Controls
 
 			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
 
-			resizeTrigger = new KeepAliveTriggerService(async () => await RenderChart(null, null, true), 100);
+			resizeTrigger = new KeepAliveTriggerService(() => { _ = RenderChart(null, null, true); }, 100);
 		}
 
 		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.Loaded -= WpfChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
 		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
@@ -138,11 +138,11 @@ namespace ModernThemables.Controls
 			if (sender is not WpfChart chart) return;
 
 			chart.IsTooltipByCursor = chart.TooltipLocation == TooltipLocation.Cursor;
-        }
+		}
 
-        private static void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (sender is not WpfChart chart) return;
+		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not WpfChart chart) return;
 
 			switch (chart.LegendLocation)
 			{
@@ -178,6 +178,9 @@ namespace ModernThemables.Controls
 					chart.LegendGrid.Visibility = Visibility.Collapsed;
 					break;
 			}
+
+			await Task.Delay(1);
+			await chart.RenderChart(null, null, true);
 		}
 
 		private void Subscribe(ObservableCollection<ISeries> series)
@@ -265,16 +268,43 @@ namespace ModernThemables.Controls
 						_ = SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
 						_ = SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
-						var collection = new List<InternalSerieViewModel>();
-						foreach (var series in invalidateAll ? Series : (addedSeries ?? new List<ISeries>()))
+						var collection = InternalSeries.Clone().ToList();
+
+						if (invalidateAll)
+						{
+							collection.Clear();
+						}
+						else
+						{
+							foreach (var series in (removedSeries ?? new List<ISeries>()))
+							{
+								collection.Remove(collection.First(x => x.Identifier == series.Identifier));
+							}
+						}
+
+						foreach (var series in invalidateAll 
+							? Series ?? new ObservableCollection<ISeries>() 
+							: addedSeries ?? new List<ISeries>())
 						{
 							if (!series.Values.Any()) continue;
 
 							var points = await GetPointsForSeries(
 								xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, series);
 
+							var matchingSeries = InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
+
 							collection.Add(new InternalSerieViewModel(
-								series.Name, series.Guid, points, series.Stroke, series.Fill, yBuffer, series.TooltipLabelFormatter));
+								series.Name,
+								series.Identifier,
+								points,
+								invalidateAll
+									? matchingSeries != null ? matchingSeries.Stroke : series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50))
+									: series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
+								invalidateAll
+									? matchingSeries != null ? matchingSeries.Fill : series.Fill
+									: series.Fill,
+								yBuffer,
+								series.TooltipLabelFormatter));
 
 							var seriesYMin = series.Values.Min(z => z.YValue);
 							var seriesYMax = series.Values.Max(z => z.YValue);
@@ -296,19 +326,7 @@ namespace ModernThemables.Controls
 						// Force layout update so sizes are correct before rendering points
 						this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
-						if (invalidateAll)
-						{
-							InternalSeries.Clear();
-						}
-						else
-						{
-							foreach (var series in (removedSeries ?? new List<ISeries>()))
-							{
-								InternalSeries.Remove(InternalSeries.First(x => x.Identifier == series.Guid));
-							}
-						}
-
-						foreach (var series in InternalSeries)
+						foreach (var series in collection)
 						{
 							var points = await GetPointsForSeries(
 								xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, Series.First(
@@ -316,10 +334,7 @@ namespace ModernThemables.Controls
 							series.UpdatePoints(points);
 						}
 
-						foreach (var series in collection)
-						{
-							InternalSeries.Add(series);
-						}
+						InternalSeries = new ObservableCollection<InternalSerieViewModel>(collection);
 
 						foreach (var series in InternalSeries)
 						{

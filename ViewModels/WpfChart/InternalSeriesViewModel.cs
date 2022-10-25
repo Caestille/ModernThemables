@@ -120,7 +120,7 @@ namespace ModernThemables.ViewModels.WpfChart
 				sb.Append($" {pointType}{point.X} {point.Y}");
 			}
 			var ret = sb.ToString();
-			ret += $" L{data.Last().X} {data.First().Y}";
+			//ret += $" L{data.Last().X} {data.First().Y}";
 			return ret;
 		}
 	}
