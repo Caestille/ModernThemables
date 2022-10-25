@@ -101,38 +101,6 @@ namespace ModernThemables.Controls
 			IsZoomed = false;
 		}
 
-		#region Subscribe to series'
-
-		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not WpfChart chart) return;
-
-			if (chart.Series == null)
-			{
-				foreach (var series in chart.subscribedSeries)
-				{
-					series.PropertyChanged -= chart.Series_PropertyChanged;
-				}
-
-				return;
-			}
-
-			chart.Subscribe(chart.Series);
-			chart.hasSetSeries = true;
-
-			if (!chart.Series.Any() || !chart.Series.Any(x => x.Values.Any())) return;
-
-			chart.CurrentZoomState = new ZoomState(
-				chart.Series.Min(x => x.Values.Min(y => y.XValue)),
-				chart.Series.Max(x => x.Values.Max(y => y.XValue)),
-				chart.Series.Min(x => x.Values.Min(y => y.YValue)),
-				chart.Series.Max(x => x.Values.Max(y => y.YValue)),
-				0,
-				yBuffer);
-
-			_ = chart.RenderChart(null, null, true);
-		}
-
 		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not WpfChart chart) return;
@@ -181,6 +149,38 @@ namespace ModernThemables.Controls
 
 			await Task.Delay(1);
 			await chart.RenderChart(null, null, true);
+		}
+
+		#region Subscribe to series'
+
+		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not WpfChart chart) return;
+
+			if (chart.Series == null)
+			{
+				foreach (var series in chart.subscribedSeries)
+				{
+					series.PropertyChanged -= chart.Series_PropertyChanged;
+				}
+
+				return;
+			}
+
+			chart.Subscribe(chart.Series);
+			chart.hasSetSeries = true;
+
+			if (!chart.Series.Any() || !chart.Series.Any(x => x.Values.Any())) return;
+
+			chart.CurrentZoomState = new ZoomState(
+				chart.Series.Min(x => x.Values.Min(y => y.XValue)),
+				chart.Series.Max(x => x.Values.Max(y => y.XValue)),
+				chart.Series.Min(x => x.Values.Min(y => y.YValue)),
+				chart.Series.Max(x => x.Values.Max(y => y.YValue)),
+				0,
+				yBuffer);
+
+			_ = chart.RenderChart(null, null, true);
 		}
 
 		private void Subscribe(ObservableCollection<ISeries> series)
@@ -265,9 +265,6 @@ namespace ModernThemables.Controls
 				{
 					await Application.Current.Dispatcher.InvokeAsync(async () =>
 					{
-						_ = SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
-						_ = SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
-
 						var collection = InternalSeries.Clone().ToList();
 
 						if (invalidateAll)
@@ -313,15 +310,23 @@ namespace ModernThemables.Controls
 							series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 						}
 
-						if (Series.Any() && Math.Round(currentZoomLevel, 1) != 1)
+						if (Series.Any())
 						{
+							var localXMin = Math.Round(currentZoomLevel, 1) == 1 ? xMin : CurrentZoomState.XMin;
+							var localXMax = Math.Round(currentZoomLevel, 1) == 1 ? xMax : CurrentZoomState.XMax;
+							var offset = Math.Round(currentZoomLevel, 1) == 1 ? 0 : CurrentZoomState.XOffset;
+
 							var zoomYMin = Series.Min(
-							x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Min(z => z.YValue));
+								x => x.Values.Where(y => y.XValue <= localXMax && y.XValue >= localXMin).Min(z => z.YValue));
 							var zoomYMax = Series.Max(
-								x => x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin).Max(z => z.YValue));
+								x => x.Values.Where(y => y.XValue <= localXMax && y.XValue >= localXMin).Max(z => z.YValue));
+
 							CurrentZoomState
-								= new ZoomState(xMin, xMax, zoomYMin, zoomYMax, CurrentZoomState.XOffset, yBuffer);
+								= new ZoomState(localXMin, localXMax, zoomYMin, zoomYMax, offset, yBuffer);
 						}
+
+						_ = SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
+						_ = SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
 						// Force layout update so sizes are correct before rendering points
 						this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
