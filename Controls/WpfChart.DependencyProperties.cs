@@ -209,6 +209,28 @@ namespace ModernThemables.Controls
 			typeof(WpfChart),
 			new PropertyMetadata(12d));
 
+		public double Min
+		{
+			get => (double)GetValue(MinProperty);
+			set => SetValue(MinProperty, value);
+		}
+		public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
+			"Min",
+			typeof(double),
+			typeof(WpfChart),
+			new UIPropertyMetadata(-1d, OnSetMinMax));
+
+		public double Max
+		{
+			get => (double)GetValue(MaxProperty);
+			set => SetValue(MaxProperty, value);
+		}
+		public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
+			"Max",
+			typeof(double),
+			typeof(WpfChart),
+			new UIPropertyMetadata(-1d, OnSetMinMax));
+
 		#endregion
 
 		#region Private properties
@@ -343,7 +365,7 @@ namespace ModernThemables.Controls
 			"CurrentZoomState",
 			typeof(ZoomState),
 			typeof(WpfChart),
-			new PropertyMetadata(new ZoomState(0, 0, 0, 0, 0, yBuffer)));
+			new UIPropertyMetadata(new ZoomState(0, 0, 0, 0, 0, yBuffer), OnSetZoomState));
 		
 		private bool HasData
 		{

@@ -44,6 +44,8 @@ namespace ModernThemables.Controls
 		private bool tooltipLeft;
 		private bool tooltipTop = true;
 
+		private bool preventTrigger;
+
 		private bool isMouseDown;
 		private bool isUserDragging;
 		private bool userCouldBePanning;
@@ -79,26 +81,9 @@ namespace ModernThemables.Controls
 			resizeTrigger = new KeepAliveTriggerService(() => { _ = RenderChart(null, null, true); }, 100);
 		}
 
-		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
-		{
-			this.Loaded -= WpfChart_Loaded;
-			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
-			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
-		}
-
-		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
-		{
-			resizeTrigger.Stop();
-			foreach (var series in subscribedSeries)
-			{
-				series.PropertyChanged -= Series_PropertyChanged;
-			}
-		}
-
 		public void ResetZoom()
 		{
 			CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, 0, yBuffer, true);
-			IsZoomed = false;
 		}
 
 		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -106,6 +91,71 @@ namespace ModernThemables.Controls
 			if (sender is not WpfChart chart) return;
 
 			chart.IsTooltipByCursor = chart.TooltipLocation == TooltipLocation.Cursor;
+		}
+
+		private static void OnSetMinMax(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not WpfChart chart || chart.Min == -1d || chart.Max == -1d || !chart.Series.Any()) return;
+
+			if (chart.preventTrigger) return;
+
+			chart.CurrentZoomState = new ZoomState(chart.Min, chart.Max, chart.yMin, chart.yMax, 0, yBuffer, true);
+		}
+
+		private static void OnSetZoomState(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not WpfChart chart) return;
+
+			bool setY = false;
+
+			var seriesWithInRange = chart.Series.Select(x =>
+			{
+				var list = new List<IChartPoint>();
+				list.AddRange(
+					x.Values.Where(
+						y => y.XValue <= chart.CurrentZoomState.XMax && y.XValue >= chart.CurrentZoomState.XMin));
+				return list;
+			}).Where(x => x.Any());
+
+			if (!seriesWithInRange.Any()) return;
+
+			var yMin = seriesWithInRange.Min(x => x.Min(y => y.YValue));
+			var yMax = seriesWithInRange.Max(x => x.Max(y => y.YValue));
+
+			var expand = (yMax - yMin) * yBuffer;
+			if (Math.Abs(yMin - (chart.CurrentZoomState.YMin + expand)) > 0.0001 
+				|| Math.Abs(yMax - (chart.CurrentZoomState.YMax - expand)) > 0.0001)
+			{
+				setY = true;
+				chart.CurrentZoomState = new ZoomState(
+					chart.CurrentZoomState.XMin,
+					chart.CurrentZoomState.XMax,
+					yMin,
+					yMax,
+					chart.CurrentZoomState.XOffset,
+					yBuffer,
+					true);
+			}
+
+			if (setY) return;
+
+			if (Math.Abs(chart.Min - chart.CurrentZoomState.XMin) > 0.0001 
+				|| Math.Abs(chart.Max - chart.CurrentZoomState.XMax) > 0.0001)
+			{
+				chart.preventTrigger = true;
+				chart.Min = chart.CurrentZoomState.XMin;
+				chart.Max = chart.CurrentZoomState.XMax;
+				chart.preventTrigger = false;
+			}
+
+			_ = chart.SetXAxisLabels(chart.CurrentZoomState.XMin + chart.xDataOffset, chart.CurrentZoomState.XMax + chart.xDataOffset);
+			_ = chart.SetYAxisLabels(chart.CurrentZoomState.YMin, chart.CurrentZoomState.YMax);
+
+			chart.MouseOverPoint = null;
+			chart.TooltipPoints.Clear();
+
+			chart.IsZoomed = chart.SeriesItemsControl.Margin.Left != -1 || chart.SeriesItemsControl.Margin.Right != 0;
+			chart.currentZoomLevel = (chart.xMax - chart.xMin) / (chart.Max - chart.Min);
 		}
 
 		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -316,17 +366,8 @@ namespace ModernThemables.Controls
 							var localXMax = Math.Round(currentZoomLevel, 1) == 1 ? xMax : CurrentZoomState.XMax;
 							var offset = Math.Round(currentZoomLevel, 1) == 1 ? 0 : CurrentZoomState.XOffset;
 
-							var zoomYMin = Series.Min(
-								x => x.Values.Where(y => y.XValue <= localXMax && y.XValue >= localXMin).Min(z => z.YValue));
-							var zoomYMax = Series.Max(
-								x => x.Values.Where(y => y.XValue <= localXMax && y.XValue >= localXMin).Max(z => z.YValue));
-
-							CurrentZoomState
-								= new ZoomState(localXMin, localXMax, zoomYMin, zoomYMax, offset, yBuffer);
+							CurrentZoomState = new ZoomState(localXMin, localXMax, yMin, yMax, offset, yBuffer);
 						}
-
-						_ = SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
-						_ = SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
 
 						// Force layout update so sizes are correct before rendering points
 						this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
@@ -598,13 +639,13 @@ namespace ModernThemables.Controls
 						zoomOffset,
 						yBuffer,
 						false);
-					_ = SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
+					//_ = SetXAxisLabels(CurrentZoomState.XMin + xDataOffset, CurrentZoomState.XMax + xDataOffset);
 				}
 			}
 			lastMouseMovePoint = mouseLoc;
 			#endregion
 
-			if (DateTime.Now - timeLastUpdated < updateLimit) return;
+			if (DateTime.Now - timeLastUpdated < updateLimit || isUserPanning) return;
 
 			timeLastUpdated = DateTime.Now;
 			var xVal = CurrentZoomState.XMin 
@@ -762,27 +803,11 @@ namespace ModernThemables.Controls
 			var xDiff = currXRange - newXRange;
 			xMin = xMin + xDiff * zoomCentre;
 			xMax = xMax - xDiff * (1 - zoomCentre);
-			var seriesWithInRange = Series.Select(x => 
-				{ 
-					var list = new List<IChartPoint>();
-					list.AddRange(x.Values.Where(y => y.XValue <= xMax && y.XValue >= xMin));
-					return list; 
-				}).Where(x => x.Any());
-			var yMin = seriesWithInRange.Min(x => x.Min(y => y.YValue));
-			var yMax = seriesWithInRange.Max(x => x.Max(y => y.YValue));
 
 			if (Math.Round(currentZoomLevel, 1) != 1)
 			{
 				CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, zoomOffset, yBuffer);
 			}
-
-			_ = SetXAxisLabels(xMin + xDataOffset, xMax + xDataOffset);
-			_ = SetYAxisLabels(CurrentZoomState.YMin, CurrentZoomState.YMax);
-
-			MouseOverPoint = null;
-			TooltipPoints.Clear();
-
-			IsZoomed = SeriesItemsControl.Margin.Left != -1 || SeriesItemsControl.Margin.Right != 0;
 		}
 
 		private void MouseCaptureGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -856,6 +881,22 @@ namespace ModernThemables.Controls
 		private void YAxisItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			ignoreNextMouseMove = true;
+		}
+
+		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
+		{
+			this.Loaded -= WpfChart_Loaded;
+			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
+		}
+
+		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
+		{
+			resizeTrigger.Stop();
+			foreach (var series in subscribedSeries)
+			{
+				series.PropertyChanged -= Series_PropertyChanged;
+			}
 		}
 	}
 }
