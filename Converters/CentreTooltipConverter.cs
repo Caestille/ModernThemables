@@ -6,6 +6,9 @@ using System.Windows.Data;
 
 namespace ModernThemables.Converters
 {
+    /// <summary>
+    /// Finds the centre point of a tooltip.
+    /// </summary>
     public class CentreToolTipConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

@@ -5,34 +5,78 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Shapes;
 
 namespace ModernThemables.ViewModels.WpfChart
 {
+	/// <summary>
+	/// A view model for an internal representation of a series used by the <see cref="WpfChart"/>.
+	/// </summary>
 	internal class InternalSerieViewModel : ObservableObject
 	{
+		/// <summary>
+		/// The data making up the rendered points in pixels scale.
+		/// </summary>
 		public IEnumerable<InternalChartPoint> Data;
 
+		/// <summary>
+		/// The string used the render the series line using a <see cref="Path"/>.
+		/// </summary>
 		public string PathStrokeData { get; }
 
+		/// <summary>
+		/// The string used the render the series fill using a <see cref="Path"/>. Due to how paths render a fill, this
+		/// may not be identical to the <see cref="PathStrokeData"/>.
+		/// </summary>
 		public string PathFillData { get; }
 
+		/// <summary>
+		/// The <see cref="IChartBrush"/> the path stroke uses to colour itself.
+		/// </summary>
 		public IChartBrush? Stroke { get; }
 
+		/// <summary>
+		/// The <see cref="IChartBrush"/> the path fill uses to colour itself.
+		/// </summary>
 		public IChartBrush? Fill { get; }
 
+		/// <summary>
+		/// A unique identifier, used to relate to a <see cref="ISeries.Identifier"/>.
+		/// </summary>
 		public Guid Identifier { get; }
 
+		/// <summary>
+		/// The series name for the legend.
+		/// </summary>
 		public string Name { get; }
 
+		/// <summary>
+		/// A <see cref="Func{T1, T2, TResult}"/> used to format the tooltip string.
+		/// </summary>
 		public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter;
 
 		private bool resizeTrigger;
+		/// <summary>
+		/// A <see cref="bool"/> property used to for the series to resize itself when desired by triggering a
+		/// converter.
+		/// </summary>
 		public bool ResizeTrigger
 		{
 			get => resizeTrigger;
 			set => SetProperty(ref resizeTrigger, value);
 		}
 
+		/// <summary>
+		/// Initialises a new <see cref="InternalSerieViewModel"/>.
+		/// </summary>
+		/// <param name="name">The series name.</param>
+		/// <param name="guid">The unique identifier.</param>
+		/// <param name="data">The data this series represents.</param>
+		/// <param name="stroke">The <see cref="IChartBrush"/> path stroke.</param>
+		/// <param name="fill">The <see cref="IChartBrush"/> path fill.</param>
+		/// <param name="yBuffer">The distance by which the extremes in the yDirection will be reduced by to maintain
+		/// an empty border to the chart.</param>
+		/// <param name="tooltipFormatter">The Func used to format the tooltip string.</param>
 		public InternalSerieViewModel(
 			string name,
 			Guid guid,
@@ -63,6 +107,25 @@ namespace ModernThemables.ViewModels.WpfChart
 				$"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
 		}
 
+		/// <summary>
+		/// Given a cursor coordinate scaled to match the scaled series (if required), returns a chart point reverse
+		/// scaled to the cursor scaling under the cursor.
+		/// </summary>
+		/// <param name="dataWidth">The width of the data in the data representation (i.e.: not pixels).</param>
+		/// <param name="dataHeight">The height of the data in the data representation</param>
+		/// <param name="mouseX">The scaled cursor X coordinate.</param>
+		/// <param name="mouseY">The scaled cursor Y coordinate.</param>
+		/// <param name="zoomWidth">The current height of the container for these points. As the points here are not
+		/// scaled by point, but instead the container stretched, this is used to determine the zoom level in X.
+		/// </param>
+		/// <param name="zoomHeight">The current width of the container for these points. As the points here are not
+		/// scaled by point, but instead the container stretched, this is used to determine the zoom level in Y.
+		/// </param>
+		/// <param name="xLeftOffset">The offset in pixels in the X direction for panning/zooming.</param>
+		/// <param name="yTopOffset">The offset in pixels in the Y direction for panning/zooming.</param>
+		/// <param name="yBuffer">The fractional distance by which the y direction is scaled to create a margin.
+		/// </param>
+		/// <returns></returns>
 		public InternalChartPoint? GetChartPointUnderTranslatedMouse(
 			double dataWidth,
 			double dataHeight,
@@ -95,11 +158,25 @@ namespace ModernThemables.ViewModels.WpfChart
 			return new InternalChartPoint(x, y, hoveredChartPoint.BackingPoint);
 		}
 
+		/// <summary>
+		/// Updates the internal points for tooltip finding purposes without updating anything else, since the path
+		/// itself scales to fit its container, it is never re-rendered to match these points.
+		/// </summary>
+		/// <param name="data">The new data.</param>
 		public void UpdatePoints(IEnumerable<InternalChartPoint> data)
 		{
 			Data = data;
 		}
 
+		/// <summary>
+		/// Indicates whether mouse coordinates scaled to match the scaled series, are inside the bounds of the series
+		/// (only in the X direction).
+		/// </summary>
+		/// <param name="dataWidth">The width of the data in the data coordinate (i.e.: not pixels).</param>
+		/// <param name="mouseX">The cursor X coordinate in pixels.</param>
+		/// <param name="zoomWidth">The width of the series container in pixels (due to zoom).</param>
+		/// <returns>A <see cref="bool"/> indicating whether the cursor X coordinate is within the bounds of the 
+		/// (potentially scaled) series.</returns>
 		public bool IsTranslatedMouseInBounds(double dataWidth, double mouseX, double zoomWidth)
 		{
 			var xZoom = zoomWidth / dataWidth;

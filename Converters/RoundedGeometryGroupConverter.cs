@@ -6,6 +6,9 @@ using System.Windows.Media;
 
 namespace ModernThemables.Converters
 {
+	/// <summary>
+	/// Creates a geometry group which matches the size of an input but with rounded corners.
+	/// </summary>
 	public class RoundedGeometryGroupConverter : IMultiValueConverter
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

@@ -6,6 +6,12 @@ using System.Windows.Data;
 
 namespace ModernThemables.Converters
 {
+	/// <summary>
+	/// Given a <see cref="double"/> value, returns a <see cref="Thickness"/> which is that value across all edges,
+	/// unless a converter parameter of the format
+	/// [left multiplier]-[top multiplier]-[right multiplier]-[bottom multiplier] is supplied, in which case the value
+	/// is multipled by the multiplier for the respective edge.
+	/// </summary>
 	public class DoubleToBorderThicknessConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -21,7 +27,11 @@ namespace ModernThemables.Converters
 				var topWeighting = weightingsArray[1];
 				var bottomWeighting = weightingsArray[3];
 
-				return new Thickness(inValue * leftWeighting, inValue * topWeighting, inValue * rightWeighting, inValue * bottomWeighting);
+				return new Thickness(
+					inValue * leftWeighting,
+					inValue * topWeighting,
+					inValue * rightWeighting,
+					inValue * bottomWeighting);
 			}
 			else
 			{
@@ -30,7 +40,11 @@ namespace ModernThemables.Converters
 				var topWeighting = 1;
 				var bottomWeighting = 1;
 
-				return new Thickness(inValue * leftWeighting, inValue * topWeighting, inValue * rightWeighting, inValue * bottomWeighting);
+				return new Thickness(
+					inValue * leftWeighting,
+					inValue * topWeighting,
+					inValue * rightWeighting,
+					inValue * bottomWeighting);
 			}
 		}
 

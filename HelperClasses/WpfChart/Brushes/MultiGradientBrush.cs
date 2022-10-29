@@ -5,8 +5,14 @@ using System.Windows.Media;
 
 namespace ModernThemables.HelperClasses.WpfChart.Brushes
 {
+	/// <summary>
+	/// A brush with 4 <see cref="Color"/>s across its vertical span.
+	/// <see cref="Reevaluate(double, double, double, double, double, double)"/> Adjusts the crossing over point
+	/// between the top two and bottomr two <see cref="Color"/>s.
+	/// </summary>
 	public sealed class MultiGradientBrush : IChartBrush
 	{
+		/// <inheritdoc />
 		public Brush CoreBrush { get; private set; }
 
 		private Color topColour;
@@ -18,6 +24,15 @@ namespace ModernThemables.HelperClasses.WpfChart.Brushes
 		private double yMin;
 		private double yCentre;
 
+		/// <summary>
+		/// Initialises a new <see cref="MultiGradientBrush"/>.
+		/// </summary>
+		/// <param name="topColour">The <see cref="Color"/> at the top of the brush.</param>
+		/// <param name="topCentreColour">The <see cref="Color"/> at the upper side of the crossing over point of the
+		/// brush.</param>
+		/// <param name="bottomCentreColour">The <see cref="Color"/> at the lower side of the crossing over point of
+		/// the brush.</param>
+		/// <param name="bottomColour">The <see cref="Color"/> at the bottom of the brush.</param>
 		public MultiGradientBrush(Color topColour, Color topCentreColour, Color bottomCentreColour, Color bottomColour)
 		{
 			CoreBrush = new LinearGradientBrush();
@@ -27,6 +42,7 @@ namespace ModernThemables.HelperClasses.WpfChart.Brushes
 			this.bottomCentreColour = bottomCentreColour;
 		}
 
+		/// <inheritdoc />
 		public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre)
 		{
 			this.yMax = yMax;
@@ -47,6 +63,7 @@ namespace ModernThemables.HelperClasses.WpfChart.Brushes
 			CoreBrush = new LinearGradientBrush(collection, angle: 90);
 		}
 
+		/// <inheritdoc />
 		public Color ColourAtPoint(double x, double y)
 		{
 			if (y >= yMax)

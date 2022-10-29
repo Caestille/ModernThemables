@@ -2,7 +2,6 @@
 using ModernThemables.Interfaces;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -10,6 +9,12 @@ using System.Windows.Data;
 
 namespace ModernThemables.Converters
 {
+	/// <summary>
+	/// Given a <see cref="ZoomState"/>, collection of <see cref="ISeries"/>' and a host 
+	/// <see cref="FrameworkElement"/>, returns a <see cref="Thickness"/> which is the margin of a hosted item
+	/// displaying the rendered <see cref="ISeries"/> in order to scale them according to the <see cref="ZoomState"/>
+	/// properties.
+	/// </summary>
 	public class ChartZoomConverter : IMultiValueConverter
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

@@ -5,12 +5,16 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using ModernThemables.Extensions;
 using CoreUtilities.Interfaces.RegistryInteraction;
 using CoreUtilities.Services.RegistryInteraction;
+using System.Timers;
+using CoreUtilities.HelperClasses.Extensions;
 
 namespace ModernThemables.ViewModels
 {
+	/// <summary>
+	/// A view model for a theming control to interact with the theme status of an application with.
+	/// </summary>
 	public partial class ThemingControlViewModel : ObservableObject
 	{
 		[DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
@@ -29,8 +33,13 @@ namespace ModernThemables.ViewModels
 		private Color? themeBeforeSync;
 		private Color? themeBeforeMono;
 
-		private System.Timers.Timer osThemePollTimer = new System.Timers.Timer(1000);
+		private IRegistryService registryService;
 
+		private Timer osThemePollTimer = new Timer(1000);
+
+		/// <summary>
+		/// Gets or sets the current Theme colour.
+		/// </summary>
 		public Color ThemeColourProperty
 		{
 			get => ThemeColour;
@@ -64,6 +73,9 @@ namespace ModernThemables.ViewModels
 		}
 
 		private bool isSyncingWithOs;
+		/// <summary>
+		/// Gets or sets whether the theme is being synchronised with the OS.
+		/// </summary>
 		public bool IsSyncingWithOs
 		{
 			get => isSyncingWithOs;
@@ -75,9 +87,10 @@ namespace ModernThemables.ViewModels
 			}
 		}
 
-		private IRegistryService registryService;
-
 		private bool isDarkMode;
+		/// <summary>
+		/// Gets or sets whether the theme is Dark or Light.
+		/// </summary>
 		public bool IsDarkMode
 		{
 			get => isDarkMode;
@@ -89,6 +102,10 @@ namespace ModernThemables.ViewModels
 		}
 
 		private bool isMonoTheme;
+		/// <summary>
+		/// Gets or sets whether the theme is enforced to be monochromatic. When true, each component of the colour is
+		/// alighed automatically to the changed component by the user.
+		/// </summary>
 		public bool IsMonoTheme
 		{
 			get => isMonoTheme;
@@ -103,11 +120,14 @@ namespace ModernThemables.ViewModels
 				}
 				themeBeforeMono = ThemeColour;
 				var mean = (ThemeColour.R + ThemeColour.G + ThemeColour.B) / 3;
-				ThemeColour = ColourHelpers.MonoColour((byte)mean);
+				ThemeColour = MonoColour((byte)mean);
 				SetThemeColour(ThemeColour);
 			}
 		}
 
+		/// <summary>
+		/// Initialises a new <see cref="ThemingControlViewModel"/>.
+		/// </summary>
 		public ThemingControlViewModel()
 		{
 			this.registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
@@ -242,7 +262,11 @@ namespace ModernThemables.ViewModels
 			ThemeTextColour = isThemeDark ? Colors.White : Colors.Black;
 			ThemeStatusColour = isThemeDark ? Colors.LightGray : Colors.DimGray;
 
-			var desiredBrightness = Math.Min(Math.Max(ThemeBackgroundColour.PerceivedBrightness() + (isThemeDark ? 0.15 : -0.15), 0), 1);
+			var desiredBrightness = Math.Min(
+				Math.Max(
+					ThemeBackgroundColour.PerceivedBrightness() + (isThemeDark ? 0.15 : -0.15),
+					0),
+				1);
 			ThemeDisabledTextColour = Colors.Black;
 			var themeDisabledTextPerceivedBrightness = ThemeDisabledTextColour.PerceivedBrightness();
 			var count = 0;
@@ -273,18 +297,25 @@ namespace ModernThemables.ViewModels
 			var threshold = isDarkMode ? 0.03 : 0.03;
 			var diffFactor = isDarkMode ? -1 : 1;
 			var modifierFactor = -modifier / (isDarkMode ? 1 : 2) * perceivedBrightnessFactor;
-			ThemeNearBackgroundColour.SetNearBackgroundColour(compare, background, ThemeColour, diffFactor, threshold, modifierFactor);
-			ThemeBackgroundNearBackgroundColour.SetNearBackgroundColour(compare, background, ThemeBackgroundColour, diffFactor, threshold, modifierFactor);
-			ThemeMouseOverNearBackgroundColour.SetNearBackgroundColour(compare, background, ThemeMouseOverColour, diffFactor, threshold, modifierFactor);
-			ThemeMouseDownNearBackgroundColour.SetNearBackgroundColour(compare, background, ThemeMouseDownColour, diffFactor, threshold, modifierFactor);
+			ThemeNearBackgroundColour.AdjustBrightnessIfNearColour(
+				compare, background, ThemeColour, diffFactor, threshold, modifierFactor);
+			ThemeBackgroundNearBackgroundColour.AdjustBrightnessIfNearColour(
+				compare, background, ThemeBackgroundColour, diffFactor, threshold, modifierFactor);
+			ThemeMouseOverNearBackgroundColour.AdjustBrightnessIfNearColour(
+				compare, background, ThemeMouseOverColour, diffFactor, threshold, modifierFactor);
+			ThemeMouseDownNearBackgroundColour.AdjustBrightnessIfNearColour(
+				compare, background, ThemeMouseDownColour, diffFactor, threshold, modifierFactor);
 
 			Application.Current.Resources["ThemeBackgroundBrush"] = new SolidColorBrush(ThemeBackgroundColour);
 			Application.Current.Resources["ThemeMouseOverBrush"] = new SolidColorBrush(ThemeMouseOverColour);
 			Application.Current.Resources["ThemeMouseDownBrush"] = new SolidColorBrush(ThemeMouseDownColour);
 			Application.Current.Resources["ThemeNearBackgroundBrush"] = new SolidColorBrush(ThemeNearBackgroundColour);
-			Application.Current.Resources["ThemeBackgroundNearBackgroundBrush"] = new SolidColorBrush(ThemeBackgroundNearBackgroundColour);
-			Application.Current.Resources["ThemeMouseOverNearBackgroundBrush"] = new SolidColorBrush(ThemeMouseOverNearBackgroundColour);
-			Application.Current.Resources["ThemeMouseDownNearBackgroundBrush"] = new SolidColorBrush(ThemeMouseDownNearBackgroundColour);
+			Application.Current.Resources["ThemeBackgroundNearBackgroundBrush"]
+				= new SolidColorBrush(ThemeBackgroundNearBackgroundColour);
+			Application.Current.Resources["ThemeMouseOverNearBackgroundBrush"]
+				= new SolidColorBrush(ThemeMouseOverNearBackgroundColour);
+			Application.Current.Resources["ThemeMouseDownNearBackgroundBrush"]
+				= new SolidColorBrush(ThemeMouseDownNearBackgroundColour);
 		}
 
 		private void OsThemePollTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -297,6 +328,11 @@ namespace ModernThemables.ViewModels
 		{
 			osThemePollTimer.Elapsed -= OsThemePollTimer_Elapsed;
 			osThemePollTimer.Stop();
+		}
+
+		private static Color MonoColour(byte value)
+		{
+			return Color.FromArgb(255, value, value, value);
 		}
 	}
 }

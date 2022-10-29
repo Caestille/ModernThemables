@@ -7,6 +7,10 @@ using System.Windows.Data;
 
 namespace ModernThemables.Converters
 {
+	/// <summary>
+	/// Moves all but the first series up by the height of their container to make them appear to overlap when using
+	/// and items control that would stack them vertically.
+	/// </summary>
 	public class SeriesOverlapMarginConverter : IMultiValueConverter
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

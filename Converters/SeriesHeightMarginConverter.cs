@@ -1,9 +1,6 @@
-﻿using ModernThemables.HelperClasses.WpfChart;
-using ModernThemables.Interfaces;
-using ModernThemables.ViewModels.WpfChart;
+﻿using ModernThemables.ViewModels.WpfChart;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -11,6 +8,10 @@ using System.Windows.Data;
 
 namespace ModernThemables.Converters
 {
+	/// <summary>
+	/// Scales a series relative to other series according to container size inputs to make them scale relative to each
+	/// other correctly when zoomed in the Y direction.
+	/// </summary>
 	public class SeriesHeightMarginConverter : IMultiValueConverter
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

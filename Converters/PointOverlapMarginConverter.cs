@@ -7,6 +7,10 @@ using ModernThemables.ViewModels.WpfChart;
 
 namespace ModernThemables.Converters
 {
+	/// <summary>
+	/// Moves all but the first item up by the height of the container to allow them to appear to overlap using an
+	/// items control.
+	/// </summary>
 	public class PointOverlapMarginConverter : IMultiValueConverter
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

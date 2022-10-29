@@ -5,6 +5,11 @@ using System.Windows.Data;
 
 namespace ModernThemables.Converters
 {
+	/// <summary>
+	/// For a given <see cref="Color"/>, and <see cref="string"/> parameter dictating the component of the colour to
+	/// return (e.g.: 'R', 'G', 'B'), returns the desired component. In reverse the latest of each component is
+	/// cached and the resulting colour returned.
+	/// </summary>
 	public class ColourRgbConverter : IValueConverter
 	{
 		private byte r;
