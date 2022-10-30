@@ -239,14 +239,14 @@
 											</MultiBinding>
 										</Grid.Margin>
 										<Path
-											Data="{Binding PathFillData}"
+											Data="{Binding PathFillData, UpdateSourceTrigger=PropertyChanged}"
 											Fill="{Binding Fill.CoreBrush}"
 											IsHitTestVisible="False"
 											Stretch="Fill"
 											StrokeLineJoin="Bevel"
 											StrokeThickness="1.5" />
 										<Path
-											Data="{Binding PathStrokeData}"
+											Data="{Binding PathStrokeData, UpdateSourceTrigger=PropertyChanged}"
 											IsHitTestVisible="False"
 											Stretch="Fill"
 											Stroke="{Binding Stroke.CoreBrush}"

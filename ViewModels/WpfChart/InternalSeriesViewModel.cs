@@ -3,6 +3,7 @@ using ModernThemables.HelperClasses.WpfChart;
 using ModernThemables.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Shapes;
@@ -19,16 +20,26 @@ namespace ModernThemables.ViewModels.WpfChart
 		/// </summary>
 		public IEnumerable<InternalChartPoint> Data;
 
+		private string pathStrokeData;
 		/// <summary>
 		/// The string used the render the series line using a <see cref="Path"/>.
 		/// </summary>
-		public string PathStrokeData { get; }
+		public string PathStrokeData
+		{
+			get => pathStrokeData;
+			set => SetProperty(ref pathStrokeData, value);
+		}
 
+		private string pathFillData;
 		/// <summary>
 		/// The string used the render the series fill using a <see cref="Path"/>. Due to how paths render a fill, this
 		/// may not be identical to the <see cref="PathStrokeData"/>.
 		/// </summary>
-		public string PathFillData { get; }
+		public string PathFillData
+		{
+			get => pathFillData;
+			set => SetProperty(ref pathFillData, value);
+		}
 
 		/// <summary>
 		/// The <see cref="IChartBrush"/> the path stroke uses to colour itself.
