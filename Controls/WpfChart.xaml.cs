@@ -223,18 +223,7 @@ namespace ModernThemables.Controls
 
 			if (!chart.Series.Any() || !chart.Series.Any(x => x.Values.Any())) return;
 
-			chart.xMin = chart.Series != null && chart.Series.Where(x => x.Values.Any()).Any()
-				? chart.Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.XValue)) : 0;
-			chart.xMax = chart.Series != null && chart.Series.Where(x => x.Values.Any()).Any()
-				? chart.Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.XValue)) : 0;
-			chart.yMin = chart.Series != null && chart.Series.Where(x => x.Values.Any()).Any()
-				? chart.Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) : 0;
-			chart.yMax = chart.Series != null && chart.Series.Where(x => x.Values.Any()).Any()
-				? chart.Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) : 0;
-			chart.yMinExpanded = chart.Series != null && chart.Series.Where(x => x.Values.Any()).Any()
-				? chart.Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) - (chart.yMax - chart.yMin) * yBuffer : 0;
-			chart.yMaxExpanded = chart.Series != null && chart.Series.Where(x => x.Values.Any()).Any()
-				? chart.Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) + (chart.yMax - chart.yMin) * yBuffer : 0;
+			chart.CacheDataLimits();
 
 			chart.CurrentZoomState = new ZoomState(
 				chart.Series.Min(x => x.Values.Min(y => y.XValue)),
@@ -245,6 +234,22 @@ namespace ModernThemables.Controls
 				yBuffer);
 
 			_ = chart.RenderChart(null, null, true);
+		}
+
+		private void CacheDataLimits()
+		{
+			xMin = Series != null && Series.Where(x => x.Values.Any()).Any()
+				? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.XValue)) : 0;
+			xMax = Series != null && Series.Where(x => x.Values.Any()).Any()
+				? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.XValue)) : 0;
+			yMin = Series != null && Series.Where(x => x.Values.Any()).Any()
+				? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) : 0;
+			yMax = Series != null && Series.Where(x => x.Values.Any()).Any()
+				? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) : 0;
+			yMinExpanded = Series != null && Series.Where(x => x.Values.Any()).Any()
+				? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => y.YValue)) - (yMax - yMin) * yBuffer : 0;
+			yMaxExpanded = Series != null && Series.Where(x => x.Values.Any()).Any()
+				? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) + (yMax - yMin) * yBuffer : 0;
 		}
 
 		private void Subscribe(ObservableCollection<ISeries> series)
@@ -302,6 +307,8 @@ namespace ModernThemables.Controls
 					0,
 					yBuffer);
 			}
+
+			CacheDataLimits();
 
 			await RenderChart(newItems, oldItems);
 		}
@@ -382,9 +389,9 @@ namespace ModernThemables.Controls
 
 					foreach (var series in collection)
 					{
-						var points = await GetPointsForSeries(
+						 var points = await GetPointsForSeries(
 							xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, Series.First(
-									x => x.Values.Count == series.Data.Count()));
+									x => x.Identifier == series.Identifier));
 						series.UpdatePoints(points);
 					}
 
