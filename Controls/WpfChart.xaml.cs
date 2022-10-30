@@ -73,7 +73,7 @@ namespace ModernThemables.Controls
 
 			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
 
-			resizeTrigger = new KeepAliveTriggerService(() => {/* _ = RenderChart(null, null, true); */}, 100);
+			resizeTrigger = new KeepAliveTriggerService(() => { _ = RenderChart(null, null, true); }, 100);
 		}
 
 		public void ResetZoom()
