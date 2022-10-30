@@ -423,10 +423,7 @@ namespace ModernThemables.Controls
 					series.UpdatePoints(points);
 				}
 
-				InternalSeries = new ObservableCollection<InternalSerieViewModel>();
-				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 				InternalSeries = new ObservableCollection<InternalSerieViewModel>(collection);
-				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
 				foreach (var series in InternalSeries)
 				{
