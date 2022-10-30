@@ -6,6 +6,7 @@ using ModernThemables.HelperClasses.WpfChart.Brushes;
 using ModernThemables.Interfaces;
 using ModernThemables.ViewModels.WpfChart;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -56,8 +57,6 @@ namespace ModernThemables.Controls
 
 		private static double yBuffer => 0.1;
 
-		private CancellationTokenSource tokenSource = new CancellationTokenSource();
-
 		private double xMin;
 		private double xMax;
 		private double yMin;
@@ -66,14 +65,36 @@ namespace ModernThemables.Controls
 		private double yMaxExpanded;
 		private double xDataOffset;
 
+		private BlockingCollection<Action> renderQueue;
+		private bool renderInProgress;
+
+		private Thread renderThread;
+		private bool runRenderThread = true;
+
 		public WpfChart()
 		{
 			InitializeComponent();
 			this.Loaded += WpfChart_Loaded;
 
+			renderQueue = new BlockingCollection<Action>();
+			renderThread = new Thread(new ThreadStart(() =>
+			{
+				while (runRenderThread)
+				{
+					while (renderInProgress)
+					{
+						Thread.Sleep(1);
+					}
+					if (renderQueue.Any())
+						renderQueue.Take().Invoke();
+					Thread.Sleep(1);
+				}
+			}));
+			renderThread.Start();
+
 			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
 
-			resizeTrigger = new KeepAliveTriggerService(() => { _ = RenderChart(null, null, true); }, 100);
+			resizeTrigger = new KeepAliveTriggerService(() => { QueueRenderChart(null, null, true); }, 100);
 		}
 
 		public void ResetZoom()
@@ -199,7 +220,7 @@ namespace ModernThemables.Controls
 			}
 
 			await Task.Delay(1);
-			_ = chart.RenderChart(null, null, true);
+			chart.QueueRenderChart(null, null, true);
 		}
 
 		#region Subscribe to series'
@@ -233,7 +254,7 @@ namespace ModernThemables.Controls
 				0,
 				yBuffer);
 
-			_ = chart.RenderChart(null, null, true);
+			chart.QueueRenderChart(null, null, true);
 		}
 
 		private void CacheDataLimits()
@@ -269,7 +290,7 @@ namespace ModernThemables.Controls
 		{
 			if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
-				await RenderChart(null, null, true);
+				QueueRenderChart(null, null, true);
 				return;
 			}
 
@@ -310,7 +331,7 @@ namespace ModernThemables.Controls
 
 			CacheDataLimits();
 
-			await RenderChart(newItems, oldItems);
+			QueueRenderChart(newItems, oldItems);
 		}
 
 		private async void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -318,90 +339,100 @@ namespace ModernThemables.Controls
 			if (sender is ISeries series)
 			{
 				var list = new List<ISeries>() { series };
-				await RenderChart(list, list);
+				QueueRenderChart(list, list);
 			}
 		}
 
 		#endregion
 
-		private async Task RenderChart(
+		private void QueueRenderChart(IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
+		{
+			renderQueue.Add(new Action(() => RenderChart(addedSeries, removedSeries, invalidateAll)));
+		}
+
+		private void RenderChart(
 			IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
 		{
-			await Task.Run(async () =>
+			Application.Current.Dispatcher.Invoke(async () =>
 			{
-				await Application.Current.Dispatcher.InvokeAsync(async () =>
+				renderInProgress = true;
+				var collection = InternalSeries.Clone().ToList();
+
+				if (invalidateAll)
 				{
-					var collection = InternalSeries.Clone().ToList();
-
-					if (invalidateAll)
+					collection.Clear();
+				}
+				else
+				{
+					foreach (var series in (removedSeries ?? new List<ISeries>()))
 					{
-						collection.Clear();
+						collection.Remove(collection.First(x => x.Identifier == series.Identifier));
 					}
-					else
-					{
-						foreach (var series in (removedSeries ?? new List<ISeries>()))
-						{
-							collection.Remove(collection.First(x => x.Identifier == series.Identifier));
-						}
-					}
+				}
 
-					foreach (var series in invalidateAll
-						? Series ?? new ObservableCollection<ISeries>()
-						: addedSeries ?? new List<ISeries>())
-					{
-						if (!series.Values.Any()) continue;
+				foreach (var series in invalidateAll
+					? Series ?? new ObservableCollection<ISeries>()
+					: addedSeries ?? new List<ISeries>())
+				{
+					if (!series.Values.Any()) continue;
 
-						var points = await GetPointsForSeries(
-							xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, series);
+					var points = await GetPointsForSeries(
+						xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, series);
 
-						var matchingSeries = InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
+					var matchingSeries = InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
 
-						collection.Add(new InternalSerieViewModel(
-							series.Name,
-							series.Identifier,
-							points,
-							invalidateAll
-								? matchingSeries != null 
-									? matchingSeries.Stroke 
-									: series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50))
-								: series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
-							invalidateAll
-								? matchingSeries != null ? matchingSeries.Fill : series.Fill
-								: series.Fill,
-							yBuffer,
-							series.TooltipLabelFormatter));
+					collection.Add(new InternalSerieViewModel(
+						series.Name,
+						series.Identifier,
+						points,
+						invalidateAll
+							? matchingSeries != null
+								? matchingSeries.Stroke
+								: series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50))
+							: series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
+						invalidateAll
+							? matchingSeries != null ? matchingSeries.Fill : series.Fill
+							: series.Fill,
+						yBuffer,
+						series.TooltipLabelFormatter));
 
-						var seriesYMin = series.Values.Min(z => z.YValue);
-						var seriesYMax = series.Values.Max(z => z.YValue);
+					var seriesYMin = series.Values.Min(z => z.YValue);
+					var seriesYMax = series.Values.Max(z => z.YValue);
 
-						series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
-						series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
-					}
+					series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
+					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
+				}
 
-					if (Series.Any())
-					{
-						var localXMin = Math.Round(currentZoomLevel, 1) == 1 ? xMin : CurrentZoomState.XMin;
-						var localXMax = Math.Round(currentZoomLevel, 1) == 1 ? xMax : CurrentZoomState.XMax;
-						var offset = Math.Round(currentZoomLevel, 1) == 1 ? 0 : CurrentZoomState.XOffset;
+				if (Series.Any())
+				{
+					var localXMin = Math.Round(currentZoomLevel, 1) == 1 ? xMin : CurrentZoomState.XMin;
+					var localXMax = Math.Round(currentZoomLevel, 1) == 1 ? xMax : CurrentZoomState.XMax;
+					var offset = Math.Round(currentZoomLevel, 1) == 1 ? 0 : CurrentZoomState.XOffset;
 
-						CurrentZoomState = new ZoomState(localXMin, localXMax, yMin, yMax, offset, yBuffer);
-					}
+					CurrentZoomState = new ZoomState(localXMin, localXMax, yMin, yMax, offset, yBuffer);
+				}
 
-					foreach (var series in collection)
-					{
-						 var points = await GetPointsForSeries(
-							xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, Series.First(
-									x => x.Identifier == series.Identifier));
-						series.UpdatePoints(points);
-					}
+				foreach (var series in collection)
+				{
+					var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
 
-					InternalSeries = new ObservableCollection<InternalSerieViewModel>(collection);
+					if (matchingSeries == null) continue;
 
-					foreach (var series in InternalSeries)
-					{
-						series.ResizeTrigger = !series.ResizeTrigger;
-					}
-				});
+					var points = await GetPointsForSeries(
+						xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, matchingSeries);
+					series.UpdatePoints(points);
+				}
+
+				InternalSeries = new ObservableCollection<InternalSerieViewModel>();
+				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+				InternalSeries = new ObservableCollection<InternalSerieViewModel>(collection);
+				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+
+				foreach (var series in InternalSeries)
+				{
+					series.ResizeTrigger = !series.ResizeTrigger;
+				}
+				renderInProgress = false;
 			});
 		}
 
