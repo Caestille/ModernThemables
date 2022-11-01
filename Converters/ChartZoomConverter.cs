@@ -30,8 +30,8 @@ namespace ModernThemables.Converters
 				var xMin = series.Min(x => x.Values.Min(y => y.XValue));
 				var xMax = series.Max(x => x.Values.Max(y => y.XValue));
 
-				var leftFrac = (zoom.XMin - xMin) / (xMax - xMin);
-				var rightFrac = (xMax - zoom.XMax) / (xMax - xMin);
+				var leftFrac = (zoom.XMin - xMin) / Math.Max(xMax - xMin, 1);
+				var rightFrac = (xMax - zoom.XMax) / Math.Max(xMax - xMin, 1);
 
 				var newWidth = displayAreaWidth / (1 - (leftFrac + rightFrac));
 

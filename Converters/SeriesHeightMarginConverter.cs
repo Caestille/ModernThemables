@@ -41,8 +41,8 @@ namespace ModernThemables.Converters
 				var vmDataXMin = vm.Data.Min(x => x.BackingPoint.XValue);
 				var vmDataXMax = vm.Data.Max(x => x.BackingPoint.XValue);
 
-				var leftFrac = (vmDataXMin - minDataXMin) / (maxDataXMax - minDataXMin);
-				var rightFrac = (maxDataXMax - vmDataXMax) / (maxDataXMax - minDataXMin);
+				var leftFrac = (vmDataXMin - minDataXMin) / Math.Max(maxDataXMax - minDataXMin, 1);
+				var rightFrac = (maxDataXMax - vmDataXMax) / Math.Max(maxDataXMax - minDataXMin, 1);
 
 				return new Thickness(
 					leftFrac * itemsControlWidth,
