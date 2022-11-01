@@ -25,6 +25,8 @@ namespace ModernThemables.Converters
 			{
 				var displayAreaWidth = grid.ActualWidth;
 
+				if (!series.Any(x => x.Values.Any())) return new Thickness(0);
+
 				var xMin = series.Min(x => x.Values.Min(y => y.XValue));
 				var xMax = series.Max(x => x.Values.Max(y => y.XValue));
 

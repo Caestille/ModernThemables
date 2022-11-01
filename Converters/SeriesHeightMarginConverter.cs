@@ -23,8 +23,11 @@ namespace ModernThemables.Converters
 				&& values[4] is double gridHeight
 				&& values[5] is double itemsControlHeight)
 			{
-				var minDataYMin = vms.Min(x => x.Data.Min(x => x.BackingPoint.YValue));
-				var maxDataYMax = vms.Max(x => x.Data.Max(x => x.BackingPoint.YValue));
+				if (!vm.Data.Any() || vms.All(x => !x.Data.Any())) return new Thickness(0);
+
+				var vmsWithData = vms.Where(x => x.Data.Any());
+				var minDataYMin = vmsWithData.Min(x => x.Data.Min(x => x.BackingPoint.YValue));
+				var maxDataYMax = vmsWithData.Max(x => x.Data.Max(x => x.BackingPoint.YValue));
 
 				var vmDataYMin = vm.Data.Min(x => x.BackingPoint.YValue);
 				var vmDataYMax = vm.Data.Max(x => x.BackingPoint.YValue);
@@ -32,8 +35,8 @@ namespace ModernThemables.Converters
 				var bottomFrac = (vmDataYMin - minDataYMin) / (maxDataYMax - minDataYMin);
 				var topFrac = (maxDataYMax - vmDataYMax) / (maxDataYMax - minDataYMin);
 
-				var minDataXMin = vms.Min(x => x.Data.Min(x => x.BackingPoint.XValue));
-				var maxDataXMax = vms.Max(x => x.Data.Max(x => x.BackingPoint.XValue));
+				var minDataXMin = vmsWithData.Min(x => x.Data.Min(x => x.BackingPoint.XValue));
+				var maxDataXMax = vmsWithData.Max(x => x.Data.Max(x => x.BackingPoint.XValue));
 
 				var vmDataXMin = vm.Data.Min(x => x.BackingPoint.XValue);
 				var vmDataXMax = vm.Data.Max(x => x.BackingPoint.XValue);

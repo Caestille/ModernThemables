@@ -374,8 +374,6 @@ namespace ModernThemables.Controls
 					? Series ?? new ObservableCollection<ISeries>()
 					: addedSeries ?? new List<ISeries>())
 				{
-					if (!series.Values.Any()) continue;
-
 					var points = await GetPointsForSeries(
 						xMin, xMax - xMin, yMinExpanded, yMaxExpanded - yMinExpanded, series);
 
@@ -395,6 +393,8 @@ namespace ModernThemables.Controls
 							: series.Fill,
 						yBuffer,
 						series.TooltipLabelFormatter));
+
+					if (!series.Values.Any()) continue;
 
 					var seriesYMin = series.Values.Min(z => z.YValue);
 					var seriesYMax = series.Values.Max(z => z.YValue);
@@ -939,6 +939,7 @@ namespace ModernThemables.Controls
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
 			resizeTrigger.Stop();
+			runRenderThread = false;
 			foreach (var series in subscribedSeries)
 			{
 				series.PropertyChanged -= Series_PropertyChanged;

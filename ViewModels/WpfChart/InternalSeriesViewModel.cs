@@ -104,6 +104,8 @@ namespace ModernThemables.ViewModels.WpfChart
 			Fill = fill;
 			TooltipLabelFormatter = tooltipFormatter;
 
+			if (!data.Any()) return;
+
 			PathStrokeData = ConvertDataToPath(data);
 
 			var dataMin = Data.Min(x => x.BackingPoint.YValue);
