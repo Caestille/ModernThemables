@@ -323,16 +323,16 @@ namespace ModernThemables.Controls
 				}
 			}
 
-			if (Series != null && Series.Any() && Series.Any(x => x.Values.Any()))
-			{
-				CurrentZoomState = new ZoomState(
-					Series.Min(x => x.Values.Min(y => y.XValue)),
-					Series.Max(x => x.Values.Max(y => y.XValue)),
-					Series.Min(x => x.Values.Min(y => y.YValue)),
-					Series.Max(x => x.Values.Max(y => y.YValue)),
-					0,
-					yBuffer);
-			}
+			//if (Series != null && Series.Any() && Series.Any(x => x.Values.Any()))
+			//{
+			//	CurrentZoomState = new ZoomState(
+			//		Series.Min(x => x.Values.Min(y => y.XValue)),
+			//		Series.Max(x => x.Values.Max(y => y.XValue)),
+			//		Series.Min(x => x.Values.Min(y => y.YValue)),
+			//		Series.Max(x => x.Values.Max(y => y.YValue)),
+			//		0,
+			//		yBuffer);
+			//}
 
 			CacheDataLimits();
 
@@ -409,7 +409,7 @@ namespace ModernThemables.Controls
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
-				ResetZoom();
+				//ResetZoom();
 
 				foreach (var series in collection)
 				{
