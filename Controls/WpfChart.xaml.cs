@@ -65,7 +65,7 @@ namespace ModernThemables.Controls
 		private double yMaxExpanded;
 		private double xDataOffset;
 		private double xRange => Math.Max(xMax - xMin, 1);
-		private bool isSingleXPoint => xRange == 1;
+		private bool isSingleXPoint => xMax - xMin == 0;
 
 		private BlockingCollection<Action> renderQueue;
 		private bool renderInProgress;

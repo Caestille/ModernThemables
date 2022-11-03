@@ -51,7 +51,7 @@ namespace ModernThemables.Converters
 				var topDiff = newHeight * topFrac;
 				var bottomDiff = newHeight * bottomFrac;
 
-				return new Thickness(-leftDiff - zoom.XOffset - 1, -topDiff, -rightDiff + zoom.XOffset, -bottomDiff);
+				return new Thickness(-leftDiff - zoom.XOffset, -topDiff, -rightDiff + zoom.XOffset, -bottomDiff);
 			}
 			else
 			{
