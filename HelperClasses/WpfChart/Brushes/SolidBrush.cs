@@ -1,4 +1,5 @@
 ﻿using ModernThemables.Interfaces;
+using System.Windows;
 using System.Windows.Media;
 
 namespace ModernThemables.HelperClasses.WpfChart.Brushes
@@ -21,7 +22,7 @@ namespace ModernThemables.HelperClasses.WpfChart.Brushes
 		public SolidBrush(Color colour)
 		{
 			this.colour = colour;
-			CoreBrush = new SolidColorBrush(colour);
+			Application.Current.Dispatcher.Invoke(() => { CoreBrush = new SolidColorBrush(colour); });
 		}
 
 		/// <inheritdoc />

@@ -1,6 +1,7 @@
 ﻿using CoreUtilities.HelperClasses.Extensions;
 using ModernThemables.Interfaces;
 using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace ModernThemables.HelperClasses.WpfChart.Brushes
@@ -30,13 +31,15 @@ namespace ModernThemables.HelperClasses.WpfChart.Brushes
 			this.topColour = topColour;
 			this.bottomColour = bottomColour;
 
-			GradientStopCollection collection = new()
+			Application.Current.Dispatcher.Invoke(() => 
 			{
-				new GradientStop(topColour, 0),
-				new GradientStop(bottomColour, 1.0)
-			};
-
-			CoreBrush = new LinearGradientBrush(collection, angle: 90);
+				GradientStopCollection collection = new()
+				{
+					new GradientStop(topColour, 0),
+					new GradientStop(bottomColour, 1.0)
+				};
+				CoreBrush = new LinearGradientBrush(collection, angle: 90); 
+			});
 		}
 
 		/// <inheritdoc />

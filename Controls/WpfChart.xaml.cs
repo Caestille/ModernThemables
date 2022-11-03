@@ -55,7 +55,7 @@ namespace ModernThemables.Controls
 		private InternalChartPoint? lowerSelection;
 		private InternalChartPoint? upperSelection;
 
-		private static double yBuffer => 0.1;
+		private static double yBuffer = 0.1;
 
 		private double xMin;
 		private double xMax;
@@ -169,7 +169,7 @@ namespace ModernThemables.Controls
 				chart.preventTrigger = false;
 			}
 
-			chart.xDataOffset = chart.CurrentZoomState.XOffset / chart.plotAreaWidth * (chart.xMax - chart.xMin);
+			chart.xDataOffset = chart.CurrentZoomState.XOffset / chart.SeriesItemsControl.ActualWidth * (chart.xMax - chart.xMin);
 
 			_ = chart.SetXAxisLabels(
 					chart.CurrentZoomState.XMin + chart.xDataOffset, chart.CurrentZoomState.XMax + chart.xDataOffset);
@@ -323,17 +323,6 @@ namespace ModernThemables.Controls
 				}
 			}
 
-			//if (Series != null && Series.Any() && Series.Any(x => x.Values.Any()))
-			//{
-			//	CurrentZoomState = new ZoomState(
-			//		Series.Min(x => x.Values.Min(y => y.XValue)),
-			//		Series.Max(x => x.Values.Max(y => y.XValue)),
-			//		Series.Min(x => x.Values.Min(y => y.YValue)),
-			//		Series.Max(x => x.Values.Max(y => y.YValue)),
-			//		0,
-			//		yBuffer);
-			//}
-
 			CacheDataLimits();
 
 			QueueRenderChart(newItems, oldItems);
@@ -409,7 +398,8 @@ namespace ModernThemables.Controls
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
-				//ResetZoom();
+				if (CurrentZoomState.XMax == 0 && CurrentZoomState.XMin == 0)
+					ResetZoom();
 
 				foreach (var series in collection)
 				{

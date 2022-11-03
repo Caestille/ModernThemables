@@ -12,9 +12,10 @@
 	RenderOptions.ClearTypeHint="Enabled"
 	SnapsToDevicePixels="True"
 	UseLayoutRounding="True"
-	WindowStyle="None">
+	WindowStyle="None"
+	Background="Black">
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="24" ResizeBorderThickness="5" />
 	</WindowChrome.WindowChrome>
-	<controls:MainWindowControl />
+	<controls:ColourPicker />
 </Window>

@@ -1,6 +1,7 @@
 ﻿using CoreUtilities.HelperClasses.Extensions;
 using ModernThemables.Interfaces;
 using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace ModernThemables.HelperClasses.WpfChart.Brushes
@@ -35,7 +36,7 @@ namespace ModernThemables.HelperClasses.WpfChart.Brushes
 		/// <param name="bottomColour">The <see cref="Color"/> at the bottom of the brush.</param>
 		public MultiGradientBrush(Color topColour, Color topCentreColour, Color bottomCentreColour, Color bottomColour)
 		{
-			CoreBrush = new LinearGradientBrush();
+			Application.Current.Dispatcher.Invoke(() => { CoreBrush = new LinearGradientBrush(); });
 			this.topColour = topColour;
 			this.bottomColour = bottomColour;
 			this.topCentreColour = topCentreColour;
@@ -60,7 +61,8 @@ namespace ModernThemables.HelperClasses.WpfChart.Brushes
 				new GradientStop(bottomColour, 1.0)
 			};
 
-			CoreBrush = new LinearGradientBrush(collection, angle: 90);
+			Application.Current.Dispatcher.Invoke(
+				() => { CoreBrush = new LinearGradientBrush(collection, angle: 90); });
 		}
 
 		/// <inheritdoc />

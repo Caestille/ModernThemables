@@ -18,28 +18,14 @@ namespace ModernThemables.Services
 	{
 		private Dictionary<Type, Type> registeredViews = new();
 
-		/// <summary>
-		/// Registers a given view <see cref="Type"/> to a given viewmodel <see cref="Type"/>. When
-		/// <see cref="OpenCustomDialogue(object?, Size?)"/> is called with a given <see cref="object"/> (usually a
-		/// data context), if the type of the given object is registered, a dialogue will be opened hosting the
-		/// registered view.
-		/// </summary>
-		/// <param name="viewType">The type of view to register to the viewmodel.</param>
-		/// <param name="vmType">The type of viewmodel to open the view for.</param>
+		/// <inheritdoc />
 		public void RegisterViewForViewModel(Type viewType, Type vmType)
 		{
 			registeredViews[vmType] = viewType;
 		}
 
-		/// <summary>
-		/// Opens a dialogue for a given <see cref="object"/> if the object type matches a registered view and
-		/// viewmodel <see cref="Type"/> using <see cref="RegisterViewForViewModel(Type, Type)"/>.
-		/// </summary>
-		/// <param name="dataContext">The <see cref="object"/> data context to open the view for.</param>
-		/// <param name="dialogueSize">An overriding dialogue size in case an auto sized dialogue is not desired.
-		/// </param>
-		/// <returns>An awaitable <see cref="Task"/>.</returns>
-		public async Task OpenCustomDialogue(object? dataContext=null, Size? dialogueSize = null)
+		/// <inheritdoc />
+		public async Task ShowCustomDialogue(object? dataContext=null, Size? dialogueSize = null)
 		{
 			Window window = new Window();
 			window.AllowsTransparency = false;
@@ -74,11 +60,8 @@ namespace ModernThemables.Services
 			window.ShowDialog();
 		}
 
-		/// <summary>
-		/// Opens the OS default <see cref="OpenFileDialog"/>.
-		/// </summary>
-		/// <returns>The path result of the <see cref="OpenFileDialog"/>.</returns>
-		public string OpenFileDialogue()
+		/// <inheritdoc />
+		public string ShowOpenFileDialogue()
 		{
 			var dialogue = new OpenFileDialog();
 
@@ -90,12 +73,20 @@ namespace ModernThemables.Services
 			return string.Empty;
 		}
 
-		/// <summary>
-		/// Shows a message box to the user.
-		/// </summary>
-		/// <param name="title">The message box title.</param>
-		/// <param name="message">The message in the message box.</param>
-		/// <param name="button">The message acknowledgement types to show on the message box.</param>
+		/// <inheritdoc />
+		public Color ShowColourPickerDialogue()
+		{
+			//var dialogue = 
+
+			//if (dialogue.ShowDialog() == true)
+			//{
+			//	return dialogue.Color;
+			//}
+
+			return Colors.Black;
+		}
+
+		/// <inheritdoc />
 		public void ShowMessageBox(string title, string message, MessageBoxButton button)
 		{
 			
