@@ -25,7 +25,7 @@ namespace ModernThemables.Controls
 	/// <summary>
 	/// Interaction logic for WpfChart.xaml
 	/// </summary>
-	public partial class WpfChart : UserControl
+	public partial class CartesianChart : UserControl
 	{
 		public event EventHandler<IChartPoint>? PointClicked;
 		public event EventHandler<Tuple<IChartPoint, IChartPoint>>? PointRangeSelected;
@@ -73,7 +73,7 @@ namespace ModernThemables.Controls
 		private Thread renderThread;
 		private bool runRenderThread = true;
 
-		public WpfChart()
+		public CartesianChart()
 		{
 			InitializeComponent();
 			this.Loaded += WpfChart_Loaded;
@@ -106,14 +106,14 @@ namespace ModernThemables.Controls
 
 		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not WpfChart chart) return;
+			if (sender is not CartesianChart chart) return;
 
 			chart.IsTooltipByCursor = chart.TooltipLocation == TooltipLocation.Cursor;
 		}
 
 		private static void OnSetMinMax(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not WpfChart chart
+			if (sender is not CartesianChart chart
 				|| chart.Min == -1d
 				|| chart.Max == -1d
 				|| chart.Series == null
@@ -125,7 +125,7 @@ namespace ModernThemables.Controls
 
 		private static void OnSetZoomState(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not WpfChart chart) return;
+			if (sender is not CartesianChart chart) return;
 
 			bool setY = false;
 
@@ -169,7 +169,8 @@ namespace ModernThemables.Controls
 				chart.preventTrigger = false;
 			}
 
-			chart.xDataOffset = chart.CurrentZoomState.XOffset / chart.SeriesItemsControl.ActualWidth * (chart.xMax - chart.xMin);
+			chart.xDataOffset
+				= chart.CurrentZoomState.XOffset / chart.SeriesItemsControl.ActualWidth * (chart.xMax - chart.xMin);
 
 			_ = chart.SetXAxisLabels(
 					chart.CurrentZoomState.XMin + chart.xDataOffset, chart.CurrentZoomState.XMax + chart.xDataOffset);
@@ -184,7 +185,7 @@ namespace ModernThemables.Controls
 
 		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not WpfChart chart) return;
+			if (sender is not CartesianChart chart) return;
 
 			switch (chart.LegendLocation)
 			{
@@ -229,7 +230,7 @@ namespace ModernThemables.Controls
 
 		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not WpfChart chart) return;
+			if (sender is not CartesianChart chart) return;
 
 			if (chart.Series == null)
 			{
@@ -340,7 +341,8 @@ namespace ModernThemables.Controls
 
 		#endregion
 
-		private void QueueRenderChart(IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
+		private void QueueRenderChart(
+			IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
 		{
 			renderQueue.Add(new Action(() => RenderChart(addedSeries, removedSeries, invalidateAll)));
 		}
@@ -427,7 +429,8 @@ namespace ModernThemables.Controls
 				}
 				else
 				{
-					CurrentZoomState = new ZoomState(CurrentZoomState.XMin, CurrentZoomState.XMax, yMin, yMax, CurrentZoomState.XOffset, yBuffer, true);
+					CurrentZoomState = new ZoomState(
+						CurrentZoomState.XMin, CurrentZoomState.XMax, yMin, yMax, CurrentZoomState.XOffset, yBuffer, true);
 				}
 
 				renderInProgress = false;

@@ -40,8 +40,8 @@
 			Width="200"
 			Height="200"
 			VerticalAlignment="Top"
-			MouseMove="Border_MouseMove"
 			MouseDown="ColourSelectionBorder_MouseDown"
+			MouseMove="Border_MouseMove"
 			PreviewMouseDown="Border_PreviewMouseDown"
 			PreviewMouseUp="Border_PreviewMouseUp">
 			<Border.Background>
@@ -53,11 +53,11 @@
 				</LinearGradientBrush>
 			</Border.Background>
 			<Border
-				VerticalAlignment="Top"
-				HorizontalAlignment="Left"
 				x:Name="SelectedColourBorder"
 				Width="16"
 				Height="16"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
 				BorderBrush="White"
 				BorderThickness="1"
 				CornerRadius="8">

@@ -4,7 +4,7 @@ using System.Windows.Media;
 namespace ModernThemables.Interfaces
 {
     /// <summary>
-    /// An interface for brushes working with the <see cref="WpfChart"/>.
+    /// An interface for brushes working with the <see cref="CartesianChart"/>.
     /// </summary>
     public interface IChartBrush
     {
