@@ -33,7 +33,7 @@ namespace ModernThemables.Controls
 			"Colour",
 			typeof(Color),
 			typeof(ColourPicker),
-			new UIPropertyMetadata(null));
+			new UIPropertyMetadata(Colors.Black));
 
 		private bool isMouseDown;
 		private static List<KeyValuePair<Color, double>> horizontalColourStops = new List<KeyValuePair<Color, double>>()
@@ -66,6 +66,14 @@ namespace ModernThemables.Controls
 		public ColourPicker()
 		{
 			InitializeComponent();
+			this.Loaded += ColourPicker_Loaded;
+		}
+
+		private void ColourPicker_Loaded(object sender, RoutedEventArgs e)
+		{
+			var point = GetPointAtColour(Colour);
+			AdjustSelectedColourCursor((int)point.X, (int)point.Y);
+			this.Loaded -= ColourPicker_Loaded;
 		}
 
 		private void Border_MouseMove(object sender, MouseEventArgs e)
@@ -73,7 +81,7 @@ namespace ModernThemables.Controls
 			if (!isMouseDown) return;
 
 			var borderCursor = e.GetPosition(ColourSelectionBorder);
-			SelectedColourBorder.Margin = new Thickness(borderCursor.X - 8, borderCursor.Y - 8, 0, 0);
+			AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
 
 			var cursor = this.PointToScreen(e.GetPosition(this));
 			this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
@@ -83,11 +91,15 @@ namespace ModernThemables.Controls
 
 		public Color GetColorAt(int x, int y)
 		{
+			if (x < 1 || x > ColourSelectionBorder.ActualWidth - 1 || y < 1 || y > ColourSelectionBorder.ActualHeight - 1) return Colour;
+
 			var horizFrac = x / ColourSelectionBorder.ActualWidth;
 			var vertFrac = (float)(((y / ColourSelectionBorder.ActualHeight) - 0.5) * 2);
 
-			var leftColour = horizontalColourStops.Where(x => x.Value <= horizFrac).Last();
-			var rightColour = horizontalColourStops.Where(x => x.Value >= horizFrac).First();
+			var leftColour = horizontalColourStops.Where(x => x.Value <= horizFrac)
+				.DefaultIfEmpty(new KeyValuePair<Color, double>(Colors.Red, 0)).Last();
+			var rightColour = horizontalColourStops.Where(x => x.Value >= horizFrac)
+				.DefaultIfEmpty(new KeyValuePair<Color, double>(Colors.Red, 1)).First();
 
 			var outputColour = leftColour.Key.Combine(rightColour.Key, (horizFrac - leftColour.Value) / (rightColour.Value - leftColour.Value));
 
@@ -122,21 +134,23 @@ namespace ModernThemables.Controls
 
 		private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			//if (isMouseDown) return;
+			if (isMouseDown) return;
 
-			//var point = GetPointAtColour(Colour);
-			//SelectedColourBorder.Margin = new Thickness(point.X - 8, point.Y - 8, 0, 0);
+			var point = GetPointAtColour(Colour);
+			AdjustSelectedColourCursor((int)point.X, (int)point.Y);
 		}
 
 		private void ColourSelectionBorder_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			var borderCursor = e.GetPosition(ColourSelectionBorder);
-			SelectedColourBorder.Margin = new Thickness(borderCursor.X - 8, borderCursor.Y - 8, 0, 0);
-
-			var cursor = this.PointToScreen(e.GetPosition(this));
-			this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+			AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
 			var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
 			Colour = c;
+		}
+
+		private void AdjustSelectedColourCursor(int x, int y)
+		{
+			SelectedColourBorder.Margin = new Thickness(x - 5, y - 5, 0, 0);
 		}
 	}
 }

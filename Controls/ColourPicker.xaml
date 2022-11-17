@@ -54,8 +54,8 @@
 			</Border.Background>
 			<Border
 				x:Name="SelectedColourBorder"
-				Width="16"
-				Height="16"
+				Width="10"
+				Height="10"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Top"
 				BorderBrush="White"

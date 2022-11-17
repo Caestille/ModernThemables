@@ -8,26 +8,39 @@ namespace ModernThemables.Controls
 	/// </summary>
 	public partial class ColourPickerDialogue : Window
 	{
-		public Color ColourResult
+		public Color Colour
 		{
-			get => (Color)GetValue(ColourResultProperty);
-			set => SetValue(ColourResultProperty, value);
+			get => (Color)GetValue(ColourProperty);
+			set => SetValue(ColourProperty, value);
 		}
-		public static readonly DependencyProperty ColourResultProperty = DependencyProperty.Register(
-			"ColourResult",
+		public static readonly DependencyProperty ColourProperty = DependencyProperty.Register(
+			"Colour",
 			typeof(Color),
-			typeof(ColourPicker),
-			new UIPropertyMetadata(null));
+			typeof(ColourPickerDialogue),
+			new FrameworkPropertyMetadata(Colors.Black, OnColourSet));
 
-		public ColourPickerDialogue()
+		public ColourPickerDialogue(Color inputColour)
 		{
 			InitializeComponent();
+			this.Colour = inputColour;
 		}
 
-		private void ExtendedButton_Click(object sender, RoutedEventArgs e)
+		private static void OnColourSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			ColourResult = ColourPicker.Colour;
+			if (sender is not ColourPickerDialogue dialog) return;
+
+			dialog.ColourPickerControl.Colour = (Color)e.NewValue;
+		}
+
+		private void OkButton_Click(object sender, RoutedEventArgs e)
+		{
+			Colour = ColourPickerControl.Colour;
 			DialogResult = true;
+		}
+
+		private void CancelButton_Click(object sender, RoutedEventArgs e)
+		{
+			DialogResult = false;
 		}
 	}
 }

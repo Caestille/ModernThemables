@@ -74,18 +74,18 @@ namespace ModernThemables.Services
 		}
 
 		/// <inheritdoc />
-		public Color ShowColourPickerDialogue()
+		public Color ShowColourPickerDialogue(Color inputColour)
 		{
-			var dialogue = new ColourPickerDialogue();
+			var dialogue = new ColourPickerDialogue(inputColour);
 			dialogue.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 			dialogue.Owner = Application.Current.MainWindow;
 
 			if (dialogue.ShowDialog() == true)
 			{
-				return dialogue.ColourResult;
+				return dialogue.Colour;
 			}
 
-			return Colors.Black;
+			return inputColour;
 		}
 
 		/// <inheritdoc />
