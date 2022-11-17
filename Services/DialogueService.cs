@@ -76,12 +76,14 @@ namespace ModernThemables.Services
 		/// <inheritdoc />
 		public Color ShowColourPickerDialogue()
 		{
-			//var dialogue = 
+			var dialogue = new ColourPickerDialogue();
+			dialogue.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+			dialogue.Owner = Application.Current.MainWindow;
 
-			//if (dialogue.ShowDialog() == true)
-			//{
-			//	return dialogue.Color;
-			//}
+			if (dialogue.ShowDialog() == true)
+			{
+				return dialogue.ColourResult;
+			}
 
 			return Colors.Black;
 		}

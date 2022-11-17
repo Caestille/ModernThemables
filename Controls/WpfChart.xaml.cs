@@ -418,6 +418,18 @@ namespace ModernThemables.Controls
 				{
 					series.ResizeTrigger = !series.ResizeTrigger;
 				}
+
+				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+
+				if (CurrentZoomState.XMin == xMin && CurrentZoomState.XMax == xMax)
+				{
+					CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, 0, yBuffer, true);
+				}
+				else
+				{
+					CurrentZoomState = new ZoomState(CurrentZoomState.XMin, CurrentZoomState.XMax, yMin, yMax, CurrentZoomState.XOffset, yBuffer, true);
+				}
+
 				renderInProgress = false;
 			});
 		}

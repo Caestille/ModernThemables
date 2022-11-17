@@ -17,5 +17,5 @@
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="24" ResizeBorderThickness="5" />
 	</WindowChrome.WindowChrome>
-	<controls:ColourPicker />
+	<controls:ColourPicker Margin="50"/>
 </Window>

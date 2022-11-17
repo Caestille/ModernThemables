@@ -115,8 +115,8 @@ namespace ModernThemables.ViewModels.WpfChart
 			var ratio = (double)(1 - (zero - dataMin) / range);
 			var min = Data.Min(x => x.Y);
 			var max = Data.Max(x => x.Y);
-			var zeroPoint = min - (max - min) * yBuffer + ratio * (max - min) * (1 + yBuffer);
-			PathFillData = 
+			var zeroPoint = min + ratio * (max - min);
+			PathFillData =
 				$"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
 		}
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreUtilities.HelperClasses.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ModernThemables.Controls
 {
@@ -34,6 +36,23 @@ namespace ModernThemables.Controls
 			new UIPropertyMetadata(null));
 
 		private bool isMouseDown;
+		private static List<KeyValuePair<Color, double>> horizontalColourStops = new List<KeyValuePair<Color, double>>()
+		{
+			new KeyValuePair<Color, double>(Colors.Red, 0),
+			new KeyValuePair<Color, double>(Colors.Magenta, 1d/7),
+			new KeyValuePair<Color, double>(Colors.Blue, 2d/7),
+			new KeyValuePair<Color, double>(Colors.Turquoise, 3d/7),
+			new KeyValuePair<Color, double>(Color.FromRgb(0, 255, 0), 4d/7),
+			new KeyValuePair<Color, double>(Colors.Yellow, 5d/7),
+			new KeyValuePair<Color, double>(Colors.Orange, 6d/7),
+			new KeyValuePair<Color, double>(Colors.Red, 1)
+		};
+		private static List<KeyValuePair<Color, double>> verticalColourStops = new List<KeyValuePair<Color, double>>()
+		{
+			new KeyValuePair<Color, double>(Colors.Black, 0),
+			new KeyValuePair<Color, double>(Colors.Transparent, 1/2),
+			new KeyValuePair<Color, double>(Colors.White, 1)
+		};
 
 		[DllImport("user32.dll", SetLastError = true)]
 		public static extern IntPtr GetDesktopWindow();
@@ -53,25 +72,42 @@ namespace ModernThemables.Controls
 		{
 			if (!isMouseDown) return;
 
-			var cursor = this.PointToScreen(e.GetPosition(this));
-			var c = GetColorAt((int)cursor.X, (int)cursor.Y);
-			Colour = c;
-
 			var borderCursor = e.GetPosition(ColourSelectionBorder);
-			SelectedColourBorder.Margin = new Thickness(borderCursor.X - 5, borderCursor.Y - 5, 0, 0);
+			SelectedColourBorder.Margin = new Thickness(borderCursor.X - 8, borderCursor.Y - 8, 0, 0);
+
+			var cursor = this.PointToScreen(e.GetPosition(this));
+			this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+			var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
+			Colour = c;
 		}
 
-		public static Color GetColorAt(int x, int y)
+		public Color GetColorAt(int x, int y)
 		{
-			IntPtr desk = GetDesktopWindow();
-			IntPtr dc = GetWindowDC(desk);
-			int a = (int)GetPixel(dc, x, y);
-			ReleaseDC(desk, dc);
-			return Color.FromArgb(
-				255,
-				(byte)((a >> 0) & 0xff),
-				(byte)((a >> 8) & 0xff),
-				(byte)((a >> 16) & 0xff));
+			var horizFrac = x / ColourSelectionBorder.ActualWidth;
+			var vertFrac = (float)(((y / ColourSelectionBorder.ActualHeight) - 0.5) * 2);
+
+			var leftColour = horizontalColourStops.Where(x => x.Value <= horizFrac).Last();
+			var rightColour = horizontalColourStops.Where(x => x.Value >= horizFrac).First();
+
+			var outputColour = leftColour.Key.Combine(rightColour.Key, (horizFrac - leftColour.Value) / (rightColour.Value - leftColour.Value));
+
+			var output = outputColour.ChangeColourBrightness(-vertFrac);
+
+			return output;
+		}
+
+		public Point GetPointAtColour(Color colour)
+		{
+			var brightness = colour.Brightness();
+			var y = -(brightness * ColourSelectionBorder.ActualHeight - ColourSelectionBorder.ActualHeight);
+			for (int x = 0; x < ColourSelectionBorder.ActualWidth; x ++)
+			{
+				if (GetColorAt(x, (int)y).ColoursAreClose(colour, 20))
+				{
+					return new Point(x, y);
+				}
+			}
+			return new Point(0, y);
 		}
 
 		private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -86,7 +122,21 @@ namespace ModernThemables.Controls
 
 		private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			
+			//if (isMouseDown) return;
+
+			//var point = GetPointAtColour(Colour);
+			//SelectedColourBorder.Margin = new Thickness(point.X - 8, point.Y - 8, 0, 0);
+		}
+
+		private void ColourSelectionBorder_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			var borderCursor = e.GetPosition(ColourSelectionBorder);
+			SelectedColourBorder.Margin = new Thickness(borderCursor.X - 8, borderCursor.Y - 8, 0, 0);
+
+			var cursor = this.PointToScreen(e.GetPosition(this));
+			this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+			var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
+			Colour = c;
 		}
 	}
 }

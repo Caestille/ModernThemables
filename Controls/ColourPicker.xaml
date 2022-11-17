@@ -27,7 +27,7 @@
 					<GradientStop Offset="0.125" Color="Magenta" />
 					<GradientStop Offset="0.25" Color="Blue" />
 					<GradientStop Offset="0.375" Color="Turquoise" />
-					<GradientStop Offset="0.5" Color="Lime" />
+					<GradientStop Offset="0.5" Color="#00ff00" />
 					<GradientStop Offset="0.625" Color="Yellow" />
 					<GradientStop Offset="0.7" Color="Orange" />
 					<GradientStop Offset="0.875" Color="Red" />
@@ -41,6 +41,7 @@
 			Height="200"
 			VerticalAlignment="Top"
 			MouseMove="Border_MouseMove"
+			MouseDown="ColourSelectionBorder_MouseDown"
 			PreviewMouseDown="Border_PreviewMouseDown"
 			PreviewMouseUp="Border_PreviewMouseUp">
 			<Border.Background>
@@ -55,15 +56,15 @@
 				VerticalAlignment="Top"
 				HorizontalAlignment="Left"
 				x:Name="SelectedColourBorder"
-				Width="10"
-				Height="10"
+				Width="16"
+				Height="16"
 				BorderBrush="White"
 				BorderThickness="1"
-				CornerRadius="5">
+				CornerRadius="8">
 				<Border
 					BorderBrush="Black"
 					BorderThickness="1"
-					CornerRadius="4" />
+					CornerRadius="7" />
 			</Border>
 		</Border>
 		<Grid Grid.Column="1" Focusable="False">
