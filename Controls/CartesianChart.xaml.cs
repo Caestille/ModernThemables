@@ -423,7 +423,7 @@ namespace ModernThemables.Controls
 
 				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
-				if (CurrentZoomState.XMin == xMin && CurrentZoomState.XMax == xMax)
+				if (IsZoomed)
 				{
 					CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, 0, yBuffer, true);
 				}
