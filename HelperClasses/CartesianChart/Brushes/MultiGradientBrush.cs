@@ -4,7 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 
-namespace ModernThemables.HelperClasses.WpfChart.Brushes
+namespace ModernThemables.HelperClasses.CartesianChart.Brushes
 {
 	/// <summary>
 	/// A brush with 4 <see cref="Color"/>s across its vertical span.

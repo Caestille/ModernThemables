@@ -1,4 +1,4 @@
-﻿namespace ModernThemables.HelperClasses.WpfChart
+﻿namespace ModernThemables.HelperClasses.CartesianChart
 {
 	/// <summary>
 	/// Enum describing the location of a legend on a chart.

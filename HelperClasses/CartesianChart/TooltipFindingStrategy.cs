@@ -1,4 +1,4 @@
-﻿namespace ModernThemables.HelperClasses.WpfChart
+﻿namespace ModernThemables.HelperClasses.CartesianChart
 {
 	/// <summary>
 	/// Enum describing how a chart will find a tooltip across all its series'.

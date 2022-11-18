@@ -1,4 +1,4 @@
-﻿namespace ModernThemables.HelperClasses.WpfChart
+﻿namespace ModernThemables.HelperClasses.CartesianChart
 {
 	/// <summary>
 	/// Enum describing where a tooltip will be placed on a chart as the user moves the cursor.

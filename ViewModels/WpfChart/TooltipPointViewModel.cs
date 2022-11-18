@@ -1,5 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using ModernThemables.HelperClasses.WpfChart;
+using ModernThemables.HelperClasses.CartesianChart;
 using System.Windows;
 using System.Windows.Media;
 

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace ModernThemables.HelperClasses.WpfChart.Brushes
+namespace ModernThemables.HelperClasses.CartesianChart.Brushes
 {
 	/// <summary>
 	/// A brush with a single color.

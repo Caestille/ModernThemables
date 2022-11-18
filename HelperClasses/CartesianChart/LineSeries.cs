@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace ModernThemables.HelperClasses.WpfChart
+namespace ModernThemables.HelperClasses.CartesianChart
 {
 	/// <summary>
 	/// Series describing a path on a cartesian chart.

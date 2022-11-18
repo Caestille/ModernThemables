@@ -1,4 +1,4 @@
-﻿using ModernThemables.HelperClasses.WpfChart;
+﻿using ModernThemables.HelperClasses.CartesianChart;
 using ModernThemables.Interfaces;
 using ModernThemables.ViewModels.WpfChart;
 using System;

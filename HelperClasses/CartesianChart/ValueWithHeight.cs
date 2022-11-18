@@ -1,4 +1,4 @@
-﻿namespace ModernThemables.HelperClasses.WpfChart
+﻿namespace ModernThemables.HelperClasses.CartesianChart
 {
     /// <summary>
     /// A value with a height value for axis displays.

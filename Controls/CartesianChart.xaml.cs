@@ -1,8 +1,8 @@
 ﻿using CoreUtilities.HelperClasses.Extensions;
 using CoreUtilities.Services;
 using Microsoft.VisualBasic;
-using ModernThemables.HelperClasses.WpfChart;
-using ModernThemables.HelperClasses.WpfChart.Brushes;
+using ModernThemables.HelperClasses.CartesianChart;
+using ModernThemables.HelperClasses.CartesianChart.Brushes;
 using ModernThemables.Interfaces;
 using ModernThemables.ViewModels.WpfChart;
 using System;

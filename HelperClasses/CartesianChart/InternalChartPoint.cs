@@ -1,6 +1,6 @@
 ﻿using ModernThemables.Interfaces;
 
-namespace ModernThemables.HelperClasses.WpfChart
+namespace ModernThemables.HelperClasses.CartesianChart
 {
     /// <summary>
     /// An internal representation of a chart point for rendering the actual series with.

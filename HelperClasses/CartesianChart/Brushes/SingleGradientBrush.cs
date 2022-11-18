@@ -4,7 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 
-namespace ModernThemables.HelperClasses.WpfChart.Brushes
+namespace ModernThemables.HelperClasses.CartesianChart.Brushes
 {
 	/// <summary>
 	/// A brush with a gradient between two <see cref="Color"/>s from top to bottom.
