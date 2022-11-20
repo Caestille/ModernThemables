@@ -22,7 +22,7 @@
 			BorderThickness="0"
 			PreviewGotKeyboardFocus="TextBox_PreviewGotKeyboardFocus"
 			PreviewLostKeyboardFocus="TextBox_PreviewLostKeyboardFocus"
-			Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+			Text="{Binding ElementName=root, Path=SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 			<TextBox.Background>
 				<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 			</TextBox.Background>
