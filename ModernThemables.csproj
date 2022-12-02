@@ -52,6 +52,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Controls\PieChart.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Controls\ThemingControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
