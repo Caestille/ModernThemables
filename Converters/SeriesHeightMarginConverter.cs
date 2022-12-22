@@ -1,4 +1,4 @@
-﻿using ModernThemables.ViewModels.WpfChart;
+﻿using ModernThemables.ViewModels.Charting.CartesianChart;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -8,16 +8,16 @@ using System.Windows.Data;
 
 namespace ModernThemables.Converters
 {
-	/// <summary>
-	/// Scales a series relative to other series according to container size inputs to make them scale relative to each
-	/// other correctly when zoomed in the Y direction.
-	/// </summary>
-	public class SeriesHeightMarginConverter : IMultiValueConverter
+    /// <summary>
+    /// Scales a series relative to other series according to container size inputs to make them scale relative to each
+    /// other correctly when zoomed in the Y direction.
+    /// </summary>
+    public class SeriesHeightMarginConverter : IMultiValueConverter
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is InternalSerieViewModel vm
-				&& values[1] is ObservableCollection<InternalSerieViewModel> vms
+			if (values[0] is InternalSeriesViewModel vm
+				&& values[1] is ObservableCollection<InternalSeriesViewModel> vms
 				&& values[2] is double gridWidth
 				&& values[3] is double itemsControlWidth
 				&& values[4] is double gridHeight

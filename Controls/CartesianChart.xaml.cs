@@ -1,10 +1,10 @@
 ﻿using CoreUtilities.HelperClasses.Extensions;
 using CoreUtilities.Services;
 using Microsoft.VisualBasic;
-using ModernThemables.HelperClasses.CartesianChart;
-using ModernThemables.HelperClasses.CartesianChart.Brushes;
+using ModernThemables.HelperClasses.Charting.PieChart;
+using ModernThemables.HelperClasses.Charting.Brushes;
+using ModernThemables.HelperClasses.Charting;
 using ModernThemables.Interfaces;
-using ModernThemables.ViewModels.WpfChart;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using ModernThemables.ViewModels.Charting.CartesianChart;
 
 namespace ModernThemables.Controls
 {
@@ -376,7 +377,7 @@ namespace ModernThemables.Controls
 
 					var matchingSeries = InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
 
-					collection.Add(new InternalSerieViewModel(
+					collection.Add(new InternalSeriesViewModel(
 						series.Name,
 						series.Identifier,
 						points,
@@ -414,7 +415,7 @@ namespace ModernThemables.Controls
 					series.UpdatePoints(points);
 				}
 
-				InternalSeries = new ObservableCollection<InternalSerieViewModel>(collection);
+				InternalSeries = new ObservableCollection<InternalSeriesViewModel>(collection);
 
 				foreach (var series in InternalSeries)
 				{

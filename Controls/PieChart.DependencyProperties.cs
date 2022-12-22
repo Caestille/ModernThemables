@@ -1,6 +1,9 @@
-﻿using ModernThemables.HelperClasses.CartesianChart;
+﻿using ModernThemables.HelperClasses.Charting;
+using ModernThemables.HelperClasses.Charting.PieChart;
+using ModernThemables.HelperClasses.Charting.PieChart.Points;
 using ModernThemables.Interfaces;
-using ModernThemables.ViewModels.WpfChart;
+using ModernThemables.ViewModels.Charting.CartesianChart;
+using ModernThemables.ViewModels.Charting.PieChart;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -11,115 +14,38 @@ namespace ModernThemables.Controls
 	{
 		#region Public properties
 
-		public ObservableCollection<ISeries> Series
+		public ObservableCollection<PieSeries> Series
 		{
-			get => (ObservableCollection<ISeries>)GetValue(SeriesProperty);
+			get => (ObservableCollection<PieSeries>)GetValue(SeriesProperty);
 			set => SetValue(SeriesProperty, value);
 		}
 		public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
 			"Series",
-			typeof(ObservableCollection<ISeries>),
+			typeof(ObservableCollection<PieSeries>),
 			typeof(PieChart),
 			new FrameworkPropertyMetadata(null, OnSeriesSet));
 
-		public Func<object, string> XAxisFormatter
+		public double InnerRadiusFraction
 		{
-			get => (Func<object, string>)GetValue(XAxisFormatterProperty);
-			set => SetValue(XAxisFormatterProperty, value);
+			get => (double)GetValue(InnerRadiusFractionProperty);
+			set => SetValue(InnerRadiusFractionProperty, value);
 		}
-		public static readonly DependencyProperty XAxisFormatterProperty = DependencyProperty.Register(
-			"XAxisFormatter",
-			typeof(Func<object, string>),
+		public static readonly DependencyProperty InnerRadiusFractionProperty = DependencyProperty.Register(
+			"InnerRadiusFraction",
+			typeof(double),
 			typeof(PieChart),
-			new PropertyMetadata(null));
+			new PropertyMetadata(0d));
 
-		public Func<object, string> XAxisCursorLabelFormatter
+		public double LabelRadiusFraction
 		{
-			get => (Func<object, string>)GetValue(XAxisCursorLabelFormatterProperty);
-			set => SetValue(XAxisCursorLabelFormatterProperty, value);
+			get => (double)GetValue(LabelRadiusFractionProperty);
+			set => SetValue(LabelRadiusFractionProperty, value);
 		}
-		public static readonly DependencyProperty XAxisCursorLabelFormatterProperty = DependencyProperty.Register(
-			"XAxisCursorLabelFormatter",
-			typeof(Func<object, string>),
+		public static readonly DependencyProperty LabelRadiusFractionProperty = DependencyProperty.Register(
+			"LabelRadiusFraction",
+			typeof(double),
 			typeof(PieChart),
-			new PropertyMetadata(null));
-
-		public Func<object, string> YAxisFormatter
-		{
-			get => (Func<object, string>)GetValue(YAxisFormatterProperty);
-			set => SetValue(YAxisFormatterProperty, value);
-		}
-		public static readonly DependencyProperty YAxisFormatterProperty = DependencyProperty.Register(
-			"YAxisFormatter",
-			typeof(Func<object, string>),
-			typeof(PieChart),
-			new PropertyMetadata(null));
-
-		public Func<object, string> YAxisCursorLabelFormatter
-		{
-			get => (Func<object, string>)GetValue(YAxisCursorLabelFormatterProperty);
-			set => SetValue(YAxisCursorLabelFormatterProperty, value);
-		}
-		public static readonly DependencyProperty YAxisCursorLabelFormatterProperty = DependencyProperty.Register(
-			"YAxisCursorLabelFormatter",
-			typeof(Func<object, string>),
-			typeof(PieChart),
-			new PropertyMetadata(null));
-
-		public Func<object, bool> YAxisLabelIdentifier
-		{
-			get => (Func<object, bool>)GetValue(YAxisLabelIdentifierProperty);
-			set => SetValue(YAxisLabelIdentifierProperty, value);
-		}
-		public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
-			"YAxisLabelIdentifier",
-			typeof(Func<object, bool>),
-			typeof(PieChart),
-			new PropertyMetadata(null));
-
-		public Func<object, bool> XAxisLabelIdentifier
-		{
-			get => (Func<object, bool>)GetValue(XAxisLabelIdentifierProperty);
-			set => SetValue(XAxisLabelIdentifierProperty, value);
-		}
-		public static readonly DependencyProperty XAxisLabelIdentifierProperty = DependencyProperty.Register(
-			"XAxisLabelIdentifier",
-			typeof(Func<object, bool>),
-			typeof(PieChart),
-			new PropertyMetadata(null));
-
-		public bool ShowXSeparatorLines
-		{
-			get => (bool)GetValue(ShowXSeparatorLinesProperty);
-			set => SetValue(ShowXSeparatorLinesProperty, value);
-		}
-		public static readonly DependencyProperty ShowXSeparatorLinesProperty = DependencyProperty.Register(
-			"ShowXSeparatorLines",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(true));
-
-		public bool ShowYSeparatorLines
-		{
-			get => (bool)GetValue(ShowYSeparatorLinesProperty);
-			set => SetValue(ShowYSeparatorLinesProperty, value);
-		}
-		public static readonly DependencyProperty ShowYSeparatorLinesProperty = DependencyProperty.Register(
-			"ShowYSeparatorLines",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(true));
-
-		public bool IsZoomed
-		{
-			get => (bool)GetValue(IsZoomedProperty);
-			set => SetValue(IsZoomedProperty, value);
-		}
-		public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
-			"IsZoomed",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(false));
+			new PropertyMetadata(0d));
 
 		public DataTemplate TooltipTemplate
 		{
@@ -153,17 +79,6 @@ namespace ModernThemables.Controls
 			typeof(LegendLocation),
 			typeof(PieChart),
 			new UIPropertyMetadata(LegendLocation.None, OnLegendLocationSet));
-
-		public TooltipFindingStrategy TooltipFindingStrategy
-		{
-			get => (TooltipFindingStrategy)GetValue(TooltipFindingStrategyProperty);
-			set => SetValue(TooltipFindingStrategyProperty, value);
-		}
-		public static readonly DependencyProperty TooltipFindingStrategyProperty = DependencyProperty.Register(
-			"TooltipFindingStrategy",
-			typeof(TooltipFindingStrategy),
-			typeof(PieChart),
-			new PropertyMetadata(TooltipFindingStrategy.NearestXAllY));
 
 		public TooltipLocation TooltipLocation
 		{
@@ -209,28 +124,6 @@ namespace ModernThemables.Controls
 			typeof(PieChart),
 			new PropertyMetadata(12d));
 
-		public double Min
-		{
-			get => (double)GetValue(MinProperty);
-			set => SetValue(MinProperty, value);
-		}
-		public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
-			"Min",
-			typeof(double),
-			typeof(PieChart),
-			new UIPropertyMetadata(-1d, OnSetMinMax));
-
-		public double Max
-		{
-			get => (double)GetValue(MaxProperty);
-			set => SetValue(MaxProperty, value);
-		}
-		public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
-			"Max",
-			typeof(double),
-			typeof(PieChart),
-			new UIPropertyMetadata(-1d, OnSetMinMax));
-
 		#endregion
 
 		#region Private properties
@@ -268,49 +161,16 @@ namespace ModernThemables.Controls
 			typeof(PieChart),
 			new PropertyMetadata(null));
 
-		private ObservableCollection<InternalSerieViewModel> InternalSeries
+		private ObservableCollection<InternalPieSeriesViewModel> InternalSeries
 		{
-			get => (ObservableCollection<InternalSerieViewModel>)GetValue(InternalSeriesProperty);
+			get => (ObservableCollection<InternalPieSeriesViewModel>)GetValue(InternalSeriesProperty);
 			set => SetValue(InternalSeriesProperty, value);
 		}
 		public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
 			"InternalSeries",
-			typeof(ObservableCollection<InternalSerieViewModel>),
+			typeof(ObservableCollection<InternalPieSeriesViewModel>),
 			typeof(PieChart),
-			new PropertyMetadata(new ObservableCollection<InternalSerieViewModel>()));
-
-		private ObservableCollection<ValueWithHeight> XAxisLabels
-		{
-			get => (ObservableCollection<ValueWithHeight>)GetValue(XAxisLabelsProperty);
-			set => SetValue(XAxisLabelsProperty, value);
-		}
-		public static readonly DependencyProperty XAxisLabelsProperty = DependencyProperty.Register(
-			"XAxisLabels",
-			typeof(ObservableCollection<ValueWithHeight>),
-			typeof(PieChart), 
-			new PropertyMetadata(new ObservableCollection<ValueWithHeight>()));
-
-		private ObservableCollection<ValueWithHeight> YAxisLabels
-		{
-			get => (ObservableCollection<ValueWithHeight>)GetValue(YAxisLabelsProperty);
-			set => SetValue(YAxisLabelsProperty, value);
-		}
-		public static readonly DependencyProperty YAxisLabelsProperty = DependencyProperty.Register(
-			"YAxisLabels",
-			typeof(ObservableCollection<ValueWithHeight>),
-			typeof(PieChart),
-			new PropertyMetadata(new ObservableCollection<ValueWithHeight>()));
-
-		private bool IsCrosshairVisible
-		{
-			get => (bool)GetValue(IsCrosshairVisibleProperty);
-			set => SetValue(IsCrosshairVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsCrosshairVisibleProperty = DependencyProperty.Register(
-			"IsCrosshairVisible",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(true));
+			new PropertyMetadata(new ObservableCollection<InternalPieSeriesViewModel>()));
 
 		private bool IsTooltipVisible
 		{
@@ -322,50 +182,6 @@ namespace ModernThemables.Controls
 			typeof(bool),
 			typeof(PieChart),
 			new PropertyMetadata(true));
-
-		private bool IsAxisIndicatorsVisible
-		{
-			get => (bool)GetValue(IsAxisIndicatorsVisibleProperty);
-			set => SetValue(IsAxisIndicatorsVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsAxisIndicatorsVisibleProperty = DependencyProperty.Register(
-			"IsAxisIndicatorsVisible",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(true));
-
-		private bool IsPointIndicatorsVisible
-		{
-			get => (bool)GetValue(IsPointIndicatorsVisibleProperty);
-			set => SetValue(IsPointIndicatorsVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsPointIndicatorsVisibleProperty = DependencyProperty.Register(
-			"IsPointIndicatorsVisible",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(true));
-
-		private bool IsUserSelectingRange
-		{
-			get => (bool)GetValue(IsUserSelectingRangeProperty);
-			set => SetValue(IsUserSelectingRangeProperty, value);
-		}
-		public static readonly DependencyProperty IsUserSelectingRangeProperty = DependencyProperty.Register(
-			"IsUserSelectingRange",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(false));
-
-		private ZoomState CurrentZoomState
-		{
-			get => (ZoomState)GetValue(CurrentZoomStateProperty);
-			set => SetValue(CurrentZoomStateProperty, value);
-		}
-		public static readonly DependencyProperty CurrentZoomStateProperty = DependencyProperty.Register(
-			"CurrentZoomState",
-			typeof(ZoomState),
-			typeof(PieChart),
-			new UIPropertyMetadata(new ZoomState(0, 0, 0, 0, 0, yBuffer), OnSetZoomState));
 		
 		private bool HasData
 		{

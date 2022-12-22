@@ -1,6 +1,6 @@
 ﻿using ModernThemables.Interfaces;
 
-namespace ModernThemables.HelperClasses.CartesianChart
+namespace ModernThemables.HelperClasses.Charting.PieChart
 {
     /// <summary>
     /// An internal representation of a chart point for rendering the actual series with.

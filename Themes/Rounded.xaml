@@ -354,21 +354,21 @@
 				CornerRadius="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
 				SnapsToDevicePixels="True" />
 			<Border
+				x:Name="Border2"
+				Margin="0,0,1,0"
+				Grid.ColumnSpan="2"
+				Background="Transparent"
+				BorderBrush="Red"
+				BorderThickness="{TemplateBinding BorderThickness}"
+				CornerRadius="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
+				SnapsToDevicePixels="True" />
+			<Border
 				x:Name="Border"
 				Grid.Column="1"
 				Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}"
 				Background="{DynamicResource ControlClickablePartBrush}"
 				BorderThickness="0"
 				CornerRadius="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
-				SnapsToDevicePixels="True" />
-			<Border
-				x:Name="Border2"
-				Grid.Column="0"
-				Margin="0"
-				Background="Transparent"
-				BorderBrush="Red"
-				BorderThickness="{TemplateBinding BorderThickness}"
-				CornerRadius="5"
 				SnapsToDevicePixels="True" />
 			<Path
 				x:Name="Arrow"
@@ -403,7 +403,7 @@
 			<Trigger Property="IsEnabled" Value="False">
 				<Setter TargetName="Border" Property="Background" Value="{DynamicResource StatusTextLightBrush}" />
 				<Setter Property="Foreground" Value="Gray" />
-				<Setter TargetName="Border2" Property="Background" Value="Gray" />
+				<Setter TargetName="Border2" Property="Background" Value="{DynamicResource DisabledControlNonClickablePartBrush}" />
 				<Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource DisabledControlClickablePartBrush}" />
 			</Trigger>
 			<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">

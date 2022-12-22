@@ -360,7 +360,7 @@
 							<DataTemplate>
 								<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
 									<Grid.Margin>
-										<MultiBinding Converter="{StaticResource PointOverlapMarginConverter}">
+										<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
 											<Binding Path="." />
 											<Binding ElementName="root" Path="TooltipPoints" />
 											<Binding ElementName="Grid" Path="ActualHeight" />
@@ -395,7 +395,7 @@
 							<DataTemplate>
 								<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
 									<Grid.Margin>
-										<MultiBinding Converter="{StaticResource PointOverlapMarginConverter}">
+										<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
 											<Binding Path="." />
 											<Binding ElementName="root" Path="TooltipPoints" />
 											<Binding ElementName="Grid" Path="ActualHeight" />
@@ -509,7 +509,7 @@
 							<DataTemplate>
 								<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
 									<Grid.Margin>
-										<MultiBinding Converter="{StaticResource PointOverlapMarginConverter}">
+										<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
 											<Binding Path="." />
 											<Binding ElementName="root" Path="TooltipPoints" />
 											<Binding ElementName="Grid" Path="ActualHeight" />

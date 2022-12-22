@@ -1,13 +1,14 @@
-﻿using ModernThemables.HelperClasses.CartesianChart;
+﻿using ModernThemables.HelperClasses.Charting;
+using ModernThemables.HelperClasses.Charting.PieChart;
 using ModernThemables.Interfaces;
-using ModernThemables.ViewModels.WpfChart;
+using ModernThemables.ViewModels.Charting.CartesianChart;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace ModernThemables.Controls
 {
-	public partial class CartesianChart // .DependencyProperties
+    public partial class CartesianChart // .DependencyProperties
 	{
 		#region Public properties
 
@@ -268,16 +269,16 @@ namespace ModernThemables.Controls
 			typeof(CartesianChart),
 			new PropertyMetadata(null));
 
-		private ObservableCollection<InternalSerieViewModel> InternalSeries
+		private ObservableCollection<InternalSeriesViewModel> InternalSeries
 		{
-			get => (ObservableCollection<InternalSerieViewModel>)GetValue(InternalSeriesProperty);
+			get => (ObservableCollection<InternalSeriesViewModel>)GetValue(InternalSeriesProperty);
 			set => SetValue(InternalSeriesProperty, value);
 		}
 		public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
 			"InternalSeries",
-			typeof(ObservableCollection<InternalSerieViewModel>),
+			typeof(ObservableCollection<InternalSeriesViewModel>),
 			typeof(CartesianChart),
-			new PropertyMetadata(new ObservableCollection<InternalSerieViewModel>()));
+			new PropertyMetadata(new ObservableCollection<InternalSeriesViewModel>()));
 
 		private ObservableCollection<ValueWithHeight> XAxisLabels
 		{

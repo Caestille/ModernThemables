@@ -54,7 +54,9 @@
 	<converters:ChartZoomConverter x:Key="ChartZoomConverter" />
 	<converters:SeriesHeightMarginConverter x:Key="SeriesHeightMarginConverter" />
 	<converters:SeriesOverlapMarginConverter x:Key="SeriesOverlapMarginConverter" />
-	<converters:PointOverlapMarginConverter x:Key="PointOverlapMarginConverter" />
+	<converters:PieCentreRadiusConverter x:Key="PieCentreRadiusConverter" />
+	<converters:PieLabelMarginConverter x:Key="PieLabelMarginConverter" />
+	<converters:PieCentrererConverter x:Key="PieCentrererConverter" />
 
 	<!--#endregion End Converters-->
 

@@ -1,7 +1,9 @@
-﻿using ModernThemables.ViewModels.WpfChart;
+﻿using ModernThemables.ViewModels.Charting.CartesianChart;
+using ModernThemables.ViewModels.Charting.PieChart;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
@@ -15,18 +17,25 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is InternalSerieViewModel vm
-				&& values[1] is ObservableCollection<InternalSerieViewModel> vms
-				&& values[2] is double height)
+			if (values[0] is InternalSeriesViewModel seriesVm
+				&& values[1] is ObservableCollection<InternalSeriesViewModel> seriesVms
+				&& values[2] is double seriesHeight)
 			{
-				if (vms.IndexOf(vm) == 0)
-				{
-					return new Thickness(0);
-				}
-				else
-				{
-					return new Thickness(0, -height, 0, 0);
-				}
+				return seriesVms.IndexOf(seriesVm) == 0 ? new Thickness(0) : new Thickness(0, -seriesHeight, 0, 0);
+			}
+			else if (values[0] is TooltipPointViewModel tooltipVm
+				&& values[1] is ObservableCollection<TooltipPointViewModel> tooltipVms
+				&& values[2] is double tooltipHeight)
+			{
+				return tooltipVms.IndexOf(tooltipVm) == 0 ? new Thickness(0) : new Thickness(0, -tooltipHeight, 0, 0);
+			}
+			else if (values[0] is InternalPieWedge wedgeVm
+				&& values[1] is ObservableCollection<InternalPieSeriesViewModel> wedgeVms
+				&& values[2] is double wedgeHeight)
+			{
+				return wedgeVms.First(x => x.Wedges.Contains(wedgeVm)).Wedges.IndexOf(wedgeVm) == 0
+					? new Thickness(0)
+					: new Thickness(0, -wedgeHeight, 0, 0);
 			}
 			else
 			{

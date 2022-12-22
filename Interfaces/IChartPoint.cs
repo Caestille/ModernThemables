@@ -6,7 +6,12 @@
 	public interface IChartPoint
 	{
 		/// <summary>
-		/// The raw X value.
+		/// The point name. 
+		/// </summary>
+		string Name { get; }
+
+		/// <summary>
+		/// The main value.
 		/// </summary>
 		double XValue { get; }
 
