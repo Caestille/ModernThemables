@@ -128,17 +128,6 @@ namespace ModernThemables.Controls
 
 		#region Private properties
 
-		private ObservableCollection<TooltipPointViewModel> TooltipPoints
-		{
-			get => (ObservableCollection<TooltipPointViewModel>)GetValue(TooltipPointsProperty);
-			set => SetValue(TooltipPointsProperty, value);
-		}
-		public static readonly DependencyProperty TooltipPointsProperty = DependencyProperty.Register(
-			"TooltipPoints",
-			typeof(ObservableCollection<TooltipPointViewModel>),
-			typeof(PieChart),
-			new PropertyMetadata(new ObservableCollection<TooltipPointViewModel>()));
-
 		private bool IsTooltipByCursor
 		{
 			get => (bool)GetValue(IsTooltipByCursorProperty);
@@ -149,17 +138,6 @@ namespace ModernThemables.Controls
 			typeof(bool),
 			typeof(PieChart),
 			new PropertyMetadata(true));
-
-		private InternalChartPoint? MouseOverPoint
-		{
-			get => (InternalChartPoint)GetValue(MouseOverPointProperty);
-			set => SetValue(MouseOverPointProperty, value);
-		}
-		public static readonly DependencyProperty MouseOverPointProperty = DependencyProperty.Register(
-			"MouseOverPoint",
-			typeof(InternalChartPoint),
-			typeof(PieChart),
-			new PropertyMetadata(null));
 
 		private ObservableCollection<InternalPieSeriesViewModel> InternalSeries
 		{
@@ -182,7 +160,29 @@ namespace ModernThemables.Controls
 			typeof(bool),
 			typeof(PieChart),
 			new PropertyMetadata(true));
-		
+
+		private InternalPieWedge TooltipWedge
+		{
+			get => (InternalPieWedge)GetValue(TooltipWedgeProperty);
+			set => SetValue(TooltipWedgeProperty, value);
+		}
+		public static readonly DependencyProperty TooltipWedgeProperty = DependencyProperty.Register(
+			"TooltipWedge",
+			typeof(InternalPieWedge),
+			typeof(PieChart),
+			new PropertyMetadata(null));
+
+		private string TooltipString
+		{
+			get => (string)GetValue(TooltipStringProperty);
+			set => SetValue(TooltipStringProperty, value);
+		}
+		public static readonly DependencyProperty TooltipStringProperty = DependencyProperty.Register(
+			"TooltipString",
+			typeof(string),
+			typeof(PieChart),
+			new PropertyMetadata(""));
+
 		private bool HasData
 		{
 			get => (bool)GetValue(HasDataProperty);

@@ -31,6 +31,16 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 			set => SetProperty(ref percent, value);
 		}
 
+		private double val;
+		/// <double>
+		/// The value of the pie wedge.
+		/// </summary>
+		public double Value
+		{
+			get => val;
+			set => SetProperty(ref val, value);
+		}
+
 		private double startAngle;
 		/// <summary>
 		/// The start angle of the wedge.
@@ -88,14 +98,16 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 		/// </summary>
 		/// <param name="name">The wedge name.</param>
 		/// <param name="percent">The wedge value in percent of a full circle.</param>
+		/// <param name="value">The wedge value.</param>
 		/// <param name="startAngle">The wedge start angle.</param>
 		/// <param name="stroke">The wedge stroke.</param>
 		/// <param name="fill">The wedge fill.</param>
-		public InternalPieWedge(string name, Guid identifier, double percent, double startAngle, IChartBrush stroke, IChartBrush fill)
+		public InternalPieWedge(string name, Guid identifier, double percent, double value, double startAngle, IChartBrush stroke, IChartBrush fill)
         {
             Name = name;
             Identifier = identifier;
             Percent = percent;
+			Value = value;
             StartAngle = startAngle;
             Stroke = stroke;
             Fill = fill;

@@ -21,6 +21,7 @@ using ModernThemables.Converters;
 using System.Reflection.Metadata;
 using System.Diagnostics;
 using System.Xml.Linq;
+using System.Windows.Threading;
 
 namespace ModernThemables.Controls
 {
@@ -226,8 +227,7 @@ namespace ModernThemables.Controls
 
 					newSeries.Add(new InternalPieSeriesViewModel(
 						series.Name,
-						new ObservableCollection<InternalPieWedge>(wedges),
-						series.TooltipLabelFormatter));
+						new ObservableCollection<InternalPieWedge>(wedges)));
 
 					if (!series.Wedges.Any()) continue;
 				}
@@ -265,6 +265,7 @@ namespace ModernThemables.Controls
 					wedge.Name,
 					wedge.Identifier,
 					wedge.Value / sum * 100,
+					wedge.Value,
 					angleSum / sum * 360,
 					matchingWedge != null
 						? matchingWedge.Stroke
@@ -315,6 +316,7 @@ namespace ModernThemables.Controls
 			if (hypLength > radius)
 			{
 				foreach (var wedge in allWedges) wedge.IsMouseOver = false;
+				TooltipWedge = null;
 				return;
 			}
 
@@ -327,13 +329,56 @@ namespace ModernThemables.Controls
 					if (angle > wedge.StartAngle
 						&& angle < wedge.StartAngle + wedge.Percent * 360d /100d)
 					{
-						wedge.IsMouseOver = true;
+						if (!wedge.IsMouseOver)
+						{
+							wedge.IsMouseOver = true;
+							TooltipWedge = wedge;
+
+							var matchingSeries = Series.First(x => x.Wedges.Any(y => y.Identifier == wedge.Identifier));
+							var matchingWedge = matchingSeries.Wedges.First(x => x.Identifier == wedge.Identifier);
+							TooltipString = matchingSeries.TooltipLabelFormatter != null
+								? matchingSeries.TooltipLabelFormatter(matchingSeries.Wedges, matchingWedge)
+								: matchingWedge.Value.ToString();
+
+							var centreAngle = wedge.StartAngle + wedge.Percent / 2 * 360 / 100;
+
+							var angleRad = (Math.PI / 180.0) * (centreAngle - 90);
+
+							double x = radius * Math.Cos(angleRad);
+							double y = radius * Math.Sin(angleRad);
+
+							this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+
+							if (TooltipLocation == TooltipLocation.Points)
+							{
+								var left = x + (SeriesItemsControl.ActualWidth / 2);
+								var top = y + centreY - TooltipGrid.ActualHeight - 20;
+								TooltipGrid.Margin = new Thickness(left, top, 0, 0);
+							}
+						}
 					}
 					else if (wedge.IsMouseOver)
 					{
 						wedge.IsMouseOver = false;
 					}
 				}
+			}
+
+			if (TooltipLocation == TooltipLocation.Cursor && TooltipWedge != null)
+			{
+				var wedge = TooltipWedge;
+				var centreAngle = wedge.StartAngle + wedge.Percent / 2 * 360 / 100;
+
+				var angleRad = (Math.PI / 180.0) * (centreAngle - 90);
+
+				double x = radius * Math.Cos(angleRad);
+				double y = radius * Math.Sin(angleRad);
+
+				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+
+				var left = mouseLoc.X + SeriesItemsControl.ActualWidth / 2 - Math.Min(SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight) / 2 + 5;
+				var top = mouseLoc.Y - TooltipGrid.ActualHeight - 5;
+				TooltipGrid.Margin = new Thickness(left, top, 0, 0);
 			}
 		}
 
@@ -390,6 +435,33 @@ namespace ModernThemables.Controls
 			var id = wedge.Identifier;
 			var matchingInternalWedge = InternalSeries.First(x => x.Wedges.Any(y => y.Identifier == id)).Wedges.First(x => x.Identifier == id);
 			matchingInternalWedge.IsMouseOver = e;
+			TooltipWedge = e ? matchingInternalWedge : null;
+
+			var matchingSeries = Series.First(x => x.Wedges.Any(y => y.Identifier == wedge.Identifier));
+			var matchingWedge = matchingSeries.Wedges.First(x => x.Identifier == wedge.Identifier);
+			TooltipString = matchingSeries.TooltipLabelFormatter != null
+				? matchingSeries.TooltipLabelFormatter(matchingSeries.Wedges, matchingWedge)
+				: matchingWedge.Value.ToString();
+
+			var centreAngle = matchingInternalWedge.StartAngle + matchingInternalWedge.Percent / 2 * 360 / 100;
+
+			var angleRad = (Math.PI / 180.0) * (centreAngle - 90);
+
+			var radius = Math.Min(SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight) * 0.9 / 2;
+
+			double x = radius * Math.Cos(angleRad);
+			double y = radius * Math.Sin(angleRad);
+
+			this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+
+			var converter = new PieCentreRadiusConverter();
+			var centreY = (double)converter.Convert(
+			new object[] { SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight },
+			null, "CentreY", null);
+
+			var left = x + (SeriesItemsControl.ActualWidth / 2);
+			var top = y + centreY - TooltipGrid.ActualHeight - 20;
+			TooltipGrid.Margin = new Thickness(left, top, 0, 0);
 		}
 
 		private void PieChart_Loaded(object sender, RoutedEventArgs e)

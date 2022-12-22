@@ -1,8 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using ModernThemables.HelperClasses.Charting.PieChart;
 using ModernThemables.ViewModels.Charting.PieChart;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace ModernThemables.ViewModels.Charting.CartesianChart
@@ -29,11 +26,6 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
 		public string Name { get; }
 
 		/// <summary>
-		/// A <see cref="Func{T1, T2, TResult}"/> used to format the tooltip string.
-		/// </summary>
-		public Func<IEnumerable<PieWedge>, PieWedge, string> TooltipLabelFormatter;
-
-		/// <summary>
 		/// Initialises a new <see cref="InternalPieSeriesViewModel"/>.
 		/// </summary>
 		/// <param name="name">The series name.</param>
@@ -41,12 +33,10 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
 		/// <param name="tooltipFormatter">The Func used to format the tooltip string.</param>
 		public InternalPieSeriesViewModel(
 			string name,
-			ObservableCollection<InternalPieWedge> wedges,
-			Func<IEnumerable<PieWedge>, PieWedge, string> tooltipFormatter)
+			ObservableCollection<InternalPieWedge> wedges)
 		{
 			Name = name;
 			Wedges = wedges;
-			TooltipLabelFormatter = tooltipFormatter;
 		}
 	}
 }
