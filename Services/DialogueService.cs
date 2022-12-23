@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Shell;
 using ModernThemables.Controls;
 using CoreUtilities.Interfaces.Dialogues;
+using System.Windows.Controls;
 
 namespace ModernThemables.Services
 {
@@ -54,6 +55,43 @@ namespace ModernThemables.Services
 			}
 			WindowChrome.SetWindowChrome(window, new WindowChrome() { ResizeBorderThickness = new Thickness(5), CaptionHeight = 24 });
 			window.WindowStyle = WindowStyle.ToolWindow;
+			RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
+			RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
+
+			window.ShowDialog();
+		}
+
+		/// <inheritdoc />
+		public async Task ShowBorderlessCustomDialogue(object? dataContext = null, Size? dialogueSize = null)
+		{
+			Window window = new Window();
+			window.WindowStyle = WindowStyle.None;
+			window.AllowsTransparency = true;
+			window.Background = new SolidColorBrush(Colors.Transparent);
+			window.FontSize = 13;
+			window.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Fonts/#Inter");
+			window.UseLayoutRounding = true;
+			window.SnapsToDevicePixels = true;
+			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+			window.Owner = Application.Current.MainWindow;
+			window.HorizontalContentAlignment = HorizontalAlignment.Center;
+			window.VerticalContentAlignment = VerticalAlignment.Center;
+			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
+			{
+				DataType = dataContext.GetType(),
+				VisualTree = new FrameworkElementFactory(registeredViews[dataContext.GetType()]),
+			});
+			window.Content = new ContentControl() { Content = (ObservableObject)dataContext };
+			if (dialogueSize == null)
+			{
+				window.SizeToContent = SizeToContent.WidthAndHeight;
+			}
+			else
+			{
+				window.Width = dialogueSize.Value.Width;
+				window.Height = dialogueSize.Value.Height;
+			}
+			//WindowChrome.SetWindowChrome(window, new WindowChrome() { ResizeBorderThickness = new Thickness(5), CaptionHeight = 24 });
 			RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
 			RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
 
