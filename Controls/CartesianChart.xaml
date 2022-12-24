@@ -153,9 +153,9 @@
 						<DataTemplate>
 							<Grid Width="{Binding Height}">
 								<TextBlock
-									Width="50"
+									Width="70"
 									Height="12"
-									Margin="0,0,-25,0"
+									Margin="0,0,-35,0"
 									HorizontalAlignment="Right"
 									FontSize="11"
 									FontWeight="Medium"
