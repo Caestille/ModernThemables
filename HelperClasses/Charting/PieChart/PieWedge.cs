@@ -20,16 +20,25 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		/// </summary>
 		public double Value { get; }
 
-		/// <inheritdoc />
+		/// <summary>
+		/// The wedge stroke.
+		/// </summary>
 		public IChartBrush Stroke { get; }
 
-		/// <inheritdoc />
+		/// <summary>
+		/// The wedge fill.
+		/// </summary>
 		public IChartBrush Fill { get; }
 
-		/// <inheritdoc />
+		/// <summary>
+		/// The wedge UID
+		/// </summary>
 		public Guid Identifier { get; } = Guid.NewGuid();
 
 		private bool isFocused;
+		/// <summary>
+		/// Whether the wedge is focused.
+		/// </summary>
 		public bool IsFocused
 		{
 			get => isFocused;

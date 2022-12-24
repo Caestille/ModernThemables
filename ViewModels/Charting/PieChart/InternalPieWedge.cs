@@ -1,15 +1,13 @@
-﻿using CoreUtilities.HelperClasses.Extensions;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using ModernThemables.HelperClasses.Charting.Brushes;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using ModernThemables.Interfaces;
 using System;
 
 namespace ModernThemables.ViewModels.Charting.PieChart
 {
-    /// <summary>
-    /// An internal representation of a chart point for rendering the actual series with.
-    /// </summary>
-    internal class InternalPieWedge : ObservableObject
+	/// <summary>
+	/// An internal representation of a chart point for rendering the actual series with.
+	/// </summary>
+	internal class InternalPieWedge : ObservableObject
 	{
 		private string name;
 		/// <summary>
@@ -52,6 +50,9 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 		}
 
 		private IChartBrush stroke;
+		/// <summary>
+		/// The wedge stroke.
+		/// </summary>
 		public IChartBrush Stroke
 		{
 			get => stroke;
@@ -59,6 +60,9 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 		}
 
 		private IChartBrush fill;
+		/// <summary>
+		/// The wedge fill.
+		/// </summary>
 		public IChartBrush Fill
 		{
 			get => fill;
@@ -66,6 +70,9 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 		}
 
 		private Guid identifier;
+		/// <summary>
+		/// The wedge unique identifier.
+		/// </summary>
 		public Guid Identifier
 		{
 			get => identifier;
@@ -103,14 +110,14 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 		/// <param name="stroke">The wedge stroke.</param>
 		/// <param name="fill">The wedge fill.</param>
 		public InternalPieWedge(string name, Guid identifier, double percent, double value, double startAngle, IChartBrush stroke, IChartBrush fill)
-        {
-            Name = name;
-            Identifier = identifier;
-            Percent = percent;
+		{
+			Name = name;
+			Identifier = identifier;
+			Percent = percent;
 			Value = value;
-            StartAngle = startAngle;
-            Stroke = stroke;
-            Fill = fill;
-        }
-    }
+			StartAngle = startAngle;
+			Stroke = stroke;
+			Fill = fill;
+		}
+	}
 }

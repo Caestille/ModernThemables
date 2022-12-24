@@ -1,6 +1,4 @@
-﻿using ModernThemables.HelperClasses.Charting.PieChart.Points;
-using ModernThemables.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -14,21 +12,30 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
     /// <typeparam name="TModel">The point type to model.</typeparam>
     public class PieSeries
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Event raised when a property of the series has changed.
+        /// </summary>
         public event EventHandler<PropertyChangedEventArgs> PropertyChanged;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Event raised when the series collection of wedges has changed.
+        /// </summary>
         public event EventHandler<NotifyCollectionChangedEventArgs> CollectionChanged;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The tooltip formatter of the series.
+        /// </summary>
         public Func<IEnumerable<PieWedge>, PieWedge, string> TooltipLabelFormatter { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The series name.
+        /// </summary>
         public string Name { get; set; }
 
-
         private ObservableCollection<PieWedge> wedges;
-        /// <inheritdoc />
+        /// <summary>
+        /// The collection of <see cref="PieWedge"/>s the series contains.
+        /// </summary>
         public ObservableCollection<PieWedge> Wedges
         {
             get => wedges;

@@ -2,7 +2,6 @@
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows;
-using ModernThemables.Controls;
 
 namespace ModernThemables.HelperClasses.Charting.PieChart
 {

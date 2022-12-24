@@ -127,6 +127,7 @@ namespace ModernThemables.Controls
 		private static void OnSetZoomState(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not CartesianChart chart) return;
+			if (chart.Series == null) return;
 
 			bool setY = false;
 
@@ -450,7 +451,7 @@ namespace ModernThemables.Controls
 			var labels2 = labels.Select(x => new ValueWithHeight()
 			{
 				Value = XAxisFormatter == null
-					? x.ToString("MMM YY")
+					? x.ToString()
 					: XAxisFormatter(Series.First().Values.First().XValueToImplementation(x)),
 				Height = ((x - xMin) / xRange * plotAreaWidth) - (labels.ToList().IndexOf(x) > 0
 					? (labels[labels.ToList().IndexOf(x) - 1] - xMin) / xRange * plotAreaWidth
@@ -463,7 +464,7 @@ namespace ModernThemables.Controls
 				{
 					new ValueWithHeight(
 						XAxisFormatter == null
-							? xMin.ToString("MMM YY")
+							? xMin.ToString()
 							: XAxisFormatter(Series.First().Values.First().XValueToImplementation(xMin)),
 						plotAreaWidth / 2)
 				};

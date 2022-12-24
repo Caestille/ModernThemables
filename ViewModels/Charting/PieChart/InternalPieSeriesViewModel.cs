@@ -1,8 +1,7 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using ModernThemables.ViewModels.Charting.PieChart;
 using System.Collections.ObjectModel;
 
-namespace ModernThemables.ViewModels.Charting.CartesianChart
+namespace ModernThemables.ViewModels.Charting.PieChart
 {
 	/// <summary>
 	/// A view model for an internal representation of a series used by the <see cref="CartesianChart"/>.
@@ -12,7 +11,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
 		private ObservableCollection<InternalPieWedge> wedges;
 
 		/// <summary>
-		/// The data making up the rendered points in pixels scale.
+		/// The pie wedges.
 		/// </summary>
 		public ObservableCollection<InternalPieWedge> Wedges
 		{
@@ -30,7 +29,6 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
 		/// </summary>
 		/// <param name="name">The series name.</param>
 		/// <param name="wedges">The data this series represents.</param>
-		/// <param name="tooltipFormatter">The Func used to format the tooltip string.</param>
 		public InternalPieSeriesViewModel(
 			string name,
 			ObservableCollection<InternalPieWedge> wedges)
