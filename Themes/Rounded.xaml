@@ -671,16 +671,17 @@
 						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
 
 							<TextBox

@@ -6,6 +6,8 @@ using System.Windows.Media;
 using System.Xml.Serialization;
 using System.Windows.Data;
 using System.Collections.Generic;
+using System.Windows.Input;
+using System.Runtime.CompilerServices;
 
 namespace ModernThemables.Controls
 {
@@ -41,6 +43,8 @@ namespace ModernThemables.Controls
         private TextBox minuteTextBox;
 		private TextBox secondTextBox;
 
+		private bool blockUpdate;
+
 		private Dictionary<string, Brush> cachedBrushes = new();
 		private Dictionary<string, Binding> cachedBindings = new();
 		private Dictionary<string, bool> validCache = new();
@@ -56,14 +60,14 @@ namespace ModernThemables.Controls
 
         public DatetimeTextBox()
         {
-
+            
 		}
 
-		#endregion Constructors
+        #endregion Constructors
 
-		#region Properties
+        #region Properties
 
-		public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register("DateTime", typeof(DateTime?), typeof(DatetimeTextBox),
+        public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register("DateTime", typeof(DateTime?), typeof(DatetimeTextBox),
 		   new FrameworkPropertyMetadata(null, OnSetDateTime));
 
 		public DateTime? DateTime
@@ -76,24 +80,40 @@ namespace ModernThemables.Controls
 		{
 			var dtTb = sender as DatetimeTextBox;
 			if (dtTb != null)
-			{
-				if (e.NewValue != e.OldValue 
+            {
+				Keyboard.ClearFocus();
+                if ((e.OldValue == null || e.NewValue != e.OldValue)
 					&& e.NewValue is DateTime dt
-					&& ! dtTb.dayTextBox.IsFocused
-					&& !dtTb.monthTextBox.IsFocused
-					&& !dtTb.yearTextBox.IsFocused
-					&& !dtTb.hourTextBox.IsFocused
-					&& !dtTb.minuteTextBox.IsFocused
-					&& !dtTb.secondTextBox.IsFocused)
-				{
-					dtTb.dayTextBox.Text = dt.Day.ToString().PadLeft(2, '0');
+					&& dtTb.dayTextBox != null && !dtTb.dayTextBox.IsFocused
+					&& dtTb.monthTextBox != null && !dtTb.monthTextBox.IsFocused
+					&& dtTb.yearTextBox != null && !dtTb.yearTextBox.IsFocused
+					&& dtTb.hourTextBox != null && !dtTb.hourTextBox.IsFocused
+					&& dtTb.minuteTextBox != null && !dtTb.minuteTextBox.IsFocused
+					&& dtTb.secondTextBox != null && !dtTb.secondTextBox.IsFocused)
+                {
+					dtTb.blockUpdate = true;
+                    dtTb.dayTextBox.Focusable = false;
+                    dtTb.monthTextBox.Focusable = false;
+                    dtTb.yearTextBox.Focusable = false;
+                    dtTb.hourTextBox.Focusable = false;
+                    dtTb.minuteTextBox.Focusable = false;
+                    dtTb.secondTextBox.Focusable = false;
+                    dtTb.dayTextBox.Text = dt.Day.ToString().PadLeft(2, '0');
 					dtTb.monthTextBox.Text = dt.Month.ToString().PadLeft(2, '0');
 					dtTb.yearTextBox.Text = dt.Year.ToString().PadLeft(4, '0');
 					dtTb.hourTextBox.Text = dt.Hour.ToString().PadLeft(2, '0');
 					dtTb.minuteTextBox.Text = dt.Minute.ToString().PadLeft(2, '0');
 					dtTb.secondTextBox.Text = dt.Second.ToString().PadLeft(2, '0');
-				}
-			}
+                    dtTb.dayTextBox.Focusable = true;
+                    dtTb.monthTextBox.Focusable = true;
+                    dtTb.yearTextBox.Focusable = true;
+                    dtTb.hourTextBox.Focusable = true;
+                    dtTb.minuteTextBox.Focusable = true;
+                    dtTb.secondTextBox.Focusable = true;
+                    dtTb.blockUpdate = false;
+                }
+
+            }
 		}
 
 		public static readonly DependencyProperty TextboxBorderThicknessProperty = DependencyProperty.Register("TextboxBorderThickness", typeof(Thickness), typeof(DatetimeTextBox),
@@ -183,6 +203,33 @@ namespace ModernThemables.Controls
 			{
 				secondTextBox.TextChanged += SecondChanged;
 				secondTextBox.PreviewKeyDown += SecondKeyDown;
+			}
+
+			if (dayTextBox != null && monthTextBox != null && yearTextBox != null && hourTextBox != null && minuteTextBox != null && secondTextBox != null)
+			{
+				if (DateTime != null)
+				{
+					blockUpdate = true;
+					dayTextBox.Focusable = false;
+                    monthTextBox.Focusable = false;
+                    yearTextBox.Focusable = false;
+                    hourTextBox.Focusable = false;
+                    minuteTextBox.Focusable = false;
+                    secondTextBox.Focusable = false;
+                    dayTextBox.Text = DateTime.Value.Day.ToString().PadLeft(2, '0');
+                    monthTextBox.Text = DateTime.Value.Month.ToString().PadLeft(2, '0');
+                    yearTextBox.Text = DateTime.Value.Year.ToString().PadLeft(4, '0');
+                    hourTextBox.Text = DateTime.Value.Hour.ToString().PadLeft(2, '0');
+                    minuteTextBox.Text = DateTime.Value.Minute.ToString().PadLeft(2, '0');
+                    secondTextBox.Text = DateTime.Value.Second.ToString().PadLeft(2, '0');
+                    dayTextBox.Focusable = true;
+                    monthTextBox.Focusable = true;
+                    yearTextBox.Focusable = true;
+                    hourTextBox.Focusable = true;
+                    minuteTextBox.Focusable = true;
+                    secondTextBox.Focusable = true;
+                    blockUpdate = false;
+                }
 			}
 		}
 
@@ -408,6 +455,8 @@ namespace ModernThemables.Controls
 
 		private void CalculateDate()
 		{
+			if (blockUpdate) return;
+
 			var calculate = dayValid && monthValid && yearValid && hourValid && minuteValid && secondValid;
 
 			if (calculate) DateTime = new DateTime(
