@@ -274,4 +274,86 @@
 
 	<!--#endregion-->
 
+	<!--#region Base DateTimeTextbox-->
+
+	<Style TargetType="{x:Type controls:DatetimeTextBox}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:DatetimeTextBox}">
+					<Border
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}">
+						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+
+							<TextBox
+								x:Name="PART_dayTextBox"
+								Height="Auto"
+								Width="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="True" />
+
+							<TextBox
+								x:Name="PART_monthTextBox"
+								Grid.Column="1"
+								Height="Auto"
+								Width="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="True" />
+
+							<TextBox
+								x:Name="PART_yearTextBox"
+								Grid.Column="2"
+								Height="Auto"
+								Width="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="True" />
+
+							<TextBox
+								x:Name="PART_hourTextBox"
+								Grid.Column="3"
+								Height="Auto"
+								Width="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="True" />
+
+							<TextBox
+								x:Name="PART_minuteTextBox"
+								Grid.Column="4"
+								Height="Auto"
+								Width="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="True" />
+
+							<TextBox
+								x:Name="PART_secondTextBox"
+								Grid.Column="5"
+								Height="Auto"
+								Width="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="True" />
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--#endregion-->
+
 </ResourceDictionary>

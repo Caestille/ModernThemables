@@ -658,6 +658,217 @@
 
 	<!--#endregion-->
 
+	<!--#region Base DateTimeTextbox-->
+
+	<Style TargetType="{x:Type controls:DatetimeTextBox}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:DatetimeTextBox}">
+					<Border
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}">
+						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+
+							<TextBox
+								x:Name="PART_dayTextBox"
+								Height="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								BorderBrush="{DynamicResource StatusTextBrush}"
+								BorderThickness="{TemplateBinding TextboxBorderThickness}"
+								Foreground="{TemplateBinding Foreground}"
+								SnapsToDevicePixels="True">
+								<TextBox.Background>
+									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
+								</TextBox.Background>
+								<TextBox.Width>
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
+									</MultiBinding>
+								</TextBox.Width>
+							</TextBox>
+
+							<TextBlock
+								Grid.Column="1"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								Foreground="{TemplateBinding Foreground}"
+								Text="/" />
+
+							<TextBox
+								x:Name="PART_monthTextBox"
+								Grid.Column="2"
+								Height="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								BorderBrush="{DynamicResource StatusTextBrush}"
+								BorderThickness="{TemplateBinding TextboxBorderThickness}"
+								Foreground="{TemplateBinding Foreground}"
+								SnapsToDevicePixels="True">
+								<TextBox.Background>
+									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
+								</TextBox.Background>
+								<TextBox.Width>
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
+									</MultiBinding>
+								</TextBox.Width>
+							</TextBox>
+
+							<TextBlock
+								Grid.Column="3"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								Foreground="{TemplateBinding Foreground}"
+								Text="/" />
+
+							<TextBox
+								x:Name="PART_yearTextBox"
+								Grid.Column="4"
+								Height="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								BorderBrush="{DynamicResource StatusTextBrush}"
+								BorderThickness="{TemplateBinding TextboxBorderThickness}"
+								Foreground="{TemplateBinding Foreground}"
+								SnapsToDevicePixels="True">
+								<TextBox.Background>
+									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
+								</TextBox.Background>
+								<TextBox.Width>
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="0000|3">
+										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
+									</MultiBinding>
+								</TextBox.Width>
+							</TextBox>
+
+							<TextBox
+								x:Name="PART_hourTextBox"
+								Grid.Column="5"
+								Height="Auto"
+								Margin="5,0,0,0"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								BorderBrush="{DynamicResource StatusTextBrush}"
+								BorderThickness="{TemplateBinding TextboxBorderThickness}"
+								Foreground="{TemplateBinding Foreground}"
+								SnapsToDevicePixels="True">
+								<TextBox.Background>
+									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
+								</TextBox.Background>
+								<TextBox.Width>
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
+									</MultiBinding>
+								</TextBox.Width>
+							</TextBox>
+
+							<TextBlock
+								Grid.Column="6"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								Foreground="{TemplateBinding Foreground}"
+								Text=":" />
+
+							<TextBox
+								x:Name="PART_minuteTextBox"
+								Grid.Column="7"
+								Height="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								BorderBrush="{DynamicResource StatusTextBrush}"
+								BorderThickness="{TemplateBinding TextboxBorderThickness}"
+								Foreground="{TemplateBinding Foreground}"
+								SnapsToDevicePixels="True">
+								<TextBox.Background>
+									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
+								</TextBox.Background>
+								<TextBox.Width>
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
+									</MultiBinding>
+								</TextBox.Width>
+							</TextBox>
+
+							<TextBlock
+								Grid.Column="8"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								Foreground="{TemplateBinding Foreground}"
+								Text=":" />
+
+							<TextBox
+								x:Name="PART_secondTextBox"
+								Grid.Column="9"
+								Height="Auto"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								BorderBrush="{DynamicResource StatusTextBrush}"
+								BorderThickness="{TemplateBinding TextboxBorderThickness}"
+								Foreground="{TemplateBinding Foreground}"
+								SnapsToDevicePixels="True">
+								<TextBox.Background>
+									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
+								</TextBox.Background>
+								<TextBox.Width>
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
+										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
+									</MultiBinding>
+								</TextBox.Width>
+							</TextBox>
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--#endregion-->
+
 	<!--#region ScrollBar-->
 
 	<Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
