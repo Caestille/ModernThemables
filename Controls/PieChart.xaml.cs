@@ -15,18 +15,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ModernThemables.ViewModels.Charting.CartesianChart;
 using ModernThemables.ViewModels.Charting.PieChart;
 using ModernThemables.Converters;
-using System.Reflection.Metadata;
-using System.Diagnostics;
-using System.Xml.Linq;
 using System.Windows.Threading;
 
 namespace ModernThemables.Controls
 {
 	/// <summary>
-	/// Interaction logic for WpfChart.xaml
+	/// Interaction logic for PieChart.xaml
 	/// </summary>
 	public partial class PieChart : UserControl
 	{

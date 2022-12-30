@@ -1,6 +1,5 @@
 ﻿using CoreUtilities.HelperClasses.Extensions;
 using CoreUtilities.Services;
-using Microsoft.VisualBasic;
 using ModernThemables.HelperClasses.Charting.PieChart;
 using ModernThemables.HelperClasses.Charting.Brushes;
 using ModernThemables.HelperClasses.Charting;
@@ -24,7 +23,7 @@ using ModernThemables.ViewModels.Charting.CartesianChart;
 namespace ModernThemables.Controls
 {
 	/// <summary>
-	/// Interaction logic for WpfChart.xaml
+	/// Interaction logic for CartesianChart.xaml
 	/// </summary>
 	public partial class CartesianChart : UserControl
 	{
