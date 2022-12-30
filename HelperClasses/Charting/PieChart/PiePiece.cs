@@ -131,6 +131,8 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		{           
 			Point startPoint = new Point(CentreX, CentreY);
 
+			if (Percentage == 100) Percentage = 99.9999;
+
 			var innerRadius = InnerRadiusFraction * Radius;
 
 			Point innerArcStartPoint = ComputeCartesianCoordinate(RotationAngle, innerRadius);
