@@ -710,6 +710,7 @@
 
 							<TextBlock
 								Grid.Column="1"
+								Margin="-2,0"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Center"
 								Foreground="{TemplateBinding Foreground}"
@@ -742,6 +743,7 @@
 
 							<TextBlock
 								Grid.Column="3"
+								Margin="-2,0"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Center"
 								Foreground="{TemplateBinding Foreground}"
@@ -776,7 +778,7 @@
 								x:Name="PART_hourTextBox"
 								Grid.Column="5"
 								Height="Auto"
-								Margin="5,0,0,0"
+								Margin="3,0,0,0"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Center"
 								BorderBrush="{DynamicResource StatusTextBrush}"
@@ -800,6 +802,7 @@
 
 							<TextBlock
 								Grid.Column="6"
+								Margin="-1,0,-2,0"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Center"
 								Foreground="{TemplateBinding Foreground}"
@@ -832,6 +835,7 @@
 
 							<TextBlock
 								Grid.Column="8"
+								Margin="-1,0,-2,0"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Center"
 								Foreground="{TemplateBinding Foreground}"
