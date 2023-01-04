@@ -660,6 +660,37 @@
 
 	<!--#region Base DateTimeTextbox-->
 
+	<Style TargetType="{x:Type controls:SearchBox}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:SearchBox}">
+					<Border
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}">
+						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+							<TextBox
+								x:Name="PART_textBox"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								BorderBrush="{DynamicResource StatusTextBrush}"
+								Foreground="{TemplateBinding Foreground}"
+								SnapsToDevicePixels="True">
+								<TextBox.Background>
+									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
+								</TextBox.Background>
+							</TextBox>
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--#endregion-->
+
+	<!--#region Base DateTimeTextbox-->
+
 	<Style TargetType="{x:Type controls:DatetimeTextBox}">
 		<Setter Property="Template">
 			<Setter.Value>
@@ -671,17 +702,17 @@
 						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
 
 							<TextBox

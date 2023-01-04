@@ -67,12 +67,24 @@ namespace ModernThemables.Controls
             {
                 textBox.TextChanged += TextChanged;
                 textBox.PreviewKeyDown += KeyDown;
-			}
-		}
+            }
+
+            if (textBlock != null)
+            {
+                
+            }
+            textBlock = this.Template.FindName(PART_textBlock, this) as TextBlock;
+            if (textBox != null)
+            {
+                
+            }
+        }
 
 		#endregion Override
 
 		#region Methods
+
+
 
 		#endregion
 
