@@ -263,31 +263,26 @@ namespace ModernThemables.Controls
 		private void DayChanged(object sender, TextChangedEventArgs e)
 		{
 			dayValid = int.TryParse(dayTextBox.Text, out int day) && day <= 31 && day > 0;
-			MarkInvalid(PART_dayTextBox, dayTextBox, dayValid);
-			if (dayValid && dayTextBox.Text.Length == 2)
-			{
-				monthTextBox.Focus();
-			}
+			FormatText(PART_dayTextBox, dayTextBox, dayValid);
+			if (dayValid && dayTextBox.Text.Length == 2) monthTextBox.Focus();
 			CalculateDate();
 		}
 
 		private void DayKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Back && dayTextBox.Text.Length == 0)
-			{
-
-			}
-			if (e.Key == Key.Delete && dayTextBox.Text.Length == 0)
-			{
-				monthTextBox.Focus();
-				monthTextBox.SelectionStart = 0;
-			}
-			if (e.Key == Key.Home)
+			if ((e.Key == Key.Delete && dayTextBox.Text.Length == 0 || dayTextBox.SelectionStart == dayTextBox.Text.Length)
+                || (e.Key == Key.Right && dayTextBox.SelectionStart == dayTextBox.Text.Length))
+            {
+                monthTextBox.Focus();
+                monthTextBox.SelectionStart = 0;
+                if (e.Key == Key.Delete) monthTextBox.Text = monthTextBox.Text.Substring(1);
+            }
+            else if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == Key.End)
+			else if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -296,31 +291,32 @@ namespace ModernThemables.Controls
 		private void MonthChanged(object sender, TextChangedEventArgs e)
 		{
 			monthValid = int.TryParse(monthTextBox.Text, out int day) && day <= 12 && day > 0;
-			MarkInvalid(PART_monthTextBox, monthTextBox, monthValid);
-			if (monthValid && monthTextBox.Text.Length == 2)
-			{
-				yearTextBox.Focus();
-			}
+			FormatText(PART_monthTextBox, monthTextBox, monthValid);
+			if (monthValid && monthTextBox.Text.Length == 2) yearTextBox.Focus();
 			CalculateDate();
 		}
 
 		private void MonthKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Back && monthTextBox.Text.Length == 0)
-			{
-				dayTextBox.Focus();
-			}
-			if (e.Key == Key.Delete && monthTextBox.Text.Length == 0)
-			{
-				yearTextBox.Focus();
-				yearTextBox.SelectionStart = 0;
-			}
-			if (e.Key == Key.Home)
+            if ((e.Key == Key.Back && (monthTextBox.Text.Length == 0 || monthTextBox.SelectionStart == 0))
+                || (e.Key == Key.Left && monthTextBox.SelectionStart == 0))
+            {
+                dayTextBox.Focus();
+                if (e.Key == Key.Back) dayTextBox.Text = dayTextBox.Text.Substring(0, dayTextBox.Text.Length - 1);
+            }
+            else if ((e.Key == Key.Delete && monthTextBox.Text.Length == 0 || monthTextBox.SelectionStart == monthTextBox.Text.Length)
+                || (e.Key == Key.Right && monthTextBox.SelectionStart == monthTextBox.Text.Length))
+            {
+                yearTextBox.Focus();
+                yearTextBox.SelectionStart = 0;
+                if (e.Key == Key.Delete) yearTextBox.Text = yearTextBox.Text.Substring(1);
+            }
+            else if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == Key.End)
+			else if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -329,31 +325,32 @@ namespace ModernThemables.Controls
 		private void YearChanged(object sender, TextChangedEventArgs e)
 		{
 			yearValid = int.TryParse(yearTextBox.Text, out int year) && year > 0;
-			MarkInvalid(PART_yearTextBox, yearTextBox, yearValid);
-			if (yearValid && yearTextBox.Text.Length == 4)
-			{
-				hourTextBox.Focus();
-			}
+			FormatText(PART_yearTextBox, yearTextBox, yearValid);
+			if (yearValid && yearTextBox.Text.Length == 4) hourTextBox.Focus();
 			CalculateDate();
 		}
 
 		private void YearKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Back && yearTextBox.Text.Length == 0)
-			{
-				monthTextBox.Focus();
-			}
-			if (e.Key == Key.Delete && yearTextBox.Text.Length == 0)
-			{
-				hourTextBox.Focus();
-				hourTextBox.SelectionStart = 0;
-			}
-			if (e.Key == Key.Home)
+            if ((e.Key == Key.Back && (yearTextBox.Text.Length == 0 || yearTextBox.SelectionStart == 0))
+                || (e.Key == Key.Left && yearTextBox.SelectionStart == 0))
+            {
+                monthTextBox.Focus();
+                if (e.Key == Key.Back) monthTextBox.Text = monthTextBox.Text.Substring(0, monthTextBox.Text.Length - 1);
+            }
+            else if ((e.Key == Key.Delete && yearTextBox.Text.Length == 0 || yearTextBox.SelectionStart == yearTextBox.Text.Length)
+                || (e.Key == Key.Right && yearTextBox.SelectionStart == yearTextBox.Text.Length))
+            {
+                hourTextBox.Focus();
+                hourTextBox.SelectionStart = 0;
+                if (e.Key == Key.Delete) hourTextBox.Text = hourTextBox.Text.Substring(1);
+            }
+            else if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == Key.End)
+			else if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -362,31 +359,32 @@ namespace ModernThemables.Controls
 		private void HourChanged(object sender, TextChangedEventArgs e)
 		{
 			hourValid = int.TryParse(hourTextBox.Text, out int hour) && hour <= 24 && hour >= 0;
-			MarkInvalid(PART_hourTextBox, hourTextBox, hourValid);
-			if (hourValid && hourTextBox.Text.Length == 2)
-			{
-				minuteTextBox.Focus();
-			}
+			FormatText(PART_hourTextBox, hourTextBox, hourValid);
+			if (hourValid && hourTextBox.Text.Length == 2) minuteTextBox.Focus();
 			CalculateDate();
 		}
 
 		private void HourKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Back && hourTextBox.Text.Length == 0)
-			{
-				yearTextBox.Focus();
-			}
-			if (e.Key == Key.Delete && hourTextBox.Text.Length == 0)
-			{
-				minuteTextBox.Focus();
-				minuteTextBox.SelectionStart = 0;
-			}
-			if (e.Key == Key.Home)
+            if ((e.Key == Key.Back && (hourTextBox.Text.Length == 0 || hourTextBox.SelectionStart == 0))
+                || (e.Key == Key.Left && hourTextBox.SelectionStart == 0))
+            {
+                yearTextBox.Focus();
+                if (e.Key == Key.Back) yearTextBox.Text = yearTextBox.Text.Substring(0, yearTextBox.Text.Length - 1);
+            }
+            else if ((e.Key == Key.Delete && hourTextBox.Text.Length == 0 || hourTextBox.SelectionStart == hourTextBox.Text.Length)
+                || (e.Key == Key.Right && hourTextBox.SelectionStart == hourTextBox.Text.Length))
+            {
+                minuteTextBox.Focus();
+                minuteTextBox.SelectionStart = 0;
+                if (e.Key == Key.Delete) minuteTextBox.Text = minuteTextBox.Text.Substring(1);
+            }
+            else if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == Key.End)
+			else if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -395,31 +393,32 @@ namespace ModernThemables.Controls
 		private void MinuteChanged(object sender, TextChangedEventArgs e)
 		{
 			minuteValid = int.TryParse(minuteTextBox.Text, out int second) && second <= 60 && second >= 0;
-			MarkInvalid(PART_minuteTextBox, minuteTextBox, minuteValid);
-			if (minuteValid && minuteTextBox.Text.Length == 2)
-			{
-				secondTextBox.Focus();
-			}
+			FormatText(PART_minuteTextBox, minuteTextBox, minuteValid);
+			if (minuteValid && minuteTextBox.Text.Length == 2) secondTextBox.Focus();
 			CalculateDate();
 		}
 
 		private void MinuteKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Back && minuteTextBox.Text.Length == 0)
+			if ((e.Key == Key.Back && (minuteTextBox.Text.Length == 0 || minuteTextBox.SelectionStart == 0)) 
+				|| (e.Key == Key.Left && minuteTextBox.SelectionStart == 0))
 			{
 				hourTextBox.Focus();
+				if (e.Key == Key.Back) hourTextBox.Text = hourTextBox.Text.Substring(0, hourTextBox.Text.Length - 1);
 			}
-			if (e.Key == Key.Delete && minuteTextBox.Text.Length == 0)
+			else if ((e.Key == Key.Delete && minuteTextBox.Text.Length == 0 || minuteTextBox.SelectionStart == minuteTextBox.Text.Length)
+				|| (e.Key == Key.Right && minuteTextBox.SelectionStart == minuteTextBox.Text.Length))
 			{
 				secondTextBox.Focus();
 				secondTextBox.SelectionStart = 0;
+				if (e.Key == Key.Delete) secondTextBox.Text = secondTextBox.Text.Substring(1);
 			}
-			if (e.Key == Key.Home)
+			else if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == Key.End)
+			else if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -428,26 +427,24 @@ namespace ModernThemables.Controls
 		private void SecondChanged(object sender, TextChangedEventArgs e)
 		{
 			secondValid = int.TryParse(secondTextBox.Text, out int day) && day <= 60 && day >= 0;
-			MarkInvalid(PART_secondTextBox, secondTextBox, secondValid);
+			FormatText(PART_secondTextBox, secondTextBox, secondValid);
 			CalculateDate();
 		}
 
 		private void SecondKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Back && secondTextBox.Text.Length == 0)
-			{
-				minuteTextBox.Focus();
-			}
-			if (e.Key == Key.Delete && secondTextBox.Text.Length == 0)
-			{
-				
-			}
-			if (e.Key == Key.Home)
+            if ((e.Key == Key.Back && (secondTextBox.Text.Length == 0 || secondTextBox.SelectionStart == 0))
+                || (e.Key == Key.Left && secondTextBox.SelectionStart == 0))
+            {
+                minuteTextBox.Focus();
+                if (e.Key == Key.Back) minuteTextBox.Text = minuteTextBox.Text.Substring(0, minuteTextBox.Text.Length - 1);
+            }
+            else if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == Key.End)
+			else if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -477,7 +474,7 @@ namespace ModernThemables.Controls
 			else DateTime = null;
 		}
 
-		private void MarkInvalid(string textBoxName, TextBox textBox, bool valid)
+		private void FormatText(string textBoxName, TextBox textBox, bool valid)
 		{
 			if (!valid && (!validCache.ContainsKey(textBoxName) || validCache[textBoxName] != valid))
 			{
