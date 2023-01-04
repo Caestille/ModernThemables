@@ -51,6 +51,8 @@ namespace ModernThemables.Controls
         private bool blockRefresh = false;
 		private DateTime lastUpdateTime = new DateTime();
 
+		private bool isKeyboardUpdate = false;
+
 		#endregion Members
 
 		#region Constructors
@@ -63,6 +65,7 @@ namespace ModernThemables.Controls
         public DatetimeTextBox()
         {
 			trigger = new KeepAliveTriggerService(() => { blockRefresh = true; CalculateDate(); blockRefresh = false; }, 100);
+            Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
         }
 
         #endregion Constructors
@@ -83,7 +86,9 @@ namespace ModernThemables.Controls
 			var dtTb = sender as DatetimeTextBox;
 			if (dtTb != null)
             {
-				Keyboard.ClearFocus();
+				if (!dtTb.isKeyboardUpdate)
+					Keyboard.ClearFocus();
+
                 if ((e.OldValue == null || e.NewValue != e.OldValue)
 					&& e.NewValue is DateTime dt
 					&& dtTb.dayTextBox != null && !dtTb.dayTextBox.IsFocused
@@ -94,27 +99,32 @@ namespace ModernThemables.Controls
 					&& dtTb.secondTextBox != null && !dtTb.secondTextBox.IsFocused)
                 {
 					dtTb.blockUpdate = true;
-                    dtTb.dayTextBox.Focusable = false;
-                    dtTb.monthTextBox.Focusable = false;
-                    dtTb.yearTextBox.Focusable = false;
-                    dtTb.hourTextBox.Focusable = false;
-                    dtTb.minuteTextBox.Focusable = false;
-                    dtTb.secondTextBox.Focusable = false;
+					if (!dtTb.isKeyboardUpdate)
+					{
+						dtTb.dayTextBox.Focusable = false;
+						dtTb.monthTextBox.Focusable = false;
+						dtTb.yearTextBox.Focusable = false;
+						dtTb.hourTextBox.Focusable = false;
+						dtTb.minuteTextBox.Focusable = false;
+						dtTb.secondTextBox.Focusable = false;
+					}
                     dtTb.dayTextBox.Text = dt.Day.ToString().PadLeft(2, '0');
 					dtTb.monthTextBox.Text = dt.Month.ToString().PadLeft(2, '0');
 					dtTb.yearTextBox.Text = dt.Year.ToString().PadLeft(4, '0');
 					dtTb.hourTextBox.Text = dt.Hour.ToString().PadLeft(2, '0');
 					dtTb.minuteTextBox.Text = dt.Minute.ToString().PadLeft(2, '0');
 					dtTb.secondTextBox.Text = dt.Second.ToString().PadLeft(2, '0');
-                    dtTb.dayTextBox.Focusable = true;
-                    dtTb.monthTextBox.Focusable = true;
-                    dtTb.yearTextBox.Focusable = true;
-                    dtTb.hourTextBox.Focusable = true;
-                    dtTb.minuteTextBox.Focusable = true;
-                    dtTb.secondTextBox.Focusable = true;
-                    dtTb.blockUpdate = false;
+					if (!dtTb.isKeyboardUpdate)
+					{
+						dtTb.dayTextBox.Focusable = true;
+						dtTb.monthTextBox.Focusable = true;
+						dtTb.yearTextBox.Focusable = true;
+						dtTb.hourTextBox.Focusable = true;
+						dtTb.minuteTextBox.Focusable = true;
+						dtTb.secondTextBox.Focusable = true;
+						dtTb.blockUpdate = false;
+					}
                 }
-
             }
 		}
 
@@ -270,12 +280,12 @@ namespace ModernThemables.Controls
 
 		private void DayKeyDown(object sender, KeyEventArgs e)
 		{
-			if ((e.Key == Key.Delete && dayTextBox.Text.Length == 0 || dayTextBox.SelectionStart == dayTextBox.Text.Length)
+			if ((e.Key == Key.Delete && (dayTextBox.Text.Length == 0 || dayTextBox.SelectionStart == dayTextBox.Text.Length))
                 || (e.Key == Key.Right && dayTextBox.SelectionStart == dayTextBox.Text.Length))
             {
                 monthTextBox.Focus();
                 monthTextBox.SelectionStart = 0;
-                if (e.Key == Key.Delete) monthTextBox.Text = monthTextBox.Text.Substring(1);
+                if (e.Key == Key.Right) e.Handled = true;
             }
             else if (e.Key == Key.Home)
 			{
@@ -302,14 +312,14 @@ namespace ModernThemables.Controls
                 || (e.Key == Key.Left && monthTextBox.SelectionStart == 0))
             {
                 dayTextBox.Focus();
-                if (e.Key == Key.Back) dayTextBox.Text = dayTextBox.Text.Substring(0, dayTextBox.Text.Length - 1);
+                if (e.Key == Key.Left) e.Handled = true;
             }
-            else if ((e.Key == Key.Delete && monthTextBox.Text.Length == 0 || monthTextBox.SelectionStart == monthTextBox.Text.Length)
+            else if ((e.Key == Key.Delete && (monthTextBox.Text.Length == 0 || monthTextBox.SelectionStart == monthTextBox.Text.Length))
                 || (e.Key == Key.Right && monthTextBox.SelectionStart == monthTextBox.Text.Length))
             {
                 yearTextBox.Focus();
                 yearTextBox.SelectionStart = 0;
-                if (e.Key == Key.Delete) yearTextBox.Text = yearTextBox.Text.Substring(1);
+                if (e.Key == Key.Right) e.Handled = true;
             }
             else if (e.Key == Key.Home)
 			{
@@ -336,14 +346,14 @@ namespace ModernThemables.Controls
                 || (e.Key == Key.Left && yearTextBox.SelectionStart == 0))
             {
                 monthTextBox.Focus();
-                if (e.Key == Key.Back) monthTextBox.Text = monthTextBox.Text.Substring(0, monthTextBox.Text.Length - 1);
+                if (e.Key == Key.Left) e.Handled = true;
             }
-            else if ((e.Key == Key.Delete && yearTextBox.Text.Length == 0 || yearTextBox.SelectionStart == yearTextBox.Text.Length)
+            else if ((e.Key == Key.Delete && (yearTextBox.Text.Length == 0 || yearTextBox.SelectionStart == yearTextBox.Text.Length))
                 || (e.Key == Key.Right && yearTextBox.SelectionStart == yearTextBox.Text.Length))
             {
                 hourTextBox.Focus();
                 hourTextBox.SelectionStart = 0;
-                if (e.Key == Key.Delete) hourTextBox.Text = hourTextBox.Text.Substring(1);
+                if (e.Key == Key.Right) e.Handled = true;
             }
             else if (e.Key == Key.Home)
 			{
@@ -370,14 +380,14 @@ namespace ModernThemables.Controls
                 || (e.Key == Key.Left && hourTextBox.SelectionStart == 0))
             {
                 yearTextBox.Focus();
-                if (e.Key == Key.Back) yearTextBox.Text = yearTextBox.Text.Substring(0, yearTextBox.Text.Length - 1);
+				if (e.Key == Key.Left) e.Handled = true;
             }
-            else if ((e.Key == Key.Delete && hourTextBox.Text.Length == 0 || hourTextBox.SelectionStart == hourTextBox.Text.Length)
+            else if ((e.Key == Key.Delete && (hourTextBox.Text.Length == 0 || hourTextBox.SelectionStart == hourTextBox.Text.Length))
                 || (e.Key == Key.Right && hourTextBox.SelectionStart == hourTextBox.Text.Length))
             {
                 minuteTextBox.Focus();
                 minuteTextBox.SelectionStart = 0;
-                if (e.Key == Key.Delete) minuteTextBox.Text = minuteTextBox.Text.Substring(1);
+                if (e.Key == Key.Right) e.Handled = true;
             }
             else if (e.Key == Key.Home)
 			{
@@ -404,15 +414,15 @@ namespace ModernThemables.Controls
 				|| (e.Key == Key.Left && minuteTextBox.SelectionStart == 0))
 			{
 				hourTextBox.Focus();
-				if (e.Key == Key.Back) hourTextBox.Text = hourTextBox.Text.Substring(0, hourTextBox.Text.Length - 1);
-			}
-			else if ((e.Key == Key.Delete && minuteTextBox.Text.Length == 0 || minuteTextBox.SelectionStart == minuteTextBox.Text.Length)
+                if (e.Key == Key.Left) e.Handled = true;
+            }
+			else if ((e.Key == Key.Delete && (minuteTextBox.Text.Length == 0 || minuteTextBox.SelectionStart == minuteTextBox.Text.Length))
 				|| (e.Key == Key.Right && minuteTextBox.SelectionStart == minuteTextBox.Text.Length))
 			{
 				secondTextBox.Focus();
-				secondTextBox.SelectionStart = 0;
-				if (e.Key == Key.Delete) secondTextBox.Text = secondTextBox.Text.Substring(1);
-			}
+                secondTextBox.SelectionStart = 0;
+                if (e.Key == Key.Right) e.Handled = true;
+            }
 			else if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
@@ -437,22 +447,27 @@ namespace ModernThemables.Controls
                 || (e.Key == Key.Left && secondTextBox.SelectionStart == 0))
             {
                 minuteTextBox.Focus();
-                if (e.Key == Key.Back) minuteTextBox.Text = minuteTextBox.Text.Substring(0, minuteTextBox.Text.Length - 1);
+                if (e.Key == Key.Left) e.Handled = true;
             }
             else if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
-			}
+            }
 			else if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
-		}
+        }
 
-		#endregion Events Handlers
+        private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
+        {
+            trigger.Stop();
+        }
 
-		private void CalculateDate()
+        #endregion Events Handlers
+
+        private void CalculateDate()
 		{
 			if (blockUpdate) return;
 
@@ -462,17 +477,23 @@ namespace ModernThemables.Controls
 				if (System.DateTime.Now - lastUpdateTime < TimeSpan.FromMilliseconds(50)) return;
 			}
 
+			isKeyboardUpdate = true;
+
 			var calculate = dayValid && monthValid && yearValid && hourValid && minuteValid && secondValid;
 
-			if (calculate) DateTime = new DateTime(
-				int.Parse(yearTextBox.Text),
-				int.Parse(monthTextBox.Text),
-				int.Parse(dayTextBox.Text),
-				int.Parse(hourTextBox.Text),
-				int.Parse(minuteTextBox.Text),
-				int.Parse(secondTextBox.Text));
-			else DateTime = null;
-		}
+			Application.Current.Dispatcher.Invoke(() => { 
+				if (calculate) DateTime = new DateTime(
+					int.Parse(yearTextBox.Text),
+					int.Parse(monthTextBox.Text),
+					int.Parse(dayTextBox.Text),
+					int.Parse(hourTextBox.Text),
+					int.Parse(minuteTextBox.Text),
+					int.Parse(secondTextBox.Text));
+				else DateTime = null;
+            });
+
+            isKeyboardUpdate = false;
+        }
 
 		private void FormatText(string textBoxName, TextBox textBox, bool valid)
 		{
