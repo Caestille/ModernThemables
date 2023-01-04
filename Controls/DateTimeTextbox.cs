@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using System.Xml.Serialization;
 using System.Windows.Data;
 using System.Collections.Generic;
 using System.Windows.Input;
-using System.Runtime.CompilerServices;
+using CoreUtilities.Services;
 
 namespace ModernThemables.Controls
 {
@@ -49,6 +47,10 @@ namespace ModernThemables.Controls
 		private Dictionary<string, Binding> cachedBindings = new();
 		private Dictionary<string, bool> validCache = new();
 
+		private KeepAliveTriggerService trigger;
+        private bool blockRefresh = false;
+		private DateTime lastUpdateTime = new DateTime();
+
 		#endregion Members
 
 		#region Constructors
@@ -60,8 +62,8 @@ namespace ModernThemables.Controls
 
         public DatetimeTextBox()
         {
-            
-		}
+			trigger = new KeepAliveTriggerService(() => { blockRefresh = true; CalculateDate(); blockRefresh = false; }, 100);
+        }
 
         #endregion Constructors
 
@@ -269,23 +271,23 @@ namespace ModernThemables.Controls
 			CalculateDate();
 		}
 
-		private void DayKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void DayKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == System.Windows.Input.Key.Back && dayTextBox.Text.Length == 0)
+			if (e.Key == Key.Back && dayTextBox.Text.Length == 0)
 			{
 
 			}
-			if (e.Key == System.Windows.Input.Key.Delete && dayTextBox.Text.Length == 0)
+			if (e.Key == Key.Delete && dayTextBox.Text.Length == 0)
 			{
 				monthTextBox.Focus();
 				monthTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.Home)
+			if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.End)
+			if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -302,23 +304,23 @@ namespace ModernThemables.Controls
 			CalculateDate();
 		}
 
-		private void MonthKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void MonthKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == System.Windows.Input.Key.Back && monthTextBox.Text.Length == 0)
+			if (e.Key == Key.Back && monthTextBox.Text.Length == 0)
 			{
 				dayTextBox.Focus();
 			}
-			if (e.Key == System.Windows.Input.Key.Delete && monthTextBox.Text.Length == 0)
+			if (e.Key == Key.Delete && monthTextBox.Text.Length == 0)
 			{
 				yearTextBox.Focus();
 				yearTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.Home)
+			if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.End)
+			if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -335,23 +337,23 @@ namespace ModernThemables.Controls
 			CalculateDate();
 		}
 
-		private void YearKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void YearKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == System.Windows.Input.Key.Back && yearTextBox.Text.Length == 0)
+			if (e.Key == Key.Back && yearTextBox.Text.Length == 0)
 			{
 				monthTextBox.Focus();
 			}
-			if (e.Key == System.Windows.Input.Key.Delete && yearTextBox.Text.Length == 0)
+			if (e.Key == Key.Delete && yearTextBox.Text.Length == 0)
 			{
 				hourTextBox.Focus();
 				hourTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.Home)
+			if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.End)
+			if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -368,23 +370,23 @@ namespace ModernThemables.Controls
 			CalculateDate();
 		}
 
-		private void HourKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void HourKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == System.Windows.Input.Key.Back && hourTextBox.Text.Length == 0)
+			if (e.Key == Key.Back && hourTextBox.Text.Length == 0)
 			{
 				yearTextBox.Focus();
 			}
-			if (e.Key == System.Windows.Input.Key.Delete && hourTextBox.Text.Length == 0)
+			if (e.Key == Key.Delete && hourTextBox.Text.Length == 0)
 			{
 				minuteTextBox.Focus();
 				minuteTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.Home)
+			if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.End)
+			if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -401,23 +403,23 @@ namespace ModernThemables.Controls
 			CalculateDate();
 		}
 
-		private void MinuteKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void MinuteKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == System.Windows.Input.Key.Back && minuteTextBox.Text.Length == 0)
+			if (e.Key == Key.Back && minuteTextBox.Text.Length == 0)
 			{
 				hourTextBox.Focus();
 			}
-			if (e.Key == System.Windows.Input.Key.Delete && minuteTextBox.Text.Length == 0)
+			if (e.Key == Key.Delete && minuteTextBox.Text.Length == 0)
 			{
 				secondTextBox.Focus();
 				secondTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.Home)
+			if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.End)
+			if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -430,22 +432,22 @@ namespace ModernThemables.Controls
 			CalculateDate();
 		}
 
-		private void SecondKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void SecondKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == System.Windows.Input.Key.Back && secondTextBox.Text.Length == 0)
+			if (e.Key == Key.Back && secondTextBox.Text.Length == 0)
 			{
 				minuteTextBox.Focus();
 			}
-			if (e.Key == System.Windows.Input.Key.Delete && secondTextBox.Text.Length == 0)
+			if (e.Key == Key.Delete && secondTextBox.Text.Length == 0)
 			{
 				
 			}
-			if (e.Key == System.Windows.Input.Key.Home)
+			if (e.Key == Key.Home)
 			{
 				dayTextBox.Focus();
 				dayTextBox.SelectionStart = 0;
 			}
-			if (e.Key == System.Windows.Input.Key.End)
+			if (e.Key == Key.End)
 			{
 				secondTextBox.Focus();
 			}
@@ -456,6 +458,12 @@ namespace ModernThemables.Controls
 		private void CalculateDate()
 		{
 			if (blockUpdate) return;
+
+			if (!blockRefresh)
+			{
+				trigger.Refresh();
+				if (System.DateTime.Now - lastUpdateTime < TimeSpan.FromMilliseconds(50)) return;
+			}
 
 			var calculate = dayValid && monthValid && yearValid && hourValid && minuteValid && secondValid;
 
