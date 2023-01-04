@@ -17,5 +17,5 @@
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="24" ResizeBorderThickness="5" />
 	</WindowChrome.WindowChrome>
-	<controls:ColourPicker Margin="50"/>
+	<controls:DatetimeTextBox HorizontalAlignment="Left" Margin="50" />
 </Window>
