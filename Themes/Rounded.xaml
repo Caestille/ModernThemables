@@ -3,7 +3,8 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:controls="clr-namespace:ModernThemables.Controls"
 	xmlns:converters="clr-namespace:ModernThemables.Converters"
-	xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
+	xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities"
+	xmlns:scalableicons="clr-namespace:ModernThemables.ScalableIcons">
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Generic.xaml" />
@@ -658,30 +659,60 @@
 
 	<!--#endregion-->
 
-	<!--#region Base DateTimeTextbox-->
+	<!--#region Base SearchBox-->
 
 	<Style TargetType="{x:Type controls:SearchBox}">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type controls:SearchBox}">
-					<Border
-						Background="{TemplateBinding Background}"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="{TemplateBinding BorderThickness}">
+					<Grid>
+						<Border
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="5"
+							Opacity="{TemplateBinding BackgroundOpacity}" />
 						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<scalableicons:MagnifyingGlassIcon
+								Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+								Margin="2"
+								HorizontalAlignment="Left"
+								Foreground="{DynamicResource StatusTextBrush}"
+								StrokeStyle="Round"
+								StrokeThickness="1.5" />
 							<TextBox
 								x:Name="PART_textBox"
-								HorizontalAlignment="Left"
+								Grid.Column="1"
+								Width="Auto"
+								Height="Auto"
+								HorizontalAlignment="Stretch"
 								VerticalAlignment="Center"
-								BorderBrush="{DynamicResource StatusTextBrush}"
-								Foreground="{TemplateBinding Foreground}"
+								BorderThickness="0"
+								Foreground="White"
 								SnapsToDevicePixels="True">
 								<TextBox.Background>
 									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 								</TextBox.Background>
 							</TextBox>
+							<TextBlock
+								x:Name="PART_textBlock"
+								Grid.Column="1"
+								Width="Auto"
+								Height="Auto"
+								Margin="3,0,0,0"
+								HorizontalAlignment="Stretch"
+								VerticalAlignment="Center"
+								Foreground="{DynamicResource StatusTextBrush}"
+								IsHitTestVisible="False"
+								SnapsToDevicePixels="True"
+								Text="Search"
+								Visibility="{Binding ElementName=PART_textBox, Path=Text, Converter={StaticResource StringNotEmptyVisibilityConverter}, ConverterParameter=true}" />
 						</Grid>
-					</Border>
+					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -692,6 +723,7 @@
 	<!--#region Base DateTimeTextbox-->
 
 	<Style TargetType="{x:Type controls:DatetimeTextBox}">
+		<Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type controls:DatetimeTextBox}">
