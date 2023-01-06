@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace ModernThemables.HelperClasses.Charting.PieChart
 {
-	class PiePiece : Shape
+	public class PieArc : Shape
 	{
 		public double Radius
 		{
@@ -15,7 +15,7 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
 			"Radius",
 			typeof(double),
-			typeof(PiePiece),
+			typeof(PieArc),
 			new FrameworkPropertyMetadata(
 				0.0,
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -28,7 +28,7 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
 			"PushOut",
 			typeof(double),
-			typeof(PiePiece),
+			typeof(PieArc),
 			new FrameworkPropertyMetadata(
 				0.0,
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -41,7 +41,7 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
 			"InnerRadiusFraction",
 			typeof(double),
-			typeof(PiePiece),
+			typeof(PieArc),
 			new FrameworkPropertyMetadata(
 				0.0,
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -54,7 +54,7 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
 			"RotationAngle",
 			typeof(double),
-			typeof(PiePiece),
+			typeof(PieArc),
 			new FrameworkPropertyMetadata(
 				0.0,
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -67,7 +67,7 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
 			"CentreX",
 			typeof(double),
-			typeof(PiePiece),
+			typeof(PieArc),
 			new FrameworkPropertyMetadata(
 				0.0,
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -80,7 +80,7 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
 			"CentreY",
 			typeof(double),
-			typeof(PiePiece),
+			typeof(PieArc),
 			new FrameworkPropertyMetadata(
 				0.0,
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -93,7 +93,7 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
 			"Percentage",
 			typeof(double),
-			typeof(PiePiece),
+			typeof(PieArc),
 			new FrameworkPropertyMetadata(0.0));
 
 		public double PieceValue
@@ -104,7 +104,7 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		public static readonly DependencyProperty PieceValueProperty = DependencyProperty.Register(
 			"PieceValue",
 			typeof(double),
-			typeof(PiePiece),
+			typeof(PieArc),
 			new FrameworkPropertyMetadata(0.0));
 
 		protected override Geometry DefiningGeometry

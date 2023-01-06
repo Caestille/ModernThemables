@@ -8,12 +8,12 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 	/// </summary>
 	internal class InternalPieSeriesViewModel : ObservableObject
 	{
-		private ObservableCollection<InternalPieWedge> wedges;
+		private ObservableCollection<InternalPieWedgeViewModel> wedges;
 
 		/// <summary>
 		/// The pie wedges.
 		/// </summary>
-		public ObservableCollection<InternalPieWedge> Wedges
+		public ObservableCollection<InternalPieWedgeViewModel> Wedges
 		{
 			get => wedges;
 			set => SetProperty(ref wedges, value);
@@ -31,7 +31,7 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 		/// <param name="wedges">The data this series represents.</param>
 		public InternalPieSeriesViewModel(
 			string name,
-			ObservableCollection<InternalPieWedge> wedges)
+			ObservableCollection<InternalPieWedgeViewModel> wedges)
 		{
 			Name = name;
 			Wedges = wedges;

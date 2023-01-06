@@ -1,6 +1,5 @@
 ﻿using ModernThemables.Interfaces;
 using System;
-using System.Security.RightsManagement;
 
 namespace ModernThemables.HelperClasses.Charting.PieChart.Points
 {

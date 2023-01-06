@@ -161,14 +161,14 @@ namespace ModernThemables.Controls
 			typeof(PieChart),
 			new PropertyMetadata(true));
 
-		private InternalPieWedge TooltipWedge
+		private InternalPieWedgeViewModel TooltipWedge
 		{
-			get => (InternalPieWedge)GetValue(TooltipWedgeProperty);
+			get => (InternalPieWedgeViewModel)GetValue(TooltipWedgeProperty);
 			set => SetValue(TooltipWedgeProperty, value);
 		}
 		public static readonly DependencyProperty TooltipWedgeProperty = DependencyProperty.Register(
 			"TooltipWedge",
-			typeof(InternalPieWedge),
+			typeof(InternalPieWedgeViewModel),
 			typeof(PieChart),
 			new PropertyMetadata(null));
 

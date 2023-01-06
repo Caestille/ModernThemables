@@ -7,7 +7,7 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 	/// <summary>
 	/// An internal representation of a chart point for rendering the actual series with.
 	/// </summary>
-	internal class InternalPieWedge : ObservableObject
+	internal class InternalPieWedgeViewModel : ObservableObject
 	{
 		private string name;
 		/// <summary>
@@ -101,7 +101,7 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 		}
 
 		/// <summary>
-		/// Initialises a new <see cref="InternalPieWedge"/>.
+		/// Initialises a new <see cref="InternalPieWedgeViewModel"/>.
 		/// </summary>
 		/// <param name="name">The wedge name.</param>
 		/// <param name="percent">The wedge value in percent of a full circle.</param>
@@ -109,7 +109,7 @@ namespace ModernThemables.ViewModels.Charting.PieChart
 		/// <param name="startAngle">The wedge start angle.</param>
 		/// <param name="stroke">The wedge stroke.</param>
 		/// <param name="fill">The wedge fill.</param>
-		public InternalPieWedge(string name, Guid identifier, double percent, double value, double startAngle, IChartBrush stroke, IChartBrush fill)
+		public InternalPieWedgeViewModel(string name, Guid identifier, double percent, double value, double startAngle, IChartBrush stroke, IChartBrush fill)
 		{
 			Name = name;
 			Identifier = identifier;

@@ -40,8 +40,8 @@ namespace ModernThemables.Controls
 
 		private bool preventTrigger;
 		
-		private IEnumerable<InternalPieWedge> allWedges
-			=> this.InternalSeries.Aggregate(new List<InternalPieWedge>(), (list, series) => { list.AddRange(series.Wedges); return list; });
+		private IEnumerable<InternalPieWedgeViewModel> allWedges
+			=> this.InternalSeries.Aggregate(new List<InternalPieWedgeViewModel>(), (list, series) => { list.AddRange(series.Wedges); return list; });
 
 		private BlockingCollection<Action> renderQueue;
 		private bool renderInProgress;
@@ -223,7 +223,7 @@ namespace ModernThemables.Controls
 
 					newSeries.Add(new InternalPieSeriesViewModel(
 						series.Name,
-						new ObservableCollection<InternalPieWedge>(wedges)));
+						new ObservableCollection<InternalPieWedgeViewModel>(wedges)));
 
 					if (!series.Wedges.Any()) continue;
 				}
@@ -244,9 +244,9 @@ namespace ModernThemables.Controls
 
 		#region Calculations		
 
-		private async Task<List<InternalPieWedge>> GetWedgesForSeries(PieSeries? series)
+		private async Task<List<InternalPieWedgeViewModel>> GetWedgesForSeries(PieSeries? series)
 		{
-			var convertedSeries = new List<InternalPieWedge>();
+			var convertedSeries = new List<InternalPieWedgeViewModel>();
 
 			if (series == null) return convertedSeries;
 
@@ -255,9 +255,9 @@ namespace ModernThemables.Controls
 
 			foreach (var wedge in series.Wedges)
 			{
-				InternalPieWedge? matchingWedge = null;
+				InternalPieWedgeViewModel? matchingWedge = null;
 
-				convertedSeries.Add(new InternalPieWedge(
+				convertedSeries.Add(new InternalPieWedgeViewModel(
 					wedge.Name,
 					wedge.Identifier,
 					wedge.Value / sum * 100,
