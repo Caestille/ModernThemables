@@ -180,7 +180,6 @@ namespace ModernThemables.Controls
 			chart.MouseOverPoint = null;
 			chart.TooltipPoints.Clear();
 
-			chart.IsZoomed = chart.SeriesItemsControl.Margin.Left != -1 || chart.SeriesItemsControl.Margin.Right != 0;
 			chart.currentZoomLevel = (chart.xMax - chart.xMin) / (chart.Max - chart.Min);
 		}
 
@@ -673,7 +672,7 @@ namespace ModernThemables.Controls
 				return;
 			}
 
-			IsZoomed = SeriesItemsControl.Margin.Left != -1 || SeriesItemsControl.Margin.Right != 0;
+			IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
 
 			var mouseLoc = e.GetPosition(Grid);
 			var translatedMouseLoc = e.GetPosition(SeriesItemsControl);
@@ -871,6 +870,8 @@ namespace ModernThemables.Controls
 			{
 				CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, zoomOffset, yBuffer);
 			}
+
+			IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
 		}
 
 		private void MouseCaptureGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)

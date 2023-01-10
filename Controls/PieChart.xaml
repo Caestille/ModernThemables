@@ -129,7 +129,7 @@
 															<Binding Path="ResizeTrigger" />
 														</MultiBinding>
 													</Grid.Margin>
-													<piechart:PiePiece
+													<piechart:PieArc
 														ClipToBounds="False"
 														Fill="{Binding Fill.CoreBrush}"
 														InnerRadiusFraction="{Binding ElementName=root, Path=InnerRadiusFraction}"
@@ -137,7 +137,7 @@
 														RotationAngle="{Binding StartAngle}"
 														Stroke="{Binding Stroke.CoreBrush}"
 														StrokeThickness="0.6">
-														<piechart:PiePiece.Style>
+														<piechart:PieArc.Style>
 															<Style>
 																<Style.Triggers>
 																	<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
@@ -168,29 +168,29 @@
 																	</DataTrigger>
 																</Style.Triggers>
 															</Style>
-														</piechart:PiePiece.Style>
-														<piechart:PiePiece.CentreX>
+														</piechart:PieArc.Style>
+														<piechart:PieArc.CentreX>
 															<MultiBinding Converter="{StaticResource PieCentreRadiusConverter}" ConverterParameter="CentreX">
 																<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
 																<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
 																<Binding Path="ResizeTrigger" />
 															</MultiBinding>
-														</piechart:PiePiece.CentreX>
-														<piechart:PiePiece.CentreY>
+														</piechart:PieArc.CentreX>
+														<piechart:PieArc.CentreY>
 															<MultiBinding Converter="{StaticResource PieCentreRadiusConverter}" ConverterParameter="CentreY">
 																<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
 																<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
 																<Binding Path="ResizeTrigger" />
 															</MultiBinding>
-														</piechart:PiePiece.CentreY>
-														<piechart:PiePiece.Radius>
+														</piechart:PieArc.CentreY>
+														<piechart:PieArc.Radius>
 															<MultiBinding Converter="{StaticResource PieCentreRadiusConverter}" ConverterParameter="Radius">
 																<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
 																<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
 																<Binding Path="ResizeTrigger" />
 															</MultiBinding>
-														</piechart:PiePiece.Radius>
-													</piechart:PiePiece>
+														</piechart:PieArc.Radius>
+													</piechart:PieArc>
 												</Grid>
 											</DataTemplate>
 										</ItemsControl.ItemTemplate>
