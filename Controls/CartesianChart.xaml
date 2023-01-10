@@ -355,7 +355,8 @@
 					<ItemsControl
 						HorizontalAlignment="Stretch"
 						VerticalAlignment="Stretch"
-						ItemsSource="{Binding TooltipPoints, ElementName=root}">
+						ItemsSource="{Binding TooltipPoints, ElementName=root}"
+						Visibility="{Binding ElementName=root, Path=IsPointIndicatorsVisible, Converter={StaticResource VisibleIfTrueConverter}}">
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>
 								<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
@@ -390,7 +391,8 @@
 					<ItemsControl
 						HorizontalAlignment="Stretch"
 						VerticalAlignment="Stretch"
-						ItemsSource="{Binding TooltipPoints, ElementName=root}">
+						ItemsSource="{Binding TooltipPoints, ElementName=root}"
+						Visibility="{Binding ElementName=root, Path=IsPointIndicatorsVisible, Converter={StaticResource VisibleIfTrueConverter}}">
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>
 								<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
@@ -504,7 +506,8 @@
 						x:Name="TooltipPointsItemsControl"
 						HorizontalAlignment="Left"
 						VerticalAlignment="Stretch"
-						ItemsSource="{Binding TooltipPoints, ElementName=root}">
+						ItemsSource="{Binding TooltipPoints, ElementName=root}"
+						Visibility="{Binding ElementName=root, Path=IsPointIndicatorsVisible, Converter={StaticResource VisibleIfTrueConverter}}">
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>
 								<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">

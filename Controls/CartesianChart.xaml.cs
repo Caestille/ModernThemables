@@ -673,7 +673,7 @@ namespace ModernThemables.Controls
 				return;
 			}
 
-			IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
+			//IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
 
 			var mouseLoc = e.GetPosition(Grid);
 			var translatedMouseLoc = e.GetPosition(SeriesItemsControl);
@@ -807,7 +807,7 @@ namespace ModernThemables.Controls
 			}
 
 			if (nearestPoint != null)
-				nearestPoint.IsNearest = true;
+				nearestPoint.IsNearest = pointsUnderMouse.Count() > 1;
 
 			if (IsTooltipVisible && TooltipLocation == TooltipLocation.Cursor)
 			{
