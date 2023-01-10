@@ -180,6 +180,7 @@ namespace ModernThemables.Controls
 			chart.MouseOverPoint = null;
 			chart.TooltipPoints.Clear();
 
+			chart.IsZoomed = chart.SeriesItemsControl.Margin.Left != -1 || chart.SeriesItemsControl.Margin.Right != 0;
 			chart.currentZoomLevel = (chart.xMax - chart.xMin) / (chart.Max - chart.Min);
 		}
 
