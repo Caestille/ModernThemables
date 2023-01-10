@@ -377,7 +377,7 @@ namespace ModernThemables.Controls
 
 					var matchingSeries = InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
 
-					collection.Add(new InternalSeriesViewModel(
+					collection.Add(new InternalPathSeriesViewModel(
 						series.Name,
 						series.Identifier,
 						points,
@@ -415,7 +415,7 @@ namespace ModernThemables.Controls
 					series.UpdatePoints(points);
 				}
 
-				InternalSeries = new ObservableCollection<InternalSeriesViewModel>(collection);
+				InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection);
 
 				foreach (var series in InternalSeries)
 				{
@@ -447,7 +447,7 @@ namespace ModernThemables.Controls
 			var xRange = xMax - xMin;
 			var xAxisItemCount = Math.Floor(plotAreaWidth / 60);
 			var labels = await GetXSteps(xAxisItemCount, xMin, xMax);
-			var labels2 = labels.Select(x => new ValueWithHeight()
+			var labels2 = labels.Select(x => new AxisLabel()
 			{
 				Value = XAxisFormatter == null
 					? x.ToString()
@@ -456,12 +456,12 @@ namespace ModernThemables.Controls
 					? (labels[labels.ToList().IndexOf(x) - 1] - xMin) / xRange * plotAreaWidth
 					: 0),
 			});
-			XAxisLabels = new ObservableCollection<ValueWithHeight>(labels2);
+			XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
 			if (isSingleXPoint)
 			{
-				XAxisLabels = new ObservableCollection<ValueWithHeight>()
+				XAxisLabels = new ObservableCollection<AxisLabel>()
 				{
-					new ValueWithHeight(
+					new AxisLabel(
 						XAxisFormatter == null
 							? xMin.ToString()
 							: XAxisFormatter(Series.First().Values.First().XValueToImplementation(xMin)),
@@ -477,7 +477,7 @@ namespace ModernThemables.Controls
 			var yRange = yMax - yMin;
 			var yAxisItemsCount = Math.Max(1, Math.Floor(plotAreaHeight / 50));
 			var labels = (await GetYSteps(yAxisItemsCount, yMin, yMax)).ToList();
-			var labels2 = labels.Select(y => new ValueWithHeight()
+			var labels2 = labels.Select(y => new AxisLabel()
 			{
 				Value = YAxisFormatter == null
 					? Math.Round(y, 2).ToString()
@@ -486,7 +486,7 @@ namespace ModernThemables.Controls
 					? (labels[labels.ToList().IndexOf(y) - 1] - yMin) / yRange * plotAreaHeight
 					: 0),
 			});
-			YAxisLabels = new ObservableCollection<ValueWithHeight>(labels2.Reverse());
+			YAxisLabels = new ObservableCollection<AxisLabel>(labels2.Reverse());
 		}
 
 		private async Task<List<double>> GetXSteps(double xAxisItemsCount, double xMin, double xMax)

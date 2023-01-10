@@ -3,7 +3,6 @@ using ModernThemables.HelperClasses.Charting.PieChart;
 using ModernThemables.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Shapes;
@@ -13,7 +12,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
     /// <summary>
     /// A view model for an internal representation of a series used by the <see cref="CartesianChart"/>.
     /// </summary>
-    internal class InternalSeriesViewModel : ObservableObject
+    internal class InternalPathSeriesViewModel : ObservableObject
     {
         /// <summary>
         /// The data making up the rendered points in pixels scale.
@@ -78,7 +77,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
         }
 
         /// <summary>
-        /// Initialises a new <see cref="InternalSeriesViewModel"/>.
+        /// Initialises a new <see cref="InternalPathSeriesViewModel"/>.
         /// </summary>
         /// <param name="name">The series name.</param>
         /// <param name="guid">The unique identifier.</param>
@@ -88,7 +87,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
         /// <param name="yBuffer">The distance by which the extremes in the yDirection will be reduced by to maintain
         /// an empty border to the chart.</param>
         /// <param name="tooltipFormatter">The Func used to format the tooltip string.</param>
-        public InternalSeriesViewModel(
+        public InternalPathSeriesViewModel(
             string name,
             Guid guid,
             IEnumerable<InternalChartPoint> data,

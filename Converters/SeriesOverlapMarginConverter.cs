@@ -17,8 +17,8 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (values[0] is InternalSeriesViewModel seriesVm
-				&& values[1] is ObservableCollection<InternalSeriesViewModel> seriesVms
+			if (values[0] is InternalPathSeriesViewModel seriesVm
+				&& values[1] is ObservableCollection<InternalPathSeriesViewModel> seriesVms
 				&& values[2] is double seriesHeight)
 			{
 				return seriesVms.IndexOf(seriesVm) == 0 ? new Thickness(0) : new Thickness(0, -seriesHeight, 0, 0);
@@ -29,7 +29,7 @@ namespace ModernThemables.Converters
 			{
 				return tooltipVms.IndexOf(tooltipVm) == 0 ? new Thickness(0) : new Thickness(0, -tooltipHeight, 0, 0);
 			}
-			else if (values[0] is InternalPieWedge wedgeVm
+			else if (values[0] is InternalPieWedgeViewModel wedgeVm
 				&& values[1] is ObservableCollection<InternalPieSeriesViewModel> wedgeVms
 				&& values[2] is double wedgeHeight)
 			{

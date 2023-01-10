@@ -1,26 +1,26 @@
 ﻿namespace ModernThemables.HelperClasses.Charting.PieChart
 {
     /// <summary>
-    /// A value with a height value for axis displays.
+    /// A label with a height for axis displays
     /// </summary>
-    internal struct ValueWithHeight
+    internal struct AxisLabel
     {
         /// <summary>
-        /// The value.
+        /// The axis value.
         /// </summary>
         public string Value { get; set; }
 
         /// <summary>
-        /// The height.
+        /// The height of the label.
         /// </summary>
         public double Height { get; set; }
 
         /// <summary>
-        /// Initialises a new <see cref="ValueWithHeight"/>.
+        /// Initialises a new <see cref="AxisLabel"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="height">The height.</param>
-        public ValueWithHeight(string value, double height)
+        public AxisLabel(string value, double height)
         {
             Value = value;
             Height = height;

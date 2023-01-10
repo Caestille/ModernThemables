@@ -269,38 +269,38 @@ namespace ModernThemables.Controls
 			typeof(CartesianChart),
 			new PropertyMetadata(null));
 
-		private ObservableCollection<InternalSeriesViewModel> InternalSeries
+		private ObservableCollection<InternalPathSeriesViewModel> InternalSeries
 		{
-			get => (ObservableCollection<InternalSeriesViewModel>)GetValue(InternalSeriesProperty);
+			get => (ObservableCollection<InternalPathSeriesViewModel>)GetValue(InternalSeriesProperty);
 			set => SetValue(InternalSeriesProperty, value);
 		}
 		public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
 			"InternalSeries",
-			typeof(ObservableCollection<InternalSeriesViewModel>),
+			typeof(ObservableCollection<InternalPathSeriesViewModel>),
 			typeof(CartesianChart),
-			new PropertyMetadata(new ObservableCollection<InternalSeriesViewModel>()));
+			new PropertyMetadata(new ObservableCollection<InternalPathSeriesViewModel>()));
 
-		private ObservableCollection<ValueWithHeight> XAxisLabels
+		private ObservableCollection<AxisLabel> XAxisLabels
 		{
-			get => (ObservableCollection<ValueWithHeight>)GetValue(XAxisLabelsProperty);
+			get => (ObservableCollection<AxisLabel>)GetValue(XAxisLabelsProperty);
 			set => SetValue(XAxisLabelsProperty, value);
 		}
 		public static readonly DependencyProperty XAxisLabelsProperty = DependencyProperty.Register(
 			"XAxisLabels",
-			typeof(ObservableCollection<ValueWithHeight>),
+			typeof(ObservableCollection<AxisLabel>),
 			typeof(CartesianChart), 
-			new PropertyMetadata(new ObservableCollection<ValueWithHeight>()));
+			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
-		private ObservableCollection<ValueWithHeight> YAxisLabels
+		private ObservableCollection<AxisLabel> YAxisLabels
 		{
-			get => (ObservableCollection<ValueWithHeight>)GetValue(YAxisLabelsProperty);
+			get => (ObservableCollection<AxisLabel>)GetValue(YAxisLabelsProperty);
 			set => SetValue(YAxisLabelsProperty, value);
 		}
 		public static readonly DependencyProperty YAxisLabelsProperty = DependencyProperty.Register(
 			"YAxisLabels",
-			typeof(ObservableCollection<ValueWithHeight>),
+			typeof(ObservableCollection<AxisLabel>),
 			typeof(CartesianChart),
-			new PropertyMetadata(new ObservableCollection<ValueWithHeight>()));
+			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
 		private bool IsCrosshairVisible
 		{
