@@ -96,7 +96,7 @@
 										BlurRadius="10"
 										Opacity="0.6"
 										ShadowDepth="0"
-										Color="Black" />
+										Color="{DynamicResource InvertedTextColour}" />
 								</Polygon.Effect>
 								<Polygon.Clip>
 									<RectangleGeometry Rect="-10,-20,50,30" />
@@ -164,7 +164,7 @@
 										BlurRadius="10"
 										Opacity="0.6"
 										ShadowDepth="0"
-										Color="Black" />
+										Color="{DynamicResource InvertedTextColour}" />
 								</Polygon.Effect>
 							</Polygon>
 							<Border
