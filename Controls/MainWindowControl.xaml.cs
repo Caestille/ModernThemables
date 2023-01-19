@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using ModernThemables.ScalableIcons;
 using CoreUtilities.HelperClasses.Extensions;
+using System.Windows.Threading;
 
 namespace ModernThemables.Controls
 {
@@ -266,11 +267,6 @@ namespace ModernThemables.Controls
 						: WindowState.Normal;
 
 					mainWindow.WindowStyle = WindowStyle.None;
-					if (isWindowMaximised)
-					{
-						mainWindow.WindowState = WindowState.Minimized;
-						mainWindow.WindowState = WindowState.Maximized;
-					}
 
 					handled = true;
 				}
