@@ -102,6 +102,7 @@ namespace ModernThemables.Controls
 		public void ResetZoom()
 		{
 			CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, 0, yBuffer, true);
+			IsZoomed = false;
 		}
 
 		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -180,7 +181,7 @@ namespace ModernThemables.Controls
 			chart.MouseOverPoint = null;
 			chart.TooltipPoints.Clear();
 
-			chart.IsZoomed = chart.SeriesItemsControl.Margin.Left != -1 || chart.SeriesItemsControl.Margin.Right != 0;
+			chart.IsZoomed = chart.SeriesItemsControl.Margin.Left != 0 || chart.SeriesItemsControl.Margin.Right != 0;
 			chart.currentZoomLevel = (chart.xMax - chart.xMin) / (chart.Max - chart.Min);
 		}
 
@@ -426,12 +427,12 @@ namespace ModernThemables.Controls
 
 				if (IsZoomed)
 				{
-					CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, 0, yBuffer, true);
+					CurrentZoomState = new ZoomState(
+						CurrentZoomState.XMin, CurrentZoomState.XMax, yMin, yMax, CurrentZoomState.XOffset, yBuffer, true);
 				}
 				else
 				{
-					CurrentZoomState = new ZoomState(
-						CurrentZoomState.XMin, CurrentZoomState.XMax, yMin, yMax, CurrentZoomState.XOffset, yBuffer, true);
+					CurrentZoomState = new ZoomState(xMin, xMax, yMin, yMax, 0, yBuffer, true);
 				}
 
 				renderInProgress = false;
