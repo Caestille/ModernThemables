@@ -24,9 +24,9 @@ using ModernThemables.HelperClasses.Charting.CartesianChart;
 namespace ModernThemables.Controls
 {
 	/// <summary>
-	/// Interaction logic for CartesianChart.xaml
+	/// Interaction logic for BarChart.xaml
 	/// </summary>
-	public partial class CartesianChart : UserControl
+	public partial class BarChart : UserControl
 	{
 		public event EventHandler<IChartPoint>? PointClicked;
 		public event EventHandler<Tuple<IChartPoint, IChartPoint>>? PointRangeSelected;
@@ -74,7 +74,7 @@ namespace ModernThemables.Controls
 		private Thread renderThread;
 		private bool runRenderThread = true;
 
-		public CartesianChart()
+		public BarChart()
 		{
 			InitializeComponent();
 			this.Loaded += WpfChart_Loaded;
@@ -108,14 +108,14 @@ namespace ModernThemables.Controls
 
 		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not CartesianChart chart) return;
+			if (sender is not BarChart chart) return;
 
 			chart.IsTooltipByCursor = chart.TooltipLocation == TooltipLocation.Cursor;
 		}
 
 		private static void OnSetMinMax(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not CartesianChart chart
+			if (sender is not BarChart chart
 				|| chart.Min == -1d
 				|| chart.Max == -1d
 				|| chart.Series == null
@@ -127,7 +127,7 @@ namespace ModernThemables.Controls
 
 		private static void OnSetZoomState(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not CartesianChart chart) return;
+			if (sender is not BarChart chart) return;
 			if (chart.Series == null) return;
 
 			bool setY = false;
@@ -188,7 +188,7 @@ namespace ModernThemables.Controls
 
 		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not CartesianChart chart) return;
+			if (sender is not BarChart chart) return;
 
 			switch (chart.LegendLocation)
 			{
@@ -233,7 +233,7 @@ namespace ModernThemables.Controls
 
 		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not CartesianChart chart) return;
+			if (sender is not BarChart chart) return;
 
 			if (chart.Series == null)
 			{

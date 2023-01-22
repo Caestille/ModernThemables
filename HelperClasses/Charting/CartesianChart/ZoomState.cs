@@ -1,6 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 
-namespace ModernThemables.HelperClasses.Charting.PieChart
+namespace ModernThemables.HelperClasses.Charting.CartesianChart
 {
     /// <summary>
     /// An object describing the zoom state for a chart.

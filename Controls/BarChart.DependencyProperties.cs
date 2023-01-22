@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace ModernThemables.Controls
 {
-    public partial class CartesianChart // .DependencyProperties
+	public partial class BarChart // .DependencyProperties
 	{
 		#region Public properties
 
@@ -20,7 +20,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
 			"Series",
 			typeof(ObservableCollection<ISeries>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new FrameworkPropertyMetadata(null, OnSeriesSet));
 
 		public Func<object, string> XAxisFormatter
@@ -31,7 +31,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty XAxisFormatterProperty = DependencyProperty.Register(
 			"XAxisFormatter",
 			typeof(Func<object, string>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(null));
 
 		public Func<object, string> XAxisCursorLabelFormatter
@@ -42,7 +42,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty XAxisCursorLabelFormatterProperty = DependencyProperty.Register(
 			"XAxisCursorLabelFormatter",
 			typeof(Func<object, string>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(null));
 
 		public Func<object, string> YAxisFormatter
@@ -53,7 +53,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty YAxisFormatterProperty = DependencyProperty.Register(
 			"YAxisFormatter",
 			typeof(Func<object, string>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(null));
 
 		public Func<object, string> YAxisCursorLabelFormatter
@@ -64,7 +64,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty YAxisCursorLabelFormatterProperty = DependencyProperty.Register(
 			"YAxisCursorLabelFormatter",
 			typeof(Func<object, string>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(null));
 
 		public Func<object, bool> YAxisLabelIdentifier
@@ -75,7 +75,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
 			"YAxisLabelIdentifier",
 			typeof(Func<object, bool>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(null));
 
 		public Func<object, bool> XAxisLabelIdentifier
@@ -86,7 +86,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty XAxisLabelIdentifierProperty = DependencyProperty.Register(
 			"XAxisLabelIdentifier",
 			typeof(Func<object, bool>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(null));
 
 		public bool ShowXSeparatorLines
@@ -97,7 +97,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty ShowXSeparatorLinesProperty = DependencyProperty.Register(
 			"ShowXSeparatorLines",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(true));
 
 		public bool ShowYSeparatorLines
@@ -108,7 +108,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty ShowYSeparatorLinesProperty = DependencyProperty.Register(
 			"ShowYSeparatorLines",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(true));
 
 		public bool IsZoomed
@@ -119,7 +119,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
 			"IsZoomed",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(false));
 
 		public DataTemplate TooltipTemplate
@@ -130,7 +130,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipTemplateProperty = DependencyProperty.Register(
 			"TooltipTemplate",
 			typeof(DataTemplate),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(null));
 
 		public DataTemplate LegendTemplate
@@ -141,7 +141,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty LegendTemplateProperty = DependencyProperty.Register(
 			"LegendTemplate",
 			typeof(DataTemplate),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(null));
 
 		public LegendLocation LegendLocation
@@ -152,7 +152,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
 			"LegendLocation",
 			typeof(LegendLocation),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new UIPropertyMetadata(LegendLocation.None, OnLegendLocationSet));
 
 		public TooltipFindingStrategy TooltipFindingStrategy
@@ -163,7 +163,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipFindingStrategyProperty = DependencyProperty.Register(
 			"TooltipFindingStrategy",
 			typeof(TooltipFindingStrategy),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(TooltipFindingStrategy.NearestXAllY));
 
 		public TooltipLocation TooltipLocation
@@ -174,7 +174,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
 			"TooltipLocation",
 			typeof(TooltipLocation),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new FrameworkPropertyMetadata(TooltipLocation.Cursor, OnTooltipLocationSet));
 
 		public double TooltipLocationThreshold
@@ -185,7 +185,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipLocationThresholdProperty = DependencyProperty.Register(
 			"TooltipLocationThreshold",
 			typeof(double),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(5d));
 
 		public double TooltipOpacity
@@ -196,7 +196,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipOpacityProperty = DependencyProperty.Register(
 			"TooltipOpacity",
 			typeof(double),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(1d));
 
 		public new double FontSize
@@ -207,7 +207,7 @@ namespace ModernThemables.Controls
 		public static readonly new DependencyProperty FontSizeProperty = DependencyProperty.Register(
 			"FontSize",
 			typeof(double),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(12d));
 
 		public double Min
@@ -218,7 +218,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
 			"Min",
 			typeof(double),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new UIPropertyMetadata(-1d, OnSetMinMax));
 
 		public double Max
@@ -229,7 +229,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
 			"Max",
 			typeof(double),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new UIPropertyMetadata(-1d, OnSetMinMax));
 
 		#endregion
@@ -244,7 +244,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TooltipPointsProperty = DependencyProperty.Register(
 			"TooltipPoints",
 			typeof(ObservableCollection<TooltipPointViewModel>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(new ObservableCollection<TooltipPointViewModel>()));
 
 		private bool IsTooltipByCursor
@@ -255,7 +255,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IsTooltipByCursorProperty = DependencyProperty.Register(
 			"IsTooltipByCursor",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(true));
 
 		private InternalChartPoint? MouseOverPoint
@@ -266,7 +266,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty MouseOverPointProperty = DependencyProperty.Register(
 			"MouseOverPoint",
 			typeof(InternalChartPoint),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(null));
 
 		private ObservableCollection<InternalPathSeriesViewModel> InternalSeries
@@ -277,7 +277,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
 			"InternalSeries",
 			typeof(ObservableCollection<InternalPathSeriesViewModel>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(new ObservableCollection<InternalPathSeriesViewModel>()));
 
 		private ObservableCollection<AxisLabel> XAxisLabels
@@ -288,7 +288,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty XAxisLabelsProperty = DependencyProperty.Register(
 			"XAxisLabels",
 			typeof(ObservableCollection<AxisLabel>),
-			typeof(CartesianChart), 
+			typeof(BarChart), 
 			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
 		private ObservableCollection<AxisLabel> YAxisLabels
@@ -299,7 +299,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty YAxisLabelsProperty = DependencyProperty.Register(
 			"YAxisLabels",
 			typeof(ObservableCollection<AxisLabel>),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
 		private bool IsCrosshairVisible
@@ -310,7 +310,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IsCrosshairVisibleProperty = DependencyProperty.Register(
 			"IsCrosshairVisible",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(true));
 
 		private bool IsTooltipVisible
@@ -321,7 +321,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IsTooltipVisibleProperty = DependencyProperty.Register(
 			"IsTooltipVisible",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(true));
 
 		private bool IsAxisIndicatorsVisible
@@ -332,7 +332,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IsAxisIndicatorsVisibleProperty = DependencyProperty.Register(
 			"IsAxisIndicatorsVisible",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(true));
 
 		private bool IsPointIndicatorsVisible
@@ -343,7 +343,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IsPointIndicatorsVisibleProperty = DependencyProperty.Register(
 			"IsPointIndicatorsVisible",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(true));
 
 		private bool IsUserSelectingRange
@@ -354,7 +354,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IsUserSelectingRangeProperty = DependencyProperty.Register(
 			"IsUserSelectingRange",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(false));
 
 		private ZoomState CurrentZoomState
@@ -365,7 +365,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty CurrentZoomStateProperty = DependencyProperty.Register(
 			"CurrentZoomState",
 			typeof(ZoomState),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new UIPropertyMetadata(new ZoomState(0, 0, 0, 0, 0, yBuffer), OnSetZoomState));
 		
 		private bool HasData
@@ -376,7 +376,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty HasDataProperty = DependencyProperty.Register(
 			"HasData",
 			typeof(bool),
-			typeof(CartesianChart),
+			typeof(BarChart),
 			new PropertyMetadata(false));
 
 		#endregion

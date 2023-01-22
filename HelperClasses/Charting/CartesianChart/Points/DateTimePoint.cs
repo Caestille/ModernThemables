@@ -1,7 +1,7 @@
 ﻿using ModernThemables.Interfaces;
 using System;
 
-namespace ModernThemables.HelperClasses.Charting.PieChart.Points
+namespace ModernThemables.HelperClasses.Charting.CartesianChart.Points
 {
     /// <summary>
     /// A point representing a <see cref="double"/> in the Y axis and a <see cref="System.DateTime"/> on the X axis.

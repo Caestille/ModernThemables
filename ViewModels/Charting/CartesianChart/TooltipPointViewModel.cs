@@ -1,5 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using ModernThemables.HelperClasses.Charting.PieChart;
+using ModernThemables.HelperClasses.Charting.CartesianChart;
 using System.Windows;
 using System.Windows.Media;
 

@@ -1,4 +1,4 @@
-﻿namespace ModernThemables.HelperClasses.Charting.PieChart
+﻿namespace ModernThemables.HelperClasses.Charting.CartesianChart
 {
     /// <summary>
     /// A label with a height for axis displays
