@@ -10,8 +10,11 @@
 	MinWidth="100"
 	MinHeight="50"
 	mc:Ignorable="d">
-	<Grid x:Name="RootGrid" Focusable="False" MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
-		MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}">
+	<Grid
+		x:Name="RootGrid"
+		MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
+		MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}"
+		Focusable="False">
 		<Grid.Background>
 			<MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
 				<Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
