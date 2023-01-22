@@ -1,16 +1,15 @@
 ﻿using CoreUtilities.HelperClasses.Extensions;
 using ModernThemables.Interfaces;
-using System;
 using System.Windows;
 using System.Windows.Media;
 
 namespace ModernThemables.HelperClasses.Charting.Brushes
 {
-    /// <summary>
-    /// A brush with a gradient between two <see cref="Color"/>s from top to bottom.
-    /// <see cref="Reevaluate(double, double, double, double, double, double)"/> adjusts the midpoint of this gradient.
-    /// </summary>
-    public sealed class SingleGradientBrush : IChartBrush
+	/// <summary>
+	/// A brush with a gradient between two <see cref="Color"/>s from top to bottom.
+	/// <see cref="Reevaluate(double, double, double, double, double, double)"/> adjusts the midpoint of this gradient.
+	/// </summary>
+	public sealed class SingleGradientBrush : IChartBrush
     {
         /// <inheritdoc />
         public Brush CoreBrush { get; private set; }

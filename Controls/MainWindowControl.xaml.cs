@@ -9,12 +9,10 @@ using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using CoreUtilities.HelperClasses;
 using System.Threading.Tasks;
 using System.Threading;
 using ModernThemables.ScalableIcons;
 using CoreUtilities.HelperClasses.Extensions;
-using System.Windows.Threading;
 
 namespace ModernThemables.Controls
 {

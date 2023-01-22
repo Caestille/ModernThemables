@@ -1,10 +1,6 @@
 ﻿using ModernThemables.HelperClasses.Charting;
 using ModernThemables.HelperClasses.Charting.PieChart;
-using ModernThemables.HelperClasses.Charting.PieChart.Points;
-using ModernThemables.Interfaces;
-using ModernThemables.ViewModels.Charting.CartesianChart;
 using ModernThemables.ViewModels.Charting.PieChart;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 
