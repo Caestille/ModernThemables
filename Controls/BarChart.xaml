@@ -194,10 +194,7 @@
 					x:Name="MouseCaptureGrid"
 					Background="{DynamicResource MainBackgroundBrush}"
 					MouseMove="MouseCaptureGrid_MouseMove"
-					MouseWheel="MouseCaptureGrid_MouseWheel"
-					Opacity="0.001"
-					PreviewMouseDown="MouseCaptureGrid_PreviewMouseDown"
-					PreviewMouseUp="MouseCaptureGrid_PreviewMouseUp" />
+					Opacity="0.001" />
 				<Border
 					x:Name="DrawableChartSectionBorder"
 					BorderBrush="{DynamicResource StatusTextLightBrush}"

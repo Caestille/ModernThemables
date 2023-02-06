@@ -256,7 +256,7 @@ namespace ModernThemables.Controls
 						invalidateAll
 							? matchingSeries != null ? matchingSeries.Fill : series.Fill
 							: series.Fill,
-						yBuffer,
+						0/*yBuffer*/,
 						series.TooltipLabelFormatter));
 
 					if (!series.Values.Any()) continue;
@@ -264,8 +264,8 @@ namespace ModernThemables.Controls
 					var seriesYMin = series.Values.Min(z => z.YValue);
 					var seriesYMax = series.Values.Max(z => z.YValue);
 
-					series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
-					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
+					//series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
+					//series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
 				foreach (var series in collection)
@@ -274,8 +274,7 @@ namespace ModernThemables.Controls
 
 					if (matchingSeries == null) continue;
 
-					var points = await GetPointsForSeries(
-						xMin, xRange, yMinExpanded, yMaxExpanded - yMinExpanded, matchingSeries);
+					var points = await GetPointsForSeries(matchingSeries);
 					series.UpdatePoints(points);
 				}
 
@@ -345,20 +344,20 @@ namespace ModernThemables.Controls
 		{
 			List<double> xVals = new();
 
-			if (XAxisLabelIdentifier != null)
-			{
-				var currVal = xMin;
-				while (currVal < xMax)
-				{
-					if (XAxisLabelIdentifier(Series.First().Values.First().XValueToImplementation(currVal)))
-					{
-						xVals.Add(currVal);
-					}
-					currVal++;
-				}
-			}
-			else
-			{
+			//if (XAxisLabelIdentifier != null)
+			//{
+			//	var currVal = xMin;
+			//	while (currVal < xMax)
+			//	{
+			//		if (XAxisLabelIdentifier(Series.First().Values.First().XValueToImplementation(currVal)))
+			//		{
+			//			xVals.Add(currVal);
+			//		}
+			//		currVal++;
+			//	}
+			//}
+			//else
+			//{
 				await Task.Run(() =>
 				{
 					var xRange = xMax - xMin;
@@ -385,7 +384,7 @@ namespace ModernThemables.Controls
 						xVals.Add(currVal);
 					}
 				});
-			}
+			//}
 
 			var fracOver = (int)Math.Ceiling(xVals.Count() / (decimal)Math.Round(xAxisItemsCount));
 
@@ -532,12 +531,12 @@ namespace ModernThemables.Controls
 					SeriesItemsControl.ActualHeight,
 					-SeriesItemsControl.Margin.Left,
 					-SeriesItemsControl.Margin.Top,
-					yBuffer);
+					0/*yBuffer*/);
 
 				if (hoveredChartPoint == null
-					|| !CurrentZoomState.IsPointInBounds(
-							hoveredChartPoint.BackingPoint.XValue,
-							hoveredChartPoint.BackingPoint.YValue)
+					//|| !CurrentZoomState.IsPointInBounds(
+					//		hoveredChartPoint.BackingPoint.XValue,
+					//		hoveredChartPoint.BackingPoint.YValue)
 					|| !series.IsTranslatedMouseInBounds(
 							InternalSeries.Max(
 								x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)),
@@ -572,20 +571,20 @@ namespace ModernThemables.Controls
 
 			if (IsTooltipVisible && TooltipLocation == TooltipLocation.Cursor)
 			{
-				// Get tooltip position variables
-				if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipItemsControl.ActualWidth + 10))
-					tooltipLeft = true;
-				if (tooltipLeft && (mouseLoc.X) < (TooltipItemsControl.ActualWidth + 5))
-					tooltipLeft = false;
-				if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipItemsControl.ActualHeight + 10))
-					tooltipTop = true;
-				if (tooltipTop && (mouseLoc.Y) < (TooltipItemsControl.ActualHeight + 5))
-					tooltipTop = false;
+				//// Get tooltip position variables
+				//if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipItemsControl.ActualWidth + 10))
+				//	tooltipLeft = true;
+				//if (tooltipLeft && (mouseLoc.X) < (TooltipItemsControl.ActualWidth + 5))
+				//	tooltipLeft = false;
+				//if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipItemsControl.ActualHeight + 10))
+				//	tooltipTop = true;
+				//if (tooltipTop && (mouseLoc.Y) < (TooltipItemsControl.ActualHeight + 5))
+				//	tooltipTop = false;
 
-				TooltipItemsControl.Margin = new Thickness(
-					!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipItemsControl.ActualWidth - 5,
-					!tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipItemsControl.ActualHeight - 5,
-					0, 0);
+				//TooltipItemsControl.Margin = new Thickness(
+				//	!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipItemsControl.ActualWidth - 5,
+				//	!tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipItemsControl.ActualHeight - 5,
+				//	0, 0);
 			}
 			#endregion
 		}
