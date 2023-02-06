@@ -1,6 +1,6 @@
 ﻿using ModernThemables.Interfaces;
 
-namespace ModernThemables.HelperClasses.Charting.CartesianChart
+namespace ModernThemables.ViewModels.Charting.CartesianChart
 {
     /// <summary>
     /// An internal representation of a chart point for rendering the actual series with.

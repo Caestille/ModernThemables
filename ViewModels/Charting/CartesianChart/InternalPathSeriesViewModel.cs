@@ -1,5 +1,4 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using ModernThemables.HelperClasses.Charting.CartesianChart;
 using ModernThemables.Interfaces;
 using System;
 using System.Collections.Generic;

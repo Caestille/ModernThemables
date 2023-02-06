@@ -23,10 +23,10 @@ using ModernThemables.HelperClasses.Charting.CartesianChart;
 
 namespace ModernThemables.Controls
 {
-	/// <summary>
-	/// Interaction logic for CartesianChart.xaml
-	/// </summary>
-	public partial class CartesianChart : UserControl
+    /// <summary>
+    /// Interaction logic for CartesianChart.xaml
+    /// </summary>
+    public partial class CartesianChart : UserControl
 	{
 		public event EventHandler<IChartPoint>? PointClicked;
 		public event EventHandler<Tuple<IChartPoint, IChartPoint>>? PointRangeSelected;
@@ -551,7 +551,7 @@ namespace ModernThemables.Controls
 				var currVal = yMin;
 				while (currVal < yMax)
 				{
-					if (XAxisLabelIdentifier(Series.First().Values.First().YValueToImplementation(currVal)))
+					if (YAxisLabelIdentifier(Series.First().Values.First().YValueToImplementation(currVal)))
 					{
 						yVals.Add(currVal);
 					}

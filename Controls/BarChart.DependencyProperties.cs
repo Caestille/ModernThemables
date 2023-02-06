@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace ModernThemables.Controls
 {
-	public partial class BarChart // .DependencyProperties
+    public partial class BarChart // .DependencyProperties
 	{
 		#region Public properties
 
@@ -34,17 +34,6 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new PropertyMetadata(null));
 
-		public Func<object, string> XAxisCursorLabelFormatter
-		{
-			get => (Func<object, string>)GetValue(XAxisCursorLabelFormatterProperty);
-			set => SetValue(XAxisCursorLabelFormatterProperty, value);
-		}
-		public static readonly DependencyProperty XAxisCursorLabelFormatterProperty = DependencyProperty.Register(
-			"XAxisCursorLabelFormatter",
-			typeof(Func<object, string>),
-			typeof(BarChart),
-			new PropertyMetadata(null));
-
 		public Func<object, string> YAxisFormatter
 		{
 			get => (Func<object, string>)GetValue(YAxisFormatterProperty);
@@ -56,17 +45,6 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new PropertyMetadata(null));
 
-		public Func<object, string> YAxisCursorLabelFormatter
-		{
-			get => (Func<object, string>)GetValue(YAxisCursorLabelFormatterProperty);
-			set => SetValue(YAxisCursorLabelFormatterProperty, value);
-		}
-		public static readonly DependencyProperty YAxisCursorLabelFormatterProperty = DependencyProperty.Register(
-			"YAxisCursorLabelFormatter",
-			typeof(Func<object, string>),
-			typeof(BarChart),
-			new PropertyMetadata(null));
-
 		public Func<object, bool> YAxisLabelIdentifier
 		{
 			get => (Func<object, bool>)GetValue(YAxisLabelIdentifierProperty);
@@ -74,17 +52,6 @@ namespace ModernThemables.Controls
 		}
 		public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
 			"YAxisLabelIdentifier",
-			typeof(Func<object, bool>),
-			typeof(BarChart),
-			new PropertyMetadata(null));
-
-		public Func<object, bool> XAxisLabelIdentifier
-		{
-			get => (Func<object, bool>)GetValue(XAxisLabelIdentifierProperty);
-			set => SetValue(XAxisLabelIdentifierProperty, value);
-		}
-		public static readonly DependencyProperty XAxisLabelIdentifierProperty = DependencyProperty.Register(
-			"XAxisLabelIdentifier",
 			typeof(Func<object, bool>),
 			typeof(BarChart),
 			new PropertyMetadata(null));
@@ -155,17 +122,6 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new UIPropertyMetadata(LegendLocation.None, OnLegendLocationSet));
 
-		public TooltipFindingStrategy TooltipFindingStrategy
-		{
-			get => (TooltipFindingStrategy)GetValue(TooltipFindingStrategyProperty);
-			set => SetValue(TooltipFindingStrategyProperty, value);
-		}
-		public static readonly DependencyProperty TooltipFindingStrategyProperty = DependencyProperty.Register(
-			"TooltipFindingStrategy",
-			typeof(TooltipFindingStrategy),
-			typeof(BarChart),
-			new PropertyMetadata(TooltipFindingStrategy.NearestXAllY));
-
 		public TooltipLocation TooltipLocation
 		{
 			get => (TooltipLocation)GetValue(TooltipLocationProperty);
@@ -176,17 +132,6 @@ namespace ModernThemables.Controls
 			typeof(TooltipLocation),
 			typeof(BarChart),
 			new FrameworkPropertyMetadata(TooltipLocation.Cursor, OnTooltipLocationSet));
-
-		public double TooltipLocationThreshold
-		{
-			get => (double)GetValue(TooltipLocationThresholdProperty);
-			set => SetValue(TooltipLocationThresholdProperty, value);
-		}
-		public static readonly DependencyProperty TooltipLocationThresholdProperty = DependencyProperty.Register(
-			"TooltipLocationThreshold",
-			typeof(double),
-			typeof(BarChart),
-			new PropertyMetadata(5d));
 
 		public double TooltipOpacity
 		{
@@ -210,42 +155,9 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new PropertyMetadata(12d));
 
-		public double Min
-		{
-			get => (double)GetValue(MinProperty);
-			set => SetValue(MinProperty, value);
-		}
-		public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
-			"Min",
-			typeof(double),
-			typeof(BarChart),
-			new UIPropertyMetadata(-1d, OnSetMinMax));
-
-		public double Max
-		{
-			get => (double)GetValue(MaxProperty);
-			set => SetValue(MaxProperty, value);
-		}
-		public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
-			"Max",
-			typeof(double),
-			typeof(BarChart),
-			new UIPropertyMetadata(-1d, OnSetMinMax));
-
 		#endregion
 
 		#region Private properties
-
-		private ObservableCollection<TooltipPointViewModel> TooltipPoints
-		{
-			get => (ObservableCollection<TooltipPointViewModel>)GetValue(TooltipPointsProperty);
-			set => SetValue(TooltipPointsProperty, value);
-		}
-		public static readonly DependencyProperty TooltipPointsProperty = DependencyProperty.Register(
-			"TooltipPoints",
-			typeof(ObservableCollection<TooltipPointViewModel>),
-			typeof(BarChart),
-			new PropertyMetadata(new ObservableCollection<TooltipPointViewModel>()));
 
 		private bool IsTooltipByCursor
 		{
@@ -257,17 +169,6 @@ namespace ModernThemables.Controls
 			typeof(bool),
 			typeof(BarChart),
 			new PropertyMetadata(true));
-
-		private InternalChartPoint? MouseOverPoint
-		{
-			get => (InternalChartPoint)GetValue(MouseOverPointProperty);
-			set => SetValue(MouseOverPointProperty, value);
-		}
-		public static readonly DependencyProperty MouseOverPointProperty = DependencyProperty.Register(
-			"MouseOverPoint",
-			typeof(InternalChartPoint),
-			typeof(BarChart),
-			new PropertyMetadata(null));
 
 		private ObservableCollection<InternalPathSeriesViewModel> InternalSeries
 		{
@@ -302,17 +203,6 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
-		private bool IsCrosshairVisible
-		{
-			get => (bool)GetValue(IsCrosshairVisibleProperty);
-			set => SetValue(IsCrosshairVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsCrosshairVisibleProperty = DependencyProperty.Register(
-			"IsCrosshairVisible",
-			typeof(bool),
-			typeof(BarChart),
-			new PropertyMetadata(true));
-
 		private bool IsTooltipVisible
 		{
 			get => (bool)GetValue(IsTooltipVisibleProperty);
@@ -323,50 +213,6 @@ namespace ModernThemables.Controls
 			typeof(bool),
 			typeof(BarChart),
 			new PropertyMetadata(true));
-
-		private bool IsAxisIndicatorsVisible
-		{
-			get => (bool)GetValue(IsAxisIndicatorsVisibleProperty);
-			set => SetValue(IsAxisIndicatorsVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsAxisIndicatorsVisibleProperty = DependencyProperty.Register(
-			"IsAxisIndicatorsVisible",
-			typeof(bool),
-			typeof(BarChart),
-			new PropertyMetadata(true));
-
-		private bool IsPointIndicatorsVisible
-		{
-			get => (bool)GetValue(IsPointIndicatorsVisibleProperty);
-			set => SetValue(IsPointIndicatorsVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsPointIndicatorsVisibleProperty = DependencyProperty.Register(
-			"IsPointIndicatorsVisible",
-			typeof(bool),
-			typeof(BarChart),
-			new PropertyMetadata(true));
-
-		private bool IsUserSelectingRange
-		{
-			get => (bool)GetValue(IsUserSelectingRangeProperty);
-			set => SetValue(IsUserSelectingRangeProperty, value);
-		}
-		public static readonly DependencyProperty IsUserSelectingRangeProperty = DependencyProperty.Register(
-			"IsUserSelectingRange",
-			typeof(bool),
-			typeof(BarChart),
-			new PropertyMetadata(false));
-
-		private ZoomState CurrentZoomState
-		{
-			get => (ZoomState)GetValue(CurrentZoomStateProperty);
-			set => SetValue(CurrentZoomStateProperty, value);
-		}
-		public static readonly DependencyProperty CurrentZoomStateProperty = DependencyProperty.Register(
-			"CurrentZoomState",
-			typeof(ZoomState),
-			typeof(BarChart),
-			new UIPropertyMetadata(new ZoomState(0, 0, 0, 0, 0, yBuffer), OnSetZoomState));
 		
 		private bool HasData
 		{
