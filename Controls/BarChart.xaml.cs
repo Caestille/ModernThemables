@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using ModernThemables.ViewModels.Charting.CartesianChart;
 using ModernThemables.HelperClasses.Charting.CartesianChart;
+using ModernThemables.ViewModels.Charting;
 
 namespace ModernThemables.Controls
 {
@@ -222,68 +223,60 @@ namespace ModernThemables.Controls
 			Application.Current.Dispatcher.Invoke(async () =>
 			{
 				renderInProgress = true;
-				var collection = InternalSeries.Clone().ToList();
+				var collection = new List<InternalBarGroupViewModel>();// InternalSeries.Clone().ToList();
 
-				if (invalidateAll)
-				{
-					collection.Clear();
-				}
-				else
-				{
-					foreach (var series in (removedSeries ?? new List<ISeries>()))
-					{
-						collection.Remove(collection.First(x => x.Identifier == series.Identifier));
-					}
-				}
+				//if (invalidateAll)
+				//{
+				//	collection.Clear();
+				//}
+				//else
+				//{
+				//	foreach (var series in (removedSeries ?? new List<ISeries>()))
+				//	{
+				//		collection.Remove(collection.First(x => x.Identifier == series.Identifier));
+				//	}
+				//}
 
-				foreach (var series in invalidateAll
+				var source = Series;/*invalidateAll
 					? Series ?? new ObservableCollection<ISeries>()
-					: addedSeries ?? new List<ISeries>())
+					: addedSeries ?? new List<ISeries>();*/
+
+				var groups = source.SelectMany(x => x.Values.Select(y => (y.XValue, y.Name))).Distinct();
+
+				foreach (var group in groups)
 				{
-					var points = await GetPointsForSeries(series);
+					var bars = await GetBarsForGroup(group.XValue, source);
 
-					var matchingSeries = InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
+					collection.Add(bars);
 
-					collection.Add(new InternalPathSeriesViewModel(
-						series.Name,
-						series.Identifier,
-						points,
-						invalidateAll
-							? matchingSeries != null
-								? matchingSeries.Stroke
-								: series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50))
-							: series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
-						invalidateAll
-							? matchingSeries != null ? matchingSeries.Fill : series.Fill
-							: series.Fill,
-						0/*yBuffer*/,
-						series.TooltipLabelFormatter));
+					//if (!series.Values.Any()) continue;
 
-					if (!series.Values.Any()) continue;
-
-					var seriesYMin = series.Values.Min(z => z.YValue);
-					var seriesYMax = series.Values.Max(z => z.YValue);
+					//var seriesYMin = series.Values.Min(z => z.YValue);
+					//var seriesYMax = series.Values.Max(z => z.YValue);
 
 					//series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 					//series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
-				foreach (var series in collection)
-				{
-					var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
+				//foreach (var series in collection)
+				//{
+				//	var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
 
-					if (matchingSeries == null) continue;
+				//	if (matchingSeries == null) continue;
 
-					var points = await GetPointsForSeries(matchingSeries);
-					series.UpdatePoints(points);
-				}
+				//	var points = await GetPointsForSeries(matchingSeries);
+				//	series.UpdatePoints(points);
+				//}
 
-				InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection);
+				InternalSeries = new ObservableCollection<InternalBarGroupViewModel>(collection);
 
-				foreach (var series in InternalSeries)
-				{
-					series.ResizeTrigger = !series.ResizeTrigger;
-				}
+				//foreach (var series in InternalSeries)
+				//{
+				//	series.ResizeTrigger = !series.ResizeTrigger;
+				//}
+
+				_ = SetXAxisLabels();
+				_ = SetYAxisLabels();
 
 				renderInProgress = false;
 			});
@@ -291,39 +284,32 @@ namespace ModernThemables.Controls
 
 		#region Calculations
 
-		private async Task SetXAxisLabels(double xMin, double xMax)
+		private async Task SetXAxisLabels()
 		{
 			if (!HasGotData()) return;
 
-			var xRange = xMax - xMin;
-			var xAxisItemCount = Math.Floor(plotAreaWidth / 60);
-			var labels = await GetXSteps(xAxisItemCount, xMin, xMax);
+			var labels = InternalSeries.Select(x => x.Name);
 			var labels2 = labels.Select(x => new AxisLabel()
 			{
-				Value = XAxisFormatter == null
-					? x.ToString()
-					: XAxisFormatter(Series.First().Values.First().XValueToImplementation(x)),
-				Height = ((x - xMin) / xRange * plotAreaWidth) - (labels.ToList().IndexOf(x) > 0
-					? (labels[labels.ToList().IndexOf(x) - 1] - xMin) / xRange * plotAreaWidth
-					: 0),
+				Value = x.ToString(),
+				Height = (labels.ToList().IndexOf(x) / labels.Count() * plotAreaWidth),
 			});
 			XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
 			if (isSingleXPoint)
 			{
 				XAxisLabels = new ObservableCollection<AxisLabel>()
 				{
-					new AxisLabel(
-						XAxisFormatter == null
-							? xMin.ToString()
-							: XAxisFormatter(Series.First().Values.First().XValueToImplementation(xMin)),
-						plotAreaWidth / 2)
+					new AxisLabel(labels.First(), plotAreaWidth / 2)
 				};
 			}
 		}
 
-		private async Task SetYAxisLabels(double yMin, double yMax)
+		private async Task SetYAxisLabels()
 		{
 			if (!HasGotData()) return;
+
+			var yMax = InternalSeries.Max(x => x.Bars.Max(y => y.Y));
+			var yMin = InternalSeries.Min(x => x.Bars.Min(y => y.Y));
 
 			var yRange = yMax - yMin;
 			var yAxisItemsCount = Math.Max(1, Math.Floor(plotAreaHeight / 50));
@@ -338,57 +324,6 @@ namespace ModernThemables.Controls
 					: 0),
 			});
 			YAxisLabels = new ObservableCollection<AxisLabel>(labels2.Reverse());
-		}
-
-		private async Task<List<double>> GetXSteps(double xAxisItemsCount, double xMin, double xMax)
-		{
-			List<double> xVals = new();
-
-			//if (XAxisLabelIdentifier != null)
-			//{
-			//	var currVal = xMin;
-			//	while (currVal < xMax)
-			//	{
-			//		if (XAxisLabelIdentifier(Series.First().Values.First().XValueToImplementation(currVal)))
-			//		{
-			//			xVals.Add(currVal);
-			//		}
-			//		currVal++;
-			//	}
-			//}
-			//else
-			//{
-				await Task.Run(() =>
-				{
-					var xRange = xMax - xMin;
-					var idealStep = xRange / xAxisItemsCount;
-					var min = double.MaxValue;
-					var stepAtMin = 1;
-					var roundedSteps = new List<int>()
-						{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
-					roundedSteps.Reverse();
-					foreach (var step in roundedSteps)
-					{
-						var val = Math.Abs(idealStep - step);
-						if (val < min)
-						{
-							min = val;
-							stepAtMin = step;
-						}
-					}
-
-					var currVal = xMin;
-					while (currVal < xMax)
-					{
-						currVal += stepAtMin;
-						xVals.Add(currVal);
-					}
-				});
-			//}
-
-			var fracOver = (int)Math.Ceiling(xVals.Count() / (decimal)Math.Round(xAxisItemsCount));
-
-			return xVals.Where(x => xVals.IndexOf(x) % fracOver == 0).ToList();
 		}
 
 		private async Task<List<double>> GetYSteps(double yAxisItemsCount, double yMin, double yMax)
@@ -473,26 +408,22 @@ namespace ModernThemables.Controls
 			return yVals;
 		}
 
-		private async Task<List<InternalChartPoint>> GetPointsForSeries(ISeries? series)
+		private async Task<InternalBarGroupViewModel?> GetBarsForGroup(double group, IEnumerable<ISeries> series)
 		{
-			if (series == null) return new List<InternalChartPoint>();
+			if (series == null || !series.Any()) return null;
 
+			var barsInGroup = series.SelectMany(x => x.Values.Where(y => y.XValue == group));
 			return await Task.Run(() =>
 			{
-				List<InternalChartPoint> points = new();
-				foreach (var point in series.Values)
-				{
-					double x = (double)(point.XValue);
-					double y = point.YValue;
-					points.Add(new InternalChartPoint(x, y, point));
-				}
-				return points;
+				return new InternalBarGroupViewModel(
+					barsInGroup.First().Name,
+					barsInGroup.Select(x => new InternalChartEntity(group, x.YValue, x, x.Stroke, x.Fill)).ToList());
 			});
 		}
 
 		#endregion
 
-		#region Grid events
+			#region Grid events
 
 		private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
@@ -520,45 +451,45 @@ namespace ModernThemables.Controls
 
 			#region Find points under mouse
 			var pointsUnderMouse = new List<TooltipPointViewModel>();
-			foreach (var series in InternalSeries)
-			{
-				var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
-					Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)), 1),
-					Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.Y)) - InternalSeries.Min(x => x.Data.Min(y => y.Y)), 1),
-					translatedMouseLoc.X,
-					translatedMouseLoc.Y,
-					SeriesItemsControl.ActualWidth,
-					SeriesItemsControl.ActualHeight,
-					-SeriesItemsControl.Margin.Left,
-					-SeriesItemsControl.Margin.Top,
-					0/*yBuffer*/);
+			//foreach (var series in InternalSeries)
+			//{
+			//	var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
+			//		Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)), 1),
+			//		Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.Y)) - InternalSeries.Min(x => x.Data.Min(y => y.Y)), 1),
+			//		translatedMouseLoc.X,
+			//		translatedMouseLoc.Y,
+			//		SeriesItemsControl.ActualWidth,
+			//		SeriesItemsControl.ActualHeight,
+			//		-SeriesItemsControl.Margin.Left,
+			//		-SeriesItemsControl.Margin.Top,
+			//		0/*yBuffer*/);
 
-				if (hoveredChartPoint == null
-					//|| !CurrentZoomState.IsPointInBounds(
-					//		hoveredChartPoint.BackingPoint.XValue,
-					//		hoveredChartPoint.BackingPoint.YValue)
-					|| !series.IsTranslatedMouseInBounds(
-							InternalSeries.Max(
-								x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)),
-							translatedMouseLoc.X,
-							SeriesItemsControl.ActualWidth)) continue;
+			//	if (hoveredChartPoint == null
+			//		//|| !CurrentZoomState.IsPointInBounds(
+			//		//		hoveredChartPoint.BackingPoint.XValue,
+			//		//		hoveredChartPoint.BackingPoint.YValue)
+			//		|| !series.IsTranslatedMouseInBounds(
+			//				InternalSeries.Max(
+			//					x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)),
+			//				translatedMouseLoc.X,
+			//				SeriesItemsControl.ActualWidth)) continue;
 
-				if (isSingleXPoint) hoveredChartPoint.X += (plotAreaWidth / 2);
+			//	if (isSingleXPoint) hoveredChartPoint.X += (plotAreaWidth / 2);
 
-				pointsUnderMouse.Add(new TooltipPointViewModel(
-					hoveredChartPoint,
-					new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0),
-					new SolidColorBrush(series.Stroke != null
-						? series.Stroke.ColourAtPoint(
-							hoveredChartPoint.BackingPoint.XValue, hoveredChartPoint.BackingPoint.YValue)
-						: Colors.Red),
-					series.TooltipLabelFormatter != null
-						? series.TooltipLabelFormatter(
-							series.Data.Select(x => x.BackingPoint), hoveredChartPoint.BackingPoint)
-						: hoveredChartPoint.BackingPoint.YValue.ToString(),
-					plotAreaHeight
-					));
-			}
+			//	pointsUnderMouse.Add(new TooltipPointViewModel(
+			//		hoveredChartPoint,
+			//		new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0),
+			//		new SolidColorBrush(series.Stroke != null
+			//			? series.Stroke.ColourAtPoint(
+			//				hoveredChartPoint.BackingPoint.XValue, hoveredChartPoint.BackingPoint.YValue)
+			//			: Colors.Red),
+			//		series.TooltipLabelFormatter != null
+			//			? series.TooltipLabelFormatter(
+			//				series.Data.Select(x => x.BackingPoint), hoveredChartPoint.BackingPoint)
+			//			: hoveredChartPoint.BackingPoint.YValue.ToString(),
+			//		plotAreaHeight
+			//		));
+			//}
 			#endregion
 
 			#region Tooltip

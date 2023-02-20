@@ -6,7 +6,7 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 	/// <summary>
 	/// A point representing a wedge on a pie chart with a <see cref="string"/> name and <see cref="double"/> value
 	/// </summary>
-	public class PieWedge
+	public class PieWedge : IChartEntity
 	{
 		public event EventHandler<bool> FocusedChanged;
 
@@ -18,27 +18,19 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		/// <summary>
 		/// The value of the pie wedge.
 		/// </summary>
-		public double Value { get; }
+		public double Value => XValue;
 
-		/// <summary>
-		/// The wedge stroke.
-		/// </summary>
+		/// <inheritdoc />
 		public IChartBrush Stroke { get; }
 
-		/// <summary>
-		/// The wedge fill.
-		/// </summary>
+		/// <inheritdoc />
 		public IChartBrush Fill { get; }
 
-		/// <summary>
-		/// The wedge UID
-		/// </summary>
+		/// <inheritdoc />
 		public Guid Identifier { get; } = Guid.NewGuid();
 
 		private bool isFocused;
-		/// <summary>
-		/// Whether the wedge is focused.
-		/// </summary>
+		/// <inheritdoc />
 		public bool IsFocused
 		{
 			get => isFocused;
@@ -48,6 +40,10 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 				FocusedChanged?.Invoke(this, value);
 			}
 		}
+
+		public double XValue { get; }
+
+		public double YValue => throw new NotImplementedException();
 
 		/// <summary>
 		/// Initialises a new <see cref="PieWedge"/> with a given <see cref="string"/> and
@@ -60,9 +56,33 @@ namespace ModernThemables.HelperClasses.Charting.PieChart
 		public PieWedge(string name, double value, IChartBrush stroke, IChartBrush fill)
 		{
 			Name = name;
-			Value = value;
+			XValue = value;
 			Stroke = stroke;
 			Fill = fill;
+		}
+
+		/// <inheritdoc />
+		public object XValueToImplementation()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <inheritdoc />
+		public object YValueToImplementation()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <inheritdoc />
+		public object XValueToImplementation(double convert)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <inheritdoc />
+		public object YValueToImplementation(double convert)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

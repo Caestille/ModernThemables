@@ -1,5 +1,4 @@
-﻿using ModernThemables.HelperClasses.Charting.CartesianChart;
-using ModernThemables.HelperClasses.Charting.PieChart;
+﻿using ModernThemables.HelperClasses.Charting;
 using ModernThemables.Interfaces;
 using System;
 using System.Collections.ObjectModel;

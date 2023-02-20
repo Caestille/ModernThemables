@@ -1,6 +1,7 @@
 ﻿using ModernThemables.HelperClasses.Charting;
 using ModernThemables.HelperClasses.Charting.CartesianChart;
 using ModernThemables.Interfaces;
+using ModernThemables.ViewModels.Charting;
 using ModernThemables.ViewModels.Charting.CartesianChart;
 using System;
 using System.Collections.ObjectModel;
@@ -22,17 +23,6 @@ namespace ModernThemables.Controls
 			typeof(ObservableCollection<ISeries>),
 			typeof(BarChart),
 			new FrameworkPropertyMetadata(null, OnSeriesSet));
-
-		public Func<object, string> XAxisFormatter
-		{
-			get => (Func<object, string>)GetValue(XAxisFormatterProperty);
-			set => SetValue(XAxisFormatterProperty, value);
-		}
-		public static readonly DependencyProperty XAxisFormatterProperty = DependencyProperty.Register(
-			"XAxisFormatter",
-			typeof(Func<object, string>),
-			typeof(BarChart),
-			new PropertyMetadata(null));
 
 		public Func<object, string> YAxisFormatter
 		{
@@ -170,16 +160,16 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new PropertyMetadata(true));
 
-		private ObservableCollection<InternalPathSeriesViewModel> InternalSeries
+		private ObservableCollection<InternalBarGroupViewModel> InternalSeries
 		{
-			get => (ObservableCollection<InternalPathSeriesViewModel>)GetValue(InternalSeriesProperty);
+			get => (ObservableCollection<InternalBarGroupViewModel>)GetValue(InternalSeriesProperty);
 			set => SetValue(InternalSeriesProperty, value);
 		}
 		public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
 			"InternalSeries",
-			typeof(ObservableCollection<InternalPathSeriesViewModel>),
+			typeof(ObservableCollection<InternalBarGroupViewModel>),
 			typeof(BarChart),
-			new PropertyMetadata(new ObservableCollection<InternalPathSeriesViewModel>()));
+			new PropertyMetadata(new ObservableCollection<InternalBarGroupViewModel>()));
 
 		private ObservableCollection<AxisLabel> XAxisLabels
 		{

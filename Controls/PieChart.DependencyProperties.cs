@@ -1,5 +1,6 @@
 ﻿using ModernThemables.HelperClasses.Charting;
 using ModernThemables.HelperClasses.Charting.PieChart;
+using ModernThemables.Interfaces;
 using ModernThemables.ViewModels.Charting.PieChart;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -10,14 +11,14 @@ namespace ModernThemables.Controls
 	{
 		#region Public properties
 
-		public ObservableCollection<PieSeries> Series
+		public ObservableCollection<ISeries> Series
 		{
-			get => (ObservableCollection<PieSeries>)GetValue(SeriesProperty);
+			get => (ObservableCollection<ISeries>)GetValue(SeriesProperty);
 			set => SetValue(SeriesProperty, value);
 		}
 		public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
 			"Series",
-			typeof(ObservableCollection<PieSeries>),
+			typeof(ObservableCollection<ISeries>),
 			typeof(PieChart),
 			new FrameworkPropertyMetadata(null, OnSeriesSet));
 

@@ -25,7 +25,7 @@ namespace ModernThemables.Interfaces
 		/// A <see cref="Func{T1, T2, TResult}"/> Which given a list of series points and the current highlighted
 		/// point, returns a string which is the formatted tooltip.
 		/// </summary>
-		Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter { get; set; }
+		Func<IEnumerable<IChartEntity>, IChartEntity, string> TooltipLabelFormatter { get; set; }
 
 		/// <summary>
 		/// The series line stroke.
@@ -40,7 +40,7 @@ namespace ModernThemables.Interfaces
 		/// <summary>
 		/// The series values.
 		/// </summary>
-		ObservableCollection<IChartPoint> Values { get; set; }
+		ObservableCollection<IChartEntity> Values { get; set; }
 
 		/// <summary>
 		/// A unique identifier for the series.

@@ -10,9 +10,9 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
     internal class TooltipPointViewModel : ObservableObject
     {
         /// <summary>
-        /// The <see cref="InternalChartPoint"/> this tooltip represents.
+        /// The <see cref="InternalChartEntity"/> this tooltip represents.
         /// </summary>
-        public InternalChartPoint Point { get; }
+        public InternalChartEntity Point { get; }
 
         /// <summary>
         /// The fill <see cref="Brush"/> the displayed tooltip point should be filled by.
@@ -64,13 +64,13 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
         /// <summary>
         /// Initialises a new <see cref="TooltipPointViewModel"/>.
         /// </summary>
-        /// <param name="point">The <see cref="InternalChartPoint"/> being represented.</param>
+        /// <param name="point">The <see cref="InternalChartEntity"/> being represented.</param>
         /// <param name="margin">The <see cref="Thickness"/> of the point to be displayed.</param>
         /// <param name="fill">The point fill if visible.</param>
         /// <param name="tooltipString">The <see cref="string"/> used to make up the tooltip display.</param>
         /// <param name="chartHeight">The height of the hosting chart, in pixels for calculation purposes.</param>
         public TooltipPointViewModel(
-            InternalChartPoint point,
+            InternalChartEntity point,
             Thickness margin,
             Brush fill,
             string tooltipString,

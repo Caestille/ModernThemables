@@ -405,7 +405,7 @@
 				<Setter TargetName="Border" Property="Background" Value="{DynamicResource StatusTextLightBrush}" />
 				<Setter Property="Foreground" Value="Gray" />
 				<Setter TargetName="Border2" Property="Background" Value="{DynamicResource DisabledControlNonClickablePartBrush}" />
-				<Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+				<Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource DisabledControlNonClickablePartBrush}" />
 			</Trigger>
 			<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">
 				<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
@@ -497,6 +497,7 @@
 									Foreground="{DynamicResource TextBrush}"
 									SnapsToDevicePixels="True">
 									<StackPanel
+										x:Name="StackPanel"
 										IsItemsHost="True"
 										KeyboardNavigation.DirectionalNavigation="Contained"
 										TextBlock.Foreground="{DynamicResource TextBrush}" />
@@ -522,6 +523,9 @@
 							<Setter Property="IsTabStop" Value="false" />
 							<Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
 							<Setter TargetName="ContentSite" Property="Visibility" Value="Hidden" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="StackPanel" Property="TextBlock.Foreground" Value="Gray" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -713,6 +717,42 @@
 								Visibility="{Binding ElementName=PART_textBox, Path=Text, Converter={StaticResource StringNotEmptyVisibilityConverter}, ConverterParameter=true}" />
 						</Grid>
 					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--#endregion-->
+
+	<!--#region TextBox-->
+
+	<Style TargetType="{x:Type TextBox}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TextBox}">
+					<Grid>
+						<Border
+							x:Name="Border"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="5" />
+						<ScrollViewer
+							x:Name="PART_ContentHost"
+							Margin="2"
+							Padding="{TemplateBinding Padding}"
+							HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+							Background="{x:Null}"
+							BorderThickness="0"
+							IsTabStop="False"
+							TextElement.Foreground="{TemplateBinding Foreground}" />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledControlNonClickablePartBrush}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

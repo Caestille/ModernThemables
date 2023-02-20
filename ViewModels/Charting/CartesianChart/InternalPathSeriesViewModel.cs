@@ -16,7 +16,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
         /// <summary>
         /// The data making up the rendered points in pixels scale.
         /// </summary>
-        public IEnumerable<InternalChartPoint> Data;
+        public IEnumerable<InternalChartEntity> Data;
 
         private string pathStrokeData;
         /// <summary>
@@ -62,7 +62,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
         /// <summary>
         /// A <see cref="Func{T1, T2, TResult}"/> used to format the tooltip string.
         /// </summary>
-        public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter;
+        public Func<IEnumerable<IChartEntity>, IChartEntity, string> TooltipLabelFormatter;
 
         private bool resizeTrigger;
         /// <summary>
@@ -89,11 +89,11 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
         public InternalPathSeriesViewModel(
             string name,
             Guid guid,
-            IEnumerable<InternalChartPoint> data,
+            IEnumerable<InternalChartEntity> data,
             IChartBrush? stroke,
             IChartBrush? fill,
             double yBuffer,
-            Func<IEnumerable<IChartPoint>, IChartPoint, string> tooltipFormatter)
+            Func<IEnumerable<IChartEntity>, IChartEntity, string> tooltipFormatter)
         {
             Name = name;
             Identifier = guid;
@@ -137,7 +137,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
         /// <param name="yBuffer">The fractional distance by which the y direction is scaled to create a margin.
         /// </param>
         /// <returns></returns>
-        public InternalChartPoint? GetChartPointUnderTranslatedMouse(
+        public InternalChartEntity? GetChartPointUnderTranslatedMouse(
             double dataWidth,
             double dataHeight,
             double mouseX,
@@ -166,7 +166,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
 
             var x = hoveredChartPoint.X * xZoom - xLeftOffset;
             var y = hoveredChartPoint.Y * yZoom - yTopOffset - yBuffer * dataHeight * yZoom;
-            return new InternalChartPoint(x, y, hoveredChartPoint.BackingPoint);
+            return new InternalChartEntity(x, y, hoveredChartPoint.BackingPoint);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
         /// itself scales to fit its container, it is never re-rendered to match these points.
         /// </summary>
         /// <param name="data">The new data.</param>
-        public void UpdatePoints(IEnumerable<InternalChartPoint> data)
+        public void UpdatePoints(IEnumerable<InternalChartEntity> data)
         {
             Data = data;
         }
@@ -197,7 +197,7 @@ namespace ModernThemables.ViewModels.Charting.CartesianChart
                 && translatedX >= Data.Min(x => x.X);
         }
 
-        private string ConvertDataToPath(IEnumerable<InternalChartPoint> data)
+        private string ConvertDataToPath(IEnumerable<InternalChartEntity> data)
         {
             var sb = new StringBuilder();
             bool setM = true;

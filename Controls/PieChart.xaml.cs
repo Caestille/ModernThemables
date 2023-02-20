@@ -18,6 +18,7 @@ using System.Windows.Input;
 using ModernThemables.ViewModels.Charting.PieChart;
 using ModernThemables.Converters;
 using System.Windows.Threading;
+using ModernThemables.Interfaces;
 
 namespace ModernThemables.Controls
 {
@@ -28,7 +29,7 @@ namespace ModernThemables.Controls
 	{
 		private DateTime timeLastUpdated;
 		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 60d);
-		private List<PieSeries> subscribedSeries = new();
+		private List<ISeries> subscribedSeries = new();
 
 		private KeepAliveTriggerService resizeTrigger;
 
@@ -134,7 +135,7 @@ namespace ModernThemables.Controls
 			foreach (var series in chart.subscribedSeries)
 			{
 				series.PropertyChanged -= chart.Series_PropertyChanged;
-				foreach (var wedge in series.Wedges) wedge.FocusedChanged -= chart.Wedge_FocusedChanged;
+				foreach (var wedge in series.Values) wedge.FocusedChanged -= chart.Wedge_FocusedChanged;
 			}
 
 			chart.subscribedSeries.Clear();
@@ -146,13 +147,13 @@ namespace ModernThemables.Controls
 			chart.QueueRenderChart();
 		}
 
-		private void Subscribe(ObservableCollection<PieSeries> series)
+		private void Subscribe(ObservableCollection<ISeries> series)
 		{
 			series.CollectionChanged += Series_CollectionChanged;
-			foreach (PieSeries item in series)
+			foreach (ISeries item in series)
 			{
 				item.PropertyChanged += Series_PropertyChanged;
-				foreach (var wedge in item.Wedges) wedge.FocusedChanged += Wedge_FocusedChanged;
+				foreach (var wedge in item.Values) wedge.FocusedChanged += Wedge_FocusedChanged;
 				subscribedSeries.Add(item);
 			}
 		}
@@ -165,27 +166,27 @@ namespace ModernThemables.Controls
 				return;
 			}
 
-			var oldItems = new List<PieSeries>();
+			var oldItems = new List<ISeries>();
 			if ((e.Action == NotifyCollectionChangedAction.Replace || e.Action == NotifyCollectionChangedAction.Remove)
 				&& e.OldItems != null)
 			{
-				foreach (PieSeries series in e.OldItems)
+				foreach (ISeries series in e.OldItems)
 				{
 					series.PropertyChanged -= Series_PropertyChanged;
-					foreach (var wedge in series.Wedges) wedge.FocusedChanged -= Wedge_FocusedChanged;
+					foreach (var wedge in series.Values) wedge.FocusedChanged -= Wedge_FocusedChanged;
 					oldItems.Add(series);
 					subscribedSeries.Remove(series);
 				}
 			}
 
-			var newItems = new List<PieSeries>();
+			var newItems = new List<ISeries>();
 			if ((e.Action == NotifyCollectionChangedAction.Replace || e.Action == NotifyCollectionChangedAction.Add)
 				&& e.NewItems != null)
 			{
-				foreach (PieSeries series in e.NewItems)
+				foreach (ISeries series in e.NewItems)
 				{
 					series.PropertyChanged += Series_PropertyChanged;
-					foreach (var wedge in series.Wedges) wedge.FocusedChanged += Wedge_FocusedChanged;
+					foreach (var wedge in series.Values) wedge.FocusedChanged += Wedge_FocusedChanged;
 					newItems.Add(series);
 					subscribedSeries.Add(series);
 				}
@@ -196,7 +197,7 @@ namespace ModernThemables.Controls
 
 		private async void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			if (sender is PieSeries)
+			if (sender is ISeries)
 			{
 				QueueRenderChart();
 			}
@@ -225,7 +226,7 @@ namespace ModernThemables.Controls
 						series.Name,
 						new ObservableCollection<InternalPieWedgeViewModel>(wedges)));
 
-					if (!series.Wedges.Any()) continue;
+					if (!series.Values.Any()) continue;
 				}
 
 				InternalSeries = new ObservableCollection<InternalPieSeriesViewModel>(newSeries);
@@ -244,24 +245,24 @@ namespace ModernThemables.Controls
 
 		#region Calculations		
 
-		private async Task<List<InternalPieWedgeViewModel>> GetWedgesForSeries(PieSeries? series)
+		private async Task<List<InternalPieWedgeViewModel>> GetWedgesForSeries(ISeries? series)
 		{
 			var convertedSeries = new List<InternalPieWedgeViewModel>();
 
 			if (series == null) return convertedSeries;
 
-			var sum = series.Wedges.Sum(x => x.Value);
+			var sum = series.Values.Sum(x => x.XValue);
 			var angleSum = 0d;
 
-			foreach (var wedge in series.Wedges)
+			foreach (var wedge in series.Values)
 			{
 				InternalPieWedgeViewModel? matchingWedge = null;
 
 				convertedSeries.Add(new InternalPieWedgeViewModel(
 					wedge.Name,
 					wedge.Identifier,
-					wedge.Value / sum * 100,
-					wedge.Value,
+					wedge.XValue / sum * 100,
+					wedge.XValue,
 					angleSum / sum * 360,
 					matchingWedge != null
 						? matchingWedge.Stroke
@@ -270,7 +271,7 @@ namespace ModernThemables.Controls
 						? matchingWedge.Fill
 						: wedge.Fill ?? new SolidBrush(ColorExtensions.RandomColour(50))));
 
-				angleSum += wedge.Value;
+				angleSum += wedge.XValue;
 			}
 
 			return convertedSeries;
@@ -330,11 +331,11 @@ namespace ModernThemables.Controls
 							wedge.IsMouseOver = true;
 							TooltipWedge = wedge;
 
-							var matchingSeries = Series.First(x => x.Wedges.Any(y => y.Identifier == wedge.Identifier));
-							var matchingWedge = matchingSeries.Wedges.First(x => x.Identifier == wedge.Identifier);
+							var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
+							var matchingWedge = matchingSeries.Values.First(x => x.Identifier == wedge.Identifier);
 							TooltipString = matchingSeries.TooltipLabelFormatter != null
-								? matchingSeries.TooltipLabelFormatter(matchingSeries.Wedges, matchingWedge)
-								: matchingWedge.Value.ToString();
+								? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
+								: matchingWedge.XValue.ToString();
 
 							var centreAngle = wedge.StartAngle + wedge.Percent / 2 * 360 / 100;
 
@@ -433,11 +434,11 @@ namespace ModernThemables.Controls
 			matchingInternalWedge.IsMouseOver = e;
 			TooltipWedge = e ? matchingInternalWedge : null;
 
-			var matchingSeries = Series.First(x => x.Wedges.Any(y => y.Identifier == wedge.Identifier));
-			var matchingWedge = matchingSeries.Wedges.First(x => x.Identifier == wedge.Identifier);
+			var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
+			var matchingWedge = matchingSeries.Values.First(x => x.Identifier == wedge.Identifier);
 			TooltipString = matchingSeries.TooltipLabelFormatter != null
-				? matchingSeries.TooltipLabelFormatter(matchingSeries.Wedges, matchingWedge)
-				: matchingWedge.Value.ToString();
+				? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
+				: matchingWedge.XValue.ToString();
 
 			var centreAngle = matchingInternalWedge.StartAngle + matchingInternalWedge.Percent / 2 * 360 / 100;
 

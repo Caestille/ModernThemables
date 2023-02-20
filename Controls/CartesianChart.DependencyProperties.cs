@@ -1,6 +1,7 @@
 ﻿using ModernThemables.HelperClasses.Charting;
 using ModernThemables.HelperClasses.Charting.CartesianChart;
 using ModernThemables.Interfaces;
+using ModernThemables.ViewModels.Charting;
 using ModernThemables.ViewModels.Charting.CartesianChart;
 using System;
 using System.Collections.ObjectModel;
@@ -258,14 +259,14 @@ namespace ModernThemables.Controls
 			typeof(CartesianChart),
 			new PropertyMetadata(true));
 
-		private InternalChartPoint? MouseOverPoint
+		private InternalChartEntity? MouseOverPoint
 		{
-			get => (InternalChartPoint)GetValue(MouseOverPointProperty);
+			get => (InternalChartEntity)GetValue(MouseOverPointProperty);
 			set => SetValue(MouseOverPointProperty, value);
 		}
 		public static readonly DependencyProperty MouseOverPointProperty = DependencyProperty.Register(
 			"MouseOverPoint",
-			typeof(InternalChartPoint),
+			typeof(InternalChartEntity),
 			typeof(CartesianChart),
 			new PropertyMetadata(null));
 

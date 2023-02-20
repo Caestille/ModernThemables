@@ -5,12 +5,12 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace ModernThemables.HelperClasses.Charting.CartesianChart
+namespace ModernThemables.HelperClasses.Charting
 {
     /// <summary>
-    /// Series describing a path on a cartesian chart.
+    /// Generic series.
     /// </summary>
-    public class PathSeries : ISeries
+    public class Series : ISeries
     {
         /// <inheritdoc />
         public event EventHandler<PropertyChangedEventArgs> PropertyChanged;
@@ -19,7 +19,7 @@ namespace ModernThemables.HelperClasses.Charting.CartesianChart
         public event EventHandler<NotifyCollectionChangedEventArgs> CollectionChanged;
 
         /// <inheritdoc />
-        public Func<IEnumerable<IChartPoint>, IChartPoint, string> TooltipLabelFormatter { get; set; }
+        public Func<IEnumerable<IChartEntity>, IChartEntity, string> TooltipLabelFormatter { get; set; }
 
         /// <inheritdoc />
         public IChartBrush Stroke { get; set; }
@@ -33,9 +33,9 @@ namespace ModernThemables.HelperClasses.Charting.CartesianChart
         /// <inheritdoc />
         public string Name { get; set; }
 
-        private ObservableCollection<IChartPoint> values;
+        private ObservableCollection<IChartEntity> values;
         /// <inheritdoc />
-        public ObservableCollection<IChartPoint> Values
+        public ObservableCollection<IChartEntity> Values
         {
             get => values;
             set

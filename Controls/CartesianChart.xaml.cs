@@ -1,6 +1,5 @@
 ﻿using CoreUtilities.HelperClasses.Extensions;
 using CoreUtilities.Services;
-using ModernThemables.HelperClasses.Charting.PieChart;
 using ModernThemables.HelperClasses.Charting.Brushes;
 using ModernThemables.HelperClasses.Charting;
 using ModernThemables.Interfaces;
@@ -19,17 +18,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using ModernThemables.ViewModels.Charting.CartesianChart;
-using ModernThemables.HelperClasses.Charting.CartesianChart;
+using ModernThemables.ViewModels.Charting;
 
 namespace ModernThemables.Controls
 {
-    /// <summary>
-    /// Interaction logic for CartesianChart.xaml
-    /// </summary>
-    public partial class CartesianChart : UserControl
+	/// <summary>
+	/// Interaction logic for CartesianChart.xaml
+	/// </summary>
+	public partial class CartesianChart : UserControl
 	{
-		public event EventHandler<IChartPoint>? PointClicked;
-		public event EventHandler<Tuple<IChartPoint, IChartPoint>>? PointRangeSelected;
+		public event EventHandler<IChartEntity>? PointClicked;
+		public event EventHandler<Tuple<IChartEntity, IChartEntity>>? PointRangeSelected;
 
 		private double plotAreaHeight => DrawableChartSectionBorder.ActualHeight;
 		private double plotAreaWidth => DrawableChartSectionBorder.ActualWidth;
@@ -53,8 +52,8 @@ namespace ModernThemables.Controls
 		private bool isUserDragging;
 		private bool userCouldBePanning;
 		private bool isUserPanning;
-		private InternalChartPoint? lowerSelection;
-		private InternalChartPoint? upperSelection;
+		private InternalChartEntity? lowerSelection;
+		private InternalChartEntity? upperSelection;
 
 		private static double yBuffer = 0.1;
 
@@ -134,7 +133,7 @@ namespace ModernThemables.Controls
 
 			var seriesWithInRange = chart.Series.Select(x =>
 			{
-				var list = new List<IChartPoint>();
+				var list = new List<IChartEntity>();
 				list.AddRange(
 					x.Values.Where(
 						y => y.XValue <= chart.CurrentZoomState.XMax && y.XValue >= chart.CurrentZoomState.XMin));
@@ -624,19 +623,19 @@ namespace ModernThemables.Controls
 			return yVals;
 		}
 
-		private async Task<List<InternalChartPoint>> GetPointsForSeries(
+		private async Task<List<InternalChartEntity>> GetPointsForSeries(
 			double xMin, double xRange, double yMin, double yRange, ISeries? series)
 		{
-			if (series == null) return new List<InternalChartPoint>();
+			if (series == null) return new List<InternalChartEntity>();
 
 			return await Task.Run(() =>
 			{
-				List<InternalChartPoint> points = new();
+				List<InternalChartEntity> points = new();
 				foreach (var point in series.Values)
 				{
 					double x = (double)(point.XValue - xMin) / (double)xRange * (double)plotAreaWidth;
 					double y = plotAreaHeight - (point.YValue - yMin) / yRange * plotAreaHeight;
-					points.Add(new InternalChartPoint(x, y, point));
+					points.Add(new InternalChartEntity(x, y, point));
 				}
 				return points;
 			});
@@ -911,8 +910,8 @@ namespace ModernThemables.Controls
 			{
 				upperSelection = MouseOverPoint;
 				var eventData = upperSelection.X > lowerSelection.X
-					? new Tuple<IChartPoint, IChartPoint>(lowerSelection.BackingPoint, upperSelection.BackingPoint)
-					: new Tuple<IChartPoint, IChartPoint>(upperSelection.BackingPoint, lowerSelection.BackingPoint);
+					? new Tuple<IChartEntity, IChartEntity>(lowerSelection.BackingPoint, upperSelection.BackingPoint)
+					: new Tuple<IChartEntity, IChartEntity>(upperSelection.BackingPoint, lowerSelection.BackingPoint);
 				PointRangeSelected?.Invoke(this, eventData);
 				isUserDragging = false;
 				isUserPanning = false;
