@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ModernThemables.ViewModels.Charting
 {
@@ -29,6 +30,6 @@ namespace ModernThemables.ViewModels.Charting
         {
             Name = name;
             Bars = new ObservableCollection<InternalChartEntity>(bars);
-        }
+		}
     }
 }

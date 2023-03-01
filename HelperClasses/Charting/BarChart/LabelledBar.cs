@@ -15,13 +15,13 @@ namespace ModernThemables.HelperClasses.Charting.BarChart
 		public double YValue { get; }
 
 		/// <inheritdoc />
-		public IChartBrush Stroke => throw new NotImplementedException();
+		public IChartBrush Stroke { get; }
 
 		/// <inheritdoc />
-		public IChartBrush Fill => throw new NotImplementedException();
+		public IChartBrush Fill { get; }
 
 		/// <inheritdoc />
-		public Guid Identifier => throw new NotImplementedException();
+		public Guid Identifier { get; } = Guid.NewGuid();
 
 		/// <inheritdoc />
 		public bool IsFocused { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

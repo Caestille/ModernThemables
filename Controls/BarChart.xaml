@@ -169,9 +169,11 @@
 					Height="{Binding ElementName=Grid, Path=ActualHeight}"
 					ClipToBounds="True">
 					<ItemsControl
+						Background="Gray"
 						x:Name="SeriesItemsControl"
 						HorizontalAlignment="Stretch"
 						VerticalAlignment="Stretch"
+						FlowDirection="LeftToRight"
 						ItemsSource="{Binding InternalSeries, ElementName=root}">
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>
@@ -184,7 +186,6 @@
 											<Binding Path="ResizeTrigger" />
 										</MultiBinding>
 									</Grid.Margin>
-									<!--  BARS HERE  -->
 								</Grid>
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>
