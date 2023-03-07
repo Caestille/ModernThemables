@@ -19,6 +19,7 @@ using System.Windows.Media;
 using ModernThemables.ViewModels.Charting.CartesianChart;
 using ModernThemables.HelperClasses.Charting.CartesianChart;
 using ModernThemables.ViewModels.Charting;
+using System.Diagnostics;
 
 namespace ModernThemables.Controls
 {
@@ -223,59 +224,49 @@ namespace ModernThemables.Controls
 			Application.Current.Dispatcher.Invoke(async () =>
 			{
 				renderInProgress = true;
-				var collection = new List<InternalBarGroupViewModel>();// InternalSeries.Clone().ToList();
 
-				//if (invalidateAll)
-				//{
-				//	collection.Clear();
-				//}
-				//else
-				//{
-				//	foreach (var series in (removedSeries ?? new List<ISeries>()))
-				//	{
-				//		collection.Remove(collection.First(x => x.Identifier == series.Identifier));
-				//	}
-				//}
+				var barSep = BarSeparationPixels;
+				var groupSep = BarGroupSeparationPixels;
 
-				var source = Series;/*invalidateAll
-					? Series ?? new ObservableCollection<ISeries>()
-					: addedSeries ?? new List<ISeries>();*/
+				var source = Series.Clone().ToList();
 
-				var groups = source.SelectMany(x => x.Values.Select(y => (y.XValue, y.Name))).Distinct();
+				var groups = Series.SelectMany(x => x.Values.Select(y => x.Values.IndexOf(y))).Distinct();
+				var groupedBars = groups.Select(x => source.Select(y => x < y.Values.Count ? new Tuple<IChartEntity, IChartBrush, IChartBrush>(y.Values[x], y.Fill, y.Stroke) : null).Where(y => y != null));
+				var labels = groupedBars.Select(x => x.First()?.Item1?.Name ?? string.Empty);
+				double barCount = groupedBars.Any() ? groupedBars.Max(x => x.Count()) : 0;
 
-				foreach (var group in groups)
+				var groupWidth = groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) - groupSep : 0;
+				var barWidth = groupWidth > 0 ? (groupWidth / barCount) - barSep : 0;
+
+				var collection = await Task.Run(() =>
 				{
-					var bars = await GetBarsForGroup(group.XValue, source);
+					var ret = new List<InternalChartEntity>();
+					var maxHeight = groupedBars.Any() ? groupedBars.Max(x => x.Max(y => y.Item1.YValue)) : 0;
 
-					collection.Add(bars);
+					var currentX = groupSep;
+					foreach (var group in groupedBars.Select(x => x.ToList()))
+					{
+						for (int i = 0; i < barCount; i ++)
+						{
+							if (i < group.Count())
+							{
+								var bar = group[i];
+								ret.Add(new InternalChartEntity(currentX, (bar.Item1.YValue / maxHeight) * plotAreaHeight * (1 - 0.1), bar.Item1, bar.Item3, bar.Item2));
+							}
+							currentX += (barWidth + barSep);
+						}
+						currentX += groupSep;
+					}
 
-					//if (!series.Values.Any()) continue;
+					return ret;
+				});
 
-					//var seriesYMin = series.Values.Min(z => z.YValue);
-					//var seriesYMax = series.Values.Max(z => z.YValue);
+				BarWidth = barWidth;
+				var radius = BarWidth * BarCornerRadiusFraction / 2;
+				BarCornerRadius = new CornerRadius(0, 0, radius, radius);
+				InternalSeries = new ObservableCollection<InternalChartEntity>(collection);
 
-					//series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
-					//series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
-				}
-
-				//foreach (var series in collection)
-				//{
-				//	var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
-
-				//	if (matchingSeries == null) continue;
-
-				//	var points = await GetPointsForSeries(matchingSeries);
-				//	series.UpdatePoints(points);
-				//}
-
-				InternalSeries = new ObservableCollection<InternalBarGroupViewModel>(collection);
-
-				//foreach (var series in InternalSeries)
-				//{
-				//	series.ResizeTrigger = !series.ResizeTrigger;
-				//}
-
-				_ = SetXAxisLabels();
+				_ = SetXAxisLabels(labels);
 				_ = SetYAxisLabels();
 
 				renderInProgress = false;
@@ -284,15 +275,14 @@ namespace ModernThemables.Controls
 
 		#region Calculations
 
-		private async Task SetXAxisLabels()
+		private async Task SetXAxisLabels(IEnumerable<string> labels)
 		{
 			if (!HasGotData()) return;
 
-			var labels = InternalSeries.Select(x => x.Name);
 			var labels2 = labels.Select(x => new AxisLabel()
 			{
 				Value = x.ToString(),
-				Height = (labels.ToList().IndexOf(x) / labels.Count() * plotAreaWidth),
+				Height = ((double)labels.ToList().IndexOf(x) / (double)labels.Count() * plotAreaWidth),
 			});
 			XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
 			if (isSingleXPoint)
@@ -308,8 +298,8 @@ namespace ModernThemables.Controls
 		{
 			if (!HasGotData()) return;
 
-			var yMax = InternalSeries.Max(x => x.Bars.Max(y => y.Y));
-			var yMin = InternalSeries.Min(x => x.Bars.Min(y => y.Y));
+			var yMax = Series.Max(x => x.Values.Max(y => y.YValue));
+			var yMin = Series.Min(x => x.Values.Min(y => y.YValue));
 
 			var yRange = yMax - yMin;
 			var yAxisItemsCount = Math.Max(1, Math.Floor(plotAreaHeight / 50));
@@ -406,19 +396,6 @@ namespace ModernThemables.Controls
 			}
 
 			return yVals;
-		}
-
-		private async Task<InternalBarGroupViewModel?> GetBarsForGroup(double group, IEnumerable<ISeries> series)
-		{
-			if (series == null || !series.Any()) return null;
-
-			var barsInGroup = series.SelectMany(x => x.Values.Where(y => y.XValue == group));
-			return await Task.Run(() =>
-			{
-				return new InternalBarGroupViewModel(
-					barsInGroup.First().Name,
-					barsInGroup.Select(x => new InternalChartEntity(group, x.YValue, x, x.Stroke, x.Fill)).ToList());
-			});
 		}
 
 		#endregion

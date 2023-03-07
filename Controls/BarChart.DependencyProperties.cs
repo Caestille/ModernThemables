@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace ModernThemables.Controls
 {
-    public partial class BarChart // .DependencyProperties
+	public partial class BarChart // .DependencyProperties
 	{
 		#region Public properties
 
@@ -145,6 +145,39 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new PropertyMetadata(12d));
 
+		public double BarCornerRadiusFraction
+		{
+			get => (double)GetValue(BarCornerRadiusFractionProperty);
+			set => SetValue(BarCornerRadiusFractionProperty, value);
+		}
+		public static readonly DependencyProperty BarCornerRadiusFractionProperty = DependencyProperty.Register(
+			"BarCornerRadiusFraction",
+			typeof(double),
+			typeof(BarChart),
+			new PropertyMetadata(0d));
+
+		public double BarGroupSeparationPixels
+		{
+			get => (double)GetValue(BarGroupSeparationPixelsProperty);
+			set => SetValue(BarGroupSeparationPixelsProperty, value);
+		}
+		public static readonly DependencyProperty BarGroupSeparationPixelsProperty = DependencyProperty.Register(
+			"BarGroupSeparationPixels",
+			typeof(double),
+			typeof(BarChart),
+			new PropertyMetadata(0d));
+
+		public double BarSeparationPixels
+		{
+			get => (double)GetValue(BarSeparationPixelsProperty);
+			set => SetValue(BarSeparationPixelsProperty, value);
+		}
+		public static readonly DependencyProperty BarSeparationPixelsProperty = DependencyProperty.Register(
+			"BarSeparationPixels",
+			typeof(double),
+			typeof(BarChart),
+			new PropertyMetadata(0d));
+
 		#endregion
 
 		#region Private properties
@@ -160,16 +193,16 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new PropertyMetadata(true));
 
-		private ObservableCollection<InternalBarGroupViewModel> InternalSeries
+		private ObservableCollection<InternalChartEntity> InternalSeries
 		{
-			get => (ObservableCollection<InternalBarGroupViewModel>)GetValue(InternalSeriesProperty);
+			get => (ObservableCollection<InternalChartEntity>)GetValue(InternalSeriesProperty);
 			set => SetValue(InternalSeriesProperty, value);
 		}
 		public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
 			"InternalSeries",
-			typeof(ObservableCollection<InternalBarGroupViewModel>),
+			typeof(ObservableCollection<InternalChartEntity>),
 			typeof(BarChart),
-			new PropertyMetadata(new ObservableCollection<InternalBarGroupViewModel>()));
+			new PropertyMetadata(new ObservableCollection<InternalChartEntity>()));
 
 		private ObservableCollection<AxisLabel> XAxisLabels
 		{
@@ -214,6 +247,28 @@ namespace ModernThemables.Controls
 			typeof(bool),
 			typeof(BarChart),
 			new PropertyMetadata(false));
+
+		private double BarWidth
+		{
+			get => (double)GetValue(BarWidthProperty);
+			set => SetValue(BarWidthProperty, value);
+		}
+		public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
+			"BarWidth",
+			typeof(double),
+			typeof(BarChart),
+			new PropertyMetadata(0d));
+
+		private CornerRadius BarCornerRadius
+		{
+			get => (CornerRadius)GetValue(BarCornerRadiusProperty);
+			set => SetValue(BarCornerRadiusProperty, value);
+		}
+		public static readonly DependencyProperty BarCornerRadiusProperty = DependencyProperty.Register(
+			"BarCornerRadius",
+			typeof(CornerRadius),
+			typeof(BarChart),
+			new PropertyMetadata(new CornerRadius(0)));
 
 		#endregion
 	}
