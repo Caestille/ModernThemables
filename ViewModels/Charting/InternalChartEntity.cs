@@ -1,11 +1,12 @@
-﻿using ModernThemables.Interfaces;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using ModernThemables.Interfaces;
 
 namespace ModernThemables.ViewModels.Charting
 {
     /// <summary>
     /// An internal representation of a chart point for rendering the actual series with.
     /// </summary>
-    internal class InternalChartEntity
+    internal class InternalChartEntity : ObservableObject
     {
         /// <summary>
         /// The X point in pixels.
@@ -31,6 +32,13 @@ namespace ModernThemables.ViewModels.Charting
 		/// The <see cref="IChartBrush"/> the path fill uses to colour itself.
 		/// </summary>
 		public IChartBrush? Fill { get; }
+
+		private bool isMouseOver;
+		public bool IsMouseOver
+		{
+			get => isMouseOver;
+			set => this.SetProperty(ref isMouseOver, value);
+		}
 
 		/// <summary>
 		/// Initialises a new <see cref="InternalChartEntity"/>.

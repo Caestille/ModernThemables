@@ -20,6 +20,8 @@ using ModernThemables.ViewModels.Charting.CartesianChart;
 using ModernThemables.HelperClasses.Charting.CartesianChart;
 using ModernThemables.ViewModels.Charting;
 using System.Diagnostics;
+using CoreUtilities.Converters;
+using System.Windows.Threading;
 
 namespace ModernThemables.Controls
 {
@@ -84,6 +86,13 @@ namespace ModernThemables.Controls
 			if (sender is not BarChart chart) return;
 
 			chart.IsTooltipByCursor = chart.TooltipLocation == TooltipLocation.Cursor;
+		}
+
+		private static void TriggerReRender(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not BarChart chart) return;
+
+			chart.QueueRenderChart(null, null, true);
 		}
 
 		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -238,12 +247,15 @@ namespace ModernThemables.Controls
 				var groupWidth = groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) - groupSep : 0;
 				var barWidth = groupWidth > 0 ? (groupWidth / barCount) - barSep : 0;
 
+				XAxisLabelHeight = labels.Any() ? labels.Max(x => (double)(new StringWidthGetterConverter().Convert(new object[] { x, FontSize, FontFamily, FontStyle, FontWeight, FontStretch }, null, null, null))) * Math.Sin(XAxisLabelRotation * Math.PI / 180) + 10 : 0;
+				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+
 				var collection = await Task.Run(() =>
 				{
 					var ret = new List<InternalChartEntity>();
 					var maxHeight = groupedBars.Any() ? groupedBars.Max(x => x.Max(y => y.Item1.YValue)) : 0;
 
-					var currentX = groupSep;
+					var currentX = groupSep / 2;
 					foreach (var group in groupedBars.Select(x => x.ToList()))
 					{
 						for (int i = 0; i < barCount; i ++)
@@ -400,7 +412,7 @@ namespace ModernThemables.Controls
 
 		#endregion
 
-			#region Grid events
+		#region Grid events
 
 		private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
@@ -427,73 +439,25 @@ namespace ModernThemables.Controls
 			timeLastUpdated = DateTime.Now;
 
 			#region Find points under mouse
-			var pointsUnderMouse = new List<TooltipPointViewModel>();
-			//foreach (var series in InternalSeries)
-			//{
-			//	var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
-			//		Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)), 1),
-			//		Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.Y)) - InternalSeries.Min(x => x.Data.Min(y => y.Y)), 1),
-			//		translatedMouseLoc.X,
-			//		translatedMouseLoc.Y,
-			//		SeriesItemsControl.ActualWidth,
-			//		SeriesItemsControl.ActualHeight,
-			//		-SeriesItemsControl.Margin.Left,
-			//		-SeriesItemsControl.Margin.Top,
-			//		0/*yBuffer*/);
-
-			//	if (hoveredChartPoint == null
-			//		//|| !CurrentZoomState.IsPointInBounds(
-			//		//		hoveredChartPoint.BackingPoint.XValue,
-			//		//		hoveredChartPoint.BackingPoint.YValue)
-			//		|| !series.IsTranslatedMouseInBounds(
-			//				InternalSeries.Max(
-			//					x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)),
-			//				translatedMouseLoc.X,
-			//				SeriesItemsControl.ActualWidth)) continue;
-
-			//	if (isSingleXPoint) hoveredChartPoint.X += (plotAreaWidth / 2);
-
-			//	pointsUnderMouse.Add(new TooltipPointViewModel(
-			//		hoveredChartPoint,
-			//		new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0),
-			//		new SolidColorBrush(series.Stroke != null
-			//			? series.Stroke.ColourAtPoint(
-			//				hoveredChartPoint.BackingPoint.XValue, hoveredChartPoint.BackingPoint.YValue)
-			//			: Colors.Red),
-			//		series.TooltipLabelFormatter != null
-			//			? series.TooltipLabelFormatter(
-			//				series.Data.Select(x => x.BackingPoint), hoveredChartPoint.BackingPoint)
-			//			: hoveredChartPoint.BackingPoint.YValue.ToString(),
-			//		plotAreaHeight
-			//		));
-			//}
+			
+			foreach (var bar in InternalSeries)
+			{
+				if ((translatedMouseLoc.X - bar.X) <= BarWidth && (translatedMouseLoc.X - bar.X) >= 0 /*&& translatedMouseLoc.Y <= bar.Y*/)
+				{
+					bar.IsMouseOver = true;
+				}
+				else
+				{
+					bar.IsMouseOver = false;
+				}
+			}
+			
 			#endregion
 
 			#region Tooltip
-			var nearestPoint = pointsUnderMouse.FirstOrDefault(
-				x => Math.Abs(x.Point.Y - mouseLoc.Y)
-					== pointsUnderMouse.Min(x => Math.Abs(x.Point.Y - mouseLoc.Y)));
+			
 
-			if (nearestPoint != null)
-				nearestPoint.IsNearest = pointsUnderMouse.Count() > 1;
-
-			if (IsTooltipVisible && TooltipLocation == TooltipLocation.Cursor)
-			{
-				//// Get tooltip position variables
-				//if (!tooltipLeft && (plotAreaWidth - mouseLoc.X) < (TooltipItemsControl.ActualWidth + 10))
-				//	tooltipLeft = true;
-				//if (tooltipLeft && (mouseLoc.X) < (TooltipItemsControl.ActualWidth + 5))
-				//	tooltipLeft = false;
-				//if (!tooltipTop && (plotAreaHeight - mouseLoc.Y) < (TooltipItemsControl.ActualHeight + 10))
-				//	tooltipTop = true;
-				//if (tooltipTop && (mouseLoc.Y) < (TooltipItemsControl.ActualHeight + 5))
-				//	tooltipTop = false;
-
-				//TooltipItemsControl.Margin = new Thickness(
-				//	!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipItemsControl.ActualWidth - 5,
-				//	!tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipItemsControl.ActualHeight - 5,
-				//	0, 0);
-			}
+			
 			#endregion
 		}
 

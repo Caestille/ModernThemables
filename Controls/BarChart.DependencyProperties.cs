@@ -134,17 +134,6 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new PropertyMetadata(1d));
 
-		public new double FontSize
-		{
-			get => (double)GetValue(FontSizeProperty);
-			set => SetValue(FontSizeProperty, value);
-		}
-		public static readonly new DependencyProperty FontSizeProperty = DependencyProperty.Register(
-			"FontSize",
-			typeof(double),
-			typeof(BarChart),
-			new PropertyMetadata(12d));
-
 		public double BarCornerRadiusFraction
 		{
 			get => (double)GetValue(BarCornerRadiusFractionProperty);
@@ -154,7 +143,7 @@ namespace ModernThemables.Controls
 			"BarCornerRadiusFraction",
 			typeof(double),
 			typeof(BarChart),
-			new PropertyMetadata(0d));
+			new UIPropertyMetadata(0d, TriggerReRender));
 
 		public double BarGroupSeparationPixels
 		{
@@ -165,7 +154,7 @@ namespace ModernThemables.Controls
 			"BarGroupSeparationPixels",
 			typeof(double),
 			typeof(BarChart),
-			new PropertyMetadata(0d));
+			new UIPropertyMetadata(0d, TriggerReRender));
 
 		public double BarSeparationPixels
 		{
@@ -176,7 +165,18 @@ namespace ModernThemables.Controls
 			"BarSeparationPixels",
 			typeof(double),
 			typeof(BarChart),
-			new PropertyMetadata(0d));
+			new UIPropertyMetadata(0d, TriggerReRender));
+
+		public double XAxisLabelRotation
+		{
+			get => (double)GetValue(XAxisLabelRotationProperty);
+			set => SetValue(XAxisLabelRotationProperty, value);
+		}
+		public static readonly DependencyProperty XAxisLabelRotationProperty = DependencyProperty.Register(
+			"XAxisLabelRotation",
+			typeof(double),
+			typeof(BarChart),
+			new UIPropertyMetadata(0d, TriggerReRender));
 
 		#endregion
 
@@ -269,6 +269,17 @@ namespace ModernThemables.Controls
 			typeof(CornerRadius),
 			typeof(BarChart),
 			new PropertyMetadata(new CornerRadius(0)));
+
+		private double XAxisLabelHeight
+		{
+			get => (double)GetValue(XAxisLabelHeightProperty);
+			set => SetValue(XAxisLabelHeightProperty, value);
+		}
+		public static readonly DependencyProperty XAxisLabelHeightProperty = DependencyProperty.Register(
+			"XAxisLabelHeight",
+			typeof(double),
+			typeof(BarChart),
+			new PropertyMetadata(0d));
 
 		#endregion
 	}
