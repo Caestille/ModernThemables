@@ -1574,26 +1574,21 @@
 					<Grid>
 						<Border
 							x:Name="Border"
-							Width="{Binding Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=2}"
-							Height="{TemplateBinding Height}"
+							Width="30"
+							Height="15"
 							Background="{DynamicResource ControlNonClickablePartBrush}"
 							BorderThickness="0"
-							CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}">
-							<Grid x:Name="grid">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="1*" />
-									<ColumnDefinition Width="1*" />
-								</Grid.ColumnDefinitions>
-								<Border
-									x:Name="highlightCircle"
-									Height="{Binding Height, ElementName=Border, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-2}"
-									Margin="1"
-									VerticalAlignment="Top"
-									Background="{DynamicResource ControlClickablePartBrush}"
-									BorderThickness="0"
-									CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
-							</Grid>
-						</Border>
+							CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
+						<Border
+							x:Name="highlightCircle"
+							Width="13"
+							Height="13"
+							Margin="1"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Top"
+							Background="{DynamicResource ControlClickablePartBrush}"
+							BorderThickness="0"
+							CornerRadius="6.5" />
 						<Border
 							x:Name="ThemeBorder"
 							Background="Transparent"
@@ -1604,7 +1599,38 @@
 					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsChecked" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeBrush}" />
+							<Trigger.EnterActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<ThicknessAnimation
+											AutoReverse="False"
+											Storyboard.TargetName="highlightCircle"
+											Storyboard.TargetProperty="Margin"
+											To="16,1,1,1"
+											Duration="0:0:0.12">
+											<ThicknessAnimation.EasingFunction>
+												<QuadraticEase EasingMode="EaseOut" />
+											</ThicknessAnimation.EasingFunction>
+										</ThicknessAnimation>
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.EnterActions>
+							<Trigger.ExitActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<ThicknessAnimation
+											AutoReverse="False"
+											Storyboard.TargetName="highlightCircle"
+											Storyboard.TargetProperty="Margin"
+											To="1"
+											Duration="0:0:0.12">
+											<ThicknessAnimation.EasingFunction>
+												<QuadraticEase EasingMode="EaseOut" />
+											</ThicknessAnimation.EasingFunction>
+										</ThicknessAnimation>
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.ExitActions>
 							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource StatusTextBrush}" />
 							<Setter TargetName="highlightCircle" Property="Grid.Column" Value="1" />
 						</Trigger>
