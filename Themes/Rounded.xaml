@@ -1631,6 +1631,7 @@
 									</Storyboard>
 								</BeginStoryboard>
 							</Trigger.ExitActions>
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeBrush}" />
 							<Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource StatusTextBrush}" />
 							<Setter TargetName="highlightCircle" Property="Grid.Column" Value="1" />
 						</Trigger>
