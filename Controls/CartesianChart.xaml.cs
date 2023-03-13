@@ -776,8 +776,7 @@ namespace ModernThemables.Controls
 						? series.TooltipLabelFormatter(
 							series.Data.Select(x => x.BackingPoint), hoveredChartPoint.BackingPoint)
 						: hoveredChartPoint.BackingPoint.YValue.ToString(),
-					plotAreaHeight
-					));
+					plotAreaHeight));
 			}
 			#endregion
 

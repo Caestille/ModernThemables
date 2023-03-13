@@ -335,7 +335,7 @@
 							IsHitTestVisible="False">
 							<ContentControl
 								x:Name="ContentControl"
-								Content="{Binding Path=TooltipWedge, UpdateSourceTrigger=PropertyChanged}"
+								Content="{Binding Path=TooltipString, UpdateSourceTrigger=PropertyChanged}"
 								ContentTemplate="{Binding ElementName=root, Path=TooltipTemplate}"
 								Visibility="{Binding ElementName=root, Path=TooltipTemplate, Converter={StaticResource VisibleIfNotNullConverter}}" />
 						</Border>

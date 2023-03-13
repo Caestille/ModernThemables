@@ -442,23 +442,24 @@ namespace ModernThemables.Controls
 			
 			foreach (var bar in InternalSeries)
 			{
-				if ((translatedMouseLoc.X - bar.X) <= BarWidth && (translatedMouseLoc.X - bar.X) >= 0 /*&& translatedMouseLoc.Y <= bar.Y*/)
-				{
-					bar.IsMouseOver = true;
-				}
-				else
-				{
-					bar.IsMouseOver = false;
-				}
+				bar.IsMouseOver = (translatedMouseLoc.X - bar.X) <= BarWidth && (translatedMouseLoc.X - bar.X) >= 0 && translatedMouseLoc.Y <= bar.Y;
 			}
-			
+
 			#endregion
 
 			#region Tooltip
-			
 
-			
+
+
 			#endregion
+		}
+
+		private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
+		{
+			foreach (var bar in InternalSeries)
+			{
+				bar.IsMouseOver = false;
+			}
 		}
 
 		#endregion

@@ -241,6 +241,7 @@
 					x:Name="MouseCaptureGrid"
 					Background="{DynamicResource MainBackgroundBrush}"
 					MouseMove="MouseCaptureGrid_MouseMove"
+					MouseLeave="MouseCaptureGrid_MouseLeave"
 					Opacity="0.001" />
 				<Border
 					x:Name="DrawableChartSectionBorder"
