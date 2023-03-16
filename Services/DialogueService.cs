@@ -17,7 +17,13 @@ namespace ModernThemables.Services
 	/// </summary>
 	public class DialogueService : IDialogueService
 	{
+		private Window mainWindow;
 		private Dictionary<Type, Type> registeredViews = new();
+
+		public void GiveMainWindow(Window window)
+		{
+			mainWindow = window;
+		}
 
 		/// <inheritdoc />
 		public void RegisterViewForViewModel(Type viewType, Type vmType)
@@ -35,7 +41,7 @@ namespace ModernThemables.Services
 			window.UseLayoutRounding = true;
 			window.SnapsToDevicePixels = true;
 			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-			window.Owner = Application.Current.MainWindow;
+			window.Owner = mainWindow;
 			window.HorizontalContentAlignment = HorizontalAlignment.Center;
 			window.VerticalContentAlignment = VerticalAlignment.Center;
 			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
@@ -73,7 +79,7 @@ namespace ModernThemables.Services
 			window.UseLayoutRounding = true;
 			window.SnapsToDevicePixels = true;
 			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-			window.Owner = Application.Current.MainWindow;
+			window.Owner = mainWindow;
 			window.HorizontalContentAlignment = HorizontalAlignment.Center;
 			window.VerticalContentAlignment = VerticalAlignment.Center;
 			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
