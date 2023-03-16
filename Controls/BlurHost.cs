@@ -46,6 +46,19 @@ namespace ModernThemables.Controls
 			  typeof(BlurHost),
 			  new PropertyMetadata(0d));
 
+		public double BlurRadius
+		{
+			get => (double)GetValue(BlurRadiusProperty);
+			set => SetValue(BlurRadiusProperty, value);
+		}
+
+		public static readonly DependencyProperty BlurRadiusProperty =
+			DependencyProperty.Register(
+			  "BlurRadius",
+			  typeof(double),
+			  typeof(BlurHost),
+			  new UIPropertyMetadata(30d, OnBlurBackgroundChanged));
+
 		public double BlurOpacity
 		{
 			get => (double)GetValue(BlurOpacityProperty);
@@ -97,25 +110,6 @@ namespace ModernThemables.Controls
 			  typeof(object),
 			  typeof(BlurHost),
 			  new PropertyMetadata(new object(), Draw));
-
-		public BlurEffect BlurEffect
-		{
-			get => (BlurEffect)GetValue(BlurEffectProperty);
-			set => SetValue(BlurEffectProperty, value);
-		}
-
-		public static readonly DependencyProperty BlurEffectProperty =
-			DependencyProperty.Register(
-			  "BlurEffect",
-			  typeof(BlurEffect),
-			  typeof(BlurHost),
-			  new PropertyMetadata(
-				new BlurEffect()
-				{
-					Radius = 30,
-					KernelType = KernelType.Gaussian,
-					RenderingBias = RenderingBias.Performance
-				}));
 
 		private Border PART_BlurDecorator { get; set; }
 		private VisualBrush BlurDecoratorBrush { get; set; }
@@ -175,7 +169,12 @@ namespace ModernThemables.Controls
 
 			base.OnApplyTemplate();
 			this.PART_BlurDecorator = GetTemplateChild("PART_BlurDecorator") as Border;
-			this.PART_BlurDecorator.Effect = this.BlurEffect;
+			this.PART_BlurDecorator.Effect = new BlurEffect()
+			{
+				Radius = BlurRadius,
+				KernelType = KernelType.Gaussian,
+				RenderingBias = RenderingBias.Performance
+			};
 			this.PART_BlurDecorator.Background = this.BlurDecoratorBrush;
 		}
 
@@ -188,6 +187,15 @@ namespace ModernThemables.Controls
 
 			Application.Current.Dispatcher.InvokeAsync(() => {
 				this_.BlurDecoratorBrush.Visual = e.NewValue as Visual;
+				if (this_.PART_BlurDecorator != null)
+				{
+					this_.PART_BlurDecorator.Effect = new BlurEffect()
+					{
+						Radius = this_.BlurRadius,
+						KernelType = KernelType.Gaussian,
+						RenderingBias = RenderingBias.Performance
+					};
+				}
 				this_.DrawBlurredElementBackground();
 			});
 		}
