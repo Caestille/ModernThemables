@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using ModernThemables.Interfaces;
+using System;
 
 namespace ModernThemables.ViewModels.Charting
 {
@@ -33,11 +34,26 @@ namespace ModernThemables.ViewModels.Charting
 		/// </summary>
 		public IChartBrush? Fill { get; }
 
+		/// <summary>
+		/// The identifier.
+		/// </summary>
+		public Guid? Identifier { get; set; }
+
 		private bool isMouseOver;
 		public bool IsMouseOver
 		{
 			get => isMouseOver;
 			set => this.SetProperty(ref isMouseOver, value);
+		}
+
+		private string displayValue;
+		/// <summary>
+		/// A value formatted for display
+		/// </summary>
+		public string DisplayValue
+		{
+			get => displayValue;
+			set => this.SetProperty(ref displayValue, value);
 		}
 
 		/// <summary>

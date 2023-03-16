@@ -7,52 +7,55 @@ using System.ComponentModel;
 
 namespace ModernThemables.HelperClasses.Charting
 {
-    /// <summary>
-    /// Generic series.
-    /// </summary>
-    public class Series : ISeries
-    {
-        /// <inheritdoc />
-        public event EventHandler<PropertyChangedEventArgs> PropertyChanged;
+	/// <summary>
+	/// Generic series.
+	/// </summary>
+	public class Series : ISeries
+	{
+		/// <inheritdoc />
+		public event EventHandler<PropertyChangedEventArgs> PropertyChanged;
 
-        /// <inheritdoc />
-        public event EventHandler<NotifyCollectionChangedEventArgs> CollectionChanged;
+		/// <inheritdoc />
+		public event EventHandler<NotifyCollectionChangedEventArgs> CollectionChanged;
 
-        /// <inheritdoc />
-        public Func<IEnumerable<IChartEntity>, IChartEntity, string> TooltipLabelFormatter { get; set; }
+		/// <inheritdoc />
+		public Func<IEnumerable<IChartEntity>, IChartEntity, string> TooltipLabelFormatter { get; set; }
 
-        /// <inheritdoc />
-        public IChartBrush Stroke { get; set; }
+		/// <inheritdoc />
+		public Func<IChartEntity, string> ValueFormatter { get; set; }
 
-        /// <inheritdoc />
-        public IChartBrush Fill { get; set; }
+		/// <inheritdoc />
+		public IChartBrush Stroke { get; set; }
 
-        /// <inheritdoc />
-        public Guid Identifier { get; } = Guid.NewGuid();
+		/// <inheritdoc />
+		public IChartBrush Fill { get; set; }
 
-        /// <inheritdoc />
-        public string Name { get; set; }
+		/// <inheritdoc />
+		public Guid Identifier { get; } = Guid.NewGuid();
 
-        private ObservableCollection<IChartEntity> values;
-        /// <inheritdoc />
-        public ObservableCollection<IChartEntity> Values
-        {
-            get => values;
-            set
-            {
-                if (values != null)
-                {
-                    values.CollectionChanged -= Values_CollectionChanged;
-                }
-                values = value;
-                values.CollectionChanged += Values_CollectionChanged;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Values)));
-            }
-        }
+		/// <inheritdoc />
+		public string Name { get; set; }
 
-        private void Values_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            CollectionChanged?.Invoke(this, e);
-        }
-    }
+		private ObservableCollection<IChartEntity> values;
+		/// <inheritdoc />
+		public ObservableCollection<IChartEntity> Values
+		{
+			get => values;
+			set
+			{
+				if (values != null)
+				{
+					values.CollectionChanged -= Values_CollectionChanged;
+				}
+				values = value;
+				values.CollectionChanged += Values_CollectionChanged;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Values)));
+			}
+		}
+
+		private void Values_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+		{
+			CollectionChanged?.Invoke(this, e);
+		}
+	}
 }

@@ -259,6 +259,17 @@ namespace ModernThemables.Controls
 			typeof(BarChart),
 			new PropertyMetadata(0d));
 
+		private double GroupWidth
+		{
+			get => (double)GetValue(GroupWidthProperty);
+			set => SetValue(GroupWidthProperty, value);
+		}
+		public static readonly DependencyProperty GroupWidthProperty = DependencyProperty.Register(
+			"GroupWidth",
+			typeof(double),
+			typeof(BarChart),
+			new PropertyMetadata(0d));
+
 		private CornerRadius BarCornerRadius
 		{
 			get => (CornerRadius)GetValue(BarCornerRadiusProperty);
@@ -280,6 +291,28 @@ namespace ModernThemables.Controls
 			typeof(double),
 			typeof(BarChart),
 			new PropertyMetadata(0d));
+
+		private InternalChartEntity TooltipBar
+		{
+			get => (InternalChartEntity)GetValue(TooltipBarProperty);
+			set => SetValue(TooltipBarProperty, value);
+		}
+		public static readonly DependencyProperty TooltipBarProperty = DependencyProperty.Register(
+			"TooltipBar",
+			typeof(InternalChartEntity),
+			typeof(BarChart),
+			new PropertyMetadata(null));
+
+		private string TooltipString
+		{
+			get => (string)GetValue(TooltipStringProperty);
+			set => SetValue(TooltipStringProperty, value);
+		}
+		public static readonly DependencyProperty TooltipStringProperty = DependencyProperty.Register(
+			"TooltipString",
+			typeof(string),
+			typeof(BarChart),
+			new PropertyMetadata(""));
 
 		#endregion
 	}

@@ -8,14 +8,14 @@
 	Width="800"
 	Height="450"
 	AllowsTransparency="False"
+	Background="Black"
 	RenderOptions.BitmapScalingMode="NearestNeighbor"
 	RenderOptions.ClearTypeHint="Enabled"
 	SnapsToDevicePixels="True"
 	UseLayoutRounding="True"
-	WindowStyle="None"
-	Background="Black">
+	WindowStyle="None">
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="24" ResizeBorderThickness="5" />
 	</WindowChrome.WindowChrome>
-	<controls:DatetimeTextBox HorizontalAlignment="Left" Margin="50" />
+	<controls:DatetimeTextBox Margin="50" HorizontalAlignment="Left" />
 </Window>

@@ -116,40 +116,65 @@
 				Grid.Column="1"
 				BorderBrush="{DynamicResource StatusTextLightBrush}"
 				BorderThickness="1,0,0,0"
-				ClipToBounds="True"
 				IsHitTestVisible="False">
-				<ItemsControl
-					x:Name="XAxisItemsControl"
-					Height="{Binding ElementName=root, Path=XAxisLabelHeight}"
-					Margin="0,3,-5,2"
-					ItemsSource="{Binding XAxisLabels, ElementName=root}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Grid Height="Auto" Margin="{Binding Height, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=1-0-0-0}">
-								<TextBlock
-									Width="200"
-									Height="12"
-									Margin="20,0,0,0"
-									HorizontalAlignment="Left"
-									VerticalAlignment="Bottom"
-									FontWeight="Medium"
-									Foreground="{DynamicResource StatusTextBrush}"
-									RenderTransformOrigin="0,0.5"
-									Text="{Binding Value}"
-									TextAlignment="Left">
-									<TextBlock.RenderTransform>
-										<RotateTransform Angle="{Binding ElementName=root, Path=XAxisLabelRotation}" />
-									</TextBlock.RenderTransform>
-								</TextBlock>
-							</Grid>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+				<Grid>
+					<ItemsControl
+						x:Name="XAxisItemsControl"
+						Height="{Binding ElementName=root, Path=XAxisLabelHeight}"
+						Margin="3,3,-5,2"
+						ItemsSource="{Binding XAxisLabels, ElementName=root}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Grid Height="Auto" Margin="{Binding Height, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=1-0-0-0}">
+									<TextBlock
+										Width="200"
+										Height="12"
+										Margin="{Binding GroupWidth, ElementName=root, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=0.5-0-0-0}"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Bottom"
+										FontWeight="Medium"
+										Foreground="{DynamicResource StatusTextBrush}"
+										RenderTransformOrigin="0,0.5"
+										Text="{Binding Value}"
+										TextAlignment="Left">
+										<TextBlock.RenderTransform>
+											<RotateTransform Angle="{Binding ElementName=root, Path=XAxisLabelRotation}" />
+										</TextBlock.RenderTransform>
+									</TextBlock>
+								</Grid>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+					<ItemsControl
+						Height="{Binding ElementName=root, Path=XAxisLabelHeight}"
+						Margin="0,3,-5,2"
+						ItemsSource="{Binding XAxisLabels, ElementName=root}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Grid Height="Auto" Margin="{Binding Height, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=1-0-0-0}">
+									<Border
+										Width="2"
+										Height="6"
+										Margin="3,-5,0,0"
+										HorizontalAlignment="Left"
+										VerticalAlignment="Bottom"
+										BorderBrush="{DynamicResource StatusTextLightBrush}"
+										BorderThickness="1,0,0,0" />
+								</Grid>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</Grid>
 			</Border>
 			<Grid x:Name="Grid" Grid.Column="1">
 				<ItemsControl ItemsSource="{Binding YAxisLabels, ElementName=root}" Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}">
@@ -167,10 +192,7 @@
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
-				<Grid
-					Width="{Binding ElementName=Grid, Path=ActualWidth}"
-					Height="{Binding ElementName=Grid, Path=ActualHeight}"
-					ClipToBounds="True">
+				<Grid Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualHeight}">
 					<ItemsControl
 						x:Name="SeriesItemsControl"
 						Margin="3,0,0,0"
@@ -193,42 +215,55 @@
 										Margin="{Binding X, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=1-0-0-0}"
 										HorizontalAlignment="Left"
 										VerticalAlignment="Bottom"
-										Background="{Binding Fill.CoreBrush}"
+										Background="Transparent"
 										BorderBrush="{Binding Stroke.CoreBrush}"
 										BorderThickness="1"
-										CornerRadius="{Binding ElementName=root, Path=BarCornerRadius}" />
-									<Grid.Style>
-										<Style TargetType="{x:Type Grid}">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
-													<DataTrigger.EnterActions>
-														<BeginStoryboard>
-															<Storyboard>
-																<ThicknessAnimation
-																	Storyboard.TargetProperty="Margin"
-																	To="0,10,0,0"
-																	Duration="00:00:00.10">
-																	<ThicknessAnimation.EasingFunction>
-																		<BackEase Amplitude="1" EasingMode="EaseOut" />
-																	</ThicknessAnimation.EasingFunction>
-																</ThicknessAnimation>
-															</Storyboard>
-														</BeginStoryboard>
-													</DataTrigger.EnterActions>
-													<DataTrigger.ExitActions>
-														<BeginStoryboard>
-															<Storyboard>
-																<ThicknessAnimation
-																	Storyboard.TargetProperty="Margin"
-																	To="0"
-																	Duration="00:00:00.001" />
-															</Storyboard>
-														</BeginStoryboard>
-													</DataTrigger.ExitActions>
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</Grid.Style>
+										CornerRadius="{Binding ElementName=root, Path=BarCornerRadius}"
+										RenderTransformOrigin="0.5,0.93">
+										<Border
+											HorizontalAlignment="Stretch"
+											VerticalAlignment="Stretch"
+											Background="{Binding Fill.CoreBrush}"
+											BorderBrush="{Binding Stroke.CoreBrush}"
+											BorderThickness="1">
+											<Border.Style>
+												<Style TargetType="{x:Type Border}">
+													<Style.Triggers>
+														<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
+															<DataTrigger.EnterActions>
+																<BeginStoryboard>
+																	<Storyboard>
+																		<ThicknessAnimation
+																			Storyboard.TargetProperty="Margin"
+																			To="3,0,3,3"
+																			Duration="00:00:00.15">
+																			<ThicknessAnimation.EasingFunction>
+																				<BackEase Amplitude="1" EasingMode="EaseOut" />
+																			</ThicknessAnimation.EasingFunction>
+																		</ThicknessAnimation>
+																	</Storyboard>
+																</BeginStoryboard>
+															</DataTrigger.EnterActions>
+															<DataTrigger.ExitActions>
+																<BeginStoryboard>
+																	<Storyboard>
+																		<ThicknessAnimation
+																			Storyboard.TargetProperty="Margin"
+																			To="0"
+																			Duration="00:00:00.10">
+																			<ThicknessAnimation.EasingFunction>
+																				<BackEase Amplitude="1" EasingMode="EaseOut" />
+																			</ThicknessAnimation.EasingFunction>
+																		</ThicknessAnimation>
+																	</Storyboard>
+																</BeginStoryboard>
+															</DataTrigger.ExitActions>
+														</DataTrigger>
+													</Style.Triggers>
+												</Style>
+											</Border.Style>
+										</Border>
+									</Border>
 								</Grid>
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>
@@ -240,14 +275,96 @@
 				<Grid
 					x:Name="MouseCaptureGrid"
 					Background="{DynamicResource MainBackgroundBrush}"
-					MouseMove="MouseCaptureGrid_MouseMove"
 					MouseLeave="MouseCaptureGrid_MouseLeave"
+					MouseMove="MouseCaptureGrid_MouseMove"
 					Opacity="0.001" />
 				<Border
 					x:Name="DrawableChartSectionBorder"
 					BorderBrush="{DynamicResource StatusTextLightBrush}"
 					BorderThickness="1,0,0,1"
 					IsHitTestVisible="False" />
+			</Grid>
+		</Grid>
+		<Grid
+			Grid.Row="1"
+			Grid.Column="1"
+			Width="{Binding ElementName=DrawableChartSectionBorder, Path=ActualWidth}"
+			Height="{Binding ElementName=DrawableChartSectionBorder, Path=ActualHeight}"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Top">
+			<Grid
+				x:Name="TooltipGrid"
+				Grid.ColumnSpan="10"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				IsHitTestVisible="False"
+				Opacity="{Binding ElementName=root, Path=TooltipOpacity}">
+				<Border
+					Width="Auto"
+					Height="Auto"
+					Margin="3"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Top"
+					Opacity="{Binding ElementName=root, Path=TooltipOpacity}">
+					<Border.Visibility>
+						<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+							<Binding ElementName="root" Path="IsTooltipVisible" />
+							<Binding
+								Converter="{StaticResource IsNotNullConverter}"
+								ElementName="root"
+								Path="TooltipBar" />
+						</MultiBinding>
+					</Border.Visibility>
+					<Grid>
+						<Border
+							Padding="5"
+							Background="{DynamicResource MenuBrush}"
+							BorderBrush="{DynamicResource MenuBorderBrush}"
+							BorderThickness="1"
+							CornerRadius="5"
+							Visibility="{Binding ElementName=ContentControl, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<TextBlock
+									Grid.RowSpan="2"
+									Margin="3,3,10,3"
+									VerticalAlignment="Center"
+									FontSize="20"
+									FontWeight="DemiBold"
+									Foreground="{DynamicResource TextBrush}"
+									Text="{Binding ElementName=root, Path=TooltipBar.DisplayValue}" />
+								<TextBlock
+									Grid.Column="1"
+									FontWeight="Bold"
+									Foreground="{DynamicResource TextBrush}"
+									Text="{Binding ElementName=root, Path=TooltipBar.BackingPoint.Name}" />
+								<TextBlock
+									Grid.Row="1"
+									Grid.Column="1"
+									Foreground="{DynamicResource TextBrush}"
+									Text="{Binding ElementName=root, Path=TooltipString}" />
+							</Grid>
+						</Border>
+						<Border
+							BorderBrush="{Binding ElementName=root, Path=TooltipBar.Fill.CoreBrush}"
+							BorderThickness="2,0,0,0"
+							CornerRadius="5"
+							IsHitTestVisible="False">
+							<ContentControl
+								x:Name="ContentControl"
+								Content="{Binding Path=TooltipString, UpdateSourceTrigger=PropertyChanged}"
+								ContentTemplate="{Binding ElementName=root, Path=TooltipTemplate}"
+								Visibility="{Binding ElementName=root, Path=TooltipTemplate, Converter={StaticResource VisibleIfNotNullConverter}}" />
+						</Border>
+					</Grid>
+				</Border>
 			</Grid>
 		</Grid>
 	</Grid>

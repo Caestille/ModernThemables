@@ -233,6 +233,7 @@ namespace ModernThemables.Controls
 			Application.Current.Dispatcher.Invoke(async () =>
 			{
 				renderInProgress = true;
+				this.Dispatcher.Invoke(DispatcherPriority.Render, SetYAxisLabels);
 
 				var barSep = BarSeparationPixels;
 				var groupSep = BarGroupSeparationPixels;
@@ -258,12 +259,12 @@ namespace ModernThemables.Controls
 					var currentX = groupSep / 2;
 					foreach (var group in groupedBars.Select(x => x.ToList()))
 					{
-						for (int i = 0; i < barCount; i ++)
+						for (int i = 0; i < barCount; i++)
 						{
 							if (i < group.Count())
 							{
 								var bar = group[i];
-								ret.Add(new InternalChartEntity(currentX, (bar.Item1.YValue / maxHeight) * plotAreaHeight * (1 - 0.1), bar.Item1, bar.Item3, bar.Item2));
+								ret.Add(new InternalChartEntity(currentX, (bar.Item1.YValue / maxHeight) * plotAreaHeight * (1 - 0.1), bar.Item1, bar.Item3, bar.Item2) { Identifier = bar.Item1.Identifier });
 							}
 							currentX += (barWidth + barSep);
 						}
@@ -274,12 +275,15 @@ namespace ModernThemables.Controls
 				});
 
 				BarWidth = barWidth;
+				GroupWidth = groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) : 0;
 				var radius = BarWidth * BarCornerRadiusFraction / 2;
 				BarCornerRadius = new CornerRadius(0, 0, radius, radius);
-				InternalSeries = new ObservableCollection<InternalChartEntity>(collection);
 
-				_ = SetXAxisLabels(labels);
-				_ = SetYAxisLabels();
+				await Task.Delay(18);
+				this.Dispatcher.Invoke(DispatcherPriority.Render, () => { });
+				await this.Dispatcher.BeginInvoke(DispatcherPriority.Render, () => { InternalSeries = new ObservableCollection<InternalChartEntity>(collection); });
+				await this.Dispatcher.BeginInvoke(DispatcherPriority.Render, () => SetXAxisLabels(labels));
+
 
 				renderInProgress = false;
 			});
@@ -287,14 +291,14 @@ namespace ModernThemables.Controls
 
 		#region Calculations
 
-		private async Task SetXAxisLabels(IEnumerable<string> labels)
+		private void SetXAxisLabels(IEnumerable<string> labels)
 		{
 			if (!HasGotData()) return;
 
 			var labels2 = labels.Select(x => new AxisLabel()
 			{
 				Value = x.ToString(),
-				Height = ((double)labels.ToList().IndexOf(x) / (double)labels.Count() * plotAreaWidth),
+				Height = InternalSeries.First(y => y.BackingPoint.Name == x).X - 5,
 			});
 			XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
 			if (isSingleXPoint)
@@ -306,11 +310,11 @@ namespace ModernThemables.Controls
 			}
 		}
 
-		private async Task SetYAxisLabels()
+		private async void SetYAxisLabels()
 		{
 			if (!HasGotData()) return;
 
-			var yMax = Series.Max(x => x.Values.Max(y => y.YValue));
+			var yMax = Series.Max(x => x.Values.Max(y => y.YValue)) * 1.1;
 			var yMin = Series.Min(x => x.Values.Min(y => y.YValue));
 
 			var yRange = yMax - yMin;
@@ -320,7 +324,7 @@ namespace ModernThemables.Controls
 			{
 				Value = YAxisFormatter == null
 					? Math.Round(y, 2).ToString()
-					: YAxisFormatter(Series.First().Values.First().YValueToImplementation(y)),
+					: YAxisFormatter(y),
 				Height = ((y - yMin) / yRange * plotAreaHeight) - (labels.ToList().IndexOf(y) > 0
 					? (labels[labels.ToList().IndexOf(y) - 1] - yMin) / yRange * plotAreaHeight
 					: 0),
@@ -353,7 +357,7 @@ namespace ModernThemables.Controls
 					double min = double.MaxValue;
 					int stepAtMin = 1;
 					var roundedSteps = new List<int>()
-						{ 1, 10, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
+						{ 1, 10, 20, 100, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 20000, 50000, 1000000, 10000000 };
 					roundedSteps.Reverse();
 					foreach (var step in roundedSteps)
 					{
@@ -433,6 +437,7 @@ namespace ModernThemables.Controls
 
 			var mouseLoc = e.GetPosition(Grid);
 			var translatedMouseLoc = e.GetPosition(SeriesItemsControl);
+			translatedMouseLoc = new Point(translatedMouseLoc.X, plotAreaHeight - translatedMouseLoc.Y);
 
 			if (DateTime.Now - timeLastUpdated < updateLimit) return;
 
@@ -442,14 +447,64 @@ namespace ModernThemables.Controls
 			
 			foreach (var bar in InternalSeries)
 			{
-				bar.IsMouseOver = (translatedMouseLoc.X - bar.X) <= BarWidth && (translatedMouseLoc.X - bar.X) >= 0 && translatedMouseLoc.Y <= bar.Y;
+				bar.IsMouseOver = (translatedMouseLoc.X - bar.X) <= BarWidth && (translatedMouseLoc.X - bar.X) >= 0 /*&& translatedMouseLoc.Y <= bar.Y*/;
 			}
 
 			#endregion
 
 			#region Tooltip
 
+			if (InternalSeries.Any(x => x.IsMouseOver))
+			{
+				TooltipBar = InternalSeries.First(x => x.IsMouseOver);
 
+				var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == TooltipBar.Identifier));
+				TooltipBar.DisplayValue = matchingSeries.ValueFormatter(TooltipBar.BackingPoint);
+				var matchingWedge = matchingSeries.Values.First(x => x.Identifier == TooltipBar.Identifier);
+				TooltipString = matchingSeries.TooltipLabelFormatter != null
+					? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
+					: matchingSeries.Name;
+
+				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+
+				if (TooltipLocation == TooltipLocation.Points)
+				{
+					var effectiveY = plotAreaHeight - TooltipBar.Y - 60;
+
+					// Get tooltip position variables
+					if (!tooltipLeft && TooltipBar.X > (plotAreaWidth - 10 - TooltipGrid.ActualWidth))
+						tooltipLeft = true;
+					if (tooltipLeft && TooltipBar.X < (10 + TooltipGrid.ActualWidth))
+						tooltipLeft = false;
+					tooltipTop = effectiveY < (10 + TooltipGrid.ActualHeight);
+
+					TooltipGrid.Margin = new Thickness(
+						!tooltipLeft ? TooltipBar.X : TooltipBar.X - TooltipGrid.ActualWidth + BarWidth + 5,
+						!tooltipTop ? effectiveY : effectiveY,
+						0, 0);
+				}
+				else if (TooltipLocation == TooltipLocation.Cursor)
+				{
+					// Get tooltip position variables
+					if (!tooltipLeft && translatedMouseLoc.X > (plotAreaWidth - 10 - TooltipGrid.ActualWidth))
+						tooltipLeft = true;
+					if (tooltipLeft && translatedMouseLoc.X < (10 + TooltipGrid.ActualWidth))
+						tooltipLeft = false;
+					if (!tooltipTop && translatedMouseLoc.Y > (plotAreaHeight - 10 - TooltipGrid.ActualHeight))
+						tooltipTop = true;
+					if (tooltipTop && (translatedMouseLoc.Y) < (10 + TooltipGrid.ActualHeight))
+						tooltipTop = false;
+
+					TooltipGrid.Margin = new Thickness(
+						!tooltipLeft ? translatedMouseLoc.X + 5 : translatedMouseLoc.X - TooltipGrid.ActualWidth - 5,
+						!tooltipTop ? translatedMouseLoc.Y - 5 : translatedMouseLoc.Y - TooltipGrid.ActualHeight - 5,
+						0, 0);
+				}
+			}
+			else
+			{
+				TooltipBar = null;
+			}
 
 			#endregion
 		}
@@ -460,6 +515,7 @@ namespace ModernThemables.Controls
 			{
 				bar.IsMouseOver = false;
 			}
+			TooltipBar = null;
 		}
 
 		#endregion

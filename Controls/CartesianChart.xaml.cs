@@ -920,7 +920,8 @@ namespace ModernThemables.Controls
 
 			if (TooltipPoints != null && TooltipPoints.Any())
 			{
-				var tooltipPoint = TooltipPoints.FirstOrDefault(x => x.IsNearest);
+				var tooltipPoint = TooltipPoints.Count() == 1 
+					? TooltipPoints.First() : TooltipPoints.FirstOrDefault(x => x.IsNearest);
 
 				if (tooltipPoint != null)
 				{

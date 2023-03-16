@@ -696,6 +696,7 @@
 								HorizontalAlignment="Stretch"
 								VerticalAlignment="Center"
 								BorderThickness="0"
+								Cursor="IBeam"
 								Foreground="White"
 								SnapsToDevicePixels="True">
 								<TextBox.Background>
@@ -800,7 +801,7 @@
 									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 								</TextBox.Background>
 								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
 										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
@@ -833,7 +834,7 @@
 									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 								</TextBox.Background>
 								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
 										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
@@ -866,7 +867,7 @@
 									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 								</TextBox.Background>
 								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="0000|3">
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="0000|5">
 										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
@@ -892,7 +893,7 @@
 									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 								</TextBox.Background>
 								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
 										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
@@ -925,7 +926,7 @@
 									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 								</TextBox.Background>
 								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
 										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
@@ -958,7 +959,7 @@
 									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 								</TextBox.Background>
 								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|3">
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
 										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />

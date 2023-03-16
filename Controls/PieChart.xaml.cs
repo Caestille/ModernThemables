@@ -379,6 +379,17 @@ namespace ModernThemables.Controls
 			}
 		}
 
+		private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
+		{
+			foreach (var series in InternalSeries)
+			{
+				foreach (var wedge in series.Wedges)
+				{
+					wedge.IsMouseOver = false;
+				}
+			}
+		}
+
 		private void MouseCaptureGrid_PreviewMouseUp(object sender, MouseButtonEventArgs e)
 		{
 			
