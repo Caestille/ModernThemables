@@ -13,9 +13,11 @@ namespace ModernThemables.Controls
 
 		private const string PART_textBox = "PART_textBox";
 		private const string PART_textBlock = "PART_textBlock";
+		private const string PART_button = "PART_button";
 
 		private TextBox textBox;
 		private TextBlock textBlock;
+		private ExtendedButton button;
 
 		#endregion Members
 
@@ -76,30 +78,25 @@ namespace ModernThemables.Controls
 				textBox.PreviewKeyDown += KeyDown;
 			}
 
-			if (textBlock != null)
-			{
-				
-			}
 			textBlock = this.Template.FindName(PART_textBlock, this) as TextBlock;
-			if (textBox != null)
+
+			if (button != null)
 			{
-				
+				button.Click -= Button_Click;
+			}
+			button = this.Template.FindName(PART_button, this) as ExtendedButton;
+			if (button != null)
+			{
+				button.Click += Button_Click;
 			}
 		}
 
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			this.SearchText = textBox.Text = string.Empty;
+		}
+
 		#endregion Override
-
-		#region Methods
-
-
-
-		#endregion
-
-		#region Events
-
-
-
-		#endregion
 
 		#region Events Handlers
 
