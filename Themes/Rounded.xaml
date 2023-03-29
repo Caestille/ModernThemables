@@ -680,6 +680,7 @@
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
 							<scalableicons:MagnifyingGlassIcon
 								Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
@@ -715,7 +716,55 @@
 								IsHitTestVisible="False"
 								SnapsToDevicePixels="True"
 								Text="Search"
-								Visibility="{Binding ElementName=PART_textBox, Path=Text, Converter={StaticResource StringNotEmptyVisibilityConverter}, ConverterParameter=true}" />
+								Visibility="{Binding ElementName=PART_textBox, Path=Text, Converter={StaticResource StringNotEmptyVisibilityConverter}, ConverterParameter=true}">
+								<TextBlock.Style>
+									<Style>
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsKeyboardFocused, ElementName=PART_textBox}" Value="True">
+												<DataTrigger.EnterActions>
+													<BeginStoryboard>
+														<Storyboard>
+															<DoubleAnimation
+																Storyboard.TargetProperty="Opacity"
+																To="0"
+																Duration="0:0:0.1" />
+														</Storyboard>
+													</BeginStoryboard>
+												</DataTrigger.EnterActions>
+												<DataTrigger.ExitActions>
+													<BeginStoryboard>
+														<Storyboard>
+															<DoubleAnimation
+																Storyboard.TargetProperty="Opacity"
+																To="1"
+																Duration="0:0:0.1" />
+														</Storyboard>
+													</BeginStoryboard>
+												</DataTrigger.ExitActions>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+							<controls:ExtendedButton
+								x:Name="PART_button"
+								MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}"
+								Margin="3,2"
+								CornerRadius="3"
+								Grid.Column="2"
+								Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+								HorizontalAlignment="Right"
+								HorizontalContentAlignment="Stretch"
+								VerticalContentAlignment="Stretch"
+								Background="Transparent"
+								BorderThickness="0">
+								<scalableicons:CloseIcon
+									Margin="2"
+									HorizontalAlignment="Stretch"
+									VerticalAlignment="Stretch"
+									Background="Transparent"
+									Foreground="{DynamicResource StatusTextBrush}" />
+							</controls:ExtendedButton>
 						</Grid>
 					</Grid>
 				</ControlTemplate>
@@ -773,25 +822,10 @@
 						BorderBrush="{TemplateBinding BorderBrush}"
 						BorderThickness="{TemplateBinding BorderThickness}">
 						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="*" />
-							</Grid.ColumnDefinitions>
-
 							<TextBox
-								x:Name="PART_dayTextBox"
+								x:Name="PART_textbox"
 								Height="Auto"
-								HorizontalAlignment="Left"
+								HorizontalAlignment="Stretch"
 								VerticalAlignment="Center"
 								BorderBrush="{DynamicResource StatusTextBrush}"
 								BorderThickness="{TemplateBinding TextboxBorderThickness}"
@@ -801,165 +835,7 @@
 									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 								</TextBox.Background>
 								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
-										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
-									</MultiBinding>
-								</TextBox.Width>
-							</TextBox>
-
-							<TextBlock
-								Grid.Column="1"
-								Margin="-2,0"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								Foreground="{TemplateBinding Foreground}"
-								Text="/" />
-
-							<TextBox
-								x:Name="PART_monthTextBox"
-								Grid.Column="2"
-								Height="Auto"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								BorderBrush="{DynamicResource StatusTextBrush}"
-								BorderThickness="{TemplateBinding TextboxBorderThickness}"
-								Foreground="{TemplateBinding Foreground}"
-								SnapsToDevicePixels="True">
-								<TextBox.Background>
-									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
-								</TextBox.Background>
-								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
-										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
-									</MultiBinding>
-								</TextBox.Width>
-							</TextBox>
-
-							<TextBlock
-								Grid.Column="3"
-								Margin="-2,0"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								Foreground="{TemplateBinding Foreground}"
-								Text="/" />
-
-							<TextBox
-								x:Name="PART_yearTextBox"
-								Grid.Column="4"
-								Height="Auto"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								BorderBrush="{DynamicResource StatusTextBrush}"
-								BorderThickness="{TemplateBinding TextboxBorderThickness}"
-								Foreground="{TemplateBinding Foreground}"
-								SnapsToDevicePixels="True">
-								<TextBox.Background>
-									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
-								</TextBox.Background>
-								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="0000|5">
-										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
-									</MultiBinding>
-								</TextBox.Width>
-							</TextBox>
-
-							<TextBox
-								x:Name="PART_hourTextBox"
-								Grid.Column="5"
-								Height="Auto"
-								Margin="3,0,0,0"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								BorderBrush="{DynamicResource StatusTextBrush}"
-								BorderThickness="{TemplateBinding TextboxBorderThickness}"
-								Foreground="{TemplateBinding Foreground}"
-								SnapsToDevicePixels="True">
-								<TextBox.Background>
-									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
-								</TextBox.Background>
-								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
-										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
-									</MultiBinding>
-								</TextBox.Width>
-							</TextBox>
-
-							<TextBlock
-								Grid.Column="6"
-								Margin="-1,0,-2,0"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								Foreground="{TemplateBinding Foreground}"
-								Text=":" />
-
-							<TextBox
-								x:Name="PART_minuteTextBox"
-								Grid.Column="7"
-								Height="Auto"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								BorderBrush="{DynamicResource StatusTextBrush}"
-								BorderThickness="{TemplateBinding TextboxBorderThickness}"
-								Foreground="{TemplateBinding Foreground}"
-								SnapsToDevicePixels="True">
-								<TextBox.Background>
-									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
-								</TextBox.Background>
-								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
-										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
-										<Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
-									</MultiBinding>
-								</TextBox.Width>
-							</TextBox>
-
-							<TextBlock
-								Grid.Column="8"
-								Margin="-1,0,-2,0"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								Foreground="{TemplateBinding Foreground}"
-								Text=":" />
-
-							<TextBox
-								x:Name="PART_secondTextBox"
-								Grid.Column="9"
-								Height="Auto"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								BorderBrush="{DynamicResource StatusTextBrush}"
-								BorderThickness="{TemplateBinding TextboxBorderThickness}"
-								Foreground="{TemplateBinding Foreground}"
-								SnapsToDevicePixels="True">
-								<TextBox.Background>
-									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
-								</TextBox.Background>
-								<TextBox.Width>
-									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00|5">
+									<MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00/00/0000 00:00:00|5">
 										<Binding Path="Text" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
 										<Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />

@@ -6,40 +6,28 @@ using System.Windows.Data;
 using System.Collections.Generic;
 using System.Windows.Input;
 using CoreUtilities.Services;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace ModernThemables.Controls
 {
-	[TemplatePart(Name = PART_dayTextBox, Type = typeof(TextBox))]
-    [TemplatePart(Name = PART_monthTextBox, Type = typeof(TextBox))]
-    [TemplatePart(Name = PART_yearTextBox, Type = typeof(TextBox))]
-    [TemplatePart(Name = PART_hourTextBox, Type = typeof(TextBox))]
-	[TemplatePart(Name = PART_minuteTextBox, Type = typeof(TextBox))]
-	[TemplatePart(Name = PART_secondTextBox, Type = typeof(TextBox))]
+	[TemplatePart(Name = PART_textbox, Type = typeof(TextBox))]
 
 	public class DatetimeTextBox : Control
-    {
-        #region Members
+	{
+		#region Members
 
-        private const string PART_dayTextBox = "PART_dayTextBox";
-        private const string PART_monthTextBox = "PART_monthTextBox";
-        private const string PART_yearTextBox = "PART_yearTextBox";
-        private const string PART_hourTextBox = "PART_hourTextBox";
-        private const string PART_minuteTextBox = "PART_minuteTextBox";
-		private const string PART_secondTextBox = "PART_secondTextBox";
+		private const string PART_textbox = "PART_textbox";
 
-		private bool dayValid;
+		private bool dateValid;
 		private bool monthValid;
 		private bool yearValid;
 		private bool hourValid;
 		private bool minuteValid;
 		private bool secondValid;
 
-		private TextBox dayTextBox;
-        private TextBox monthTextBox;
-        private TextBox yearTextBox;
-        private TextBox hourTextBox;
-        private TextBox minuteTextBox;
-		private TextBox secondTextBox;
+		private TextBox textbox;
 
 		private bool blockUpdate;
 
@@ -48,7 +36,7 @@ namespace ModernThemables.Controls
 		private Dictionary<string, bool> validCache = new();
 
 		private KeepAliveTriggerService trigger;
-        private bool blockRefresh = false;
+		private bool blockRefresh = false;
 		private DateTime lastUpdateTime = new DateTime();
 
 		private bool isKeyboardUpdate = false;
@@ -58,21 +46,21 @@ namespace ModernThemables.Controls
 		#region Constructors
 
 		static DatetimeTextBox()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DatetimeTextBox), new FrameworkPropertyMetadata(typeof(DatetimeTextBox)));
-        }
+		{
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(DatetimeTextBox), new FrameworkPropertyMetadata(typeof(DatetimeTextBox)));
+		}
 
-        public DatetimeTextBox()
-        {
+		public DatetimeTextBox()
+		{
 			trigger = new KeepAliveTriggerService(() => { blockRefresh = true; CalculateDate(false); blockRefresh = false; }, 100);
-            Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
-        }
+			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+		}
 
-        #endregion Constructors
+		#endregion Constructors
 
-        #region Properties
+		#region Properties
 
-        public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register("DateTime", typeof(DateTime?), typeof(DatetimeTextBox),
+		public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register("DateTime", typeof(DateTime?), typeof(DatetimeTextBox),
 		   new FrameworkPropertyMetadata(null, OnSetDateTime));
 
 		public DateTime? DateTime
@@ -85,47 +73,27 @@ namespace ModernThemables.Controls
 		{
 			var dtTb = sender as DatetimeTextBox;
 			if (dtTb != null)
-            {
+			{
 				if (!dtTb.isKeyboardUpdate)
 					Keyboard.ClearFocus();
 
-                if ((e.OldValue == null || e.NewValue != e.OldValue)
+				if ((e.OldValue == null || e.NewValue != e.OldValue)
 					&& e.NewValue is DateTime dt
-					&& dtTb.dayTextBox != null && !dtTb.dayTextBox.IsFocused
-					&& dtTb.monthTextBox != null && !dtTb.monthTextBox.IsFocused
-					&& dtTb.yearTextBox != null && !dtTb.yearTextBox.IsFocused
-					&& dtTb.hourTextBox != null && !dtTb.hourTextBox.IsFocused
-					&& dtTb.minuteTextBox != null && !dtTb.minuteTextBox.IsFocused
-					&& dtTb.secondTextBox != null && !dtTb.secondTextBox.IsFocused)
-                {
+					&& dtTb.textbox != null && !dtTb.textbox.IsFocused)
+				{
 					dtTb.blockUpdate = true;
 					if (!dtTb.isKeyboardUpdate)
 					{
-						dtTb.dayTextBox.Focusable = false;
-						dtTb.monthTextBox.Focusable = false;
-						dtTb.yearTextBox.Focusable = false;
-						dtTb.hourTextBox.Focusable = false;
-						dtTb.minuteTextBox.Focusable = false;
-						dtTb.secondTextBox.Focusable = false;
+						dtTb.textbox.Focusable = false;
 					}
-                    dtTb.dayTextBox.Text = dt.Day.ToString().PadLeft(2, '0');
-					dtTb.monthTextBox.Text = dt.Month.ToString().PadLeft(2, '0');
-					dtTb.yearTextBox.Text = dt.Year.ToString().PadLeft(4, '0');
-					dtTb.hourTextBox.Text = dt.Hour.ToString().PadLeft(2, '0');
-					dtTb.minuteTextBox.Text = dt.Minute.ToString().PadLeft(2, '0');
-					dtTb.secondTextBox.Text = dt.Second.ToString().PadLeft(2, '0');
+					dtTb.textbox.Text = dt.ToString("dd/MM/yyyy HH:mm:ss");
 					if (!dtTb.isKeyboardUpdate)
 					{
-						dtTb.dayTextBox.Focusable = true;
-						dtTb.monthTextBox.Focusable = true;
-						dtTb.yearTextBox.Focusable = true;
-						dtTb.hourTextBox.Focusable = true;
-						dtTb.minuteTextBox.Focusable = true;
-						dtTb.secondTextBox.Focusable = true;
+						dtTb.textbox.Focusable = true;
 						dtTb.blockUpdate = false;
 					}
-                }
-            }
+				}
+			}
 		}
 
 		public static readonly DependencyProperty TextboxBorderThicknessProperty = DependencyProperty.Register("TextboxBorderThickness", typeof(Thickness), typeof(DatetimeTextBox),
@@ -142,106 +110,31 @@ namespace ModernThemables.Controls
 		#region Override
 
 		public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
+		{
+			base.OnApplyTemplate();
 
-            if (dayTextBox != null)
-            {
-				dayTextBox.TextChanged -= DayChanged;
-				dayTextBox.PreviewKeyDown -= DayKeyDown;
-            }
-			dayTextBox = this.Template.FindName(PART_dayTextBox, this) as TextBox;
-            if (dayTextBox != null)
-            {
-				dayTextBox.TextChanged += DayChanged;
-				dayTextBox.PreviewKeyDown += DayKeyDown;
-			}
-
-			if (monthTextBox != null)
+			if (textbox != null)
 			{
-				monthTextBox.TextChanged -= MonthChanged;
-				monthTextBox.PreviewKeyDown -= MonthKeyDown;
+				textbox.TextChanged -= TextChanged;
+				textbox.PreviewKeyDown -= TextKeyDown;
 			}
-			monthTextBox = this.Template.FindName(PART_monthTextBox, this) as TextBox;
-			if (monthTextBox != null)
+			textbox = this.Template.FindName(PART_textbox, this) as TextBox;
+			if (textbox != null)
 			{
-				monthTextBox.TextChanged += MonthChanged;
-				monthTextBox.PreviewKeyDown += MonthKeyDown;
+				textbox.TextChanged += TextChanged;
+				textbox.PreviewKeyDown += TextKeyDown;
 			}
 
-			if (yearTextBox != null)
-			{
-				yearTextBox.TextChanged -= YearChanged;
-				yearTextBox.PreviewKeyDown -= YearKeyDown;
-			}
-			yearTextBox = this.Template.FindName(PART_yearTextBox, this) as TextBox;
-			if (yearTextBox != null)
-			{
-				yearTextBox.TextChanged += YearChanged;
-				yearTextBox.PreviewKeyDown += YearKeyDown;
-			}
-
-			if (hourTextBox != null)
-			{
-				hourTextBox.TextChanged -= HourChanged;
-				hourTextBox.PreviewKeyDown -= HourKeyDown;
-			}
-			hourTextBox = this.Template.FindName(PART_hourTextBox, this) as TextBox;
-			if (hourTextBox != null)
-			{
-				hourTextBox.TextChanged += HourChanged;
-				hourTextBox.PreviewKeyDown += HourKeyDown;
-			}
-
-			if (minuteTextBox != null)
-			{
-				minuteTextBox.TextChanged -= MinuteChanged;
-				minuteTextBox.PreviewKeyDown -= MinuteKeyDown;
-			}
-			minuteTextBox = this.Template.FindName(PART_minuteTextBox, this) as TextBox;
-			if (minuteTextBox != null)
-			{
-				minuteTextBox.TextChanged += MinuteChanged;
-				minuteTextBox.PreviewKeyDown += MinuteKeyDown;
-			}
-
-			if (secondTextBox != null)
-			{
-				secondTextBox.TextChanged -= SecondChanged;
-				secondTextBox.PreviewKeyDown -= SecondKeyDown;
-			}
-			secondTextBox = this.Template.FindName(PART_secondTextBox, this) as TextBox;
-			if (secondTextBox != null)
-			{
-				secondTextBox.TextChanged += SecondChanged;
-				secondTextBox.PreviewKeyDown += SecondKeyDown;
-			}
-
-			if (dayTextBox != null && monthTextBox != null && yearTextBox != null && hourTextBox != null && minuteTextBox != null && secondTextBox != null)
+			if (textbox != null)
 			{
 				if (DateTime != null)
 				{
 					blockUpdate = true;
-					dayTextBox.Focusable = false;
-                    monthTextBox.Focusable = false;
-                    yearTextBox.Focusable = false;
-                    hourTextBox.Focusable = false;
-                    minuteTextBox.Focusable = false;
-                    secondTextBox.Focusable = false;
-                    dayTextBox.Text = DateTime.Value.Day.ToString().PadLeft(2, '0');
-                    monthTextBox.Text = DateTime.Value.Month.ToString().PadLeft(2, '0');
-                    yearTextBox.Text = DateTime.Value.Year.ToString().PadLeft(4, '0');
-                    hourTextBox.Text = DateTime.Value.Hour.ToString().PadLeft(2, '0');
-                    minuteTextBox.Text = DateTime.Value.Minute.ToString().PadLeft(2, '0');
-                    secondTextBox.Text = DateTime.Value.Second.ToString().PadLeft(2, '0');
-                    dayTextBox.Focusable = true;
-                    monthTextBox.Focusable = true;
-                    yearTextBox.Focusable = true;
-                    hourTextBox.Focusable = true;
-                    minuteTextBox.Focusable = true;
-                    secondTextBox.Focusable = true;
-                    blockUpdate = false;
-                }
+					textbox.Focusable = false;
+					textbox.Text = DateTime.Value.ToString("dd/MM/yyyy HH:mm:ss");
+					textbox.Focusable = true;
+					blockUpdate = false;
+				}
 			}
 		}
 
@@ -270,209 +163,88 @@ namespace ModernThemables.Controls
 
 		#region Events Handlers
 
-		private void DayChanged(object sender, TextChangedEventArgs e)
+		private void TextChanged(object sender, TextChangedEventArgs e)
 		{
-			dayValid = int.TryParse(dayTextBox.Text, out int day) && day <= 31 && day > 0;
-			FormatText(PART_dayTextBox, dayTextBox, dayValid);
-			if (dayValid && dayTextBox.Text.Length == 2) monthTextBox.Focus();
+			var skip = new List<string>() { "", " ", ":", "/" };
+			var moveOnIndex = new List<int>() { 2, 5, 10, 11, 13, 16 };
+			if (moveOnIndex.Contains(textbox.SelectionStart) && skip.Contains(GetNextCharacter(textbox.SelectionStart))) textbox.SelectionStart++;
+			dateValid = System.DateTime.TryParseExact(textbox.Text, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
+			FormatText(PART_textbox, textbox, dateValid);
 			CalculateDate();
 		}
 
-		private void DayKeyDown(object sender, KeyEventArgs e)
+		private void TextKeyDown(object sender, KeyEventArgs e)
 		{
-			if ((e.Key == Key.Delete && (dayTextBox.Text.Length == 0 || dayTextBox.SelectionStart == dayTextBox.Text.Length))
-                || (e.Key == Key.Right && dayTextBox.SelectionStart >= dayTextBox.Text.Length - 1))
-            {
-                monthTextBox.Focus();
-                monthTextBox.SelectionStart = 0;
-                if (e.Key == Key.Right) e.Handled = true;
-            }
-            else if (e.Key == Key.Home)
+			var skip = new List<string>() { "", " ", ":", "/" };
+			string text = textbox.Text == string.Empty ? "/// ::" : textbox.Text;
+
+			if (textbox.SelectionLength == 0)
 			{
-				dayTextBox.Focus();
-				dayTextBox.SelectionStart = 0;
+				switch (e.Key)
+				{
+					case Key.Back:
+						while (skip.Contains(GetPreviousCharacter(textbox.SelectionStart)) && textbox.SelectionStart != 0) textbox.SelectionStart--;
+						e.Handled = textbox.SelectionStart == 0;
+						break;
+					case Key.Delete:
+						while (skip.Contains(GetNextCharacter(textbox.SelectionStart)) && textbox.SelectionStart != textbox.Text.Length) textbox.SelectionStart++;
+						e.Handled = textbox.SelectionStart == textbox.Text.Length;
+						break;
+					default:
+						var key = e.Key.ToString();
+						e.Handled = !(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Regex.IsMatch(key, "^[A-Z]$") || e.Key == Key.Space;
+						break;
+				}
 			}
-			else if (e.Key == Key.End)
+			else
 			{
-				secondTextBox.Focus();
+				switch (e.Key)
+				{
+					case Key.Back:
+						var toDelete = textbox.Text.Substring(textbox.SelectionStart, textbox.SelectionLength);
+						var updated = Regex.Replace(toDelete, "[0-9]", "");
+						text = text.Replace(toDelete, updated);
+						textbox.SelectionLength = 0;
+						e.Handled = true;
+						break;
+					case Key.Delete:
+						var toDelete2 = textbox.Text.Substring(textbox.SelectionStart, textbox.SelectionLength);
+						var updated2 = Regex.Replace(toDelete2, "[0-9]", "");
+						text = text.Replace(toDelete2, updated2);
+						textbox.SelectionStart = textbox.SelectionStart + textbox.SelectionLength;
+						textbox.SelectionLength = 0;
+						e.Handled = true;
+						break;
+					default:
+						var key = e.Key.ToString();
+						e.Handled = !(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Regex.IsMatch(key, "^[A-Z]$") || e.Key == Key.Space;
+						break;
+				}
 			}
+
+			textbox.Text = text;
 		}
 
-		private void MonthChanged(object sender, TextChangedEventArgs e)
+		private string GetPreviousCharacter(int currentPos)
 		{
-			monthValid = int.TryParse(monthTextBox.Text, out int day) && day <= 12 && day > 0;
-			FormatText(PART_monthTextBox, monthTextBox, monthValid);
-			if (monthValid && monthTextBox.Text.Length == 2) yearTextBox.Focus();
-			CalculateDate();
+			var prev = textbox.Text.ToCharArray()[Math.Max(0, currentPos - 1)].ToString();
+			return prev;
 		}
 
-		private void MonthKeyDown(object sender, KeyEventArgs e)
+		private string GetNextCharacter(int currentPos)
 		{
-            if ((e.Key == Key.Back && (monthTextBox.Text.Length == 0 || monthTextBox.SelectionStart == 0))
-                || (e.Key == Key.Left && monthTextBox.SelectionStart == 0))
-            {
-                dayTextBox.Focus();
-				dayTextBox.SelectionStart = dayTextBox.Text.Length + 1;
-				if (e.Key == Key.Left) e.Handled = true;
-            }
-            else if ((e.Key == Key.Delete && (monthTextBox.Text.Length == 0 || monthTextBox.SelectionStart == monthTextBox.Text.Length))
-                || (e.Key == Key.Right && monthTextBox.SelectionStart >= monthTextBox.Text.Length - 1))
-            {
-                yearTextBox.Focus();
-                yearTextBox.SelectionStart = 0;
-                if (e.Key == Key.Right) e.Handled = true;
-            }
-            else if (e.Key == Key.Home)
-			{
-				dayTextBox.Focus();
-				dayTextBox.SelectionStart = 0;
-			}
-			else if (e.Key == Key.End)
-			{
-				secondTextBox.Focus();
-			}
+			var next = textbox.Text.ToCharArray()[Math.Min(textbox.Text.Length - 1, currentPos)].ToString();
+			return next;
 		}
 
-		private void YearChanged(object sender, TextChangedEventArgs e)
+		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
-			yearValid = int.TryParse(yearTextBox.Text, out int year) && year > 0;
-			FormatText(PART_yearTextBox, yearTextBox, yearValid);
-			if (yearValid && yearTextBox.Text.Length == 4) hourTextBox.Focus();
-			CalculateDate();
+			trigger.Stop();
 		}
 
-		private void YearKeyDown(object sender, KeyEventArgs e)
-		{
-            if ((e.Key == Key.Back && (yearTextBox.Text.Length == 0 || yearTextBox.SelectionStart == 0))
-                || (e.Key == Key.Left && yearTextBox.SelectionStart == 0))
-            {
-                monthTextBox.Focus();
-				monthTextBox.SelectionStart = monthTextBox.Text.Length + 1;
-				if (e.Key == Key.Left) e.Handled = true;
-            }
-            else if ((e.Key == Key.Delete && (yearTextBox.Text.Length == 0 || yearTextBox.SelectionStart == yearTextBox.Text.Length))
-                || (e.Key == Key.Right && yearTextBox.SelectionStart >= yearTextBox.Text.Length - 1))
-            {
-                hourTextBox.Focus();
-                hourTextBox.SelectionStart = 0;
-                if (e.Key == Key.Right) e.Handled = true;
-            }
-            else if (e.Key == Key.Home)
-			{
-				dayTextBox.Focus();
-				dayTextBox.SelectionStart = 0;
-			}
-			else if (e.Key == Key.End)
-			{
-				secondTextBox.Focus();
-			}
-		}
+		#endregion Events Handlers
 
-		private void HourChanged(object sender, TextChangedEventArgs e)
-		{
-			hourValid = int.TryParse(hourTextBox.Text, out int hour) && hour <= 24 && hour >= 0;
-			FormatText(PART_hourTextBox, hourTextBox, hourValid);
-			if (hourValid && hourTextBox.Text.Length == 2) minuteTextBox.Focus();
-			CalculateDate();
-		}
-
-		private void HourKeyDown(object sender, KeyEventArgs e)
-		{
-            if ((e.Key == Key.Back && (hourTextBox.Text.Length == 0 || hourTextBox.SelectionStart == 0))
-                || (e.Key == Key.Left && hourTextBox.SelectionStart == 0))
-            {
-                yearTextBox.Focus();
-				yearTextBox.SelectionStart = yearTextBox.Text.Length + 1;
-				if (e.Key == Key.Left) e.Handled = true;
-            }
-            else if ((e.Key == Key.Delete && (hourTextBox.Text.Length == 0 || hourTextBox.SelectionStart == hourTextBox.Text.Length))
-                || (e.Key == Key.Right && hourTextBox.SelectionStart >= hourTextBox.Text.Length - 1))
-            {
-                minuteTextBox.Focus();
-                minuteTextBox.SelectionStart = 0;
-                if (e.Key == Key.Right) e.Handled = true;
-            }
-            else if (e.Key == Key.Home)
-			{
-				dayTextBox.Focus();
-				dayTextBox.SelectionStart = 0;
-			}
-			else if (e.Key == Key.End)
-			{
-				secondTextBox.Focus();
-			}
-		}
-
-		private void MinuteChanged(object sender, TextChangedEventArgs e)
-		{
-			minuteValid = int.TryParse(minuteTextBox.Text, out int second) && second <= 60 && second >= 0;
-			FormatText(PART_minuteTextBox, minuteTextBox, minuteValid);
-			if (minuteValid && minuteTextBox.Text.Length == 2) secondTextBox.Focus();
-			CalculateDate();
-		}
-
-		private void MinuteKeyDown(object sender, KeyEventArgs e)
-		{
-			if ((e.Key == Key.Back && (minuteTextBox.Text.Length == 0 || minuteTextBox.SelectionStart == 0)) 
-				|| (e.Key == Key.Left && minuteTextBox.SelectionStart == 0))
-			{
-				hourTextBox.Focus();
-				hourTextBox.SelectionStart = hourTextBox.Text.Length + 1;
-				if (e.Key == Key.Left) e.Handled = true;
-            }
-			else if ((e.Key == Key.Delete && (minuteTextBox.Text.Length == 0 || minuteTextBox.SelectionStart == minuteTextBox.Text.Length))
-				|| (e.Key == Key.Right && minuteTextBox.SelectionStart >= minuteTextBox.Text.Length - 1))
-			{
-				secondTextBox.Focus();
-                secondTextBox.SelectionStart = 0;
-                if (e.Key == Key.Right) e.Handled = true;
-            }
-			else if (e.Key == Key.Home)
-			{
-				dayTextBox.Focus();
-				dayTextBox.SelectionStart = 0;
-			}
-			else if (e.Key == Key.End)
-			{
-				secondTextBox.Focus();
-			}
-		}
-
-		private void SecondChanged(object sender, TextChangedEventArgs e)
-		{
-			secondValid = int.TryParse(secondTextBox.Text, out int day) && day <= 60 && day >= 0;
-			FormatText(PART_secondTextBox, secondTextBox, secondValid);
-			CalculateDate();
-		}
-
-		private void SecondKeyDown(object sender, KeyEventArgs e)
-		{
-            if ((e.Key == Key.Back && (secondTextBox.Text.Length == 0 || secondTextBox.SelectionStart == 0))
-                || (e.Key == Key.Left && secondTextBox.SelectionStart == 0))
-            {
-                minuteTextBox.Focus();
-				minuteTextBox.SelectionStart = minuteTextBox.Text.Length + 1;
-				if (e.Key == Key.Left) e.Handled = true;
-            }
-            else if (e.Key == Key.Home)
-			{
-				dayTextBox.Focus();
-				dayTextBox.SelectionStart = 0;
-            }
-			else if (e.Key == Key.End)
-			{
-				secondTextBox.Focus();
-			}
-        }
-
-        private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
-        {
-            trigger.Stop();
-        }
-
-        #endregion Events Handlers
-
-        private void CalculateDate(bool keyboardUpdate = true)
+		private void CalculateDate(bool keyboardUpdate = true)
 		{
 			if (blockUpdate) return;
 
@@ -484,21 +256,15 @@ namespace ModernThemables.Controls
 
 			isKeyboardUpdate = keyboardUpdate;
 
-			var calculate = dayValid && monthValid && yearValid && hourValid && minuteValid && secondValid;
+			var calculate = dateValid;
 
 			Application.Current.Dispatcher.Invoke(() => { 
-				if (calculate) DateTime = new DateTime(
-					int.Parse(yearTextBox.Text),
-					int.Parse(monthTextBox.Text),
-					int.Parse(dayTextBox.Text),
-					int.Parse(hourTextBox.Text),
-					int.Parse(minuteTextBox.Text),
-					int.Parse(secondTextBox.Text));
+				if (calculate) DateTime = System.DateTime.ParseExact(textbox.Text, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 				else DateTime = null;
-            });
+			});
 
-            isKeyboardUpdate = false;
-        }
+			isKeyboardUpdate = false;
+		}
 
 		private void FormatText(string textBoxName, TextBox textBox, bool valid)
 		{
