@@ -285,67 +285,15 @@
 						BorderBrush="{TemplateBinding BorderBrush}"
 						BorderThickness="{TemplateBinding BorderThickness}">
 						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition />
-							</Grid.ColumnDefinitions>
-
 							<TextBox
-								x:Name="PART_dayTextBox"
+								x:Name="PART_textbox"
 								Width="Auto"
 								Height="Auto"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Center"
-								SnapsToDevicePixels="True" />
-
-							<TextBox
-								x:Name="PART_monthTextBox"
-								Grid.Column="1"
-								Width="Auto"
-								Height="Auto"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								SnapsToDevicePixels="True" />
-
-							<TextBox
-								x:Name="PART_yearTextBox"
-								Grid.Column="2"
-								Width="Auto"
-								Height="Auto"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								SnapsToDevicePixels="True" />
-
-							<TextBox
-								x:Name="PART_hourTextBox"
-								Grid.Column="3"
-								Width="Auto"
-								Height="Auto"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								SnapsToDevicePixels="True" />
-
-							<TextBox
-								x:Name="PART_minuteTextBox"
-								Grid.Column="4"
-								Width="Auto"
-								Height="Auto"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
-								SnapsToDevicePixels="True" />
-
-							<TextBox
-								x:Name="PART_secondTextBox"
-								Grid.Column="5"
-								Width="Auto"
-								Height="Auto"
-								HorizontalAlignment="Left"
-								VerticalAlignment="Center"
+								Background="Transparent"
+								BorderThickness="0"
+								Foreground="{TemplateBinding Foreground}"
 								SnapsToDevicePixels="True" />
 						</Grid>
 					</Border>
