@@ -76,13 +76,6 @@ namespace ModernThemables.Controls
 			resizeTrigger = new KeepAliveTriggerService(QueueRenderChart, 100);
 		}
 
-		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not PieChart chart) return;
-
-			chart.IsTooltipByCursor = chart.TooltipLocation == TooltipLocation.Cursor;
-		}
-
 		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not PieChart chart) return;
@@ -94,28 +87,28 @@ namespace ModernThemables.Controls
 					chart.LegendGrid.SetValue(Grid.ColumnProperty, 0);
 					chart.LegendGrid.Visibility = Visibility.Visible;
 					chart.LegendGrid.Margin = new Thickness(0, 10, 15, 0);
-					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["StackTemplate"];
+					chart.Legend.Orientation = Charts.ChartComponents.Orientation.Vertical;
 					break;
 				case LegendLocation.Top:
 					chart.LegendGrid.SetValue(Grid.RowProperty, 0);
 					chart.LegendGrid.SetValue(Grid.ColumnProperty, 1);
 					chart.LegendGrid.Visibility = Visibility.Visible;
 					chart.LegendGrid.Margin = new Thickness(0, 0, 0, 15);
-					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["WrapTemplate"];
+					chart.Legend.Orientation = Charts.ChartComponents.Orientation.Horizontal;
 					break;
 				case LegendLocation.Right:
 					chart.LegendGrid.SetValue(Grid.RowProperty, 1);
 					chart.LegendGrid.SetValue(Grid.ColumnProperty, 2);
 					chart.LegendGrid.Visibility = Visibility.Visible;
 					chart.LegendGrid.Margin = new Thickness(15, 10, 0, 0);
-					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["StackTemplate"];
+					chart.Legend.Orientation = Charts.ChartComponents.Orientation.Vertical;
 					break;
 				case LegendLocation.Bottom:
 					chart.LegendGrid.SetValue(Grid.RowProperty, 2);
 					chart.LegendGrid.SetValue(Grid.ColumnProperty, 1);
 					chart.LegendGrid.Visibility = Visibility.Visible;
 					chart.LegendGrid.Margin = new Thickness(0, 15, 0, 0);
-					chart.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)chart.Resources["WrapTemplate"];
+					chart.Legend.Orientation = Charts.ChartComponents.Orientation.Horizontal;
 					break;
 				case LegendLocation.None:
 					chart.LegendGrid.Visibility = Visibility.Collapsed;

@@ -86,18 +86,7 @@ namespace ModernThemables.Controls
 			"TooltipLocation",
 			typeof(TooltipLocation),
 			typeof(PieChart),
-			new FrameworkPropertyMetadata(TooltipLocation.Cursor, OnTooltipLocationSet));
-
-		public double TooltipLocationThreshold
-		{
-			get => (double)GetValue(TooltipLocationThresholdProperty);
-			set => SetValue(TooltipLocationThresholdProperty, value);
-		}
-		public static readonly DependencyProperty TooltipLocationThresholdProperty = DependencyProperty.Register(
-			"TooltipLocationThreshold",
-			typeof(double),
-			typeof(PieChart),
-			new PropertyMetadata(5d));
+			new FrameworkPropertyMetadata(TooltipLocation.Cursor));
 
 		public double TooltipOpacity
 		{
@@ -110,31 +99,9 @@ namespace ModernThemables.Controls
 			typeof(PieChart),
 			new PropertyMetadata(1d));
 
-		public new double FontSize
-		{
-			get => (double)GetValue(FontSizeProperty);
-			set => SetValue(FontSizeProperty, value);
-		}
-		public static readonly new DependencyProperty FontSizeProperty = DependencyProperty.Register(
-			"FontSize",
-			typeof(double),
-			typeof(PieChart),
-			new PropertyMetadata(12d));
-
 		#endregion
 
 		#region Private properties
-
-		private bool IsTooltipByCursor
-		{
-			get => (bool)GetValue(IsTooltipByCursorProperty);
-			set => SetValue(IsTooltipByCursorProperty, value);
-		}
-		public static readonly DependencyProperty IsTooltipByCursorProperty = DependencyProperty.Register(
-			"IsTooltipByCursor",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(true));
 
 		private ObservableCollection<InternalPieSeriesViewModel> InternalSeries
 		{
