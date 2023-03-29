@@ -12,8 +12,6 @@
 	mc:Ignorable="d">
 	<Grid
 		x:Name="RootGrid"
-		MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
-		MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}"
 		Focusable="False">
 		<Grid.Background>
 			<MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">

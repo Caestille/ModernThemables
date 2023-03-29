@@ -112,10 +112,8 @@ namespace ModernThemables.Controls
 		private bool isThemingGridOpen;
 		private bool isWindowMaximised;
 		private bool isDockedOrMaximised;
-		private bool preventTrigger;
 
 		private Window mainWindow;
-		private static CurrentMonitorInfo currentMonitorInfo;
 
 		private bool IsMainWindowFocused
 		{
@@ -220,12 +218,6 @@ namespace ModernThemables.Controls
 					mmi.ptMaxPosition.Y = Math.Abs(rcWorkArea.Top - rcMonitorArea.Top);
 					mmi.ptMaxSize.X = Math.Abs(rcWorkArea.Right - rcWorkArea.Left);
 					mmi.ptMaxSize.Y = Math.Abs(rcWorkArea.Bottom - rcWorkArea.Top);
-
-					currentMonitorInfo = new CurrentMonitorInfo()
-					{
-						WorkingAreaWidth = mmi.ptMaxSize.X,
-						WorkingAreaHeight = mmi.ptMaxSize.Y
-					};
 				}
 
 				Marshal.StructureToPtr(mmi, lParam, true);
@@ -245,12 +237,6 @@ namespace ModernThemables.Controls
 					mainWindow.WindowState = WindowState.Normal;
 					mainWindow.WindowStyle = WindowStyle.None;
 
-					if (isWindowMaximised)
-					{
-						mainWindow.WindowState = WindowState.Minimized;
-						mainWindow.WindowState = WindowState.Maximized;
-					}
-
 					handled = true;
 				}
 				else if (wParam.ToInt32() == NativeMethods.SC_CHANGESTATE)
@@ -260,9 +246,12 @@ namespace ModernThemables.Controls
 					isWindowMaximised = !isWindowMaximised;
 					ContentGrid.Margin = isWindowMaximised ? new Thickness(0, 31, 0, 0) : new Thickness(1, 31, 1, 1);
 					SetChangeStateButtonAppearance(isWindowMaximised);
+					if (isWindowMaximised) mainWindow.ResizeMode = ResizeMode.NoResize;
+					if (isWindowMaximised && mainWindow.WindowState == WindowState.Maximized) mainWindow.WindowState = WindowState.Normal;
 					mainWindow.WindowState = isWindowMaximised
 						? WindowState.Maximized
 						: WindowState.Normal;
+					if (!isWindowMaximised) mainWindow.ResizeMode = ResizeMode.CanResize;
 
 					mainWindow.WindowStyle = WindowStyle.None;
 
@@ -361,8 +350,6 @@ namespace ModernThemables.Controls
 
 		private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			if (preventTrigger) return;
-
 			var isDockedTop = !isWindowMaximised && (mainWindow.WindowState == WindowState.Maximized);
 			var isDockedSide = mainWindow.WindowState == WindowState.Normal
 				&& mainWindow.Width != mainWindow.RestoreBounds.Width
