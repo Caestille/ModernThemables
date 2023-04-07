@@ -28,7 +28,6 @@
     <None Remove=".gitignore" />
     <None Remove="AppGuid.txt" />
     <None Remove="LICENSE" />
-    <None Remove="Logo_SmallCopy.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,11 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Logo_Small.png" />
-    <Resource Include="Logo_SmallCopy.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
@@ -52,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Controls\Charts\PieChart.xaml">
+    <Page Update="Charting\Controls\PieChart.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Controls\ThemingControl.xaml">
@@ -74,7 +68,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Charting\BarChart\" />
+    <Folder Include="Charting\Services\" />
+    <Folder Include="Charting\ViewModels\BarChart\" />
   </ItemGroup>
 
 </Project>

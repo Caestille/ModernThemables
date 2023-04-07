@@ -2,6 +2,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:controls="clr-namespace:ModernThemables.Controls"
+	xmlns:chartConverters="clr-namespace:ModernThemables.Charting.Converters"
 	xmlns:converters="clr-namespace:ModernThemables.Converters"
 	xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
 
@@ -47,16 +48,16 @@
 
 	<!--#region Converters-->
 
-	<converters:CentreToolTipConverter x:Key="CentreToolTipConverter" />
+	<chartConverters:CentreToolTipConverter x:Key="CentreToolTipConverter" />
 	<converters:ColourRgbConverter x:Key="ColourRgbConverter" />
 	<converters:RoundedGeometryGroupConverter x:Key="RoundedGeometryGroupConverter" />
 	<converters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />
-	<converters:ChartZoomConverter x:Key="ChartZoomConverter" />
-	<converters:SeriesHeightMarginConverter x:Key="SeriesHeightMarginConverter" />
-	<converters:SeriesOverlapMarginConverter x:Key="SeriesOverlapMarginConverter" />
-	<converters:PieCentreRadiusConverter x:Key="PieCentreRadiusConverter" />
-	<converters:PieLabelMarginConverter x:Key="PieLabelMarginConverter" />
-	<converters:PieCentrererConverter x:Key="PieCentrererConverter" />
+	<chartConverters:ChartZoomConverter x:Key="ChartZoomConverter" />
+	<chartConverters:SeriesHeightMarginConverter x:Key="SeriesHeightMarginConverter" />
+	<chartConverters:SeriesOverlapMarginConverter x:Key="SeriesOverlapMarginConverter" />
+	<chartConverters:PieCentreRadiusConverter x:Key="PieCentreRadiusConverter" />
+	<chartConverters:PieLabelMarginConverter x:Key="PieLabelMarginConverter" />
+	<chartConverters:PieCentrererConverter x:Key="PieCentrererConverter" />
 
 	<!--#endregion End Converters-->
 
