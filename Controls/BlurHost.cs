@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
@@ -7,18 +9,18 @@ namespace ModernThemables.Controls
 {
 	public class BlurHost : ContentControl
 	{
-		public Visual BlurBackground
+		public FrameworkElement BlurBackground
 		{
-			get => (Visual)GetValue(BlurBackgroundProperty);
+			get => (FrameworkElement)GetValue(BlurBackgroundProperty);
 			set => SetValue(BlurBackgroundProperty, value);
 		}
 
 		public static readonly DependencyProperty BlurBackgroundProperty =
 			DependencyProperty.Register(
 			  "BlurBackground",
-			  typeof(Visual),
+			  typeof(FrameworkElement),
 			  typeof(BlurHost),
-			  new PropertyMetadata(default(Visual), OnBlurBackgroundChanged));
+			  new PropertyMetadata(default(FrameworkElement), OnBlurBackgroundChanged));
 
 		public double OffsetX
 		{
@@ -135,22 +137,25 @@ namespace ModernThemables.Controls
 			if (!BlurEnabled)
 				return;
 
-			if (!TryFindVisualRootContainer(this, out FrameworkElement rootContainer))
+			if (!TryFindVisualRootContainer(this, out var blurHostContainer) 
+				|| !TryFindVisualRootContainer(BlurBackground, out var backgroundContainer))
 			{
 				return;
 			}
 
-			this.BlurDecoratorBrush.Opacity = this.BlurOpacity;
+			Rect blurHostBounds = TransformToVisual(blurHostContainer)
+				.TransformBounds(new Rect(this.RenderSize));
+            Rect backgroundBounds = BlurBackground.TransformToVisual(backgroundContainer)
+				.TransformBounds(new Rect(this.BlurBackground.RenderSize));
 
-			// Get the section of the image where the BlurHost element is located
-			Rect elementBounds = TransformToVisual(rootContainer)
-			  .TransformBounds(new Rect(this.RenderSize));
+			var transform = backgroundContainer.TransformToVisual(blurHostContainer).Transform(new Point(0, 0));
 
-			elementBounds.Location = new Point(elementBounds.Left - OffsetX, elementBounds.Top - OffsetY);
+            var viewBox = new Rect(Math.Max(blurHostBounds.Left - transform.X, 0) + OffsetX, Math.Max(blurHostBounds.Top - transform.Y, 0) + OffsetY, blurHostBounds.Width, blurHostBounds.Height);
 
-			// Use the section bounds to actually "cut out" the image tile 
-			this.BlurDecoratorBrush.Viewbox = elementBounds;
-		}
+			this.BlurDecoratorBrush.Viewbox = viewBox;
+
+            this.BlurDecoratorBrush.Opacity = this.BlurOpacity;
+        }
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
@@ -217,6 +222,12 @@ namespace ModernThemables.Controls
 
 		private bool TryFindVisualRootContainer(DependencyObject child, out FrameworkElement rootContainerElement)
 		{
+			if ((child is ContentControl && child is not BlurHost) || child is Window)
+			{
+				rootContainerElement = child as FrameworkElement;
+				return true;
+			}
+
 			rootContainerElement = null;
 			DependencyObject parent = VisualTreeHelper.GetParent(child);
 			if (parent == null)
@@ -224,12 +235,13 @@ namespace ModernThemables.Controls
 				return false;
 			}
 
-			if (parent is not Window visualRoot)
+			if (parent is not Window && parent is not ContentControl)
 			{
 				return TryFindVisualRootContainer(parent, out rootContainerElement);
 			}
 
-			rootContainerElement = visualRoot.Content as FrameworkElement;
+			rootContainerElement = parent as FrameworkElement;
+
 			return true;
 		}
 	}

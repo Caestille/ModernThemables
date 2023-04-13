@@ -245,7 +245,7 @@ namespace ModernThemables.Charting.Controls
 				var groupWidth = groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) - groupSep : 0;
 				var barWidth = groupWidth > 0 ? (groupWidth / barCount) - barSep : 0;
 
-				XAxisLabelHeight = labels.Any() ? labels.Max(x => (double)(new StringWidthGetterConverter().Convert(new object[] { x, FontSize, FontFamily, FontStyle, FontWeight, FontStretch }, null, null, null))) * Math.Sin(XAxisLabelRotation * Math.PI / 180) + 10 : 0;
+				XAxisLabelHeight = labels.Any() ? labels.Max(x => (double)(new StringWidthGetterConverter().Convert(new object[] { "", x, FontSize, FontFamily, FontStyle, FontWeight, FontStretch }, null, null, null))) * Math.Sin(XAxisLabelRotation * Math.PI / 180) + 10 : 0;
 				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
 				var collection = await Task.Run(() =>
@@ -280,7 +280,6 @@ namespace ModernThemables.Charting.Controls
 				this.Dispatcher.Invoke(DispatcherPriority.Render, () => { });
 				await this.Dispatcher.BeginInvoke(DispatcherPriority.Render, () => { InternalSeries = new ObservableCollection<InternalChartEntity>(collection); });
 				await this.Dispatcher.BeginInvoke(DispatcherPriority.Render, () => SetXAxisLabels(labels));
-
 
 				renderInProgress = false;
 			});

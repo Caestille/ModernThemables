@@ -8,7 +8,7 @@ using System.Windows.Input;
 using CoreUtilities.Services;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
+using System.Linq;
 
 namespace ModernThemables.Controls
 {
@@ -21,11 +21,6 @@ namespace ModernThemables.Controls
 		private const string PART_textbox = "PART_textbox";
 
 		private bool dateValid;
-		private bool monthValid;
-		private bool yearValid;
-		private bool hourValid;
-		private bool minuteValid;
-		private bool secondValid;
 
 		private TextBox textbox;
 
@@ -36,23 +31,25 @@ namespace ModernThemables.Controls
 		private Dictionary<string, bool> validCache = new();
 
 		private KeepAliveTriggerService trigger;
-		private bool blockRefresh = false;
-		private DateTime lastUpdateTime = new DateTime();
 
 		private bool isKeyboardUpdate = false;
 
-		#endregion Members
+		private bool blockRecalculateOnce;
 
-		#region Constructors
+        private List<string> skipCharacters = new() { "", " ", ":", "/" };
 
-		static DatetimeTextBox()
+        #endregion Members
+
+        #region Constructors
+
+        static DatetimeTextBox()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(DatetimeTextBox), new FrameworkPropertyMetadata(typeof(DatetimeTextBox)));
 		}
 
 		public DatetimeTextBox()
 		{
-			trigger = new KeepAliveTriggerService(() => { blockRefresh = true; CalculateDate(false); blockRefresh = false; }, 100);
+			trigger = new KeepAliveTriggerService(() => { CalculateDate(false); }, 100);
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
 
@@ -60,49 +57,65 @@ namespace ModernThemables.Controls
 
 		#region Properties
 
-		public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register("DateTime", typeof(DateTime?), typeof(DatetimeTextBox),
-		   new FrameworkPropertyMetadata(null, OnSetDateTime));
-
 		public DateTime? DateTime
 		{
 			get => (DateTime?)GetValue(DateTimeProperty);
 			set => SetValue(DateTimeProperty, value);
 		}
 
+		public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register(
+			"DateTime",
+			typeof(DateTime?),
+			typeof(DatetimeTextBox),
+			new FrameworkPropertyMetadata(null, OnSetDateTime));
+
+		public string Format
+		{
+			get => (string)GetValue(FormatProperty);
+			set => SetValue(FormatProperty, value);
+		}
+
+		public static readonly DependencyProperty FormatProperty = DependencyProperty.Register(
+			"Format",
+			typeof(string),
+			typeof(DatetimeTextBox),
+			new FrameworkPropertyMetadata("dd/MM/yyyy HH:mm:ss", OnSetFormat));
+
+		private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			var _this = sender as DatetimeTextBox;
+			if (_this != null)
+			{
+				_this.blockRecalculateOnce = true;
+				_this.textbox.Text = _this.DateTime.HasValue ? _this.DateTime.Value.ToString(_this.Format) : "";
+			}
+		}
+
 		private static void OnSetDateTime(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			var dtTb = sender as DatetimeTextBox;
-			if (dtTb != null)
+			var _this = sender as DatetimeTextBox;
+			if (_this != null)
 			{
-				if (!dtTb.isKeyboardUpdate)
+				if (!_this.isKeyboardUpdate)
 					Keyboard.ClearFocus();
 
 				if ((e.OldValue == null || e.NewValue != e.OldValue)
 					&& e.NewValue is DateTime dt
-					&& dtTb.textbox != null && !dtTb.textbox.IsFocused)
+					&& _this.textbox != null && !_this.textbox.IsFocused)
 				{
-					dtTb.blockUpdate = true;
-					if (!dtTb.isKeyboardUpdate)
+					_this.blockUpdate = true;
+					if (!_this.isKeyboardUpdate)
 					{
-						dtTb.textbox.Focusable = false;
+						_this.textbox.Focusable = false;
 					}
-					dtTb.textbox.Text = dt.ToString("dd/MM/yyyy HH:mm:ss");
-					if (!dtTb.isKeyboardUpdate)
+					_this.textbox.Text = dt.ToString(_this.Format);
+					if (!_this.isKeyboardUpdate)
 					{
-						dtTb.textbox.Focusable = true;
-						dtTb.blockUpdate = false;
+						_this.textbox.Focusable = true;
 					}
+					_this.blockUpdate = false;
 				}
 			}
-		}
-
-		public static readonly DependencyProperty TextboxBorderThicknessProperty = DependencyProperty.Register("TextboxBorderThickness", typeof(Thickness), typeof(DatetimeTextBox),
-		   new FrameworkPropertyMetadata(new Thickness(0, 0, 0, 1)));
-
-		public Thickness TextboxBorderThickness
-		{
-			get => (Thickness)GetValue(TextboxBorderThicknessProperty);
-			set => SetValue(TextboxBorderThicknessProperty, value);
 		}
 
 		#endregion Properties
@@ -131,7 +144,7 @@ namespace ModernThemables.Controls
 				{
 					blockUpdate = true;
 					textbox.Focusable = false;
-					textbox.Text = DateTime.Value.ToString("dd/MM/yyyy HH:mm:ss");
+					textbox.Text = DateTime.Value.ToString(Format);
 					textbox.Focusable = true;
 					blockUpdate = false;
 				}
@@ -140,23 +153,18 @@ namespace ModernThemables.Controls
 
 		#endregion Override
 
-		#region Methods
+		#region Register events
 
-		#endregion
+		public static readonly RoutedEvent DateChangedEvent = EventManager.RegisterRoutedEvent(
+			"DateChanged",
+			RoutingStrategy.Bubble,
+			typeof(RoutedEventHandler),
+			typeof(DatetimeTextBox));
 
-		#region Events
-
-		public static readonly RoutedEvent DateChangedEvent = EventManager.RegisterRoutedEvent("DateChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DatetimeTextBox));
 		public event RoutedEventHandler LowerValueChanged
 		{
-			add
-			{
-				AddHandler(DatetimeTextBox.DateChangedEvent, value);
-			}
-			remove
-			{
-				RemoveHandler(DatetimeTextBox.DateChangedEvent, value);
-			}
+			add => AddHandler(DatetimeTextBox.DateChangedEvent, value);
+			remove =>RemoveHandler(DatetimeTextBox.DateChangedEvent, value);
 		}
 
 		#endregion
@@ -165,34 +173,77 @@ namespace ModernThemables.Controls
 
 		private void TextChanged(object sender, TextChangedEventArgs e)
 		{
-			var skip = new List<string>() { "", " ", ":", "/" };
-			var moveOnIndex = new List<int>() { 2, 5, 10, 11, 13, 16 };
-			if (moveOnIndex.Contains(textbox.SelectionStart) && skip.Contains(GetNextCharacter(textbox.SelectionStart))) textbox.SelectionStart++;
-			dateValid = System.DateTime.TryParseExact(textbox.Text, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
+			if (blockRecalculateOnce)
+			{
+				blockRecalculateOnce = false;
+				return;
+			}
+
+			if (textbox.Text.ToCharArray().Select(x => x.ToString()).All(skipCharacters.Contains))
+			{
+				textbox.SelectionStart = 0;
+			}
+
+			var moveOnIndex = new List<int>();
+			for (int i = 0; i < Format.Length; i++)
+			{
+				if (skipCharacters.Contains(Format.ElementAt(i).ToString()))
+				{
+					moveOnIndex.Add(i);
+				}
+			}
+
+			if (moveOnIndex.Contains(textbox.SelectionStart)
+				&& skipCharacters.Contains(GetNextCharacter(textbox.SelectionStart)))
+			{
+				textbox.SelectionStart++;
+			}
+
+			dateValid = System.DateTime.TryParseExact(
+				textbox.Text, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
 			FormatText(PART_textbox, textbox, dateValid);
 			CalculateDate();
 		}
 
 		private void TextKeyDown(object sender, KeyEventArgs e)
 		{
-			var skip = new List<string>() { "", " ", ":", "/" };
 			string text = textbox.Text == string.Empty ? "/// ::" : textbox.Text;
+			int selectStart = textbox.SelectionStart;
+			bool setStart = false;
+
+			var key = e.Key.ToString();
+
+			if (!(Regex.IsMatch(key, "D[0-9]")
+				|| e.Key == Key.Right
+				|| e.Key == Key.Left
+				|| e.Key == Key.End
+				|| e.Key == Key.Home
+				|| e.Key == Key.Delete
+				|| e.Key == Key.Back
+				|| e.Key == Key.Tab
+				|| Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
+				|| Keyboard.IsKeyDown(Key.RightCtrl) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
+                || Keyboard.IsKeyDown(Key.LeftShift) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
+                || Keyboard.IsKeyDown(Key.RightShift) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion))
+			{
+				e.Handled = true;
+				return; 
+			}
 
 			if (textbox.SelectionLength == 0)
 			{
 				switch (e.Key)
 				{
 					case Key.Back:
-						while (skip.Contains(GetPreviousCharacter(textbox.SelectionStart)) && textbox.SelectionStart != 0) textbox.SelectionStart--;
+						while (skipCharacters.Contains(GetPreviousCharacter(textbox.SelectionStart)) && textbox.SelectionStart != 0) textbox.SelectionStart--;
 						e.Handled = textbox.SelectionStart == 0;
 						break;
 					case Key.Delete:
-						while (skip.Contains(GetNextCharacter(textbox.SelectionStart)) && textbox.SelectionStart != textbox.Text.Length) textbox.SelectionStart++;
+						while (skipCharacters.Contains(GetNextCharacter(textbox.SelectionStart)) && textbox.SelectionStart != textbox.Text.Length) textbox.SelectionStart++;
 						e.Handled = textbox.SelectionStart == textbox.Text.Length;
 						break;
 					default:
-						var key = e.Key.ToString();
-						e.Handled = !(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Regex.IsMatch(key, "^[A-Z]$") || e.Key == Key.Space;
+						e.Handled = !(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Regex.IsMatch(key, "^[A-Z]$");
 						break;
 				}
 			}
@@ -203,26 +254,38 @@ namespace ModernThemables.Controls
 					case Key.Back:
 						var toDelete = textbox.Text.Substring(textbox.SelectionStart, textbox.SelectionLength);
 						var updated = Regex.Replace(toDelete, "[0-9]", "");
-						text = text.Replace(toDelete, updated);
+						text = $"{text.Substring(0, textbox.SelectionStart)}{updated}{text.Substring(textbox.SelectionStart + textbox.SelectionLength, text.Length - textbox.SelectionStart - textbox.SelectionLength)}";
+						selectStart = textbox.SelectionStart;
+						setStart = true;
 						textbox.SelectionLength = 0;
 						e.Handled = true;
 						break;
 					case Key.Delete:
 						var toDelete2 = textbox.Text.Substring(textbox.SelectionStart, textbox.SelectionLength);
 						var updated2 = Regex.Replace(toDelete2, "[0-9]", "");
-						text = text.Replace(toDelete2, updated2);
-						textbox.SelectionStart = textbox.SelectionStart + textbox.SelectionLength;
+						text = $"{text.Substring(0, textbox.SelectionStart)}{updated2}{text.Substring(textbox.SelectionStart + textbox.SelectionLength, text.Length - textbox.SelectionStart - textbox.SelectionLength)}";
+						selectStart = textbox.SelectionStart + textbox.SelectionLength;
 						textbox.SelectionLength = 0;
+						setStart = true;
 						e.Handled = true;
 						break;
 					default:
-						var key = e.Key.ToString();
-						e.Handled = !(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Regex.IsMatch(key, "^[A-Z]$") || e.Key == Key.Space;
+						if (Regex.IsMatch(key, "D[0-9]"))
+						{
+							var toDelete3 = textbox.Text.Substring(textbox.SelectionStart, textbox.SelectionLength);
+							var updated3 = Regex.Replace(toDelete3, "[0-9a-zA-Z]+", "");
+							text = $"{text.Substring(0, textbox.SelectionStart)}{updated3}{text.Substring(textbox.SelectionStart + textbox.SelectionLength, text.Length - textbox.SelectionStart - textbox.SelectionLength)}";
+							selectStart = textbox.SelectionStart;
+							setStart = true;
+							e.Handled = !(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Regex.IsMatch(key, "^[A-Z]$") || e.Key == Key.Space;
+						}
 						break;
 				}
 			}
 
 			textbox.Text = text;
+			if (setStart) textbox.SelectionStart = selectStart;
+
 		}
 
 		private string GetPreviousCharacter(int currentPos)
@@ -248,18 +311,10 @@ namespace ModernThemables.Controls
 		{
 			if (blockUpdate) return;
 
-			if (!blockRefresh)
-			{
-				trigger.Refresh();
-				if (System.DateTime.Now - lastUpdateTime < TimeSpan.FromMilliseconds(50)) return;
-			}
-
 			isKeyboardUpdate = keyboardUpdate;
 
-			var calculate = dateValid;
-
 			Application.Current.Dispatcher.Invoke(() => { 
-				if (calculate) DateTime = System.DateTime.ParseExact(textbox.Text, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+				if (dateValid) DateTime = System.DateTime.ParseExact(textbox.Text, Format, CultureInfo.InvariantCulture);
 				else DateTime = null;
 			});
 

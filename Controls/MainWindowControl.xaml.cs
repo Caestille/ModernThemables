@@ -160,8 +160,8 @@ namespace ModernThemables.Controls
 		public MainWindowControl()
 		{
 			InitializeComponent();
-			SettingsClippingStackPanel.ClipToBounds = true;
-			SettingsBorderBlur.Opacity = 0;
+            SettingsGrid.ClipToBounds = true;
+            SettingsBorderBlur.Opacity = 0;
 			this.Loaded += MainWindowControl_Loaded;
 		}
 
@@ -170,17 +170,17 @@ namespace ModernThemables.Controls
 			if (open == isThemingGridOpen)
 				return;
 
-			SettingsClippingStackPanel.IsHitTestVisible = open;
+			SettingsGrid.IsHitTestVisible = open;
 
-			var menuHiddenTopMargin = 5;
-			var menuStart = open ? SettingsGrid.ActualHeight * -1 : menuHiddenTopMargin;
-			var menuEnd = open ? menuHiddenTopMargin : SettingsGrid.ActualHeight * -1;
+			var menuEnd = open ? 6 : -SettingsBorder.ActualHeight - 5;
 			var blackoutGridOpacityEnd = open ? 0.3 : 0;
 			var buttonRotate = open ? 180 : 0;
 
+			var marginEnd = new Thickness(0, menuEnd, 6, 0);
+
 			ThemeSetButton.RenderTransform = new RotateTransform(buttonRotate) { CenterX = ThemeSetButton.ActualWidth / 2, CenterY = ThemeSetButton.ActualHeight / 2 };
 			BlackoutGrid.Opacity = blackoutGridOpacityEnd;
-			SettingsGrid.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(menuStart, menuEnd, new Duration(TimeSpan.FromSeconds(0.1))));
+            SettingsBorder.BeginAnimation(MarginProperty, new ThicknessAnimation(marginEnd, new Duration(TimeSpan.FromSeconds(0.1))));
 
 			isThemingGridOpen = open;
 
@@ -189,13 +189,12 @@ namespace ModernThemables.Controls
 
 			SettingsBorderBlur.Opacity = open ? 0.7 : 0;
 
-			SettingsClippingStackPanel.IsEnabled = open;
+			SettingsGrid.IsEnabled = open;
 
 			if (open)
 			{
 				await Task.Delay(100);
 				ThemingControl.FocusOnOpen();
-				Blurrer.DrawBlurredElementBackground();
 			}
 		}
 
