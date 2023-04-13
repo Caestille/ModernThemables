@@ -294,9 +294,9 @@ namespace ModernThemables.Charting.Controls
 			var labels2 = labels.Select(x => new AxisLabel()
 			{
 				Value = x.ToString(),
-				Height = InternalSeries.First(y => y.BackingPoint.Name == x).X - 5,
+				Location = InternalSeries.First(y => y.BackingPoint.Name == x).X + GroupWidth / 2,
 			});
-			XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
+			//XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
 			if (isSingleXPoint)
 			{
 				XAxisLabels = new ObservableCollection<AxisLabel>()
@@ -321,9 +321,7 @@ namespace ModernThemables.Charting.Controls
 				Value = YAxisFormatter == null
 					? Math.Round(y, 2).ToString()
 					: YAxisFormatter(y),
-				Height = ((y - yMin) / yRange * plotAreaHeight) - (labels.ToList().IndexOf(y) > 0
-					? (labels[labels.ToList().IndexOf(y) - 1] - yMin) / yRange * plotAreaHeight
-					: 0),
+				Location = ((double)(y - yMin) / (double)yRange) * plotAreaHeight,
 			});
 			YAxisLabels = new ObservableCollection<AxisLabel>(labels2.Reverse());
 		}

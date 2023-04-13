@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using ModernThemables.Charting.Models;
 
-namespace ModernThemables.Controls.Charts.ChartComponents
+namespace ModernThemables.Charting.Controls.ChartComponents
 {
     /// <summary>
     /// Interaction logic for LegendControl.xaml

@@ -453,7 +453,7 @@ namespace ModernThemables.Charting.Controls
 				Value = XAxisFormatter == null
 					? x.ToString()
 					: XAxisFormatter(Series.First().Values.First().XValueToImplementation(x)),
-				Height = ((x - xMin) / xRange * plotAreaWidth) - (labels.ToList().IndexOf(x) > 0
+				Location = ((x - xMin) / xRange * plotAreaWidth) - (labels.ToList().IndexOf(x) > 0
 					? (labels[labels.ToList().IndexOf(x) - 1] - xMin) / xRange * plotAreaWidth
 					: 0),
 			});
@@ -483,7 +483,7 @@ namespace ModernThemables.Charting.Controls
 				Value = YAxisFormatter == null
 					? Math.Round(y, 2).ToString()
 					: YAxisFormatter(Series.First().Values.First().YValueToImplementation(y)),
-				Height = ((y - yMin) / yRange * plotAreaHeight) - (labels.ToList().IndexOf(y) > 0
+				Location = ((y - yMin) / yRange * plotAreaHeight) - (labels.ToList().IndexOf(y) > 0
 					? (labels[labels.ToList().IndexOf(y) - 1] - yMin) / yRange * plotAreaHeight
 					: 0),
 			});
