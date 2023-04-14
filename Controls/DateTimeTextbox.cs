@@ -36,13 +36,13 @@ namespace ModernThemables.Controls
 
 		private bool blockRecalculateOnce;
 
-        private List<string> skipCharacters = new() { "", " ", ":", "/" };
+		private List<string> skipCharacters = new() { "", " ", ":", "/" };
 
-        #endregion Members
+		#endregion Members
 
-        #region Constructors
+		#region Constructors
 
-        static DatetimeTextBox()
+		static DatetimeTextBox()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(DatetimeTextBox), new FrameworkPropertyMetadata(typeof(DatetimeTextBox)));
 		}
@@ -51,6 +51,15 @@ namespace ModernThemables.Controls
 		{
 			trigger = new KeepAliveTriggerService(() => { CalculateDate(false); }, 100);
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+			this.GotKeyboardFocus += DatetimeTextBox_GotKeyboardFocus;
+		}
+
+		private void DatetimeTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+		{
+			if (textbox!= null && !textbox.IsKeyboardFocused)
+			{
+				textbox.Focus();
+			}
 		}
 
 		#endregion Constructors
@@ -223,8 +232,8 @@ namespace ModernThemables.Controls
 				|| e.Key == Key.Tab
 				|| Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
 				|| Keyboard.IsKeyDown(Key.RightCtrl) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
-                || Keyboard.IsKeyDown(Key.LeftShift) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
-                || Keyboard.IsKeyDown(Key.RightShift) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion))
+				|| Keyboard.IsKeyDown(Key.LeftShift) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
+				|| Keyboard.IsKeyDown(Key.RightShift) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion))
 			{
 				e.Handled = true;
 				return; 
