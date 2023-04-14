@@ -37,17 +37,12 @@ namespace ModernThemables.Controls
 		#region Properties
 
 		public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register("SearchText", typeof(string), typeof(SearchBox),
-		   new FrameworkPropertyMetadata(null, OnSetSearchText));
+		   new FrameworkPropertyMetadata(null));
 
 		public string SearchText
 		{
 			get => (string)GetValue(SearchTextProperty);
 			set => SetValue(SearchTextProperty, value);
-		}
-
-		private static void OnSetSearchText(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-
 		}
 
 		public double BackgroundOpacity
@@ -68,13 +63,13 @@ namespace ModernThemables.Controls
 
 			if (textBox != null)
 			{
-				textBox.TextChanged -= TextChanged;
+				//textBox.TextChanged -= TextChanged;
 				textBox.PreviewKeyDown -= KeyDown;
 			}
 			textBox = this.Template.FindName(PART_textBox, this) as TextBox;
 			if (textBox != null)
 			{
-				textBox.TextChanged += TextChanged;
+				//textBox.TextChanged += TextChanged;
 				textBox.PreviewKeyDown += KeyDown;
 			}
 
@@ -93,17 +88,12 @@ namespace ModernThemables.Controls
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			this.SearchText = textBox.Text = string.Empty;
+			this.SearchText = string.Empty;
 		}
 
 		#endregion Override
 
 		#region Events Handlers
-
-		private void TextChanged(object sender, TextChangedEventArgs e)
-		{
-			SearchText = textBox.Text;
-		}
 
 		private void KeyDown(object sender, KeyEventArgs e)
 		{
