@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ModernThemables.Converters;
 using System.Windows.Threading;
 using ModernThemables.Charting.ViewModels.PieChart;
 using ModernThemables.Charting.Converters;

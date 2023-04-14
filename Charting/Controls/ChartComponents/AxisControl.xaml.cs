@@ -1,14 +1,11 @@
-﻿using CoreUtilities.HelperClasses;
-using ModernThemables.Charting.Models;
+﻿using ModernThemables.Charting.Models;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
-using CoreUtilities.Converters;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Globalization;
-using System.Collections.Generic;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {

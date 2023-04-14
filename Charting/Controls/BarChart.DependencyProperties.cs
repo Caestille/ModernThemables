@@ -1,5 +1,4 @@
 ﻿using ModernThemables.Charting.ViewModels;
-using ModernThemables.Charting.ViewModels.CartesianChart;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;

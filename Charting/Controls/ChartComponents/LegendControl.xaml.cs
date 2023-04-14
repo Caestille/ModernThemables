@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using ModernThemables.Charting.Models;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
