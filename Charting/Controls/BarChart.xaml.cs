@@ -27,8 +27,8 @@ namespace ModernThemables.Charting.Controls
     /// </summary>
     public partial class BarChart : UserControl
 	{
-		private double plotAreaHeight => DrawableChartSectionBorder.ActualHeight;
-		private double plotAreaWidth => DrawableChartSectionBorder.ActualWidth;
+		private double plotAreaHeight => MouseCaptureGrid.ActualHeight;
+		private double plotAreaWidth => MouseCaptureGrid.ActualWidth;
 		private DateTime timeLastUpdated;
 		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 60d);
 		private bool hasSetSeries;
