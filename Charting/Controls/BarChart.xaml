@@ -86,10 +86,9 @@
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 			<chartComponents:AxisControl
-				VerticalAlignment="Stretch"
-				HorizontalAlignment="Stretch"
 				BorderBrush="{DynamicResource StatusTextLightBrush}"
-				ShowDividers="False"
+				BorderThickness="0,0,1,0"
+				Margin="0,0,-1,0"
 				Foreground="{DynamicResource StatusTextBrush}"
 				Labels="{Binding ElementName=root, Path=YAxisLabels}"
 				Orientation="Vertical" />
@@ -97,6 +96,7 @@
 				Grid.Row="1"
 				Grid.Column="1"
 				BorderBrush="{DynamicResource StatusTextLightBrush}"
+				BorderThickness="1,1,0,0"
 				DividerOffset="{Binding ElementName=root, Path=GroupWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
 				Foreground="{DynamicResource StatusTextBrush}"
 				LabelRotation="90"
@@ -204,18 +204,13 @@
 					MouseLeave="MouseCaptureGrid_MouseLeave"
 					MouseMove="MouseCaptureGrid_MouseMove"
 					Opacity="0.001" />
-				<Border
-					x:Name="DrawableChartSectionBorder"
-					BorderBrush="{DynamicResource StatusTextLightBrush}"
-					BorderThickness="1,0,0,1"
-					IsHitTestVisible="False" />
 			</Grid>
 		</Grid>
 		<Grid
 			Grid.Row="1"
 			Grid.Column="1"
-			Width="{Binding ElementName=DrawableChartSectionBorder, Path=ActualWidth}"
-			Height="{Binding ElementName=DrawableChartSectionBorder, Path=ActualHeight}"
+			Width="{Binding ElementName=MouseCaptureGrid, Path=ActualWidth}"
+			Height="{Binding ElementName=MouseCaptureGrid, Path=ActualHeight}"
 			HorizontalAlignment="Right"
 			VerticalAlignment="Top">
 			<Grid
