@@ -6,6 +6,9 @@ using System.Windows.Controls;
 using System.Linq;
 using CoreUtilities.Converters;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
+using System.Globalization;
+using System.Collections.Generic;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
@@ -58,6 +61,28 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(AxisControl),
 			new UIPropertyMetadata(0d));
 
+		private double DividerWidth
+		{
+			get => (double)GetValue(DividerWidthtProperty);
+			set => SetValue(DividerWidthtProperty, value);
+		}
+		public static readonly DependencyProperty DividerWidthtProperty = DependencyProperty.Register(
+			"DividerWidth",
+			typeof(double),
+			typeof(AxisControl),
+			new UIPropertyMetadata(0d));
+
+		private double DividerHeight
+		{
+			get => (double)GetValue(DividerHeightProperty);
+			set => SetValue(DividerHeightProperty, value);
+		}
+		public static readonly DependencyProperty DividerHeightProperty = DependencyProperty.Register(
+			"DividerHeight",
+			typeof(double),
+			typeof(AxisControl),
+			new UIPropertyMetadata(0d));
+
 		public double DividerOffset
 		{
 			get => (double)GetValue(DividerOffsetProperty);
@@ -69,6 +94,17 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(AxisControl),
 			new UIPropertyMetadata(0d));
 
+		private Thickness DividerBorderThickness
+		{
+			get => (Thickness)GetValue(DividerBorderThicknessProperty);
+			set => SetValue(DividerBorderThicknessProperty, value);
+		}
+		public static readonly DependencyProperty DividerBorderThicknessProperty = DependencyProperty.Register(
+			"DividerBorderThickness",
+			typeof(Thickness),
+			typeof(AxisControl),
+			new UIPropertyMetadata(new Thickness(0)));
+
 		private string MarginString
 		{
 			get => (string)GetValue(MarginStringProperty);
@@ -78,7 +114,29 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			"MarginString",
 			typeof(string),
 			typeof(AxisControl),
-			new UIPropertyMetadata("1-0-0-0"));
+			new UIPropertyMetadata("0-0-0-1"));
+
+		private HorizontalAlignment DividerAlignment
+		{
+			get => (HorizontalAlignment)GetValue(DividerAlignmentProperty);
+			set => SetValue(DividerAlignmentProperty, value);
+		}
+		public static readonly DependencyProperty DividerAlignmentProperty = DependencyProperty.Register(
+			"DividerAlignment",
+			typeof(HorizontalAlignment),
+			typeof(AxisControl),
+			new UIPropertyMetadata(HorizontalAlignment.Right));
+
+		private VerticalAlignment Alignment
+		{
+			get => (VerticalAlignment)GetValue(AlignmentProperty);
+			set => SetValue(AlignmentProperty, value);
+		}
+		public static readonly DependencyProperty AlignmentProperty = DependencyProperty.Register(
+			"Alignment",
+			typeof(VerticalAlignment),
+			typeof(AxisControl),
+			new UIPropertyMetadata(VerticalAlignment.Bottom));
 
 		public ObservableCollection<AxisLabel> Labels
 		{
@@ -94,6 +152,12 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		public AxisControl()
 		{
 			InitializeComponent();
+			MainItemsControl.SizeChanged += MainItemsControl_SizeChanged;
+		}
+
+		private void MainItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			OnSetLabelRotation(this, new DependencyPropertyChangedEventArgs());
 		}
 
 		private static async void OnSetAxisOrientation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -109,37 +173,75 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 					_this.MarginString = "1-0-0-0";
 					break;
 			}
+
+			OnSetLabelRotation(sender, e);
 		}
 
 		private static async void OnSetLabelRotation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (sender is not AxisControl _this || _this.Labels == null) return;
+			if (sender is not AxisControl _this || _this.Labels == null || !_this.Labels.Any()) return;
 
-			var value = _this.Labels.Any()
-				? _this.Labels.Max(x => (double)(new StringWidthGetterConverter().Convert(
-					new object[]
-					{
-						x.Value,
-						_this.FontSize,
-						_this.FontFamily,
-						_this.FontStyle,
-						_this.FontWeight,
-						_this.FontStretch
-					},
-					null,
-					null,
-					null))) * Math.Sin(_this.LabelRotation * Math.PI / 180) + 10
-				: 0;
+			var sizes = _this.Labels.Select(
+				x => _this.MeasureString(
+					x.Value,
+					_this.FontSize,
+					_this.FontFamily,
+					_this.FontStyle,
+					_this.FontWeight,
+					_this.FontStretch));
+
+			var width = sizes.Max(x => x.Width);
+			var height = sizes.Max(x => x.Height);
+
+			var mult = _this.Orientation == Orientation.Vertical
+					? Math.Cos(_this.LabelRotation * Math.PI / 180)
+					: Math.Sin(_this.LabelRotation * Math.PI / 180);
+			var value2 = width * mult + 10;
 
 			switch (_this.Orientation)
 			{
 				case Orientation.Horizontal:
-					_this.MainItemsControl.Height = value;
+					_this.MainItemsControl.Height = _this.DividerItemsControl.Height = value2;
+					_this.MainItemsControl.Width = _this.DividerItemsControl.Width = Double.NaN;
+					_this.MainItemsControl.Margin = _this.DividerItemsControl.Margin = new Thickness(-_this.BorderThickness.Left, 0, 0, 0);
+					_this.Alignment = VerticalAlignment.Top;
+					_this.DividerWidth = 2;
+					_this.DividerHeight = 6;
+					_this.DividerBorderThickness = new Thickness(1, 0, 0, 0);
+					_this.DividerAlignment = HorizontalAlignment.Left;
 					break;
 				case Orientation.Vertical:
-					_this.MainItemsControl.Width = value;
+					_this.MainItemsControl.Width = _this.DividerItemsControl.Width = value2;
+					_this.MainItemsControl.Height = _this.DividerItemsControl.Height = Double.NaN;
+					_this.MainItemsControl.Margin = new Thickness(-_this.BorderThickness.Left, 0, 0, -height / 2);
+					_this.DividerItemsControl.Margin = new Thickness(-_this.BorderThickness.Left, 0, 0, -1);
+					_this.Alignment = VerticalAlignment.Bottom;
+					_this.DividerWidth = 6;
+					_this.DividerHeight = 2;
+					_this.DividerBorderThickness = new Thickness(0, 0, 0, 1);
+					_this.DividerAlignment = HorizontalAlignment.Right;
 					break;
 			}
+		}
+
+		private Size MeasureString(string? text, double fontSize, FontFamily fontFamily, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch)
+		{
+			if (text != null)
+			{
+#pragma warning disable CS0618
+				var formattedText = new FormattedText(
+#pragma warning restore CS0618
+					text,
+					CultureInfo.CurrentCulture,
+					FlowDirection.LeftToRight,
+					new Typeface(fontFamily, fontStyle, fontWeight, fontStretch),
+					fontSize,
+					Brushes.Black);
+
+				return new Size(formattedText.Width, formattedText.Height);
+			}
+
+			return new Size(0, 0);
 		}
 	}
 }

@@ -272,7 +272,7 @@ namespace ModernThemables.Charting.Controls
 				});
 
 				BarWidth = barWidth;
-				GroupWidth = groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) : 0;
+				GroupWidth = Math.Floor(groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) : 0);
 				var radius = BarWidth * BarCornerRadiusFraction / 2;
 				BarCornerRadius = new CornerRadius(0, 0, radius, radius);
 
@@ -296,7 +296,7 @@ namespace ModernThemables.Charting.Controls
 				Value = x.ToString(),
 				Location = InternalSeries.First(y => y.BackingPoint.Name == x).X + GroupWidth / 2,
 			});
-			//XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
+			XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
 			if (isSingleXPoint)
 			{
 				XAxisLabels = new ObservableCollection<AxisLabel>()
