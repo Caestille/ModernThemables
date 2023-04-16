@@ -78,9 +78,9 @@
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 			<chartComponents:AxisControl
+				Margin="0,0,-1,0"
 				BorderBrush="{DynamicResource StatusTextLightBrush}"
 				BorderThickness="0,0,1,0"
-				Margin="0,0,-1,0"
 				Foreground="{DynamicResource StatusTextBrush}"
 				Labels="{Binding ElementName=root, Path=YAxisLabels}"
 				Orientation="Vertical" />
@@ -95,7 +95,9 @@
 				Labels="{Binding ElementName=root, Path=XAxisLabels}"
 				Orientation="Horizontal" />
 			<Grid x:Name="Grid" Grid.Column="1">
-				<ItemsControl ItemsSource="{Binding YAxisLabels, ElementName=root}" Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}">
+				<ItemsControl
+					ItemsSource="{Binding YAxisLabels, ElementName=root}"
+					Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<StackPanel VerticalAlignment="Bottom" />
