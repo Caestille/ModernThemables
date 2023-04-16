@@ -7,14 +7,6 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	x:Name="root"
 	mc:Ignorable="d">
-	<UserControl.Resources>
-		<ItemsPanelTemplate x:Key="WrapTemplate" x:Name="WrapTemplate">
-			<StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" />
-		</ItemsPanelTemplate>
-		<ItemsPanelTemplate x:Key="StackTemplate" x:Name="StackTemplate">
-			<StackPanel />
-		</ItemsPanelTemplate>
-	</UserControl.Resources>
 	<Grid SizeChanged="Grid_SizeChanged">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />
