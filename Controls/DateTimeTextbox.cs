@@ -9,6 +9,7 @@ using CoreUtilities.Services;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.ComponentModel;
 
 namespace ModernThemables.Controls
 {
@@ -37,6 +38,8 @@ namespace ModernThemables.Controls
 		private bool blockRecalculateOnce;
 
 		private List<string> skipCharacters = new() { "", " ", ":", "/" };
+
+		private DateTime? lastValue;
 
 		#endregion Members
 
@@ -105,7 +108,7 @@ namespace ModernThemables.Controls
 			var _this = sender as DatetimeTextBox;
 			if (_this != null)
 			{
-				if (!_this.isKeyboardUpdate)
+				if (!_this.isKeyboardUpdate && _this.IsKeyboardFocused)
 					Keyboard.ClearFocus();
 
 				if ((e.OldValue == null || e.NewValue != e.OldValue)
@@ -167,10 +170,10 @@ namespace ModernThemables.Controls
 		public static readonly RoutedEvent DateChangedEvent = EventManager.RegisterRoutedEvent(
 			"DateChanged",
 			RoutingStrategy.Bubble,
-			typeof(RoutedEventHandler),
+			typeof(RoutedPropertyChangedEventHandler<DateTime?>),
 			typeof(DatetimeTextBox));
 
-		public event RoutedEventHandler LowerValueChanged
+		public event RoutedPropertyChangedEventHandler<DateTime?> DateChanged
 		{
 			add => AddHandler(DatetimeTextBox.DateChangedEvent, value);
 			remove =>RemoveHandler(DatetimeTextBox.DateChangedEvent, value);
@@ -322,10 +325,21 @@ namespace ModernThemables.Controls
 
 			isKeyboardUpdate = keyboardUpdate;
 
-			Application.Current.Dispatcher.Invoke(() => { 
-				if (dateValid) DateTime = System.DateTime.ParseExact(textbox.Text, Format, CultureInfo.InvariantCulture);
-				else DateTime = null;
-			});
+			Application.Current.Dispatcher.Invoke(() => {
+				DateTime? newVal = null;
+				if (dateValid) newVal = System.DateTime.ParseExact(textbox.Text, Format, CultureInfo.InvariantCulture);
+
+				if (newVal != DateTime)
+				{
+					if (DateTime != null)
+					{
+						lastValue = DateTime.Value;
+					}
+					DateTime = newVal;
+					var args = new RoutedPropertyChangedEventArgs<DateTime?>(lastValue, newVal, DateChangedEvent) { Source = this };
+                    this.RaiseEvent(args);
+				}
+            });
 
 			isKeyboardUpdate = false;
 		}
