@@ -152,6 +152,12 @@ namespace ModernThemables.ViewModels
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
 
+		public void Dispose()
+		{
+			osThemePollTimer.Elapsed -= OsThemePollTimer_Elapsed;
+			osThemePollTimer.Stop();
+		}
+
 		private void SetThemeAndBrightnessMode()
 		{
 			registryService.SetSetting(ColourModeSettingName, isDarkMode ? darkModeKey : lightModeKey);
@@ -326,8 +332,7 @@ namespace ModernThemables.ViewModels
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
-			osThemePollTimer.Elapsed -= OsThemePollTimer_Elapsed;
-			osThemePollTimer.Stop();
+			Dispose();
 		}
 
 		private static Color MonoColour(byte value)
