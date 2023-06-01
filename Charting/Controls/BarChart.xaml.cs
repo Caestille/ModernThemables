@@ -20,10 +20,10 @@ using ModernThemables.Charting.Interfaces;
 
 namespace ModernThemables.Charting.Controls
 {
-    /// <summary>
-    /// Interaction logic for BarChart.xaml
-    /// </summary>
-    public partial class BarChart : UserControl
+	/// <summary>
+	/// Interaction logic for BarChart.xaml
+	/// </summary>
+	public partial class BarChart : UserControl
 	{
 		private double plotAreaHeight => MouseCaptureGrid.ActualHeight;
 		private double plotAreaWidth => MouseCaptureGrid.ActualWidth;
