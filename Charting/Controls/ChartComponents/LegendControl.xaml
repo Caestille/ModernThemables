@@ -22,14 +22,14 @@
 			ContentTemplate="{Binding ElementName=root, Path=LegendTemplate}"
 			Visibility="{Binding ElementName=root, Path=LegendTemplate, Converter={StaticResource VisibleIfNotNullConverter}}" />
 		<Border
-			Background="{DynamicResource MenuBrush}"
-			BorderBrush="{DynamicResource MenuBorderBrush}"
-			BorderThickness="1"
+			Background="{Binding ElementName=root, Path=Background}"
+			BorderBrush="{Binding ElementName=root, Path=BorderBrush}"
+			BorderThickness="{Binding ElementName=root, Path=BorderThickness}"
 			CornerRadius="5"
 			Visibility="{Binding ElementName=TemplatedLegend, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}">
 			<ScrollViewer Margin="0,5" VerticalScrollBarVisibility="Auto">
 				<Grid Margin="0,-5">
-					<ItemsControl x:Name="LegendItemsControl" ItemsSource="{Binding}">
+					<ItemsControl x:Name="LegendItemsControl" ItemsSource="{Binding ElementName=root, Path=Items}">
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>
 								<WrapPanel Margin="2,5">

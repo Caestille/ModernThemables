@@ -18,45 +18,17 @@
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
-		<Grid
+		<chartComponents:LegendControl
 			x:Name="LegendGrid"
 			Grid.Row="1"
 			Grid.Column="2"
-			Margin="0"
 			HorizontalAlignment="Center"
 			VerticalAlignment="Center"
-			Cursor="Arrow">
-			<Border
-				Background="{DynamicResource MenuBrush}"
-				BorderBrush="{DynamicResource MenuBorderBrush}"
-				BorderThickness="1"
-				CornerRadius="5">
-				<ItemsControl x:Name="LegendItemsControl" ItemsSource="{Binding ElementName=root, Path=Series}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<WrapPanel Margin="2,5">
-								<Border
-									Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-									Height="15"
-									Margin="5,0"
-									HorizontalAlignment="Left"
-									VerticalAlignment="Stretch"
-									Background="{Binding Fill.CoreBrush}"
-									BorderBrush="{Binding Stroke.CoreBrush}"
-									BorderThickness="2"
-									CornerRadius="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, ConverterParameter=0.5, Converter={StaticResource ValueMultiplierConverter}}" />
-								<TextBlock
-									Margin="5,0,10,0"
-									HorizontalAlignment="Left"
-									VerticalAlignment="Center"
-									Foreground="{DynamicResource TextBrush}"
-									Text="{Binding Name}" />
-							</WrapPanel>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</Border>
-		</Grid>
+			Background="{DynamicResource MenuBrush}"
+			BorderBrush="{DynamicResource MenuBorderBrush}"
+			BorderThickness="1"
+			CornerRadius="5"
+			Items="{Binding ElementName=root, Path=Series}" />
 		<Grid
 			Grid.Row="1"
 			Grid.Column="1"
@@ -95,23 +67,11 @@
 				Labels="{Binding ElementName=root, Path=XAxisLabels}"
 				Orientation="Horizontal" />
 			<Grid x:Name="Grid" Grid.Column="1">
-				<ItemsControl
-					ItemsSource="{Binding YAxisLabels, ElementName=root}"
-					Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<StackPanel VerticalAlignment="Bottom" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Border
-								Height="{Binding Location}"
-								BorderBrush="{DynamicResource StatusTextLightBrush}"
-								BorderThickness="0,1,0,0" />
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+				<chartComponents:GridControl
+					Margin="-1"
+					Foreground="{DynamicResource StatusTextLightBrush}"
+					Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}"
+					YLabels="{Binding YAxisLabels, ElementName=root}" />
 				<Grid Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualHeight}">
 					<ItemsControl
 						x:Name="SeriesItemsControl"
@@ -192,12 +152,10 @@
 						</ItemsControl.RenderTransform>
 					</ItemsControl>
 				</Grid>
-				<Grid
-					x:Name="MouseCaptureGrid"
-					Background="{DynamicResource MainBackgroundBrush}"
+				<chartComponents:TooltipControl
 					MouseLeave="MouseCaptureGrid_MouseLeave"
 					MouseMove="MouseCaptureGrid_MouseMove"
-					Opacity="0.001" />
+					ShowCrosshair="True" />
 			</Grid>
 		</Grid>
 		<Grid
@@ -206,81 +164,76 @@
 			Width="{Binding ElementName=MouseCaptureGrid, Path=ActualWidth}"
 			Height="{Binding ElementName=MouseCaptureGrid, Path=ActualHeight}"
 			HorizontalAlignment="Right"
-			VerticalAlignment="Top">
-			<Grid
+			VerticalAlignment="Top"
+			IsHitTestVisible="False"
+			Opacity="{Binding ElementName=root, Path=TooltipOpacity}">
+			<Border
 				x:Name="TooltipGrid"
-				Grid.ColumnSpan="10"
+				Width="Auto"
+				Height="Auto"
+				Margin="3"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Top"
-				IsHitTestVisible="False"
 				Opacity="{Binding ElementName=root, Path=TooltipOpacity}">
-				<Border
-					Width="Auto"
-					Height="Auto"
-					Margin="3"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Top"
-					Opacity="{Binding ElementName=root, Path=TooltipOpacity}">
-					<Border.Visibility>
-						<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-							<Binding ElementName="root" Path="IsTooltipVisible" />
-							<Binding
-								Converter="{StaticResource IsNotNullConverter}"
-								ElementName="root"
-								Path="TooltipBar" />
-						</MultiBinding>
-					</Border.Visibility>
-					<Grid>
-						<Border
-							Padding="5"
-							Background="{DynamicResource MenuBrush}"
-							BorderBrush="{DynamicResource MenuBorderBrush}"
-							BorderThickness="1"
-							CornerRadius="5"
-							Visibility="{Binding ElementName=ContentControl, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
-								<TextBlock
-									Grid.RowSpan="2"
-									Margin="3,3,10,3"
-									VerticalAlignment="Center"
-									FontSize="20"
-									FontWeight="DemiBold"
-									Foreground="{DynamicResource TextBrush}"
-									Text="{Binding ElementName=root, Path=TooltipBar.DisplayValue}" />
-								<TextBlock
-									Grid.Column="1"
-									FontWeight="Bold"
-									Foreground="{DynamicResource TextBrush}"
-									Text="{Binding ElementName=root, Path=TooltipBar.BackingPoint.Name}" />
-								<TextBlock
-									Grid.Row="1"
-									Grid.Column="1"
-									Foreground="{DynamicResource TextBrush}"
-									Text="{Binding ElementName=root, Path=TooltipString}" />
-							</Grid>
-						</Border>
-						<Border
-							BorderBrush="{Binding ElementName=root, Path=TooltipBar.Fill.CoreBrush}"
-							BorderThickness="2,0,0,0"
-							CornerRadius="5"
-							IsHitTestVisible="False">
-							<ContentControl
-								x:Name="ContentControl"
-								Content="{Binding Path=TooltipString, UpdateSourceTrigger=PropertyChanged}"
-								ContentTemplate="{Binding ElementName=root, Path=TooltipTemplate}"
-								Visibility="{Binding ElementName=root, Path=TooltipTemplate, Converter={StaticResource VisibleIfNotNullConverter}}" />
-						</Border>
-					</Grid>
-				</Border>
-			</Grid>
+				<Border.Visibility>
+					<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+						<Binding ElementName="root" Path="IsTooltipVisible" />
+						<Binding
+							Converter="{StaticResource IsNotNullConverter}"
+							ElementName="root"
+							Path="TooltipBar" />
+					</MultiBinding>
+				</Border.Visibility>
+				<Grid>
+					<Border
+						Padding="5"
+						Background="{DynamicResource MenuBrush}"
+						BorderBrush="{DynamicResource MenuBorderBrush}"
+						BorderThickness="1"
+						CornerRadius="5"
+						Visibility="{Binding ElementName=ContentControl, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<TextBlock
+								Grid.RowSpan="2"
+								Margin="3,3,10,3"
+								VerticalAlignment="Center"
+								FontSize="20"
+								FontWeight="DemiBold"
+								Foreground="{DynamicResource TextBrush}"
+								Text="{Binding ElementName=root, Path=TooltipBar.DisplayValue}" />
+							<TextBlock
+								Grid.Column="1"
+								FontWeight="Bold"
+								Foreground="{DynamicResource TextBrush}"
+								Text="{Binding ElementName=root, Path=TooltipBar.BackingPoint.Name}" />
+							<TextBlock
+								Grid.Row="1"
+								Grid.Column="1"
+								Foreground="{DynamicResource TextBrush}"
+								Text="{Binding ElementName=root, Path=TooltipString}" />
+						</Grid>
+					</Border>
+					<Border
+						BorderBrush="{Binding ElementName=root, Path=TooltipBar.Fill.CoreBrush}"
+						BorderThickness="2,0,0,0"
+						CornerRadius="5"
+						IsHitTestVisible="False">
+						<ContentControl
+							x:Name="ContentControl"
+							Content="{Binding Path=TooltipString, UpdateSourceTrigger=PropertyChanged}"
+							ContentTemplate="{Binding ElementName=root, Path=TooltipTemplate}"
+							Visibility="{Binding ElementName=root, Path=TooltipTemplate, Converter={StaticResource VisibleIfNotNullConverter}}" />
+					</Border>
+				</Grid>
+			</Border>
 		</Grid>
 	</Grid>
 </UserControl>

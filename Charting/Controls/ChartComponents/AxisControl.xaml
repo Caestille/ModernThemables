@@ -78,7 +78,7 @@
 							HorizontalAlignment="Left"
 							VerticalAlignment="Bottom"
 							BorderBrush="{Binding ElementName=root, Path=BorderBrush}"
-							BorderThickness="{Binding ElementName=root, Path=DividerBorderThickness}" >
+							BorderThickness="{Binding ElementName=root, Path=DividerBorderThickness}">
 							<Border.Margin>
 								<MultiBinding Converter="{StaticResource MultiBindingDoubleToBorderThicknessConverter}">
 									<Binding ElementName="root" Path="DividerOffset" />
