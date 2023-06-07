@@ -698,7 +698,7 @@
                                 VerticalAlignment="Center"
                                 BorderThickness="0"
                                 Cursor="IBeam"
-                                Foreground="White"
+                                Foreground="{TemplateBinding Foreground}"
                                 SnapsToDevicePixels="True"
                                 Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                 <TextBox.Background>
