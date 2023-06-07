@@ -1,19 +1,18 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
 	public class ExtendedButton : Button
-	{
-		static ExtendedButton()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedButton), new FrameworkPropertyMetadata(typeof(ExtendedButton)));
-		}
+    {
+        readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
+        private Brush backGround;
 
-		readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
-
-		public SolidColorBrush MouseOverColour
+        public SolidColorBrush MouseOverColour
 		{
 			get { return (SolidColorBrush)GetValue(MouseOverColourProperty); }
 			set { SetValue(MouseOverColourProperty, value); }
@@ -52,5 +51,62 @@ namespace ModernThemables.Controls
 		}
 		public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
 		  "CornerRadius", typeof(CornerRadius), typeof(ExtendedButton), new PropertyMetadata(new CornerRadius(0)));
-	}
+
+        static ExtendedButton()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedButton), new FrameworkPropertyMetadata(typeof(ExtendedButton)));
+        }
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+			if (backGround == null)
+			{
+                backGround = Background;
+            }
+            if (backGround != null)
+            {
+				Background = MouseDownColour;
+			}
+            base.OnMouseLeftButtonDown(e);
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+            if (backGround != null)
+            {
+				Background = MouseOverColour;
+			}
+            base.OnMouseLeftButtonUp(e);
+        }
+
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+            if (backGround != null)
+            {
+				Background = MouseOverColour;
+			}
+            base.OnMouseEnter(e);
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+            if (backGround != null)
+			{
+                Background = backGround;
+            }
+            base.OnMouseLeave(e);
+        }
+    }
 }

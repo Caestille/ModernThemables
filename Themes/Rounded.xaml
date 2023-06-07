@@ -994,8 +994,8 @@
                             Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
                         <ScrollBar
                             x:Name="PART_HorizontalScrollBar"
-                            AutomationProperties.AutomationId="HorizontalScrollBar"
                             VerticalAlignment="Bottom"
+                            AutomationProperties.AutomationId="HorizontalScrollBar"
                             Cursor="Arrow"
                             Maximum="{TemplateBinding ScrollableWidth}"
                             Minimum="0"

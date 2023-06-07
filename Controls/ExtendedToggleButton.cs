@@ -1,26 +1,19 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
 	public class ExtendedToggleButton : ToggleButton
-	{
-		static ExtendedToggleButton()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedToggleButton), new FrameworkPropertyMetadata(typeof(ExtendedToggleButton)));
-		}
+    {
+        readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
+        private Brush backGround;
 
-		protected override void OnClick()
-		{
-			base.OnClick();
-			Debug.WriteLine(IsChecked);
-		}
-
-		readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
-
-		public SolidColorBrush MouseOverColour
+        public SolidColorBrush MouseOverColour
 		{
 			get { return (SolidColorBrush)GetValue(MouseOverColourProperty); }
 			set { SetValue(MouseOverColourProperty, value); }
@@ -67,5 +60,92 @@ namespace ModernThemables.Controls
 		}
 		public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
 		  "CornerRadius", typeof(CornerRadius), typeof(ExtendedToggleButton), new PropertyMetadata(new CornerRadius(0)));
-	}
+
+        static ExtendedToggleButton()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedToggleButton), new FrameworkPropertyMetadata(typeof(ExtendedToggleButton)));
+        }
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+            if (backGround != null)
+            {
+                Background = MouseDownColour;
+            }
+            base.OnMouseLeftButtonDown(e);
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+            if (backGround != null)
+            {
+                Background = MouseOverColour;
+            }
+            base.OnMouseLeftButtonUp(e);
+        }
+
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+            if (backGround != null)
+            {
+                Background = MouseOverColour;
+            }
+            base.OnMouseEnter(e);
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+            if (backGround != null && !IsChecked.Value)
+            {
+                Background = backGround;
+            }
+            if (IsChecked.Value)
+            {
+                Background = CheckedColour;
+            }
+            base.OnMouseLeave(e);
+        }
+
+        protected override void OnChecked(RoutedEventArgs e)
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+            if (backGround != null)
+            {
+                Background = CheckedColour;
+            }
+            base.OnChecked(e);
+        }
+
+        protected override void OnUnchecked(RoutedEventArgs e)
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+            if (backGround != null)
+            {
+                Background = MouseOverColour;
+            }
+            base.OnUnchecked(e);
+        }
+    }
 }
