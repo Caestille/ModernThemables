@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Interfaces;
+using System.Collections.Generic;
 
 namespace ModernThemables.Charting.Controls
 {
@@ -65,17 +66,6 @@ namespace ModernThemables.Charting.Controls
 			typeof(bool),
 			typeof(BarChart),
 			new PropertyMetadata(true));
-
-		public bool IsZoomed
-		{
-			get => (bool)GetValue(IsZoomedProperty);
-			set => SetValue(IsZoomedProperty, value);
-		}
-		public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
-			"IsZoomed",
-			typeof(bool),
-			typeof(BarChart),
-			new PropertyMetadata(false));
 
 		public DataTemplate TooltipTemplate
 		{
@@ -279,38 +269,18 @@ namespace ModernThemables.Charting.Controls
 			typeof(BarChart),
 			new PropertyMetadata(new CornerRadius(0)));
 
-		private double XAxisLabelHeight
+		private Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
 		{
-			get => (double)GetValue(XAxisLabelHeightProperty);
-			set => SetValue(XAxisLabelHeightProperty, value);
+			get => (Func<Point, IEnumerable<TooltipViewModel>>)GetValue(TooltipGetterFuncProperty);
+			set => SetValue(TooltipGetterFuncProperty, value);
 		}
-		public static readonly DependencyProperty XAxisLabelHeightProperty = DependencyProperty.Register(
-			"XAxisLabelHeight",
-			typeof(double),
-			typeof(BarChart),
-			new PropertyMetadata(0d));
-
-		private InternalChartEntity TooltipBar
-		{
-			get => (InternalChartEntity)GetValue(TooltipBarProperty);
-			set => SetValue(TooltipBarProperty, value);
-		}
-		public static readonly DependencyProperty TooltipBarProperty = DependencyProperty.Register(
-			"TooltipBar",
-			typeof(InternalChartEntity),
+		public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
+			"TooltipGetterFunc",
+			typeof(Func<Point, IEnumerable<TooltipViewModel>>),
 			typeof(BarChart),
 			new PropertyMetadata(null));
 
-		private string TooltipString
-		{
-			get => (string)GetValue(TooltipStringProperty);
-			set => SetValue(TooltipStringProperty, value);
-		}
-		public static readonly DependencyProperty TooltipStringProperty = DependencyProperty.Register(
-			"TooltipString",
-			typeof(string),
-			typeof(BarChart),
-			new PropertyMetadata(""));
+		
 
 		#endregion
 	}

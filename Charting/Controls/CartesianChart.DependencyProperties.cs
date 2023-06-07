@@ -236,16 +236,16 @@ namespace ModernThemables.Charting.Controls
 
 		#region Private properties
 
-		private ObservableCollection<TooltipPointViewModel> TooltipPoints
+		private ObservableCollection<TooltipViewModel> TooltipPoints
 		{
-			get => (ObservableCollection<TooltipPointViewModel>)GetValue(TooltipPointsProperty);
+			get => (ObservableCollection<TooltipViewModel>)GetValue(TooltipPointsProperty);
 			set => SetValue(TooltipPointsProperty, value);
 		}
 		public static readonly DependencyProperty TooltipPointsProperty = DependencyProperty.Register(
 			"TooltipPoints",
-			typeof(ObservableCollection<TooltipPointViewModel>),
+			typeof(ObservableCollection<TooltipViewModel>),
 			typeof(CartesianChart),
-			new PropertyMetadata(new ObservableCollection<TooltipPointViewModel>()));
+			new PropertyMetadata(new ObservableCollection<TooltipViewModel>()));
 
 		private bool IsTooltipByCursor
 		{

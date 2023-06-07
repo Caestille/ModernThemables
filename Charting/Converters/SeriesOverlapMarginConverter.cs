@@ -1,4 +1,5 @@
-﻿using ModernThemables.Charting.ViewModels.CartesianChart;
+﻿using ModernThemables.Charting.ViewModels;
+using ModernThemables.Charting.ViewModels.CartesianChart;
 using ModernThemables.Charting.ViewModels.PieChart;
 using System;
 using System.Collections.ObjectModel;
@@ -23,8 +24,8 @@ namespace ModernThemables.Charting.Converters
             {
                 return seriesVms.IndexOf(seriesVm) == 0 ? new Thickness(0) : new Thickness(0, -seriesHeight, 0, 0);
             }
-            else if (values[0] is TooltipPointViewModel tooltipVm
-                && values[1] is ObservableCollection<TooltipPointViewModel> tooltipVms
+            else if (values[0] is TooltipViewModel tooltipVm
+                && values[1] is ObservableCollection<TooltipViewModel> tooltipVms
                 && values[2] is double tooltipHeight)
             {
                 return tooltipVms.IndexOf(tooltipVm) == 0 ? new Thickness(0) : new Thickness(0, -tooltipHeight, 0, 0);
