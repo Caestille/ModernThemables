@@ -739,7 +739,7 @@ namespace ModernThemables.Charting.Controls
 			#endregion
 
 			#region Find points under mouse
-			var pointsUnderMouse = new List<TooltipPointViewModel>();
+			var pointsUnderMouse = new List<TooltipViewModel>();
 			foreach (var series in InternalSeries)
 			{
 				var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
@@ -765,18 +765,18 @@ namespace ModernThemables.Charting.Controls
 
 				if (isSingleXPoint) hoveredChartPoint.X += (plotAreaWidth / 2);
 
-				pointsUnderMouse.Add(new TooltipPointViewModel(
-					hoveredChartPoint,
-					new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0),
-					new SolidColorBrush(series.Stroke != null
-						? series.Stroke.ColourAtPoint(
-							hoveredChartPoint.BackingPoint.XValue, hoveredChartPoint.BackingPoint.YValue)
-						: Colors.Red),
-					series.TooltipLabelFormatter != null
-						? series.TooltipLabelFormatter(
-							series.Data.Select(x => x.BackingPoint), hoveredChartPoint.BackingPoint)
-						: hoveredChartPoint.BackingPoint.YValue.ToString(),
-					plotAreaHeight));
+				//pointsUnderMouse.Add(new TooltipViewModel(
+				//	hoveredChartPoint,
+				//	new Thickness(hoveredChartPoint.X - 5, hoveredChartPoint.Y - 5, 0, 0),
+				//	new SolidColorBrush(series.Stroke != null
+				//		? series.Stroke.ColourAtPoint(
+				//			hoveredChartPoint.BackingPoint.XValue, hoveredChartPoint.BackingPoint.YValue)
+				//		: Colors.Red),
+				//	series.TooltipLabelFormatter != null
+				//		? series.TooltipLabelFormatter(
+				//			series.Data.Select(x => x.BackingPoint), hoveredChartPoint.BackingPoint)
+				//		: hoveredChartPoint.BackingPoint.YValue.ToString(),
+				//	plotAreaHeight));
 			}
 			#endregion
 
@@ -791,23 +791,23 @@ namespace ModernThemables.Charting.Controls
 					TooltipPoints.Clear();
 					break;
 				case TooltipFindingStrategy.NearestXAllY:
-					TooltipPoints = new ObservableCollection<TooltipPointViewModel>(pointsUnderMouse);
+					TooltipPoints = new ObservableCollection<TooltipViewModel>(pointsUnderMouse);
 					break;
 				case TooltipFindingStrategy.NearestXNearestY:
 					if (nearestPoint != null)
-						TooltipPoints = new ObservableCollection<TooltipPointViewModel>() { nearestPoint };
+						TooltipPoints = new ObservableCollection<TooltipViewModel>() { nearestPoint };
 					else
 						TooltipPoints.Clear();
 					break;
 				case TooltipFindingStrategy.NearestXWithinThreshold:
-					TooltipPoints = new ObservableCollection<TooltipPointViewModel>(
+					TooltipPoints = new ObservableCollection<TooltipViewModel>(
 						pointsUnderMouse.Where(
 							x => Math.Abs(x.Point.X - mouseLoc.X) <= TooltipLocationThreshold));
 					break;
 			}
 
 			if (nearestPoint != null)
-				nearestPoint.IsNearest = pointsUnderMouse.Count() > 1;
+				//nearestPoint.IsNearest = pointsUnderMouse.Count() > 1;
 
 			if (IsTooltipVisible && TooltipLocation == TooltipLocation.Cursor)
 			{
@@ -920,17 +920,17 @@ namespace ModernThemables.Charting.Controls
 
 			if (TooltipPoints != null && TooltipPoints.Any())
 			{
-				var tooltipPoint = TooltipPoints.Count() == 1 
-					? TooltipPoints.First() : TooltipPoints.FirstOrDefault(x => x.IsNearest);
+				//var tooltipPoint = TooltipPoints.Count() == 1 
+				//	? TooltipPoints.First() : TooltipPoints.FirstOrDefault(x => x.IsNearest);
 
-				if (tooltipPoint != null)
-				{
-					tooltipPoint.WasClicked = true;
-					tooltipPoint.WasClicked = false;
-					if (lowerSelection != null)
-						PointClicked?.Invoke(this, lowerSelection.BackingPoint);
-					tooltipPoint.WasClicked = false;
-				}
+				//if (tooltipPoint != null)
+				//{
+				//	tooltipPoint.WasClicked = true;
+				//	tooltipPoint.WasClicked = false;
+				//	if (lowerSelection != null)
+				//		PointClicked?.Invoke(this, lowerSelection.BackingPoint);
+				//	tooltipPoint.WasClicked = false;
+				//}
 			}
 
 			e.Handled = true;

@@ -25,8 +25,8 @@ namespace ModernThemables.Charting.Controls
 	/// </summary>
 	public partial class BarChart : UserControl
 	{
-		private double plotAreaHeight => MouseCaptureGrid.ActualHeight;
-		private double plotAreaWidth => MouseCaptureGrid.ActualWidth;
+		private double plotAreaHeight => TooltipControl.ActualHeight;
+		private double plotAreaWidth => TooltipControl.ActualWidth;
 		private DateTime timeLastUpdated;
 		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 60d);
 		private bool hasSetSeries;
@@ -46,8 +46,6 @@ namespace ModernThemables.Charting.Controls
 
 		private BlockingCollection<Action> renderQueue;
 		private bool renderInProgress;
-
-		private Thread renderThread;
 		private bool runRenderThread = true;
 
 		public BarChart()
@@ -56,22 +54,46 @@ namespace ModernThemables.Charting.Controls
 			this.Loaded += WpfChart_Loaded;
 
 			renderQueue = new BlockingCollection<Action>();
-			renderThread = new Thread(new ThreadStart(() =>
+			new Thread(new ThreadStart(() =>
 			{
+				var sleepTimeMs = 16;
 				while (runRenderThread)
 				{
 					while (renderInProgress)
 					{
-						Thread.Sleep(1);
+						Thread.Sleep(sleepTimeMs);
 					}
 					if (renderQueue.Any())
 						renderQueue.Take().Invoke();
-					Thread.Sleep(1);
+					Thread.Sleep(sleepTimeMs);
 				}
-			}));
-			renderThread.Start();
+			})).Start();
 
-			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
+			TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((point) =>
+			{
+				var tooltipPoints = new List<TooltipViewModel>();
+
+				foreach (var bar in InternalSeries)
+				{
+					bar.IsMouseOver = (point.X - bar.X) <= BarWidth && (point.X - bar.X) >= 0 /*&& translatedMouseLoc.Y <= bar.Y*/;
+				}
+
+				var tooltipBar = InternalSeries.FirstOrDefault(x => x.IsMouseOver);
+
+				if (tooltipBar != null)
+				{
+					var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == tooltipBar.Identifier));
+					var category = matchingSeries.ValueFormatter(tooltipBar.BackingPoint);
+					var matchingWedge = matchingSeries.Values.First(x => x.Identifier == tooltipBar.Identifier);
+					var str = matchingSeries.TooltipLabelFormatter != null
+						? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
+						: matchingSeries.Name;
+
+					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar.Fill.CoreBrush, str));
+				}
+
+				return tooltipPoints;
+			});
 
 			resizeTrigger = new KeepAliveTriggerService(() => { QueueRenderChart(null, null, true); }, 100);
 		}
@@ -239,7 +261,6 @@ namespace ModernThemables.Charting.Controls
 				var groupWidth = groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) - groupSep : 0;
 				var barWidth = groupWidth > 0 ? (groupWidth / barCount) - barSep : 0;
 
-				XAxisLabelHeight = labels.Any() ? labels.Max(x => (double)(new StringWidthGetterConverter().Convert(new object[] { "", x, FontSize, FontFamily, FontStyle, FontWeight, FontStretch }, null, null, null))) * Math.Sin(XAxisLabelRotation * Math.PI / 180) + 10 : 0;
 				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
 				var collection = await Task.Run(() =>
@@ -415,95 +436,12 @@ namespace ModernThemables.Charting.Controls
 
 		#region Mouse events
 
-		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
-		{
-			if (!HasGotData() || ignoreNextMouseMove)
-			{
-				ignoreNextMouseMove = false;
-				return;
-			}
-
-			var mouseLoc = e.GetPosition(Grid);
-			var translatedMouseLoc = e.GetPosition(SeriesItemsControl);
-			translatedMouseLoc = new Point(translatedMouseLoc.X, plotAreaHeight - translatedMouseLoc.Y);
-
-			if (DateTime.Now - timeLastUpdated < updateLimit) return;
-
-			timeLastUpdated = DateTime.Now;
-
-			#region Find points under mouse
-			
-			foreach (var bar in InternalSeries)
-			{
-				bar.IsMouseOver = (translatedMouseLoc.X - bar.X) <= BarWidth && (translatedMouseLoc.X - bar.X) >= 0 /*&& translatedMouseLoc.Y <= bar.Y*/;
-			}
-
-			#endregion
-
-			#region Tooltip
-
-			if (InternalSeries.Any(x => x.IsMouseOver))
-			{
-				TooltipBar = InternalSeries.First(x => x.IsMouseOver);
-
-				var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == TooltipBar.Identifier));
-				TooltipBar.DisplayValue = matchingSeries.ValueFormatter(TooltipBar.BackingPoint);
-				var matchingWedge = matchingSeries.Values.First(x => x.Identifier == TooltipBar.Identifier);
-				TooltipString = matchingSeries.TooltipLabelFormatter != null
-					? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
-					: matchingSeries.Name;
-
-				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
-
-				if (TooltipLocation == TooltipLocation.Points)
-				{
-					var effectiveY = plotAreaHeight - TooltipBar.Y - 60;
-
-					// Get tooltip position variables
-					if (!tooltipLeft && TooltipBar.X > (plotAreaWidth - 10 - TooltipGrid.ActualWidth))
-						tooltipLeft = true;
-					if (tooltipLeft && TooltipBar.X < (10 + TooltipGrid.ActualWidth))
-						tooltipLeft = false;
-					tooltipTop = effectiveY < (10 + TooltipGrid.ActualHeight);
-
-					TooltipGrid.Margin = new Thickness(
-						!tooltipLeft ? TooltipBar.X : TooltipBar.X - TooltipGrid.ActualWidth + BarWidth + 5,
-						!tooltipTop ? effectiveY : effectiveY,
-						0, 0);
-				}
-				else if (TooltipLocation == TooltipLocation.Cursor)
-				{
-					// Get tooltip position variables
-					if (!tooltipLeft && translatedMouseLoc.X > (plotAreaWidth - 10 - TooltipGrid.ActualWidth))
-						tooltipLeft = true;
-					if (tooltipLeft && translatedMouseLoc.X < (10 + TooltipGrid.ActualWidth))
-						tooltipLeft = false;
-					if (!tooltipTop && translatedMouseLoc.Y > (plotAreaHeight - 10 - TooltipGrid.ActualHeight))
-						tooltipTop = true;
-					if (tooltipTop && (translatedMouseLoc.Y) < (10 + TooltipGrid.ActualHeight))
-						tooltipTop = false;
-
-					TooltipGrid.Margin = new Thickness(
-						!tooltipLeft ? translatedMouseLoc.X + 5 : translatedMouseLoc.X - TooltipGrid.ActualWidth - 5,
-						!tooltipTop ? translatedMouseLoc.Y - 5 : translatedMouseLoc.Y - TooltipGrid.ActualHeight - 5,
-						0, 0);
-				}
-			}
-			else
-			{
-				TooltipBar = null;
-			}
-
-			#endregion
-		}
-
 		private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
 		{
 			foreach (var bar in InternalSeries)
 			{
 				bar.IsMouseOver = false;
 			}
-			TooltipBar = null;
 		}
 
 		#endregion

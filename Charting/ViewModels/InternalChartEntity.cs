@@ -7,7 +7,7 @@ namespace ModernThemables.Charting.ViewModels
     /// <summary>
     /// An internal representation of a chart point for rendering the actual series with.
     /// </summary>
-    internal class InternalChartEntity : ObservableObject
+    public class InternalChartEntity : ObservableObject
     {
         /// <summary>
         /// The X point in pixels.
