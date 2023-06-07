@@ -1,1201 +1,1229 @@
 ﻿<ResourceDictionary
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:icons="clr-namespace:ModernThemables.ScalableIcons">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:icons="clr-namespace:ModernThemables.ScalableIcons">
 
-	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="Generic.xaml" />
-		<ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
-	</ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Generic.xaml" />
+        <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
-	<Style TargetType="{x:Type icons:AnimatedMenuOpenCloseIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:AnimatedMenuOpenCloseIcon}">
-					<Grid>
-						<Border
-							Height="{TemplateBinding StrokeThickness}"
-							VerticalAlignment="Center"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="2">
-							<Border.RenderTransform>
-								<RotateTransform Angle="0" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
-							</Border.RenderTransform>
-							<Border.Style>
-								<Style>
-									<Style.Triggers>
-										<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:BaseIcon}}, Path=(icons:BaseIcon.IsVisuallyDisabled)}" Value="True">
-											<DataTrigger.EnterActions>
-												<BeginStoryboard>
-													<Storyboard>
-														<DoubleAnimation
-															AutoReverse="False"
-															Storyboard.TargetProperty="RenderTransform.Angle"
-															From="0"
-															To="45"
-															Duration="0:0:0.1" />
-													</Storyboard>
-												</BeginStoryboard>
-											</DataTrigger.EnterActions>
-											<DataTrigger.ExitActions>
-												<BeginStoryboard>
-													<Storyboard>
-														<DoubleAnimation
-															AutoReverse="False"
-															Storyboard.TargetProperty="RenderTransform.Angle"
-															From="45"
-															To="0"
-															Duration="0:0:0.1" />
-													</Storyboard>
-												</BeginStoryboard>
-											</DataTrigger.ExitActions>
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</Border.Style>
-						</Border>
-						<Border
-							Height="{TemplateBinding StrokeThickness}"
-							Margin="0,3,0,0"
-							VerticalAlignment="Top"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="2">
-							<Border.Style>
-								<Style>
-									<Style.Triggers>
-										<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:BaseIcon}}, Path=(icons:BaseIcon.IsVisuallyDisabled)}" Value="True">
-											<DataTrigger.EnterActions>
-												<BeginStoryboard>
-													<Storyboard>
-														<ThicknessAnimation
-															AutoReverse="False"
-															Storyboard.TargetProperty="Margin"
-															From="0,3,0,0"
-															To="25,3,0,0"
-															Duration="0:0:0.2" />
-													</Storyboard>
-												</BeginStoryboard>
-											</DataTrigger.EnterActions>
-											<DataTrigger.ExitActions>
-												<BeginStoryboard>
-													<Storyboard>
-														<ThicknessAnimation
-															AutoReverse="False"
-															Storyboard.TargetProperty="Margin"
-															From="25,3,0,0"
-															To="0,3,0,0"
-															Duration="0:0:0.2" />
-													</Storyboard>
-												</BeginStoryboard>
-											</DataTrigger.ExitActions>
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</Border.Style>
-						</Border>
-						<Border
-							Height="{TemplateBinding StrokeThickness}"
-							Margin="0,0,0,2"
-							VerticalAlignment="Bottom"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="2">
-							<Border.Style>
-								<Style>
-									<Style.Triggers>
-										<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:BaseIcon}}, Path=(icons:BaseIcon.IsVisuallyDisabled)}" Value="True">
-											<DataTrigger.EnterActions>
-												<BeginStoryboard>
-													<Storyboard>
-														<ThicknessAnimation
-															AutoReverse="False"
-															Storyboard.TargetProperty="Margin"
-															From="0,0,0,2"
-															To="0,0,27,2"
-															Duration="0:0:0.2" />
-													</Storyboard>
-												</BeginStoryboard>
-											</DataTrigger.EnterActions>
-											<DataTrigger.ExitActions>
-												<BeginStoryboard>
-													<Storyboard>
-														<ThicknessAnimation
-															AutoReverse="False"
-															Storyboard.TargetProperty="Margin"
-															From="0,0,27,2"
-															To="0,0,0,2"
-															Duration="0:0:0.2" />
-													</Storyboard>
-												</BeginStoryboard>
-											</DataTrigger.ExitActions>
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</Border.Style>
-						</Border>
-						<Border
-							Height="{TemplateBinding StrokeThickness}"
-							VerticalAlignment="Center"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="2">
-							<Border.RenderTransform>
-								<RotateTransform Angle="0" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
-							</Border.RenderTransform>
-							<Border.Style>
-								<Style>
-									<Style.Triggers>
-										<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:BaseIcon}}, Path=(icons:BaseIcon.IsVisuallyDisabled)}" Value="True">
-											<DataTrigger.EnterActions>
-												<BeginStoryboard>
-													<Storyboard>
-														<DoubleAnimation
-															AutoReverse="False"
-															Storyboard.TargetProperty="RenderTransform.Angle"
-															From="0"
-															To="-45"
-															Duration="0:0:0.1" />
-													</Storyboard>
-												</BeginStoryboard>
-											</DataTrigger.EnterActions>
-											<DataTrigger.ExitActions>
-												<BeginStoryboard>
-													<Storyboard>
-														<DoubleAnimation
-															AutoReverse="False"
-															Storyboard.TargetProperty="RenderTransform.Angle"
-															From="-45"
-															To="0"
-															Duration="0:0:0.1" />
-													</Storyboard>
-												</BeginStoryboard>
-											</DataTrigger.ExitActions>
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</Border.Style>
-						</Border>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:AnimatedMenuOpenCloseIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:AnimatedMenuOpenCloseIcon}">
+                    <Grid>
+                        <Border
+                            Height="{TemplateBinding StrokeThickness}"
+                            VerticalAlignment="Center"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2">
+                            <Border.RenderTransform>
+                                <RotateTransform Angle="0" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
+                            </Border.RenderTransform>
+                            <Border.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:BaseIcon}}, Path=(icons:BaseIcon.IsVisuallyDisabled)}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            AutoReverse="False"
+                                                            Storyboard.TargetProperty="RenderTransform.Angle"
+                                                            From="0"
+                                                            To="45"
+                                                            Duration="0:0:0.1" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            AutoReverse="False"
+                                                            Storyboard.TargetProperty="RenderTransform.Angle"
+                                                            From="45"
+                                                            To="0"
+                                                            Duration="0:0:0.1" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <Border
+                            Height="{TemplateBinding StrokeThickness}"
+                            Margin="0,3,0,0"
+                            VerticalAlignment="Top"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2">
+                            <Border.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:BaseIcon}}, Path=(icons:BaseIcon.IsVisuallyDisabled)}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ThicknessAnimation
+                                                            AutoReverse="False"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            From="0,3,0,0"
+                                                            To="25,3,0,0"
+                                                            Duration="0:0:0.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ThicknessAnimation
+                                                            AutoReverse="False"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            From="25,3,0,0"
+                                                            To="0,3,0,0"
+                                                            Duration="0:0:0.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <Border
+                            Height="{TemplateBinding StrokeThickness}"
+                            Margin="0,0,0,2"
+                            VerticalAlignment="Bottom"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2">
+                            <Border.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:BaseIcon}}, Path=(icons:BaseIcon.IsVisuallyDisabled)}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ThicknessAnimation
+                                                            AutoReverse="False"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            From="0,0,0,2"
+                                                            To="0,0,27,2"
+                                                            Duration="0:0:0.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ThicknessAnimation
+                                                            AutoReverse="False"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            From="0,0,27,2"
+                                                            To="0,0,0,2"
+                                                            Duration="0:0:0.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <Border
+                            Height="{TemplateBinding StrokeThickness}"
+                            VerticalAlignment="Center"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2">
+                            <Border.RenderTransform>
+                                <RotateTransform Angle="0" CenterX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" CenterY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
+                            </Border.RenderTransform>
+                            <Border.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:BaseIcon}}, Path=(icons:BaseIcon.IsVisuallyDisabled)}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            AutoReverse="False"
+                                                            Storyboard.TargetProperty="RenderTransform.Angle"
+                                                            From="0"
+                                                            To="-45"
+                                                            Duration="0:0:0.1" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            AutoReverse="False"
+                                                            Storyboard.TargetProperty="RenderTransform.Angle"
+                                                            From="-45"
+                                                            To="0"
+                                                            Duration="0:0:0.1" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:BinIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:BinIcon}">
-					<Grid x:Name="Grid">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="0.15*" />
-							<ColumnDefinition Width="0.15*" />
-							<ColumnDefinition Width="0.4*" />
-							<ColumnDefinition Width="0.15*" />
-							<ColumnDefinition Width="0.15*" />
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="0.15*" />
-							<RowDefinition Height="0.1*" />
-							<RowDefinition Height="0.375*" />
-							<RowDefinition Height="0.375*" />
-						</Grid.RowDefinitions>
-						<Border Grid.Column="2" Background="{TemplateBinding Foreground}" />
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="5"
-							Background="{TemplateBinding Foreground}" />
-						<Border
-							Grid.Row="2"
-							Grid.Column="1"
-							Grid.ColumnSpan="3"
-							Margin="0,1,0,0"
-							Background="{TemplateBinding Foreground}" />
-						<Border
-							Grid.Row="2"
-							Grid.RowSpan="2"
-							Grid.Column="1"
-							Grid.ColumnSpan="3"
-							Margin="0,1,0,0"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.15, Converter={StaticResource ValueMultiplierConverter}}" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:BinIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:BinIcon}">
+                    <Grid x:Name="Grid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.15*" />
+                            <ColumnDefinition Width="0.15*" />
+                            <ColumnDefinition Width="0.4*" />
+                            <ColumnDefinition Width="0.15*" />
+                            <ColumnDefinition Width="0.15*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.15*" />
+                            <RowDefinition Height="0.1*" />
+                            <RowDefinition Height="0.375*" />
+                            <RowDefinition Height="0.375*" />
+                        </Grid.RowDefinitions>
+                        <Border Grid.Column="2" Background="{TemplateBinding Foreground}" />
+                        <Border
+                            Grid.Row="1"
+                            Grid.ColumnSpan="5"
+                            Background="{TemplateBinding Foreground}" />
+                        <Border
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="3"
+                            Margin="0,1,0,0"
+                            Background="{TemplateBinding Foreground}" />
+                        <Border
+                            Grid.Row="2"
+                            Grid.RowSpan="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="3"
+                            Margin="0,1,0,0"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.15, Converter={StaticResource ValueMultiplierConverter}}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:BuildingIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:BuildingIcon}">
-					<Grid x:Name="ParentGrid">
-						<Grid>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="0.5*" />
-								<RowDefinition Height="*" />
-								<RowDefinition Height="0.15*" />
-							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="0.135*" />
-								<ColumnDefinition Width="0.15*" />
-								<ColumnDefinition Width="0.135*" />
-								<ColumnDefinition Width="0.15*" />
-								<ColumnDefinition Width="0.135*" />
-								<ColumnDefinition Width="0.15*" />
-								<ColumnDefinition Width="0.135*" />
-							</Grid.ColumnDefinitions>
-							<Viewbox
-								Grid.Row="0"
-								Grid.ColumnSpan="7"
-								Width="{Binding ElementName=ParentGrid, Path=ActualWidth}"
-								Stretch="Fill">
-								<Polygon
-									Fill="{TemplateBinding Foreground}"
-									Points="2,5 10.5,0 19,5"
-									Stroke="{TemplateBinding Foreground}"
-									StrokeThickness="1" />
-							</Viewbox>
-							<Border
-								Grid.Row="1"
-								Grid.Column="1"
-								Margin="0,1"
-								Background="{TemplateBinding Foreground}" />
-							<Border
-								Grid.Row="1"
-								Grid.Column="3"
-								Margin="0,1"
-								Background="{TemplateBinding Foreground}" />
-							<Border
-								Grid.Row="1"
-								Grid.Column="5"
-								Margin="0,1"
-								Background="{TemplateBinding Foreground}" />
-							<Border
-								Grid.Row="2"
-								Grid.ColumnSpan="7"
-								Background="{TemplateBinding Foreground}"
-								CornerRadius="2,2,0,0" />
-						</Grid>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:BuildingIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:BuildingIcon}">
+                    <Grid x:Name="ParentGrid">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="0.15*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.135*" />
+                                <ColumnDefinition Width="0.15*" />
+                                <ColumnDefinition Width="0.135*" />
+                                <ColumnDefinition Width="0.15*" />
+                                <ColumnDefinition Width="0.135*" />
+                                <ColumnDefinition Width="0.15*" />
+                                <ColumnDefinition Width="0.135*" />
+                            </Grid.ColumnDefinitions>
+                            <Viewbox
+                                Grid.Row="0"
+                                Grid.ColumnSpan="7"
+                                Width="{Binding ElementName=ParentGrid, Path=ActualWidth}"
+                                Stretch="Fill">
+                                <Polygon
+                                    Fill="{TemplateBinding Foreground}"
+                                    Points="2,5 10.5,0 19,5"
+                                    Stroke="{TemplateBinding Foreground}"
+                                    StrokeThickness="1" />
+                            </Viewbox>
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="0,1"
+                                Background="{TemplateBinding Foreground}" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Margin="0,1"
+                                Background="{TemplateBinding Foreground}" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="5"
+                                Margin="0,1"
+                                Background="{TemplateBinding Foreground}" />
+                            <Border
+                                Grid.Row="2"
+                                Grid.ColumnSpan="7"
+                                Background="{TemplateBinding Foreground}"
+                                CornerRadius="2,2,0,0" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:CalculatorIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:CalculatorIcon}">
-					<Grid x:Name="ParentGrid" SnapsToDevicePixels="True">
-						<Border
-							x:Name="Calculator"
-							Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.7}"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="2"
-							SnapsToDevicePixels="True">
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="0.05*" />
-									<RowDefinition Height="0.3*" />
-									<RowDefinition Height="0.05*" />
-									<RowDefinition Height="0.15*" />
-									<RowDefinition Height="0.05*" />
-									<RowDefinition Height="0.15*" />
-									<RowDefinition Height="0.25*" />
-								</Grid.RowDefinitions>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="0.07*" />
-									<ColumnDefinition Width="0.2*" />
-									<ColumnDefinition Width="0.1*" />
-									<ColumnDefinition Width="0.2*" />
-									<ColumnDefinition Width="0.1*" />
-									<ColumnDefinition Width="0.2*" />
-									<ColumnDefinition Width="0.07*" />
-								</Grid.ColumnDefinitions>
-								<Border
-									Grid.Row="1"
-									Grid.Column="1"
-									Grid.ColumnSpan="5"
-									Background="{TemplateBinding Background}"
-									SnapsToDevicePixels="True" />
-								<Border
-									Grid.Row="3"
-									Grid.Column="1"
-									Background="{TemplateBinding Background}"
-									SnapsToDevicePixels="True" />
-								<Border
-									Grid.Row="3"
-									Grid.Column="3"
-									Background="{TemplateBinding Background}" />
-								<Border
-									Grid.Row="3"
-									Grid.Column="5"
-									Background="{TemplateBinding Background}" />
-								<Border
-									Grid.Row="5"
-									Grid.Column="1"
-									Background="{TemplateBinding Background}" />
-								<Border
-									Grid.Row="5"
-									Grid.Column="3"
-									Background="{TemplateBinding Background}" />
-								<Border
-									Grid.Row="5"
-									Grid.Column="5"
-									Background="{TemplateBinding Background}" />
-							</Grid>
-						</Border>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:CalculatorIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:CalculatorIcon}">
+                    <Grid x:Name="ParentGrid" SnapsToDevicePixels="True">
+                        <Border
+                            x:Name="Calculator"
+                            Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.7}"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2"
+                            SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.05*" />
+                                    <RowDefinition Height="0.3*" />
+                                    <RowDefinition Height="0.05*" />
+                                    <RowDefinition Height="0.15*" />
+                                    <RowDefinition Height="0.05*" />
+                                    <RowDefinition Height="0.15*" />
+                                    <RowDefinition Height="0.25*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.07*" />
+                                    <ColumnDefinition Width="0.2*" />
+                                    <ColumnDefinition Width="0.1*" />
+                                    <ColumnDefinition Width="0.2*" />
+                                    <ColumnDefinition Width="0.1*" />
+                                    <ColumnDefinition Width="0.2*" />
+                                    <ColumnDefinition Width="0.07*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="5"
+                                    Background="{TemplateBinding Background}"
+                                    SnapsToDevicePixels="True" />
+                                <Border
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Background="{TemplateBinding Background}"
+                                    SnapsToDevicePixels="True" />
+                                <Border
+                                    Grid.Row="3"
+                                    Grid.Column="3"
+                                    Background="{TemplateBinding Background}" />
+                                <Border
+                                    Grid.Row="3"
+                                    Grid.Column="5"
+                                    Background="{TemplateBinding Background}" />
+                                <Border
+                                    Grid.Row="5"
+                                    Grid.Column="1"
+                                    Background="{TemplateBinding Background}" />
+                                <Border
+                                    Grid.Row="5"
+                                    Grid.Column="3"
+                                    Background="{TemplateBinding Background}" />
+                                <Border
+                                    Grid.Row="5"
+                                    Grid.Column="5"
+                                    Background="{TemplateBinding Background}" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:CalendarIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:CalendarIcon}">
-					<Grid x:Name="ParentGrid" SnapsToDevicePixels="True">
-						<Border
-							Width="{Binding ElementName=ParentGrid, Path=ActualWidth}"
-							Margin="0,2,0,0"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="1"
-							SnapsToDevicePixels="True">
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="0.2*" />
-									<RowDefinition Height="0.8*" />
-								</Grid.RowDefinitions>
-								<Border
-									Margin="1"
-									HorizontalAlignment="Stretch"
-									VerticalAlignment="Stretch"
-									Background="{TemplateBinding Background}" />
-								<Border
-									Grid.Row="1"
-									Margin="1"
-									HorizontalAlignment="Stretch"
-									VerticalAlignment="Stretch"
-									Background="{TemplateBinding Background}"
-									CornerRadius="1">
-									<Grid>
-										<Grid.RowDefinitions>
-											<RowDefinition Height="*" />
-											<RowDefinition Height="*" />
-											<RowDefinition Height="*" />
-										</Grid.RowDefinitions>
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="*" />
-											<ColumnDefinition Width="*" />
-											<ColumnDefinition Width="*" />
-											<ColumnDefinition Width="*" />
-										</Grid.ColumnDefinitions>
-										<Border
-											Grid.Row="0"
-											Grid.Column="0"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Background}" />
-										<Border
-											Grid.Row="0"
-											Grid.Column="1"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="0"
-											Grid.Column="2"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="0"
-											Grid.Column="3"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="1"
-											Grid.Column="0"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="1"
-											Grid.Column="1"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="1"
-											Grid.Column="2"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="1"
-											Grid.Column="3"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="2"
-											Grid.Column="0"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="2"
-											Grid.Column="1"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="2"
-											Grid.Column="2"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Foreground}" />
-										<Border
-											Grid.Row="2"
-											Grid.Column="3"
-											Margin="1"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{TemplateBinding Background}" />
-									</Grid>
-								</Border>
-							</Grid>
-						</Border>
-						<Grid Height="4" VerticalAlignment="Top">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="0.5*" />
-								<ColumnDefinition Width="0.5*" />
-							</Grid.ColumnDefinitions>
-							<Border
-								Width="2"
-								HorizontalAlignment="Center"
-								VerticalAlignment="Stretch"
-								Background="{TemplateBinding Foreground}" />
-							<Border
-								Grid.Column="1"
-								Width="2"
-								HorizontalAlignment="Center"
-								VerticalAlignment="Stretch"
-								Background="{TemplateBinding Foreground}" />
+    <Style TargetType="{x:Type icons:CalendarIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:CalendarIcon}">
+                    <Grid x:Name="ParentGrid" SnapsToDevicePixels="True">
+                        <Border
+                            Width="{Binding ElementName=ParentGrid, Path=ActualWidth}"
+                            Margin="0,2,0,0"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="1"
+                            SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.2*" />
+                                    <RowDefinition Height="0.8*" />
+                                </Grid.RowDefinitions>
+                                <Border
+                                    Margin="1"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{TemplateBinding Background}" />
+                                <Border
+                                    Grid.Row="1"
+                                    Margin="1"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="1">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Background}" />
+                                        <Border
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="0"
+                                            Grid.Column="2"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="0"
+                                            Grid.Column="3"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="1"
+                                            Grid.Column="2"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="1"
+                                            Grid.Column="3"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="2"
+                                            Grid.Column="2"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Foreground}" />
+                                        <Border
+                                            Grid.Row="2"
+                                            Grid.Column="3"
+                                            Margin="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="{TemplateBinding Background}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <Grid Height="4" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="0.5*" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Width="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Stretch"
+                                Background="{TemplateBinding Foreground}" />
+                            <Border
+                                Grid.Column="1"
+                                Width="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Stretch"
+                                Background="{TemplateBinding Foreground}" />
 
-						</Grid>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:CloseIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:CloseIcon}">
-					<Grid x:Name="Grid">
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="{TemplateBinding StrokeStyle}"
-							StrokeStartLineCap="{TemplateBinding StrokeStyle}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="0"
-							X2="{Binding ElementName=Grid, Path=ActualWidth}"
-							Y1="0"
-							Y2="{Binding ElementName=Grid, Path=ActualHeight}" />
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="{TemplateBinding StrokeStyle}"
-							StrokeStartLineCap="{TemplateBinding StrokeStyle}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="0"
-							X2="{Binding ElementName=Grid, Path=ActualWidth}"
-							Y1="{Binding ElementName=Grid, Path=ActualHeight}"
-							Y2="0" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:CloseIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:CloseIcon}">
+                    <Grid x:Name="Grid">
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeStartLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="0"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth}"
+                            Y1="0"
+                            Y2="{Binding ElementName=Grid, Path=ActualHeight}" />
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeStartLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="0"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth}"
+                            Y1="{Binding ElementName=Grid, Path=ActualHeight}"
+                            Y2="0" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:CollapseIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:CollapseIcon}">
-					<Grid x:Name="Grid" RenderTransformOrigin="0.5,0.5">
-						<Grid.RenderTransform>
-							<RotateTransform Angle="180" />
-						</Grid.RenderTransform>
-						<icons:ExpandIcon />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:CollapseIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:CollapseIcon}">
+                    <Grid x:Name="Grid" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <RotateTransform Angle="180" />
+                        </Grid.RenderTransform>
+                        <icons:ExpandIcon />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:DownloadIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:DownloadIcon}">
-					<Grid x:Name="Grid">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="0.5*" />
-							<RowDefinition Height="0.35*" />
-							<RowDefinition Height="0.1*" />
-							<RowDefinition Height="0.15*" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="0.2*" />
-							<ColumnDefinition Width="0.15*" />
-							<ColumnDefinition Width="0.3*" />
-							<ColumnDefinition Width="0.15*" />
-							<ColumnDefinition Width="0.2*" />
-						</Grid.ColumnDefinitions>
-						<Border Grid.Column="2" Background="{TemplateBinding Foreground}" />
-						<Viewbox
-							Grid.Row="1"
-							Grid.Column="1"
-							Grid.ColumnSpan="3"
-							SnapsToDevicePixels="False"
-							Stretch="Fill">
-							<Polygon
-								Fill="{TemplateBinding Foreground}"
-								Points="1,0, 21,0, 10.5,10"
-								Stroke="{TemplateBinding Foreground}" />
-						</Viewbox>
-						<Border
-							Grid.Row="3"
-							Grid.ColumnSpan="5"
-							Background="{TemplateBinding Foreground}" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:DownloadIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:DownloadIcon}">
+                    <Grid x:Name="Grid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*" />
+                            <RowDefinition Height="0.35*" />
+                            <RowDefinition Height="0.1*" />
+                            <RowDefinition Height="0.15*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.2*" />
+                            <ColumnDefinition Width="0.15*" />
+                            <ColumnDefinition Width="0.3*" />
+                            <ColumnDefinition Width="0.15*" />
+                            <ColumnDefinition Width="0.2*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="2" Background="{TemplateBinding Foreground}" />
+                        <Viewbox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="3"
+                            SnapsToDevicePixels="False"
+                            Stretch="Fill">
+                            <Polygon
+                                Fill="{TemplateBinding Foreground}"
+                                Points="1,0, 21,0, 10.5,10"
+                                Stroke="{TemplateBinding Foreground}" />
+                        </Viewbox>
+                        <Border
+                            Grid.Row="3"
+                            Grid.ColumnSpan="5"
+                            Background="{TemplateBinding Foreground}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:ExpandIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:ExpandIcon}">
-					<Grid x:Name="Grid">
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeStartLineCap="{TemplateBinding StrokeStyle}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="0"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.51}"
-							Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.25}"
-							Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.75}" />
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="{TemplateBinding StrokeStyle}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.49}"
-							X2="{Binding ElementName=Grid, Path=ActualWidth}"
-							Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.75}"
-							Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.25}" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:ExpandIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:ExpandIcon}">
+                    <Grid x:Name="Grid">
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeStartLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="0"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.51}"
+                            Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.25}"
+                            Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.75}" />
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.49}"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth}"
+                            Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.75}"
+                            Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.25}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:GearIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:GearIcon}">
-					<Grid x:Name="ParentGrid" RenderTransformOrigin="0.5, 0.5">
-						<Grid.RenderTransform>
-							<RotateTransform Angle="20" />
-						</Grid.RenderTransform>
-						<Border
-							Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Stretch"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.05}"
-							RenderTransformOrigin="0.5, 0.5">
-							<Border.RenderTransform>
-								<RotateTransform Angle="0" />
-							</Border.RenderTransform>
-						</Border>
-						<Border
-							Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Stretch"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.05}"
-							RenderTransformOrigin="0.5, 0.5">
-							<Border.RenderTransform>
-								<RotateTransform Angle="45" />
-							</Border.RenderTransform>
-						</Border>
-						<Border
-							Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Stretch"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.05}"
-							RenderTransformOrigin="0.5, 0.5">
-							<Border.RenderTransform>
-								<RotateTransform Angle="135" />
-							</Border.RenderTransform>
-						</Border>
-						<Border
-							Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Stretch"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.05}"
-							RenderTransformOrigin="0.5, 0.5">
-							<Border.RenderTransform>
-								<RotateTransform Angle="90" />
-							</Border.RenderTransform>
-						</Border>
-						<Ellipse
-							Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.8}"
-							Height="{Binding ElementName=ParentGrid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.8}"
-							Fill="{TemplateBinding Foreground}" />
-						<Ellipse
-							Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
-							Height="{Binding ElementName=ParentGrid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
-							Fill="{TemplateBinding Background}" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:GearIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:GearIcon}">
+                    <Grid x:Name="ParentGrid" RenderTransformOrigin="0.5, 0.5">
+                        <Grid.RenderTransform>
+                            <RotateTransform Angle="20" />
+                        </Grid.RenderTransform>
+                        <Border
+                            Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Stretch"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.05}"
+                            RenderTransformOrigin="0.5, 0.5">
+                            <Border.RenderTransform>
+                                <RotateTransform Angle="0" />
+                            </Border.RenderTransform>
+                        </Border>
+                        <Border
+                            Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Stretch"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.05}"
+                            RenderTransformOrigin="0.5, 0.5">
+                            <Border.RenderTransform>
+                                <RotateTransform Angle="45" />
+                            </Border.RenderTransform>
+                        </Border>
+                        <Border
+                            Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Stretch"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.05}"
+                            RenderTransformOrigin="0.5, 0.5">
+                            <Border.RenderTransform>
+                                <RotateTransform Angle="135" />
+                            </Border.RenderTransform>
+                        </Border>
+                        <Border
+                            Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Stretch"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.05}"
+                            RenderTransformOrigin="0.5, 0.5">
+                            <Border.RenderTransform>
+                                <RotateTransform Angle="90" />
+                            </Border.RenderTransform>
+                        </Border>
+                        <Ellipse
+                            Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.8}"
+                            Height="{Binding ElementName=ParentGrid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.8}"
+                            Fill="{TemplateBinding Foreground}" />
+                        <Ellipse
+                            Width="{Binding ElementName=ParentGrid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
+                            Height="{Binding ElementName=ParentGrid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
+                            Fill="{TemplateBinding Background}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:GraphIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:GraphIcon}">
-					<Grid>
-						<Border
-							x:Name="Border"
-							BorderBrush="{TemplateBinding Foreground}"
-							BorderThickness="{TemplateBinding StrokeThickness,
-							                                  Converter={StaticResource DoubleToBorderThicknessConverter},
-							                                  ConverterParameter=1-0-0-1}" />
-						<Viewbox Stretch="Fill">
-							<Path
-								Data="M0,12,6,8,12,16,18,5"
-								Stroke="{TemplateBinding Foreground}"
-								StrokeEndLineCap="Triangle"
-								StrokeThickness="1.5" />
-						</Viewbox>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:GraphIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:GraphIcon}">
+                    <Grid>
+                        <Border
+                            x:Name="Border"
+                            BorderBrush="{TemplateBinding Foreground}"
+                            BorderThickness="{TemplateBinding StrokeThickness,
+                                                              Converter={StaticResource DoubleToBorderThicknessConverter},
+                                                              ConverterParameter=1-0-0-1}" />
+                        <Viewbox Stretch="Fill">
+                            <Path
+                                Data="M0,12,6,8,12,16,18,5"
+                                Stroke="{TemplateBinding Foreground}"
+                                StrokeEndLineCap="Triangle"
+                                StrokeThickness="1.5" />
+                        </Viewbox>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:MagnifyingGlassIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:MagnifyingGlassIcon}">
-					<Grid x:Name="Grid">
-						<Border
-							Width="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.7}"
-							Height="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.7}"
-							HorizontalAlignment="Left"
-							VerticalAlignment="Top"
-							Background="Transparent"
-							BorderBrush="{TemplateBinding Foreground}"
-							BorderThickness="{TemplateBinding StrokeThickness,
-							                                  Converter={StaticResource ValueMultiplierConverter},
-							                                  ConverterParameter=0.66}"
-							CornerRadius="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="{TemplateBinding StrokeStyle}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.58}"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.9}"
-							Y1="{Binding RelativeSource={RelativeSource Self}, Path=X1}"
-							Y2="{Binding RelativeSource={RelativeSource Self}, Path=X2}" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:MagnifyingGlassIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:MagnifyingGlassIcon}">
+                    <Grid x:Name="Grid">
+                        <Border
+                            Width="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.7}"
+                            Height="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.7}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Background="Transparent"
+                            BorderBrush="{TemplateBinding Foreground}"
+                            BorderThickness="{TemplateBinding StrokeThickness,
+                                                              Converter={StaticResource ValueMultiplierConverter},
+                                                              ConverterParameter=0.66}"
+                            CornerRadius="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.58}"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.9}"
+                            Y1="{Binding RelativeSource={RelativeSource Self}, Path=X1}"
+                            Y2="{Binding RelativeSource={RelativeSource Self}, Path=X2}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:MaximiseIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:MaximiseIcon}">
-					<Border
-						BorderBrush="{DynamicResource ThemeTextBrush}"
-						BorderThickness="{TemplateBinding StrokeThickness,
-						                                  Converter={StaticResource DoubleToBorderThicknessConverter},
-						                                  ConverterParameter=1-1-1-1}"
-						CornerRadius="1" />
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:MaximiseIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:MaximiseIcon}">
+                    <Border
+                        BorderBrush="{DynamicResource ThemeTextBrush}"
+                        BorderThickness="{TemplateBinding StrokeThickness,
+                                                          Converter={StaticResource DoubleToBorderThicknessConverter},
+                                                          ConverterParameter=1-1-1-1}"
+                        CornerRadius="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:MenuIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:MenuIcon}">
-					<Grid>
-						<Border
-							Height="{TemplateBinding StrokeThickness}"
-							VerticalAlignment="Top"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="2" />
-						<Border
-							Height="{TemplateBinding StrokeThickness}"
-							VerticalAlignment="Center"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="2" />
-						<Border
-							Height="{TemplateBinding StrokeThickness}"
-							VerticalAlignment="Bottom"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="2" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:MenuIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:MenuIcon}">
+                    <Grid>
+                        <Border
+                            Height="{TemplateBinding StrokeThickness}"
+                            VerticalAlignment="Top"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2" />
+                        <Border
+                            Height="{TemplateBinding StrokeThickness}"
+                            VerticalAlignment="Center"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2" />
+                        <Border
+                            Height="{TemplateBinding StrokeThickness}"
+                            VerticalAlignment="Bottom"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:MinimiseIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:MinimiseIcon}">
-					<Border BorderBrush="{TemplateBinding Foreground}" BorderThickness="{TemplateBinding StrokeThickness, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=0-0-0-1}" />
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:MinimiseIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:MinimiseIcon}">
+                    <Border BorderBrush="{TemplateBinding Foreground}" BorderThickness="{TemplateBinding StrokeThickness, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=0-0-0-1}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:MonitorIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:MonitorIcon}">
-					<Grid x:Name="ParentGrid">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="0.675*" />
-							<RowDefinition Height="0.2*" />
-							<RowDefinition Height="0.125*" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="0.25*" />
-							<ColumnDefinition Width="0.175*" />
-							<ColumnDefinition Width="0.15*" />
-							<ColumnDefinition Width="0.175*" />
-							<ColumnDefinition Width="0.25*" />
-						</Grid.ColumnDefinitions>
-						<Border
-							Grid.Row="2"
-							Grid.Column="1"
-							Grid.ColumnSpan="3"
-							Background="{TemplateBinding Foreground}" />
-						<Border
-							Grid.Row="1"
-							Grid.Column="2"
-							Margin="0,0,0,1"
-							Background="{TemplateBinding Foreground}" />
-						<Border
-							Grid.ColumnSpan="5"
-							BorderBrush="{TemplateBinding Foreground}"
-							BorderThickness="{TemplateBinding StrokeThickness,
-							                                  ConverterParameter=1-1-1-1,
-							                                  Converter={StaticResource DoubleToBorderThicknessConverter}}" />
-						<Grid
-							x:Name="Grid2"
-							Grid.ColumnSpan="5"
-							Margin="{TemplateBinding StrokeThickness,
-							                         ConverterParameter=1-1-1-1,
-							                         Converter={StaticResource DoubleToBorderThicknessConverter}}">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="0.2*" />
-								<RowDefinition Height="0.2*" />
-								<RowDefinition Height="0.2*" />
-								<RowDefinition Height="0.2*" />
-								<RowDefinition Height="0.2*" />
-							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="{Binding ElementName=Grid2, Path=ActualHeight}" />
-								<ColumnDefinition Width="0.15*" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="0.15*" />
-							</Grid.ColumnDefinitions>
-							<Grid Grid.RowSpan="5" Margin="{TemplateBinding StrokeThickness, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=2-2-2-2}">
+    <Style TargetType="{x:Type icons:MonitorIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:MonitorIcon}">
+                    <Grid x:Name="ParentGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.675*" />
+                            <RowDefinition Height="0.2*" />
+                            <RowDefinition Height="0.125*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.25*" />
+                            <ColumnDefinition Width="0.175*" />
+                            <ColumnDefinition Width="0.15*" />
+                            <ColumnDefinition Width="0.175*" />
+                            <ColumnDefinition Width="0.25*" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="3"
+                            Background="{TemplateBinding Foreground}" />
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="0,0,0,1"
+                            Background="{TemplateBinding Foreground}" />
+                        <Border
+                            Grid.ColumnSpan="5"
+                            BorderBrush="{TemplateBinding Foreground}"
+                            BorderThickness="{TemplateBinding StrokeThickness,
+                                                              ConverterParameter=1-1-1-1,
+                                                              Converter={StaticResource DoubleToBorderThicknessConverter}}" />
+                        <Grid
+                            x:Name="Grid2"
+                            Grid.ColumnSpan="5"
+                            Margin="{TemplateBinding StrokeThickness,
+                                                     ConverterParameter=1-1-1-1,
+                                                     Converter={StaticResource DoubleToBorderThicknessConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition Height="0.2*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding ElementName=Grid2, Path=ActualHeight}" />
+                                <ColumnDefinition Width="0.15*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="0.15*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.RowSpan="5" Margin="{TemplateBinding StrokeThickness, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=2-2-2-2}">
 
-								<Grid.RowDefinitions>
-									<RowDefinition Height="0.5*" />
-									<RowDefinition Height="0.5*" />
-								</Grid.RowDefinitions>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="0.5*" />
-									<ColumnDefinition Width="0.5*" />
-								</Grid.ColumnDefinitions>
-								<Ellipse
-									Grid.RowSpan="2"
-									Grid.ColumnSpan="2"
-									Fill="{TemplateBinding Foreground}" />
-								<Border
-									Grid.Column="1"
-									Width="{TemplateBinding StrokeThickness}"
-									HorizontalAlignment="Left"
-									Background="{TemplateBinding Background}" />
-								<Border
-									Grid.Row="1"
-									Grid.Column="1"
-									Width="{TemplateBinding StrokeThickness}"
-									HorizontalAlignment="Left"
-									Background="{TemplateBinding Background}"
-									RenderTransformOrigin="0,0">
-									<Border.RenderTransform>
-										<RotateTransform Angle="-45" />
-									</Border.RenderTransform>
-								</Border>
-							</Grid>
-							<Border
-								Grid.Row="1"
-								Grid.Column="2"
-								Background="{TemplateBinding Foreground}" />
-							<Border
-								Grid.Row="3"
-								Grid.Column="2"
-								Background="{TemplateBinding Foreground}" />
-						</Grid>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.5*" />
+                                    <RowDefinition Height="0.5*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.5*" />
+                                    <ColumnDefinition Width="0.5*" />
+                                </Grid.ColumnDefinitions>
+                                <Ellipse
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    Fill="{TemplateBinding Foreground}" />
+                                <Border
+                                    Grid.Column="1"
+                                    Width="{TemplateBinding StrokeThickness}"
+                                    HorizontalAlignment="Left"
+                                    Background="{TemplateBinding Background}" />
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Width="{TemplateBinding StrokeThickness}"
+                                    HorizontalAlignment="Left"
+                                    Background="{TemplateBinding Background}"
+                                    RenderTransformOrigin="0,0">
+                                    <Border.RenderTransform>
+                                        <RotateTransform Angle="-45" />
+                                    </Border.RenderTransform>
+                                </Border>
+                            </Grid>
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Background="{TemplateBinding Foreground}" />
+                            <Border
+                                Grid.Row="3"
+                                Grid.Column="2"
+                                Background="{TemplateBinding Foreground}" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:MoonIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:MoonIcon}">
-					<Grid x:Name="Grid">
-						<Ellipse Fill="{TemplateBinding Foreground}" />
-						<Ellipse
-							Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.7, Converter={StaticResource ValueMultiplierConverter}}"
-							Height="{Binding ElementName=Grid, Path=ActualHeight, ConverterParameter=0.7, Converter={StaticResource ValueMultiplierConverter}}"
-							HorizontalAlignment="Right"
-							VerticalAlignment="Top"
-							Fill="{TemplateBinding Background}" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:MoonIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:MoonIcon}">
+                    <Grid x:Name="Grid">
+                        <Ellipse Fill="{TemplateBinding Foreground}" />
+                        <Ellipse
+                            Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.7, Converter={StaticResource ValueMultiplierConverter}}"
+                            Height="{Binding ElementName=Grid, Path=ActualHeight, ConverterParameter=0.7, Converter={StaticResource ValueMultiplierConverter}}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Fill="{TemplateBinding Background}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:OpenFileIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:OpenFileIcon}">
-					<Grid x:Name="IconHost">
-						<Border
-							Width="{Binding ElementName=IconHost, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-1}"
-							Height="{Binding ElementName=IconHost, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-2}"
-							HorizontalAlignment="Left"
-							VerticalAlignment="Bottom"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="2" />
-						<Border
-							Width="6"
-							HorizontalAlignment="Left"
-							Background="{TemplateBinding Foreground}"
-							CornerRadius="1,3,2,2" />
-						<Border
-							Height="{Binding ElementName=IconHost, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-4}"
-							VerticalAlignment="Bottom"
-							Background="{TemplateBinding Foreground}"
-							BorderBrush="{TemplateBinding Background}"
-							BorderThickness="1,1,0,0"
-							CornerRadius="2"
-							RenderTransformOrigin="0.9,0.8">
-							<Border.RenderTransform>
-								<SkewTransform AngleX="-20" />
-							</Border.RenderTransform>
-						</Border>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:OpenFileIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:OpenFileIcon}">
+                    <Grid x:Name="IconHost">
+                        <Border
+                            Width="{Binding ElementName=IconHost, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-1}"
+                            Height="{Binding ElementName=IconHost, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-2}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2" />
+                        <Border
+                            Width="6"
+                            HorizontalAlignment="Left"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="1,3,2,2" />
+                        <Border
+                            Height="{Binding ElementName=IconHost, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-4}"
+                            VerticalAlignment="Bottom"
+                            Background="{TemplateBinding Foreground}"
+                            BorderBrush="{TemplateBinding Background}"
+                            BorderThickness="1,1,0,0"
+                            CornerRadius="2"
+                            RenderTransformOrigin="0.9,0.8">
+                            <Border.RenderTransform>
+                                <SkewTransform AngleX="-20" />
+                            </Border.RenderTransform>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:PenIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:PenIcon}">
-					<Grid x:Name="Grid">
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="Triangle"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-4}"
-							X2="2"
-							Y1="4"
-							Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-2}" />
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-1}"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-3}"
-							Y1="1"
-							Y2="3" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:PenIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:PenIcon}">
+                    <Grid x:Name="Grid">
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="Triangle"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-4}"
+                            X2="2"
+                            Y1="4"
+                            Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-2}" />
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-1}"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-3}"
+                            Y1="1"
+                            Y2="3" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:PinIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:PinIcon}">
-					<Grid x:Name="Grid">
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="Triangle"
-							StrokeThickness="2"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-10}"
-							X2="7"
-							Y1="10"
-							Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-7}" />
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="Triangle"
-							StrokeThickness="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.45}"
-							Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.6}"
-							Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.55}" />
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeThickness="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.7}"
-							Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.6}"
-							Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.3}" />
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeThickness="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.27}"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.6}"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-9}"
-							Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
-							Y2="9" />
-						<Grid Tag="DisablePinLine" Visibility="{TemplateBinding IsVisuallyDisabled, Converter={StaticResource VisibleIfTrueConverter}}">
-							<Line
-								Stroke="{TemplateBinding Background}"
-								StrokeThickness="6"
-								X1="5"
-								X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-5}"
-								Y1="5"
-								Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-5}" />
-							<Line
-								Stroke="{TemplateBinding Foreground}"
-								StrokeThickness="1.5"
-								X1="7"
-								X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-7}"
-								Y1="7"
-								Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-7}" />
-						</Grid>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:PinIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:PinIcon}">
+                    <Grid x:Name="Grid">
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="Triangle"
+                            StrokeThickness="2"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-10}"
+                            X2="7"
+                            Y1="10"
+                            Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-7}" />
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="Triangle"
+                            StrokeThickness="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.45}"
+                            Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.6}"
+                            Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.55}" />
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeThickness="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.2}"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.7}"
+                            Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.6}"
+                            Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.3}" />
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeThickness="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.27}"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.6}"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-9}"
+                            Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
+                            Y2="9" />
+                        <Grid Tag="DisablePinLine" Visibility="{TemplateBinding IsVisuallyDisabled, Converter={StaticResource VisibleIfTrueConverter}}">
+                            <Line
+                                Stroke="{TemplateBinding Background}"
+                                StrokeThickness="6"
+                                X1="5"
+                                X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-5}"
+                                Y1="5"
+                                Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-5}" />
+                            <Line
+                                Stroke="{TemplateBinding Foreground}"
+                                StrokeThickness="1.5"
+                                X1="7"
+                                X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-7}"
+                                Y1="7"
+                                Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-7}" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:PlayIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:PlayIcon}">
-					<Grid x:Name="Grid">
-						<Viewbox Stretch="Fill">
-							<Polygon Fill="{TemplateBinding Foreground}" Points="0,0 15,15 0,30" />
-						</Viewbox>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:PlayIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:PlayIcon}">
+                    <Grid x:Name="Grid">
+                        <Viewbox Stretch="Fill">
+                            <Polygon Fill="{TemplateBinding Foreground}" Points="0,0 15,15 0,30" />
+                        </Viewbox>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:PlusIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:PlusIcon}">
-					<Grid x:Name="Grid">
-						<Line
-							IsHitTestVisible="False"
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="{TemplateBinding StrokeStyle}"
-							StrokeStartLineCap="{TemplateBinding StrokeStyle}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
-							Y1="0"
-							Y2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=0}" />
-						<Line
-							IsHitTestVisible="False"
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="{TemplateBinding StrokeStyle}"
-							StrokeStartLineCap="{TemplateBinding StrokeStyle}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="0"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=0}"
-							Y1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
-							Y2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:PlusIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:PlusIcon}">
+                    <Grid x:Name="Grid">
+                        <Line
+                            IsHitTestVisible="False"
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeStartLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
+                            Y1="0"
+                            Y2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=0}" />
+                        <Line
+                            IsHitTestVisible="False"
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeStartLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="0"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueAdderConverter}, ConverterParameter=0}"
+                            Y1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
+                            Y2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:RestoreIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:RestoreIcon}">
-					<Grid>
-						<Border
-							Margin="0,2,2,0"
-							BorderBrush="{TemplateBinding Foreground}"
-							BorderThickness="{TemplateBinding StrokeThickness,
-							                                  Converter={StaticResource DoubleToBorderThicknessConverter}}"
-							CornerRadius="1" />
-						<Border
-							Margin="2,0,0,2"
-							BorderBrush="{TemplateBinding Foreground}"
-							BorderThickness="{TemplateBinding StrokeThickness,
-							                                  Converter={StaticResource DoubleToBorderThicknessConverter},
-							                                  ConverterParameter=0-1-1-0}"
-							CornerRadius="0,1,0,0" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:RestoreIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:RestoreIcon}">
+                    <Grid>
+                        <Border
+                            Margin="0,2,2,0"
+                            BorderBrush="{TemplateBinding Foreground}"
+                            BorderThickness="{TemplateBinding StrokeThickness,
+                                                              Converter={StaticResource DoubleToBorderThicknessConverter}}"
+                            CornerRadius="1" />
+                        <Border
+                            Margin="2,0,0,2"
+                            BorderBrush="{TemplateBinding Foreground}"
+                            BorderThickness="{TemplateBinding StrokeThickness,
+                                                              Converter={StaticResource DoubleToBorderThicknessConverter},
+                                                              ConverterParameter=0-1-1-0}"
+                            CornerRadius="0,1,0,0" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:SunIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:SunIcon}">
-					<Grid x:Name="Grid">
-						<Ellipse
-							Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.4, Converter={StaticResource ValueMultiplierConverter}}"
-							Height="{Binding ElementName=Grid, Path=ActualHeight, ConverterParameter=0.4, Converter={StaticResource ValueMultiplierConverter}}"
-							Fill="{TemplateBinding Foreground}" />
-						<Grid Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.1, Converter={StaticResource ValueMultiplierConverter}}" RenderTransformOrigin="0.5,0.5">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="0.2*" />
-								<RowDefinition Height="0.6*" />
-								<RowDefinition Height="0.2*" />
-							</Grid.RowDefinitions>
-							<Grid.RenderTransform>
-								<RotateTransform Angle="0" />
-							</Grid.RenderTransform>
-							<Border Background="{TemplateBinding Foreground}" />
-							<Border Grid.Row="2" Background="{TemplateBinding Foreground}" />
-						</Grid>
-						<Grid Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.1, Converter={StaticResource ValueMultiplierConverter}}" RenderTransformOrigin="0.5,0.5">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="0.2*" />
-								<RowDefinition Height="0.6*" />
-								<RowDefinition Height="0.2*" />
-							</Grid.RowDefinitions>
-							<Grid.RenderTransform>
-								<RotateTransform Angle="45" />
-							</Grid.RenderTransform>
-							<Border Background="{TemplateBinding Foreground}" />
-							<Border Grid.Row="2" Background="{TemplateBinding Foreground}" />
-						</Grid>
-						<Grid Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.1, Converter={StaticResource ValueMultiplierConverter}}" RenderTransformOrigin="0.5,0.5">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="0.2*" />
-								<RowDefinition Height="0.6*" />
-								<RowDefinition Height="0.2*" />
-							</Grid.RowDefinitions>
-							<Grid.RenderTransform>
-								<RotateTransform Angle="90" />
-							</Grid.RenderTransform>
-							<Border Background="{TemplateBinding Foreground}" />
-							<Border Grid.Row="2" Background="{TemplateBinding Foreground}" />
-						</Grid>
-						<Grid Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.1, Converter={StaticResource ValueMultiplierConverter}}" RenderTransformOrigin="0.5,0.5">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="0.2*" />
-								<RowDefinition Height="0.6*" />
-								<RowDefinition Height="0.2*" />
-							</Grid.RowDefinitions>
-							<Grid.RenderTransform>
-								<RotateTransform Angle="-45" />
-							</Grid.RenderTransform>
-							<Border Background="{TemplateBinding Foreground}" />
-							<Border Grid.Row="2" Background="{TemplateBinding Foreground}" />
-						</Grid>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:SaveIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:SaveIcon}">
+                    <Grid x:Name="IconHost">
+                        <Viewbox Stretch="Fill">
+                            <Path Data="M0 48 L16 64 L64 64 L64 0 L0 0 Z" Fill="{TemplateBinding Foreground}" />
+                        </Viewbox>
+                        <Border
+                            Margin="1"
+                            Width="{Binding ElementName=IconHost, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.65}"
+                            Height="{Binding ElementName=IconHost, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Background="{TemplateBinding Background}"/>
+                        <Border
+                            Margin="1"
+                            Width="{Binding ElementName=IconHost, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.4}"
+                            Height="{Binding ElementName=IconHost, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.3}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Background="{TemplateBinding Background}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:TagIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:TagIcon}">
-					<Grid x:Name="Grid">
-						<Viewbox Stretch="Fill">
-							<Grid>
-								<Path Data="M0 42 L22 64 L56 30 L56 8 L34 8Z" Fill="{TemplateBinding Foreground}" />
-								<Ellipse
-									Width="9"
-									Height="9"
-									Margin="4,14"
-									HorizontalAlignment="Right"
-									VerticalAlignment="Top"
-									Fill="{TemplateBinding Background}" />
-							</Grid>
-						</Viewbox>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:SunIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:SunIcon}">
+                    <Grid x:Name="Grid">
+                        <Ellipse
+                            Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.4, Converter={StaticResource ValueMultiplierConverter}}"
+                            Height="{Binding ElementName=Grid, Path=ActualHeight, ConverterParameter=0.4, Converter={StaticResource ValueMultiplierConverter}}"
+                            Fill="{TemplateBinding Foreground}" />
+                        <Grid Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.1, Converter={StaticResource ValueMultiplierConverter}}" RenderTransformOrigin="0.5,0.5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition Height="0.6*" />
+                                <RowDefinition Height="0.2*" />
+                            </Grid.RowDefinitions>
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="0" />
+                            </Grid.RenderTransform>
+                            <Border Background="{TemplateBinding Foreground}" />
+                            <Border Grid.Row="2" Background="{TemplateBinding Foreground}" />
+                        </Grid>
+                        <Grid Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.1, Converter={StaticResource ValueMultiplierConverter}}" RenderTransformOrigin="0.5,0.5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition Height="0.6*" />
+                                <RowDefinition Height="0.2*" />
+                            </Grid.RowDefinitions>
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="45" />
+                            </Grid.RenderTransform>
+                            <Border Background="{TemplateBinding Foreground}" />
+                            <Border Grid.Row="2" Background="{TemplateBinding Foreground}" />
+                        </Grid>
+                        <Grid Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.1, Converter={StaticResource ValueMultiplierConverter}}" RenderTransformOrigin="0.5,0.5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition Height="0.6*" />
+                                <RowDefinition Height="0.2*" />
+                            </Grid.RowDefinitions>
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="90" />
+                            </Grid.RenderTransform>
+                            <Border Background="{TemplateBinding Foreground}" />
+                            <Border Grid.Row="2" Background="{TemplateBinding Foreground}" />
+                        </Grid>
+                        <Grid Width="{Binding ElementName=Grid, Path=ActualWidth, ConverterParameter=0.1, Converter={StaticResource ValueMultiplierConverter}}" RenderTransformOrigin="0.5,0.5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition Height="0.6*" />
+                                <RowDefinition Height="0.2*" />
+                            </Grid.RowDefinitions>
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="-45" />
+                            </Grid.RenderTransform>
+                            <Border Background="{TemplateBinding Foreground}" />
+                            <Border Grid.Row="2" Background="{TemplateBinding Foreground}" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-	<Style TargetType="{x:Type icons:TickIcon}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type icons:TickIcon}">
-					<Grid x:Name="Grid">
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeStartLineCap="{TemplateBinding StrokeStyle}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="0"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.333}"
-							Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
-							Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=1}" />
-						<Line
-							Stroke="{TemplateBinding Foreground}"
-							StrokeEndLineCap="{TemplateBinding StrokeStyle}"
-							StrokeThickness="{TemplateBinding StrokeThickness}"
-							X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.333}"
-							X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=1}"
-							Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=1}"
-							Y2="0" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style TargetType="{x:Type icons:TagIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:TagIcon}">
+                    <Grid x:Name="Grid">
+                        <Viewbox Stretch="Fill">
+                            <Grid>
+                                <Path Data="M0 42 L22 64 L56 30 L56 8 L34 8Z" Fill="{TemplateBinding Foreground}" />
+                                <Ellipse
+                                    Width="9"
+                                    Height="9"
+                                    Margin="4,14"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Fill="{TemplateBinding Background}" />
+                            </Grid>
+                        </Viewbox>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type icons:TickIcon}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type icons:TickIcon}">
+                    <Grid x:Name="Grid">
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeStartLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="0"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.333}"
+                            Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
+                            Y2="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=1}" />
+                        <Line
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="{TemplateBinding StrokeStyle}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            X1="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.333}"
+                            X2="{Binding ElementName=Grid, Path=ActualWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=1}"
+                            Y1="{Binding ElementName=Grid, Path=ActualHeight, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=1}"
+                            Y2="0" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
