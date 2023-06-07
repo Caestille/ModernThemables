@@ -11,6 +11,7 @@ namespace ModernThemables.Controls
     {
         readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
         private Brush backGround;
+        private Brush foreGround;
 
         public SolidColorBrush MouseOverColour
 		{
@@ -52,6 +53,29 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
 		  "CornerRadius", typeof(CornerRadius), typeof(ExtendedButton), new PropertyMetadata(new CornerRadius(0)));
 
+        public ExtendedButton()
+        {
+            this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
+        }
+
+        private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            SetDefaults();
+            if (backGround != null)
+            {
+                if (this.IsEnabled)
+                {
+                    Background = backGround;
+                    Foreground = foreGround;
+                }
+                else
+                {
+                    Background = DisabledBackgroundColour;
+                    Foreground = DisabledForegroundColour;
+                }
+            }
+        }
+
         static ExtendedButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedButton), new FrameworkPropertyMetadata(typeof(ExtendedButton)));
@@ -59,11 +83,8 @@ namespace ModernThemables.Controls
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-			if (backGround == null)
-			{
-                backGround = Background;
-            }
-            if (backGround != null)
+            SetDefaults();
+            if (backGround != null && IsEnabled)
             {
 				Background = MouseDownColour;
 			}
@@ -72,11 +93,8 @@ namespace ModernThemables.Controls
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            if (backGround == null)
-            {
-                backGround = Background;
-            }
-            if (backGround != null)
+            SetDefaults();
+            if (backGround != null && IsEnabled)
             {
 				Background = MouseOverColour;
 			}
@@ -85,11 +103,8 @@ namespace ModernThemables.Controls
 
         protected override void OnMouseEnter(MouseEventArgs e)
         {
-            if (backGround == null)
-            {
-                backGround = Background;
-            }
-            if (backGround != null)
+            SetDefaults();
+            if (backGround != null && IsEnabled)
             {
 				Background = MouseOverColour;
 			}
@@ -98,15 +113,25 @@ namespace ModernThemables.Controls
 
         protected override void OnMouseLeave(MouseEventArgs e)
         {
-            if (backGround == null)
-            {
-                backGround = Background;
-            }
-            if (backGround != null)
+            SetDefaults();
+            if (backGround != null && IsEnabled)
 			{
                 Background = backGround;
             }
             base.OnMouseLeave(e);
+        }
+
+        private void SetDefaults()
+        {
+            if (backGround == null)
+            {
+                backGround = Background;
+            }
+
+            if (foreGround == null)
+            {
+                foreGround = Foreground;
+            }
         }
     }
 }
