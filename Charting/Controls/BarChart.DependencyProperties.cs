@@ -170,17 +170,6 @@ namespace ModernThemables.Charting.Controls
 
 		#region Private properties
 
-		private bool IsTooltipByCursor
-		{
-			get => (bool)GetValue(IsTooltipByCursorProperty);
-			set => SetValue(IsTooltipByCursorProperty, value);
-		}
-		public static readonly DependencyProperty IsTooltipByCursorProperty = DependencyProperty.Register(
-			"IsTooltipByCursor",
-			typeof(bool),
-			typeof(BarChart),
-			new PropertyMetadata(true));
-
 		private ObservableCollection<InternalChartEntity> InternalSeries
 		{
 			get => (ObservableCollection<InternalChartEntity>)GetValue(InternalSeriesProperty);
@@ -213,28 +202,6 @@ namespace ModernThemables.Charting.Controls
 			typeof(ObservableCollection<AxisLabel>),
 			typeof(BarChart),
 			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
-
-		private bool IsTooltipVisible
-		{
-			get => (bool)GetValue(IsTooltipVisibleProperty);
-			set => SetValue(IsTooltipVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsTooltipVisibleProperty = DependencyProperty.Register(
-			"IsTooltipVisible",
-			typeof(bool),
-			typeof(BarChart),
-			new PropertyMetadata(true));
-		
-		private bool HasData
-		{
-			get => (bool)GetValue(HasDataProperty);
-			set => SetValue(HasDataProperty, value);
-		}
-		public static readonly DependencyProperty HasDataProperty = DependencyProperty.Register(
-			"HasData",
-			typeof(bool),
-			typeof(BarChart),
-			new PropertyMetadata(false));
 
 		private double BarWidth
 		{
@@ -279,8 +246,6 @@ namespace ModernThemables.Charting.Controls
 			typeof(Func<Point, IEnumerable<TooltipViewModel>>),
 			typeof(BarChart),
 			new PropertyMetadata(null));
-
-		
 
 		#endregion
 	}

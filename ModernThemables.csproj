@@ -68,7 +68,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Charting\Services\" />
     <Folder Include="Charting\ViewModels\BarChart\" />
   </ItemGroup>
 
