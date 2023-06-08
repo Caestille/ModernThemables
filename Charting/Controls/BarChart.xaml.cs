@@ -83,13 +83,13 @@ namespace ModernThemables.Charting.Controls
 				if (tooltipBar != null)
 				{
 					var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == tooltipBar.Identifier));
-					var category = matchingSeries.ValueFormatter(tooltipBar.BackingPoint);
+					var formattedValue = matchingSeries.ValueFormatter(tooltipBar.BackingPoint);
 					var matchingWedge = matchingSeries.Values.First(x => x.Identifier == tooltipBar.Identifier);
-					var str = matchingSeries.TooltipLabelFormatter != null
+					var category = matchingSeries.TooltipLabelFormatter != null
 						? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
 						: matchingSeries.Name;
 
-					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar.Fill.CoreBrush, str));
+					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar.Fill.CoreBrush, formattedValue, category));
 				}
 
 				return tooltipPoints;

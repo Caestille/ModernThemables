@@ -111,7 +111,7 @@
 			IsHitTestVisible="False"
 			Opacity="0.3"
 			Visibility="{Binding ElementName=root, Path=IsUserSelectingRange, Converter={StaticResource VisibleIfTrueConverter}}" />
-		<Grid Visibility="{Binding ElementName=MouseCaptureGrid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}">
+		<Grid Visibility="{Binding ElementName=MouseCaptureGrid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" Margin="0,0,-200,0">
 			<ItemsControl
 				x:Name="TooltipLines"
 				HorizontalAlignment="Stretch"

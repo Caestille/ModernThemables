@@ -25,11 +25,6 @@ namespace ModernThemables.Charting.ViewModels
         public Thickness Margin { get; set; }
 
         /// <summary>
-        /// The <see cref="Thickness"/> used to place the tooltip itself.
-        /// </summary>
-        public Thickness TooltipMargin { get; private set; }
-
-        /// <summary>
         /// An <see cref="object"/> which can be used to display custom content if a <see cref="DataTemplate"/> is set
         /// in the chart.
         /// </summary>
@@ -45,20 +40,28 @@ namespace ModernThemables.Charting.ViewModels
         /// </summary>
         public string Category { get; }
 
-        /// <summary>
-        /// Initialises a new <see cref="TooltipViewModel"/>.
-        /// </summary>
-        /// <param name="point">The <see cref="InternalChartEntity"/> being represented.</param>
-        /// <param name="fill">The point fill if visible.</param>
-        /// <param name="category">The <see cref="string"/> used to make up the tooltip display.</param>
-        public TooltipViewModel(
+		/// <summary>
+		/// The tooltip value to display
+		/// </summary>
+		public string FormattedValue { get; }
+
+		/// <summary>
+		/// Initialises a new <see cref="TooltipViewModel"/>.
+		/// </summary>
+		/// <param name="point">The <see cref="InternalChartEntity"/> being represented.</param>
+		/// <param name="fill">The point fill if visible.</param>
+		/// <param name="formattedValue">The <see cref="string"/> used to make up the tooltip display.</param>
+		/// <param name="category">The <see cref="string"/> used to make up the tooltip display.</param>
+		public TooltipViewModel(
             InternalChartEntity point,
             Brush fill,
+            string formattedValue,
             string category)
         {
             Point = point;
             Fill = fill;
-            Category = category;
+            FormattedValue = formattedValue;
+			Category = category;
         }
     }
 }

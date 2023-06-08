@@ -309,12 +309,13 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 					{
 						foreach (var tooltip in TooltipPoints)
 						{
-							var effectiveY = ActualHeight - tooltip.Point.Y;
+							var effectiveY = ActualHeight - tooltip.Point.Y + TooltipOffset.Height;
+							var tooltipWidth = TooltipsByPoints.ActualWidth - TooltipPoints.Min(x => x.Point.X);
 
 							// Get tooltip position variables
-							if (!tooltipLeft && tooltip.Point.X > (ActualWidth - 10 - TooltipsByPoints.ActualWidth))
+							if (!tooltipLeft && TooltipsByPoints.ActualWidth > ActualWidth)
 								tooltipLeft = true;
-							if (tooltipLeft && tooltip.Point.X < (10 + TooltipsByPoints.ActualWidth))
+							if (tooltipLeft && TooltipsByPoints.ActualWidth < 200)
 								tooltipLeft = false;
 							tooltipTop = effectiveY < (10 + TooltipsByPoints.ActualHeight);
 
