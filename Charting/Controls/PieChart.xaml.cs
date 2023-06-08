@@ -4,45 +4,28 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using ModernThemables.Charting.ViewModels.PieChart;
 using ModernThemables.Charting.Converters;
-using ModernThemables.Charting.Models.PieChart;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Models.Brushes;
 using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.Services;
-using System.Diagnostics;
 
 namespace ModernThemables.Charting.Controls
 {
-    /// <summary>
-    /// Interaction logic for PieChart.xaml
-    /// </summary>
-    public partial class PieChart : UserControl
+	/// <summary>
+	/// Interaction logic for PieChart.xaml
+	/// </summary>
+	public partial class PieChart : UserControl
 	{
-		private DateTime timeLastUpdated;
-		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 60d);
-		private List<ISeries> subscribedSeries = new();
-
 		private KeepAliveTriggerService resizeTrigger;
-
-		private Point? lastMouseMovePoint;
-		private bool ignoreNextMouseMove;
-
-		private bool tooltipLeft;
-		private bool tooltipTop = true;
-
-		private bool preventTrigger;
 
 		private SeriesWatcherService seriesWatcher;
 
@@ -313,43 +296,8 @@ namespace ModernThemables.Charting.Controls
 
 		private void YAxisItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			ignoreNextMouseMove = true;
+			//ignoreNextMouseMove = true;
 		}
-
-		//private void Wedge_FocusedChanged(object? sender, bool e)
-		//{
-		//	if (sender is not PieWedge wedge) return;
-		//	var id = wedge.Identifier;
-		//	var matchingInternalWedge = InternalSeries.First(x => x.Wedges.Any(y => y.Identifier == id)).Wedges.First(x => x.Identifier == id);
-		//	matchingInternalWedge.IsMouseOver = e;
-		//	TooltipWedge = e ? matchingInternalWedge : null;
-
-		//	var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
-		//	var matchingWedge = matchingSeries.Values.First(x => x.Identifier == wedge.Identifier);
-		//	TooltipString = matchingSeries.TooltipLabelFormatter != null
-		//		? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
-		//		: matchingWedge.XValue.ToString();
-
-		//	var centreAngle = matchingInternalWedge.StartAngle + matchingInternalWedge.Percent / 2 * 360 / 100;
-
-		//	var angleRad = (Math.PI / 180.0) * (centreAngle - 90);
-
-		//	var radius = Math.Min(SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight) * 0.9 / 2;
-
-		//	double x = radius * Math.Cos(angleRad);
-		//	double y = radius * Math.Sin(angleRad);
-
-		//	this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
-
-		//	var converter = new PieCentreRadiusConverter();
-		//	var centreY = (double)converter.Convert(
-		//		new object[] { SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight },
-		//		null, "CentreY", null);
-
-		//	var left = x + (SeriesItemsControl.ActualWidth / 2);
-		//	var top = y + centreY - TooltipGrid.ActualHeight - 20;
-		//	TooltipGrid.Margin = new Thickness(left, top, 0, 0);
-		//}
 
 		private void PieChart_Loaded(object sender, RoutedEventArgs e)
 		{

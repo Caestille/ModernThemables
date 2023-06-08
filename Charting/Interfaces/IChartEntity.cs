@@ -8,11 +8,6 @@ namespace ModernThemables.Charting.Interfaces
     public interface IChartEntity
     {
         /// <summary>
-        /// Raised when the point is focused or unfocused.
-        /// </summary>
-        event EventHandler<bool> FocusedChanged;
-
-        /// <summary>
         /// The point name. 
         /// </summary>
         string Name { get; }
@@ -41,11 +36,6 @@ namespace ModernThemables.Charting.Interfaces
         /// The point UID
         /// </summary>
         public Guid Identifier { get; }
-
-        /// <summary>
-        /// Whether the point is focused.
-        /// </summary>
-        public bool IsFocused { get; set; }
 
         /// <summary>
         /// Converts the raw X value to the underlying representation of an inheriting class.
