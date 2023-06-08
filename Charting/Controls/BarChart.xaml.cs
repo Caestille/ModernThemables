@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CoreUtilities.Converters;
 using System.Windows.Threading;
 using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.Models;
@@ -27,20 +26,10 @@ namespace ModernThemables.Charting.Controls
 	{
 		private double plotAreaHeight => TooltipControl.ActualHeight;
 		private double plotAreaWidth => TooltipControl.ActualWidth;
-		private DateTime timeLastUpdated;
-		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 60d);
 		private bool hasSetSeries;
 		private List<ISeries> subscribedSeries = new();
 
 		private KeepAliveTriggerService resizeTrigger;
-
-		private Point? lastMouseMovePoint;
-		private bool ignoreNextMouseMove;
-
-		private bool tooltipLeft;
-		private bool tooltipTop = true;
-
-		private bool preventTrigger;
 
 		private bool isSingleXPoint;
 
@@ -96,13 +85,6 @@ namespace ModernThemables.Charting.Controls
 			});
 
 			resizeTrigger = new KeepAliveTriggerService(() => { QueueRenderChart(null, null, true); }, 100);
-		}
-
-		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not BarChart chart) return;
-
-			chart.IsTooltipByCursor = chart.TooltipLocation == TooltipLocation.Cursor;
 		}
 
 		private static void TriggerReRender(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -425,16 +407,12 @@ namespace ModernThemables.Charting.Controls
 
 		#endregion
 
-		#region Grid events
+		#region Events
 
 		private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			resizeTrigger.Refresh();
 		}
-
-		#endregion
-
-		#region Mouse events
 
 		private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
 		{

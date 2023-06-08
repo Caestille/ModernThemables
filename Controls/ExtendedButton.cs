@@ -55,13 +55,18 @@ namespace ModernThemables.Controls
 
         public ExtendedButton()
         {
-            this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
+			this.Loaded += ExtendedButton_Loaded;
         }
 
-        private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+		private void ExtendedButton_Loaded(object sender, RoutedEventArgs e)
+		{
+			this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
+			this.Loaded -= ExtendedButton_Loaded;
+		}
+
+		private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            SetDefaults();
-            if (backGround != null)
+            if (backGround != null && foreGround != null)
             {
                 if (this.IsEnabled)
                 {

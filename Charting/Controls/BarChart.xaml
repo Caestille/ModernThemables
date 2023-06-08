@@ -64,94 +64,98 @@
 					Foreground="{DynamicResource StatusTextLightBrush}"
 					Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}"
 					YLabels="{Binding YAxisLabels, ElementName=root}" />
-				<Grid Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualHeight}">
-					<ItemsControl
-						x:Name="SeriesItemsControl"
-						Margin="3,0,0,0"
-						HorizontalAlignment="Stretch"
-						VerticalAlignment="Stretch"
-						HorizontalContentAlignment="Stretch"
-						ItemsSource="{Binding InternalSeries, ElementName=root}"
-						RenderTransformOrigin="0.5,0.5">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<Grid HorizontalAlignment="Left" VerticalAlignment="Bottom">
+				<ItemsControl
+					x:Name="SeriesItemsControl"
+					Width="{Binding ElementName=Grid, Path=ActualWidth}"
+					Height="{Binding ElementName=Grid, Path=ActualHeight}"
+					Margin="3,0,0,0"
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Stretch"
+					HorizontalContentAlignment="Stretch"
+					ItemsSource="{Binding InternalSeries, ElementName=root}"
+					RenderTransformOrigin="0.5,0.5">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Grid HorizontalAlignment="Left" VerticalAlignment="Bottom">
+								<Border
+									x:Name="Border1"
+									Width="{Binding BarWidth, ElementName=root}"
+									Height="{Binding Y}"
+									Margin="{Binding X, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=1-0-0-0}"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Bottom"
+									BorderBrush="{Binding Stroke.CoreBrush}"
+									BorderThickness="1"
+									ClipToBounds="True"
+									CornerRadius="{Binding ElementName=root, Path=BarCornerRadius}">
 									<Border
-										Width="{Binding BarWidth, ElementName=root}"
-										Height="{Binding Y}"
-										Margin="{Binding X, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=1-0-0-0}"
-										HorizontalAlignment="Left"
-										VerticalAlignment="Bottom"
-										Background="Transparent"
+										HorizontalAlignment="Stretch"
+										VerticalAlignment="Stretch"
+										Background="{Binding Fill.CoreBrush}"
 										BorderBrush="{Binding Stroke.CoreBrush}"
 										BorderThickness="1"
-										CornerRadius="{Binding ElementName=root, Path=BarCornerRadius}"
-										RenderTransformOrigin="0.5,0.93"
-										ClipToBounds="True">
-										<Border
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch"
-											Background="{Binding Fill.CoreBrush}"
-											BorderBrush="{Binding Stroke.CoreBrush}"
-											BorderThickness="1">
-											<Border.Style>
-												<Style TargetType="{x:Type Border}">
-													<Style.Triggers>
-														<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
-															<DataTrigger.EnterActions>
-																<BeginStoryboard>
-																	<Storyboard>
-																		<ThicknessAnimation
-																			Storyboard.TargetProperty="Margin"
-																			To="3,0,3,3"
-																			Duration="00:00:00.15">
-																			<ThicknessAnimation.EasingFunction>
-																				<BackEase Amplitude="1" EasingMode="EaseOut" />
-																			</ThicknessAnimation.EasingFunction>
-																		</ThicknessAnimation>
-																	</Storyboard>
-																</BeginStoryboard>
-															</DataTrigger.EnterActions>
-															<DataTrigger.ExitActions>
-																<BeginStoryboard>
-																	<Storyboard>
-																		<ThicknessAnimation
-																			Storyboard.TargetProperty="Margin"
-																			To="0"
-																			Duration="00:00:00.10">
-																			<ThicknessAnimation.EasingFunction>
-																				<BackEase Amplitude="1" EasingMode="EaseOut" />
-																			</ThicknessAnimation.EasingFunction>
-																		</ThicknessAnimation>
-																	</Storyboard>
-																</BeginStoryboard>
-															</DataTrigger.ExitActions>
-														</DataTrigger>
-													</Style.Triggers>
-												</Style>
-											</Border.Style>
-										</Border>
+										CornerRadius="{Binding ElementName=root, Path=BarCornerRadius}">
+										<Border.Style>
+											<Style TargetType="{x:Type Border}">
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
+														<DataTrigger.EnterActions>
+															<BeginStoryboard>
+																<Storyboard>
+																	<ThicknessAnimation
+																		Storyboard.TargetProperty="Margin"
+																		To="3,0,3,3"
+																		Duration="00:00:00.15">
+																		<ThicknessAnimation.EasingFunction>
+																			<BackEase Amplitude="1" EasingMode="EaseOut" />
+																		</ThicknessAnimation.EasingFunction>
+																	</ThicknessAnimation>
+																</Storyboard>
+															</BeginStoryboard>
+														</DataTrigger.EnterActions>
+														<DataTrigger.ExitActions>
+															<BeginStoryboard>
+																<Storyboard>
+																	<ThicknessAnimation
+																		Storyboard.TargetProperty="Margin"
+																		To="0"
+																		Duration="00:00:00.10">
+																		<ThicknessAnimation.EasingFunction>
+																			<BackEase Amplitude="1" EasingMode="EaseOut" />
+																		</ThicknessAnimation.EasingFunction>
+																	</ThicknessAnimation>
+																</Storyboard>
+															</BeginStoryboard>
+														</DataTrigger.ExitActions>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</Border.Style>
 									</Border>
-								</Grid>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-						<ItemsControl.RenderTransform>
-							<ScaleTransform ScaleY="-1" />
-						</ItemsControl.RenderTransform>
-					</ItemsControl>
-				</Grid>
+								</Border>
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+					<ItemsControl.RenderTransform>
+						<ScaleTransform ScaleY="-1" />
+					</ItemsControl.RenderTransform>
+				</ItemsControl>
 				<chartComponents:TooltipControl
 					x:Name="TooltipControl"
+					AllowSelection="False"
 					ForceCrosshairs="False"
 					ForcePointIndicators="False"
-					TooltipLocation="Points"
 					ForceTooltipTop="True"
-					TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}" />
+					InvertY="True"
+					MouseLeave="MouseCaptureGrid_MouseLeave"
+					TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
+					TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
+					TooltipOffsetX="{Binding ElementName=root, Path=BarWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
 			</Grid>
 		</Grid>
 	</Grid>

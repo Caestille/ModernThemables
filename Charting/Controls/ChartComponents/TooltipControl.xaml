@@ -109,9 +109,20 @@
 			BorderBrush="{DynamicResource TextBrush}"
 			BorderThickness="1,0,1,0"
 			IsHitTestVisible="False"
-			Opacity="0.3"
-			Visibility="{Binding ElementName=root, Path=IsUserSelectingRange, Converter={StaticResource VisibleIfTrueConverter}}" />
-		<Grid Visibility="{Binding ElementName=MouseCaptureGrid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" Margin="0,0,-200,0">
+			Opacity="0.3">
+			<Border.Visibility>
+				<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+					<Binding ElementName="root" Path="IsUserSelectingRange" />
+					<Binding ElementName="root" Path="AllowSelection" />
+				</MultiBinding>
+			</Border.Visibility>
+		</Border>
+		<Grid
+			Margin="0,0,-200,-200"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			IsHitTestVisible="False"
+			Visibility="{Binding ElementName=MouseCaptureGrid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}">
 			<ItemsControl
 				x:Name="TooltipLines"
 				HorizontalAlignment="Stretch"
@@ -266,41 +277,46 @@
 			</ItemsControl>
 			<ItemsControl
 				x:Name="TooltipsByPoints"
+				Margin="0,0,0,-100"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Stretch"
 				IsHitTestVisible="False"
 				ItemsSource="{Binding TooltipPoints, ElementName=root}"
+				Opacity="{Binding ElementName=root, Path=TooltipOpacity}"
 				Visibility="{Binding ElementName=root, Path=IsTooltipByCursor, Converter={StaticResource VisibleIfFalseConverter}, ConverterParameter=Hidden}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
+						<Grid Height="{Binding ElementName=Grid, Path=ActualHeight, ConverterParameter=100, Converter={StaticResource ValueAdderConverter}}">
 							<Grid.Margin>
 								<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
 									<Binding Path="." />
 									<Binding ElementName="root" Path="TooltipPoints" />
-									<Binding ElementName="Grid" Path="ActualHeight" />
+									<Binding
+										Converter="{StaticResource ValueAdderConverter}"
+										ConverterParameter="100"
+										ElementName="Grid"
+										Path="ActualHeight" />
 								</MultiBinding>
 							</Grid.Margin>
-							<Border
-								Margin="{Binding Margin}"
+							<Grid
+								x:Name="PointTooltipGrid"
 								HorizontalAlignment="Left"
-								VerticalAlignment="Top"
-								Opacity="{Binding ElementName=root, Path=TooltipOpacity}">
-								<Border.Visibility>
-									<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-										<Binding ElementName="root" Path="ShowTooltip" />
-										<Binding
-											Converter="{StaticResource SequenceHasElementsBooleanConverter}"
-											ElementName="root"
-											Path="TooltipPoints" />
-										<Binding
-											Converter="{StaticResource BoolInverter}"
-											ElementName="root"
-											Path="IsTooltipByCursor" />
+								VerticalAlignment="Top">
+								<Grid.Margin>
+									<MultiBinding Converter="{StaticResource PointToolTipConverter}">
+										<Binding Path="Point.X" />
+										<Binding Path="Point.Y" />
+										<Binding ElementName="PointTooltipGrid" Path="ActualWidth" />
+										<Binding ElementName="PointTooltipGrid" Path="ActualHeight" />
+										<Binding ElementName="Grid" Path="ActualWidth" />
+										<Binding ElementName="Grid" Path="ActualHeight" />
+										<Binding ElementName="root" Path="InvertY" />
+										<Binding ElementName="root" Path="TooltipOffsetX" />
+										<Binding ElementName="root" Path="TooltipOffsetY" />
 									</MultiBinding>
-								</Border.Visibility>
+								</Grid.Margin>
 								<chartcomponents:DefaultTooltip />
-							</Border>
+							</Grid>
 						</Grid>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>

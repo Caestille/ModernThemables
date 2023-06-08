@@ -109,7 +109,7 @@ namespace ModernThemables.Charting.Controls
 			"TooltipLocation",
 			typeof(TooltipLocation),
 			typeof(BarChart),
-			new FrameworkPropertyMetadata(TooltipLocation.Cursor, OnTooltipLocationSet));
+			new FrameworkPropertyMetadata(TooltipLocation.Cursor));
 
 		public double TooltipOpacity
 		{

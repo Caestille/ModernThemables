@@ -122,16 +122,27 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(TooltipControl),
 			new UIPropertyMetadata(false));
 
-		public Size TooltipOffset
+		public double TooltipOffsetX
 		{
-			get => (Size)GetValue(TooltipOffsetProperty);
-			set => SetValue(TooltipOffsetProperty, value);
+			get => (double)GetValue(TooltipOffsetXProperty);
+			set => SetValue(TooltipOffsetXProperty, value);
 		}
-		public static readonly DependencyProperty TooltipOffsetProperty = DependencyProperty.Register(
-			"TooltipOffset",
-			typeof(Size),
+		public static readonly DependencyProperty TooltipOffsetXProperty = DependencyProperty.Register(
+			"TooltipOffsetX",
+			typeof(double),
 			typeof(TooltipControl),
-			new UIPropertyMetadata(Size.Empty));
+			new UIPropertyMetadata(0d));
+
+		public double TooltipOffsetY
+		{
+			get => (double)GetValue(TooltipOffsetYProperty);
+			set => SetValue(TooltipOffsetYProperty, value);
+		}
+		public static readonly DependencyProperty TooltipOffsetYProperty = DependencyProperty.Register(
+			"TooltipOffsetY",
+			typeof(double),
+			typeof(TooltipControl),
+			new UIPropertyMetadata(0d));
 
 		public double TooltipOpacity
 		{
@@ -143,6 +154,17 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(double),
 			typeof(TooltipControl),
 			new PropertyMetadata(1d));
+
+		public bool InvertY
+		{
+			get => (bool)GetValue(InvertYProperty);
+			set => SetValue(InvertYProperty, value);
+		}
+		public static readonly DependencyProperty InvertYProperty = DependencyProperty.Register(
+			"InvertY",
+			typeof(bool),
+			typeof(TooltipControl),
+			new UIPropertyMetadata(false));
 
 		private ObservableCollection<TooltipViewModel> TooltipPoints
 		{
@@ -285,7 +307,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			#endregion
 
 			#region Selected range
-			if (IsUserSelectingRange && lowerSelection != null)
+			if (AllowSelection && IsUserSelectingRange && lowerSelection != null)
 			{
 				var negative = mouseLoc.X < lowerSelection.Value.X;
 				var margin = SelectionRangeBorder.Margin;
@@ -298,51 +320,9 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			#endregion
 
 			#region Tooltip
-
 			if (ShowTooltip)
 			{
 				TooltipPoints = new ObservableCollection<TooltipViewModel>(TooltipGetterFunc(mouseLoc));
-
-				if (TooltipPoints.Any())
-				{
-					if (TooltipLocation == TooltipLocation.Points)
-					{
-						foreach (var tooltip in TooltipPoints)
-						{
-							var effectiveY = ActualHeight - tooltip.Point.Y + TooltipOffset.Height;
-							var tooltipWidth = TooltipsByPoints.ActualWidth - TooltipPoints.Min(x => x.Point.X);
-
-							// Get tooltip position variables
-							if (!tooltipLeft && TooltipsByPoints.ActualWidth > ActualWidth)
-								tooltipLeft = true;
-							if (tooltipLeft && TooltipsByPoints.ActualWidth < 200)
-								tooltipLeft = false;
-							tooltipTop = effectiveY < (10 + TooltipsByPoints.ActualHeight);
-
-							tooltip.Margin = new Thickness(
-								!tooltipLeft ? tooltip.Point.X : tooltip.Point.X - TooltipsByPoints.ActualWidth + TooltipOffset.Width + 5,
-								!tooltipTop ? effectiveY : effectiveY,
-								0, 0);
-						}
-					}
-					else if (TooltipLocation == TooltipLocation.Cursor)
-					{
-						// Get tooltip position variables
-						if (!tooltipLeft && mouseLoc.X > (ActualWidth - 10 - TooltipsByCursor.ActualWidth))
-							tooltipLeft = true;
-						if (tooltipLeft && mouseLoc.X < (10 + TooltipsByCursor.ActualWidth))
-							tooltipLeft = false;
-						if (!tooltipTop && mouseLoc.Y > (ActualHeight - 10 - TooltipsByCursor.ActualHeight))
-							tooltipTop = true;
-						if (tooltipTop && (mouseLoc.Y) < (10 + TooltipsByCursor.ActualHeight))
-							tooltipTop = false;
-
-						TooltipsByCursor.Margin = new Thickness(
-							!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipsByCursor.ActualWidth - 5,
-							!tooltipTop ? mouseLoc.Y - 5 : mouseLoc.Y - TooltipsByCursor.ActualHeight - 5,
-							0, 0);
-					}
-				}
 			}
 			else
 			{

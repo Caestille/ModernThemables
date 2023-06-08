@@ -49,6 +49,7 @@
 	<!--#region Converters-->
 
 	<chartConverters:CentreToolTipConverter x:Key="CentreToolTipConverter" />
+	<chartConverters:PointToolTipConverter x:Key="PointToolTipConverter" />
 	<converters:ColourRgbConverter x:Key="ColourRgbConverter" />
 	<converters:RoundedGeometryGroupConverter x:Key="RoundedGeometryGroupConverter" />
 	<converters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />

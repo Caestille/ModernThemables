@@ -20,11 +20,6 @@ namespace ModernThemables.Charting.ViewModels
         public Brush Fill { get; }
 
         /// <summary>
-        /// The <see cref="Thickness"/> used to place the point.
-        /// </summary>
-        public Thickness Margin { get; set; }
-
-        /// <summary>
         /// An <see cref="object"/> which can be used to display custom content if a <see cref="DataTemplate"/> is set
         /// in the chart.
         /// </summary>
