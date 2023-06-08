@@ -782,8 +782,8 @@ namespace ModernThemables.Charting.Controls
 
 			#region Tooltip
 			var nearestPoint = pointsUnderMouse.FirstOrDefault(
-				x => Math.Abs(x.Point.Y - mouseLoc.Y)
-					== pointsUnderMouse.Min(x => Math.Abs(x.Point.Y - mouseLoc.Y)));
+				x => Math.Abs(x.LocationY - mouseLoc.Y)
+					== pointsUnderMouse.Min(x => Math.Abs(x.LocationX - mouseLoc.Y)));
 
 			switch (TooltipFindingStrategy)
 			{
@@ -802,7 +802,7 @@ namespace ModernThemables.Charting.Controls
 				case TooltipFindingStrategy.NearestXWithinThreshold:
 					TooltipPoints = new ObservableCollection<TooltipViewModel>(
 						pointsUnderMouse.Where(
-							x => Math.Abs(x.Point.X - mouseLoc.X) <= TooltipLocationThreshold));
+							x => Math.Abs(x.LocationX - mouseLoc.X) <= TooltipLocationThreshold));
 					break;
 			}
 
@@ -829,9 +829,9 @@ namespace ModernThemables.Charting.Controls
 			#endregion
 
 			#region Selected range
-			MouseOverPoint = pointsUnderMouse.FirstOrDefault(
-				x => Math.Abs(x.Point.X - mouseLoc.X) ==
-					pointsUnderMouse.Min(x => Math.Abs(x.Point.X - mouseLoc.X)))?.Point;
+			//MouseOverPoint = pointsUnderMouse.FirstOrDefault(
+			//	x => Math.Abs(x.LocationX - mouseLoc.X) ==
+			//		pointsUnderMouse.Min(x => Math.Abs(x.LocationX - mouseLoc.X)))?.Point;
 
 			if (IsUserSelectingRange && MouseOverPoint != null && lowerSelection != null)
 			{

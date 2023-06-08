@@ -304,8 +304,8 @@
 								VerticalAlignment="Top">
 								<Grid.Margin>
 									<MultiBinding Converter="{StaticResource PointToolTipConverter}">
-										<Binding Path="Point.X" />
-										<Binding Path="Point.Y" />
+										<Binding Path="LocationX" />
+										<Binding Path="LocationY" />
 										<Binding ElementName="PointTooltipGrid" Path="ActualWidth" />
 										<Binding ElementName="PointTooltipGrid" Path="ActualHeight" />
 										<Binding ElementName="Grid" Path="ActualWidth" />

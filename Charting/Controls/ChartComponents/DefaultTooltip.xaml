@@ -35,17 +35,17 @@
 						FontSize="20"
 						FontWeight="DemiBold"
 						Foreground="{DynamicResource TextBrush}"
-						Text="{Binding FormattedValue}" />
+						Text="{Binding PrimaryValue}" />
 					<TextBlock
 						Grid.Column="1"
 						FontWeight="Bold"
 						Foreground="{DynamicResource TextBrush}"
-						Text="{Binding Point.BackingPoint.Name}" />
+						Text="{Binding SecondaryValue}" />
 					<TextBlock
 						Grid.Row="1"
 						Grid.Column="1"
 						Foreground="{DynamicResource TextBrush}"
-						Text="{Binding Category}" />
+						Text="{Binding TertiaryValue}" />
 				</Grid>
 			</Border>
 		</Border>

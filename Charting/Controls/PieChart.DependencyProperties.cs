@@ -1,12 +1,15 @@
 ﻿using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
+using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.ViewModels.PieChart;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace ModernThemables.Charting.Controls
 {
-    public partial class PieChart // .DependencyProperties
+	public partial class PieChart // .DependencyProperties
 	{
 		#region Public properties
 
@@ -113,39 +116,6 @@ namespace ModernThemables.Charting.Controls
 			typeof(PieChart),
 			new PropertyMetadata(new ObservableCollection<InternalPieSeriesViewModel>()));
 
-		private bool IsTooltipVisible
-		{
-			get => (bool)GetValue(IsTooltipVisibleProperty);
-			set => SetValue(IsTooltipVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsTooltipVisibleProperty = DependencyProperty.Register(
-			"IsTooltipVisible",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(true));
-
-		private InternalPieWedgeViewModel TooltipWedge
-		{
-			get => (InternalPieWedgeViewModel)GetValue(TooltipWedgeProperty);
-			set => SetValue(TooltipWedgeProperty, value);
-		}
-		public static readonly DependencyProperty TooltipWedgeProperty = DependencyProperty.Register(
-			"TooltipWedge",
-			typeof(InternalPieWedgeViewModel),
-			typeof(PieChart),
-			new PropertyMetadata(null));
-
-		private string TooltipString
-		{
-			get => (string)GetValue(TooltipStringProperty);
-			set => SetValue(TooltipStringProperty, value);
-		}
-		public static readonly DependencyProperty TooltipStringProperty = DependencyProperty.Register(
-			"TooltipString",
-			typeof(string),
-			typeof(PieChart),
-			new PropertyMetadata(""));
-
 		private bool HasData
 		{
 			get => (bool)GetValue(HasDataProperty);
@@ -156,6 +126,17 @@ namespace ModernThemables.Charting.Controls
 			typeof(bool),
 			typeof(PieChart),
 			new PropertyMetadata(false));
+
+		private Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
+		{
+			get => (Func<Point, IEnumerable<TooltipViewModel>>)GetValue(TooltipGetterFuncProperty);
+			set => SetValue(TooltipGetterFuncProperty, value);
+		}
+		public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
+			"TooltipGetterFunc",
+			typeof(Func<Point, IEnumerable<TooltipViewModel>>),
+			typeof(PieChart),
+			new PropertyMetadata(null));
 
 		#endregion
 	}

@@ -9,10 +9,9 @@ namespace ModernThemables.Charting.ViewModels
     /// </summary>
     public class TooltipViewModel : ObservableObject
     {
-        /// <summary>
-        /// The <see cref="InternalChartEntity"/> this tooltip represents.
-        /// </summary>
-        public InternalChartEntity Point { get; }
+        public double LocationX { get; }
+
+		public double LocationY { get; }
 
         /// <summary>
         /// The fill <see cref="Brush"/> the displayed tooltip point should be filled by.
@@ -30,33 +29,57 @@ namespace ModernThemables.Charting.ViewModels
         /// </summary>
         public DataTemplate TooltipTemplate { get; }
 
-        /// <summary>
-        /// The tooltip category
-        /// </summary>
-        public string Category { get; }
-
 		/// <summary>
 		/// The tooltip value to display
 		/// </summary>
-		public string FormattedValue { get; }
+		public string PrimaryValue { get; }
+
+		/// <summary>
+		/// The tooltip category
+		/// </summary>
+		public string SecondaryValue { get; }
+
+		/// <summary>
+		/// The tooltip category
+		/// </summary>
+		public string TertiaryValue { get; }
 
 		/// <summary>
 		/// Initialises a new <see cref="TooltipViewModel"/>.
 		/// </summary>
 		/// <param name="point">The <see cref="InternalChartEntity"/> being represented.</param>
 		/// <param name="fill">The point fill if visible.</param>
-		/// <param name="formattedValue">The <see cref="string"/> used to make up the tooltip display.</param>
-		/// <param name="category">The <see cref="string"/> used to make up the tooltip display.</param>
+		/// <param name="primaryValue">The <see cref="string"/> used to make up the tooltip display.</param>
+		/// <param name="secondaryValue">The <see cref="string"/> used to make up the tooltip display.</param>
 		public TooltipViewModel(
             InternalChartEntity point,
             Brush fill,
-            string formattedValue,
-            string category)
+            string primaryValue,
+            string secondaryValue,
+            string tertiaryValue)
         {
-            Point = point;
+			LocationX = point.X;
+			LocationY = point.Y;
             Fill = fill;
-            FormattedValue = formattedValue;
-			Category = category;
-        }
-    }
+            PrimaryValue = primaryValue;
+			SecondaryValue = secondaryValue;
+			TertiaryValue = tertiaryValue;
+		}
+
+		public TooltipViewModel(
+			double locationX,
+			double locationY,
+			Brush fill,
+			string primaryValue,
+			string secondaryValue,
+			string tertiaryValue)
+		{
+			LocationX = locationX;
+			LocationY = locationY;
+			Fill = fill;
+			PrimaryValue = primaryValue;
+			SecondaryValue = secondaryValue;
+			TertiaryValue = tertiaryValue;
+		}
+	}
 }

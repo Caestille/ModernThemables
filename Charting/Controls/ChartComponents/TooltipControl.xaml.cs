@@ -320,9 +320,27 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			#endregion
 
 			#region Tooltip
-			if (ShowTooltip)
+			if (ShowTooltip && TooltipGetterFunc != null)
 			{
 				TooltipPoints = new ObservableCollection<TooltipViewModel>(TooltipGetterFunc(mouseLoc));
+
+				if (TooltipLocation == TooltipLocation.Cursor)
+				{
+					// Get tooltip position variables
+					if (!tooltipLeft && (ActualWidth - mouseLoc.X) < (TooltipsByCursor.ActualWidth + 10))
+						tooltipLeft = true;
+					if (tooltipLeft && (mouseLoc.X) < (TooltipsByCursor.ActualWidth + 5))
+						tooltipLeft = false;
+					if (!tooltipTop && (ActualHeight - mouseLoc.Y) < (TooltipsByCursor.ActualHeight + 10))
+						tooltipTop = true;
+					if (tooltipTop && (mouseLoc.Y) < (TooltipsByCursor.ActualHeight + 5))
+						tooltipTop = false;
+
+					TooltipsByCursor.Margin = new Thickness(
+						!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipsByCursor.ActualWidth - 5,
+						!tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipsByCursor.ActualHeight - 5,
+						0, 0);
+				}
 			}
 			else
 			{

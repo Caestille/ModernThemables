@@ -80,8 +80,9 @@ namespace ModernThemables.Charting.Controls
 					var category = matchingSeries.TooltipLabelFormatter != null
 						? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
 						: matchingSeries.Name;
+					var formattedDate = tooltipBar.BackingPoint.Name;
 
-					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar.Fill.CoreBrush, formattedValue, category));
+					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar.Fill.CoreBrush, formattedValue, formattedDate, category));
 				}
 
 				return tooltipPoints;

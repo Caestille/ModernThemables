@@ -8,10 +8,8 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:piechart="clr-namespace:ModernThemables.Charting.Models.PieChart"
 	x:Name="root"
-	FontSize="{Binding ElementName=root, Path=FontSize}"
 	mc:Ignorable="d">
-
-	<Grid SizeChanged="Grid_SizeChanged">
+	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="*" />
@@ -39,14 +37,6 @@
 			Grid.Row="1"
 			Grid.Column="1"
 			Margin="0">
-			<Grid.ContextMenu>
-				<ContextMenu x:Name="ContextMenu">
-					<MenuItem
-						Header="Tooltip"
-						IsCheckable="True"
-						IsChecked="{Binding Path=IsTooltipVisible, ElementName=root, Mode=TwoWay}" />
-				</ContextMenu>
-			</Grid.ContextMenu>
 			<Grid
 				x:Name="Grid"
 				Grid.Column="1"
@@ -211,90 +201,17 @@
 						</ItemsControl.ItemTemplate>
 					</ItemsControl>
 				</Grid>
-				<Grid
-					x:Name="MouseCaptureGrid"
-					Background="{DynamicResource MainBackgroundBrush}"
-					MouseLeave="MouseCaptureGrid_MouseLeave"
-					MouseMove="MouseCaptureGrid_MouseMove"
-					Opacity="0.001"
-					PreviewMouseUp="MouseCaptureGrid_PreviewMouseUp" />
 			</Grid>
-		</Grid>
-		<Grid Grid.RowSpan="3" Grid.ColumnSpan="3">
-			<Grid
-				x:Name="TooltipGrid"
-				Grid.ColumnSpan="10"
-				HorizontalAlignment="Left"
-				VerticalAlignment="Top"
-				IsHitTestVisible="False"
-				Opacity="{Binding ElementName=root, Path=TooltipOpacity}">
-				<Border
-					Width="Auto"
-					Height="Auto"
-					Margin="3"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Top"
-					Opacity="{Binding ElementName=root, Path=TooltipOpacity}">
-					<Border.Visibility>
-						<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-							<Binding ElementName="root" Path="IsTooltipVisible" />
-							<Binding
-								Converter="{StaticResource IsNotNullConverter}"
-								ElementName="root"
-								Path="TooltipWedge" />
-						</MultiBinding>
-					</Border.Visibility>
-					<Grid>
-						<Border
-							Padding="5"
-							Background="{DynamicResource MenuBrush}"
-							BorderBrush="{DynamicResource MenuBorderBrush}"
-							BorderThickness="1"
-							CornerRadius="5"
-							Visibility="{Binding ElementName=ContentControl, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
-								<TextBlock
-									Grid.RowSpan="2"
-									Margin="3,3,10,3"
-									VerticalAlignment="Center"
-									FontSize="20"
-									FontWeight="DemiBold"
-									Foreground="{DynamicResource TextBrush}"
-									Text="{Binding ElementName=root, Path=TooltipWedge.Percent, Converter={StaticResource PercentFormatterConverter}}" />
-								<TextBlock
-									Grid.Column="1"
-									FontWeight="Bold"
-									Foreground="{DynamicResource TextBrush}"
-									Text="{Binding ElementName=root, Path=TooltipWedge.Name}" />
-								<TextBlock
-									Grid.Row="1"
-									Grid.Column="1"
-									Foreground="{DynamicResource TextBrush}"
-									Text="{Binding ElementName=root, Path=TooltipString}" />
-							</Grid>
-						</Border>
-						<Border
-							BorderBrush="{Binding ElementName=root, Path=TooltipWedge.Fill.CoreBrush}"
-							BorderThickness="2,0,0,0"
-							CornerRadius="5"
-							IsHitTestVisible="False">
-							<ContentControl
-								x:Name="ContentControl"
-								Content="{Binding Path=TooltipString, UpdateSourceTrigger=PropertyChanged}"
-								ContentTemplate="{Binding ElementName=root, Path=TooltipTemplate}"
-								Visibility="{Binding ElementName=root, Path=TooltipTemplate, Converter={StaticResource VisibleIfNotNullConverter}}" />
-						</Border>
-					</Grid>
-				</Border>
-			</Grid>
+			<chartComponents:TooltipControl
+				x:Name="TooltipControl"
+				AllowSelection="False"
+				ForceCrosshairs="False"
+				ForcePointIndicators="False"
+				ForceTooltipTop="True"
+				MouseLeave="MouseCaptureGrid_MouseLeave"
+				TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
+				TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
+				TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
 		</Grid>
 	</Grid>
 </UserControl>
