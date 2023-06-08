@@ -1,258 +1,258 @@
 ﻿<UserControl
-    x:Class="ModernThemables.Controls.MainWindowControl"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:ModernThemables.Controls"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:scalableicons="clr-namespace:ModernThemables.ScalableIcons"
-    x:Name="WindowControl"
-    MinWidth="100"
-    MinHeight="50"
-    mc:Ignorable="d">
-    <Grid x:Name="RootGrid" Focusable="False">
-        <Grid.Background>
-            <MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
-                <Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
-                <Binding ElementName="ThemeMouseOverBorder" Path="Background" />
-                <Binding ElementName="DisabledControlClickablePartBorder" Path="Background" />
-            </MultiBinding>
-        </Grid.Background>
-        <Grid
-            Height="30"
-            Margin="1"
-            VerticalAlignment="Top">
-            <Grid.Background>
-                <MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
-                    <Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
-                    <Binding ElementName="ThemeBorder" Path="Background" />
-                    <Binding ElementName="StatusTextLightBorder" Path="Background" />
-                </MultiBinding>
-            </Grid.Background>
-        </Grid>
-        <Grid
-            x:Name="ContentGrid"
-            Margin="1,31,1,1"
-            Background="{DynamicResource MainBackgroundBrush}"
-            Focusable="False">
-            <ContentControl
-                x:Name="Content"
-                Content="{Binding Path=VisibleViewModel, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}"
-                Focusable="False" />
-        </Grid>
-        <Grid
-            x:Name="BlackoutGrid"
-            Margin="0,31,0,0"
-            Background="Black"
-            Focusable="False"
-            IsHitTestVisible="False"
-            Opacity="0" />
-        <Grid
-            x:Name="SettingsGrid"
-            Width="Auto"
-            Height="Auto"
-            Margin="1,31,1,1"
-            ClipToBounds="False"
-            Focusable="False"
-            IsEnabled="False"
-            IsHitTestVisible="False">
-            <Border
-                x:Name="SettingsBorder"
-                Width="Auto"
-                Height="Auto"
-                Margin="0,-170,6,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Background="{DynamicResource MenuBrush}"
-                BorderBrush="{DynamicResource MenuBorderBrush}"
-                BorderThickness="1"
-                CornerRadius="5"
-                Focusable="False">
-                <Border.Effect>
-                    <DropShadowEffect
-                        x:Name="SettingsBorderBlur"
-                        BlurRadius="30"
-                        ShadowDepth="0"
-                        Color="Black" />
-                </Border.Effect>
-                <Grid>
-                    <controls:BlurHost
-                        x:Name="Blurrer"
-                        BlurBackground="{Binding ElementName=Content}"
-                        BlurOpacity="0.5"
-                        Focusable="False"
-                        PreventResample="{Binding ElementName=SettingsGrid, Path=IsEnabled, Converter={StaticResource BoolInverter}}"
-                        RedrawTrigger="{Binding ElementName=SettingsBorder, Path=Margin, UpdateSourceTrigger=PropertyChanged}">
-                        <controls:ThemingControl
-                            x:Name="ThemingControl"
-                            Width="Auto"
-                            Height="Auto"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom" />
-                    </controls:BlurHost>
-                    <controls:ExtendedButton
-                        Width="40"
-                        Height="30"
-                        Margin="0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Click="SettingsCloseButton_Click"
-                        CornerRadius="0,5,0,5"
-                        DisabledBackgroundColour="Transparent"
-                        MouseDownColour="{DynamicResource ControlClickablePartMouseDownBrush}"
-                        MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}">
-                        <scalableicons:CloseIcon
-                            Width="10"
-                            Height="10"
-                            Foreground="{DynamicResource TextBrush}" />
-                    </controls:ExtendedButton>
-                </Grid>
-            </Border>
-        </Grid>
-        <Grid
-            x:Name="HeaderGrid"
-            Height="31"
-            Margin="0"
-            VerticalAlignment="Top">
-            <DockPanel>
-                <controls:ExtendedButton
-                    x:Name="CloseButton"
-                    Width="40"
-                    Margin="1,1,1,0"
-                    HorizontalAlignment="Right"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Click="CloseButton_Click"
-                    DockPanel.Dock="Right"
-                    Focusable="False"
-                    Foreground="White"
-                    MouseDownColour="DarkRed"
-                    MouseOverColour="#e81123">
-                    <scalableicons:CloseIcon
-                        Width="10"
-                        Height="10"
-                        Foreground="{DynamicResource ThemeTextBrush}" />
-                </controls:ExtendedButton>
-                <controls:ExtendedButton
-                    x:Name="ChangeStateButton"
-                    Width="40"
-                    Margin="1,1,1,0"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Click="ChangeStateButton_Click"
-                    DockPanel.Dock="Right"
-                    Focusable="False"
-                    Foreground="White"
-                    MouseDownColour="DimGray"
-                    MouseOverColour="Gray">
-                    <Grid Width="10" Height="10">
-                        <scalableicons:MaximiseIcon Foreground="{DynamicResource ThemeTextBrush}" Tag="MaximiseBorder" />
-                        <scalableicons:RestoreIcon
-                            Foreground="{DynamicResource ThemeTextBrush}"
-                            Tag="RestoreDownGrid"
-                            Visibility="Collapsed" />
-                    </Grid>
-                </controls:ExtendedButton>
-                <controls:ExtendedButton
-                    x:Name="MinimiseButton"
-                    Width="40"
-                    Margin="1,1,1,0"
-                    HorizontalAlignment="Right"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Click="MinimiseButton_Click"
-                    DockPanel.Dock="Right"
-                    Focusable="False"
-                    Foreground="White"
-                    MouseDownColour="DimGray"
-                    MouseOverColour="Gray">
-                    <scalableicons:MinimiseIcon
-                        Width="10"
-                        Height="10"
-                        Foreground="{DynamicResource ThemeTextBrush}" />
-                </controls:ExtendedButton>
-                <Border
-                    x:Name="Splitter"
-                    Width="1"
-                    Margin="1,4,1,4"
-                    HorizontalAlignment="Right"
-                    Background="{DynamicResource ThemeDisabledTextBrush}"
-                    DockPanel.Dock="Right" />
-                <controls:ExtendedButton
-                    x:Name="ThemeSetButton"
-                    Width="40"
-                    Margin="1,1,1,0"
-                    HorizontalAlignment="Right"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Click="ThemeSetButton_Click"
-                    DockPanel.Dock="Right"
-                    Focusable="True"
-                    Foreground="White"
-                    MouseDownColour="DimGray"
-                    MouseOverColour="Gray">
-                    <scalableicons:ExpandIcon
-                        Width="10"
-                        Height="10"
-                        Foreground="{DynamicResource ThemeTextBrush}" />
-                </controls:ExtendedButton>
-                <Image
-                    Width="Auto"
-                    Margin="9,8,0,8"
-                    Source="{Binding Path=Icon, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}" />
-                <Label
-                    Margin="2"
-                    VerticalAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Content="{Binding Path=Title, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}"
-                    FontSize="11.5">
-                    <Label.Foreground>
-                        <MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
-                            <Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
-                            <Binding ElementName="ThemeTextBorder" Path="Background" />
-                            <Binding ElementName="ThemeDisabledBorder" Path="Background" />
-                        </MultiBinding>
-                    </Label.Foreground>
-                </Label>
-            </DockPanel>
-        </Grid>
-        <Border
-            x:Name="ThemeBorder"
-            Width="0"
-            Height="0"
-            Background="{DynamicResource ThemeBrush}"
-            Visibility="Collapsed" />
-        <Border
-            x:Name="ThemeMouseOverBorder"
-            Width="0"
-            Height="0"
-            Background="{DynamicResource ThemeMouseOverBrush}"
-            Visibility="Collapsed" />
-        <Border
-            x:Name="ThemeTextBorder"
-            Width="0"
-            Height="0"
-            Background="{DynamicResource ThemeTextBrush}"
-            Visibility="Collapsed" />
-        <Border
-            x:Name="ThemeDisabledBorder"
-            Width="0"
-            Height="0"
-            Background="{DynamicResource ThemeDisabledTextBrush}"
-            Visibility="Collapsed" />
-        <Border
-            x:Name="StatusTextLightBorder"
-            Width="0"
-            Height="0"
-            Background="{DynamicResource StatusTextLightBrush}"
-            Visibility="Collapsed" />
-        <Border
-            x:Name="DisabledControlClickablePartBorder"
-            Width="0"
-            Height="0"
-            Background="{DynamicResource DisabledControlClickablePartBrush}"
-            Visibility="Collapsed" />
-    </Grid>
+	x:Class="ModernThemables.Controls.MainWindowControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:controls="clr-namespace:ModernThemables.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:scalableicons="clr-namespace:ModernThemables.ScalableIcons"
+	x:Name="WindowControl"
+	MinWidth="100"
+	MinHeight="50"
+	mc:Ignorable="d">
+	<Grid x:Name="RootGrid" Focusable="False">
+		<Grid.Background>
+			<MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
+				<Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
+				<Binding ElementName="ThemeMouseOverBorder" Path="Background" />
+				<Binding ElementName="DisabledControlClickablePartBorder" Path="Background" />
+			</MultiBinding>
+		</Grid.Background>
+		<Grid
+			Height="30"
+			Margin="1"
+			VerticalAlignment="Top">
+			<Grid.Background>
+				<MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
+					<Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
+					<Binding ElementName="ThemeBorder" Path="Background" />
+					<Binding ElementName="StatusTextLightBorder" Path="Background" />
+				</MultiBinding>
+			</Grid.Background>
+		</Grid>
+		<Grid
+			x:Name="ContentGrid"
+			Margin="1,31,1,1"
+			Background="{DynamicResource MainBackgroundBrush}"
+			Focusable="False">
+			<ContentControl
+				x:Name="Content"
+				Content="{Binding Path=VisibleViewModel, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}"
+				Focusable="False" />
+		</Grid>
+		<Grid
+			x:Name="BlackoutGrid"
+			Margin="0,31,0,0"
+			Background="Black"
+			Focusable="False"
+			IsHitTestVisible="False"
+			Opacity="0" />
+		<Grid
+			x:Name="SettingsGrid"
+			Width="Auto"
+			Height="Auto"
+			Margin="1,31,1,1"
+			ClipToBounds="False"
+			Focusable="False"
+			IsEnabled="False"
+			IsHitTestVisible="False">
+			<Border
+				x:Name="SettingsBorder"
+				Width="Auto"
+				Height="Auto"
+				Margin="0,-170,6,0"
+				HorizontalAlignment="Right"
+				VerticalAlignment="Top"
+				Background="{DynamicResource MenuBrush}"
+				BorderBrush="{DynamicResource MenuBorderBrush}"
+				BorderThickness="1"
+				CornerRadius="5"
+				Focusable="False">
+				<Border.Effect>
+					<DropShadowEffect
+						x:Name="SettingsBorderBlur"
+						BlurRadius="30"
+						ShadowDepth="0"
+						Color="Black" />
+				</Border.Effect>
+				<Grid>
+					<controls:BlurHost
+						x:Name="Blurrer"
+						BlurBackground="{Binding ElementName=Content}"
+						BlurOpacity="0.5"
+						Focusable="False"
+						PreventResample="{Binding ElementName=SettingsGrid, Path=IsEnabled, Converter={StaticResource BoolInverter}}"
+						RedrawTrigger="{Binding ElementName=SettingsBorder, Path=Margin, UpdateSourceTrigger=PropertyChanged}">
+						<controls:ThemingControl
+							x:Name="ThemingControl"
+							Width="Auto"
+							Height="Auto"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Bottom" />
+					</controls:BlurHost>
+					<controls:ExtendedButton
+						Width="40"
+						Height="30"
+						Margin="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Top"
+						Background="Transparent"
+						BorderThickness="0"
+						Click="SettingsCloseButton_Click"
+						CornerRadius="0,5,0,5"
+						DisabledBackgroundColour="Transparent"
+						MouseDownColour="{DynamicResource ControlClickablePartMouseDownBrush}"
+						MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}">
+						<scalableicons:CloseIcon
+							Width="10"
+							Height="10"
+							Foreground="{DynamicResource TextBrush}" />
+					</controls:ExtendedButton>
+				</Grid>
+			</Border>
+		</Grid>
+		<Grid
+			x:Name="HeaderGrid"
+			Height="31"
+			Margin="0"
+			VerticalAlignment="Top">
+			<DockPanel>
+				<controls:ExtendedButton
+					x:Name="CloseButton"
+					Width="40"
+					Margin="1,1,1,0"
+					HorizontalAlignment="Right"
+					Background="Transparent"
+					BorderThickness="0"
+					Click="CloseButton_Click"
+					DockPanel.Dock="Right"
+					Focusable="False"
+					Foreground="White"
+					MouseDownColour="DarkRed"
+					MouseOverColour="#e81123">
+					<scalableicons:CloseIcon
+						Width="10"
+						Height="10"
+						Foreground="{DynamicResource ThemeTextBrush}" />
+				</controls:ExtendedButton>
+				<controls:ExtendedButton
+					x:Name="ChangeStateButton"
+					Width="40"
+					Margin="1,1,1,0"
+					Background="Transparent"
+					BorderThickness="0"
+					Click="ChangeStateButton_Click"
+					DockPanel.Dock="Right"
+					Focusable="False"
+					Foreground="White"
+					MouseDownColour="DimGray"
+					MouseOverColour="Gray">
+					<Grid Width="10" Height="10">
+						<scalableicons:MaximiseIcon Foreground="{DynamicResource ThemeTextBrush}" Tag="MaximiseBorder" />
+						<scalableicons:RestoreIcon
+							Foreground="{DynamicResource ThemeTextBrush}"
+							Tag="RestoreDownGrid"
+							Visibility="Collapsed" />
+					</Grid>
+				</controls:ExtendedButton>
+				<controls:ExtendedButton
+					x:Name="MinimiseButton"
+					Width="40"
+					Margin="1,1,1,0"
+					HorizontalAlignment="Right"
+					Background="Transparent"
+					BorderThickness="0"
+					Click="MinimiseButton_Click"
+					DockPanel.Dock="Right"
+					Focusable="False"
+					Foreground="White"
+					MouseDownColour="DimGray"
+					MouseOverColour="Gray">
+					<scalableicons:MinimiseIcon
+						Width="10"
+						Height="10"
+						Foreground="{DynamicResource ThemeTextBrush}" />
+				</controls:ExtendedButton>
+				<Border
+					x:Name="Splitter"
+					Width="1"
+					Margin="1,4,1,4"
+					HorizontalAlignment="Right"
+					Background="{DynamicResource ThemeDisabledTextBrush}"
+					DockPanel.Dock="Right" />
+				<controls:ExtendedButton
+					x:Name="ThemeSetButton"
+					Width="40"
+					Margin="1,1,1,0"
+					HorizontalAlignment="Right"
+					Background="Transparent"
+					BorderThickness="0"
+					Click="ThemeSetButton_Click"
+					DockPanel.Dock="Right"
+					Focusable="True"
+					Foreground="White"
+					MouseDownColour="DimGray"
+					MouseOverColour="Gray">
+					<scalableicons:ExpandIcon
+						Width="10"
+						Height="10"
+						Foreground="{DynamicResource ThemeTextBrush}" />
+				</controls:ExtendedButton>
+				<Image
+					Width="Auto"
+					Margin="9,8,0,8"
+					Source="{Binding Path=Icon, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}" />
+				<Label
+					Margin="2"
+					VerticalAlignment="Center"
+					VerticalContentAlignment="Center"
+					Content="{Binding Path=Title, ElementName=WindowControl, UpdateSourceTrigger=PropertyChanged}"
+					FontSize="11.5">
+					<Label.Foreground>
+						<MultiBinding Converter="{StaticResource ValueIfTrueValueIfFalseConverter}">
+							<Binding ElementName="WindowControl" Path="IsMainWindowFocused" />
+							<Binding ElementName="ThemeTextBorder" Path="Background" />
+							<Binding ElementName="ThemeDisabledBorder" Path="Background" />
+						</MultiBinding>
+					</Label.Foreground>
+				</Label>
+			</DockPanel>
+		</Grid>
+		<Border
+			x:Name="ThemeBorder"
+			Width="0"
+			Height="0"
+			Background="{DynamicResource ThemeBrush}"
+			Visibility="Collapsed" />
+		<Border
+			x:Name="ThemeMouseOverBorder"
+			Width="0"
+			Height="0"
+			Background="{DynamicResource ThemeMouseOverBrush}"
+			Visibility="Collapsed" />
+		<Border
+			x:Name="ThemeTextBorder"
+			Width="0"
+			Height="0"
+			Background="{DynamicResource ThemeTextBrush}"
+			Visibility="Collapsed" />
+		<Border
+			x:Name="ThemeDisabledBorder"
+			Width="0"
+			Height="0"
+			Background="{DynamicResource ThemeDisabledTextBrush}"
+			Visibility="Collapsed" />
+		<Border
+			x:Name="StatusTextLightBorder"
+			Width="0"
+			Height="0"
+			Background="{DynamicResource StatusTextLightBrush}"
+			Visibility="Collapsed" />
+		<Border
+			x:Name="DisabledControlClickablePartBorder"
+			Width="0"
+			Height="0"
+			Background="{DynamicResource DisabledControlClickablePartBrush}"
+			Visibility="Collapsed" />
+	</Grid>
 </UserControl>
