@@ -116,7 +116,8 @@ namespace ModernThemables.Controls
             if (border != null && IsEnabled)
             {
                 border.Background = MouseDownColour;
-			}
+                RecursivelySetContentBrushes(Content as DependencyObject, Foreground, MouseDownColour);
+            }
             base.OnMouseLeftButtonDown(e);
         }
 
@@ -125,7 +126,8 @@ namespace ModernThemables.Controls
             if (border != null && IsEnabled)
             {
                 border.Background = MouseOverColour;
-			}
+                RecursivelySetContentBrushes(Content as DependencyObject, Foreground, MouseOverColour);
+            }
             base.OnMouseLeftButtonUp(e);
         }
 
@@ -134,7 +136,8 @@ namespace ModernThemables.Controls
             if (border != null && IsEnabled)
             {
                 border.Background = MouseOverColour;
-			}
+                RecursivelySetContentBrushes(Content as DependencyObject, Foreground, MouseOverColour);
+            }
             base.OnMouseEnter(e);
         }
 
@@ -143,6 +146,7 @@ namespace ModernThemables.Controls
             if (border != null && IsEnabled)
 			{
                 border.Background = Background;
+                RecursivelySetContentBrushes(Content as DependencyObject, Foreground, Background);
             }
             base.OnMouseLeave(e);
         }
