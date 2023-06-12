@@ -1,57 +1,75 @@
-﻿using System.Windows;
+﻿using ModernThemables.Charting.Controls;
+using ModernThemables.Charting.Models;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace ModernThemables.Controls
 {
 	public class ExtendedButton : Button
     {
         readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
-        private Brush backGround;
-        private Brush foreGround;
+
+        private Border border;
 
         public SolidColorBrush MouseOverColour
 		{
-			get { return (SolidColorBrush)GetValue(MouseOverColourProperty); }
-			set { SetValue(MouseOverColourProperty, value); }
+            get => (SolidColorBrush)GetValue(MouseOverColourProperty);
+			set => SetValue(MouseOverColourProperty, value);
 		}
 		public static readonly DependencyProperty MouseOverColourProperty = DependencyProperty.Register(
-		  "MouseOverColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
+		    "MouseOverColour",
+            typeof(SolidColorBrush),
+            typeof(ExtendedButton),
+            new UIPropertyMetadata(DefaultMouseOverProperty, OnBindingChanged));
 
 		public SolidColorBrush MouseDownColour
 		{
-			get { return (SolidColorBrush)GetValue(MouseDownColourProperty); }
-			set { SetValue(MouseDownColourProperty, value); }
+            get => (SolidColorBrush)GetValue(MouseDownColourProperty);
+            set => SetValue(MouseDownColourProperty, value);
 		}
 		public static readonly DependencyProperty MouseDownColourProperty = DependencyProperty.Register(
-		  "MouseDownColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
+		    "MouseDownColour",
+            typeof(SolidColorBrush),
+            typeof(ExtendedButton),
+            new UIPropertyMetadata(DefaultMouseOverProperty, OnBindingChanged));
 
 		public SolidColorBrush DisabledBackgroundColour
 		{
-			get { return (SolidColorBrush)GetValue(DisabledBackgroundColourProperty); }
-			set { SetValue(DisabledBackgroundColourProperty, value); }
+            get => (SolidColorBrush)GetValue(DisabledBackgroundColourProperty);
+            set => SetValue(DisabledBackgroundColourProperty, value);
 		}
 		public static readonly DependencyProperty DisabledBackgroundColourProperty = DependencyProperty.Register(
-		  "DisabledBackgroundColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
+		    "DisabledBackgroundColour",
+            typeof(SolidColorBrush),
+            typeof(ExtendedButton),
+            new UIPropertyMetadata(DefaultMouseOverProperty, OnBindingChanged));
 
 		public SolidColorBrush DisabledForegroundColour
 		{
-			get { return (SolidColorBrush)GetValue(DisabledForegroundColourProperty); }
-			set { SetValue(DisabledForegroundColourProperty, value); }
+            get => (SolidColorBrush)GetValue(DisabledForegroundColourProperty);
+            set => SetValue(DisabledForegroundColourProperty, value);
 		}
 		public static readonly DependencyProperty DisabledForegroundColourProperty = DependencyProperty.Register(
-		  "DisabledForegroundColour", typeof(SolidColorBrush), typeof(ExtendedButton), new PropertyMetadata(DefaultMouseOverProperty));
+		    "DisabledForegroundColour",
+            typeof(SolidColorBrush),
+            typeof(ExtendedButton),
+            new UIPropertyMetadata(DefaultMouseOverProperty, OnBindingChanged));
 
 		public CornerRadius CornerRadius
 		{
-			get { return (CornerRadius)GetValue(CornerRadiusProperty); }
-			set { SetValue(CornerRadiusProperty, value); }
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
 		}
 		public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-		  "CornerRadius", typeof(CornerRadius), typeof(ExtendedButton), new PropertyMetadata(new CornerRadius(0)));
+		    "CornerRadius",
+            typeof(CornerRadius),
+            typeof(ExtendedButton),
+            new PropertyMetadata(new CornerRadius(0)));
 
         public ExtendedButton()
         {
@@ -66,17 +84,17 @@ namespace ModernThemables.Controls
 
 		private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (backGround != null && foreGround != null)
+            if (border != null)
             {
                 if (this.IsEnabled)
                 {
-                    Background = backGround;
-                    Foreground = foreGround;
+                    border.Background = Background;
+                    RecursivelySetContentBrushes(Content as DependencyObject, Foreground, Background);
                 }
                 else
                 {
-                    Background = DisabledBackgroundColour;
-                    Foreground = DisabledForegroundColour;
+                    border.Background = DisabledBackgroundColour;
+                    RecursivelySetContentBrushes(Content as DependencyObject, DisabledForegroundColour, DisabledBackgroundColour);
                 }
             }
         }
@@ -86,57 +104,69 @@ namespace ModernThemables.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedButton), new FrameworkPropertyMetadata(typeof(ExtendedButton)));
         }
 
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            this.border = GetTemplateChild("PART_border") as Border;
+            ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+        }
+
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            SetDefaults();
-            if (backGround != null && IsEnabled)
+            if (border != null && IsEnabled)
             {
-				Background = MouseDownColour;
+                border.Background = MouseDownColour;
 			}
             base.OnMouseLeftButtonDown(e);
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            SetDefaults();
-            if (backGround != null && IsEnabled)
+            if (border != null && IsEnabled)
             {
-				Background = MouseOverColour;
+                border.Background = MouseOverColour;
 			}
             base.OnMouseLeftButtonUp(e);
         }
 
         protected override void OnMouseEnter(MouseEventArgs e)
         {
-            SetDefaults();
-            if (backGround != null && IsEnabled)
+            if (border != null && IsEnabled)
             {
-				Background = MouseOverColour;
+                border.Background = MouseOverColour;
 			}
             base.OnMouseEnter(e);
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
         {
-            SetDefaults();
-            if (backGround != null && IsEnabled)
+            if (border != null && IsEnabled)
 			{
-                Background = backGround;
+                border.Background = Background;
             }
             base.OnMouseLeave(e);
         }
 
-        private void SetDefaults()
+        private void RecursivelySetContentBrushes(DependencyObject item, Brush foregroundBrush, Brush backgroundBrush)
         {
-            if (backGround == null)
+            if (item is Control fe)
             {
-                backGround = Background;
+                fe.Foreground = foregroundBrush;
+                fe.Background = backgroundBrush;
             }
 
-            if (foreGround == null)
+            if (item != null && VisualTreeHelper.GetChildrenCount(item) > 0)
             {
-                foreGround = Foreground;
+                var child = VisualTreeHelper.GetChild(item, 0);
+                RecursivelySetContentBrushes(child, foregroundBrush, backgroundBrush);
             }
+        }
+
+        private static void OnBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is not ExtendedButton button) return;
+
+            button.ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
         }
     }
 }
