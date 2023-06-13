@@ -13,8 +13,10 @@ namespace ModernThemables.Controls
 	public class ExtendedButton : Button
     {
         readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
-
         private Border border;
+
+        private bool? allowSetChildForeground;
+        private bool? allowSetChildBackground;
 
         public SolidColorBrush MouseOverColour
 		{
@@ -80,7 +82,8 @@ namespace ModernThemables.Controls
 		{
 			this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
 			this.Loaded -= ExtendedButton_Loaded;
-		}
+            ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+        }
 
 		private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -155,14 +158,37 @@ namespace ModernThemables.Controls
         {
             if (item is Control fe)
             {
-                fe.Foreground = foregroundBrush;
-                fe.Background = backgroundBrush;
+                if (allowSetChildBackground == null)
+                {
+                    allowSetChildBackground = fe.ReadLocalValue(BackgroundProperty) == DependencyProperty.UnsetValue;
+                }
+                if (allowSetChildForeground == null)
+                {
+                    allowSetChildForeground = fe.ReadLocalValue(ForegroundProperty) == DependencyProperty.UnsetValue;
+                }
+
+                if (allowSetChildBackground.HasValue && allowSetChildBackground.Value)
+                {
+                    fe.Background = backgroundBrush;
+                }
+
+                if (allowSetChildForeground.HasValue && allowSetChildForeground.Value)
+                {
+                    fe.Foreground = foregroundBrush;
+                }
             }
 
-            if (item != null && VisualTreeHelper.GetChildrenCount(item) > 0)
+            if (item != null)
             {
-                var child = VisualTreeHelper.GetChild(item, 0);
-                RecursivelySetContentBrushes(child, foregroundBrush, backgroundBrush);
+                var childCount = VisualTreeHelper.GetChildrenCount(item);
+                if (childCount > 0)
+                {
+                    for (int i = 0; i < childCount; i++)
+                    {
+                        var child = VisualTreeHelper.GetChild(item, i);
+                        RecursivelySetContentBrushes(child, foregroundBrush, backgroundBrush);
+                    }
+                }
             }
         }
 
