@@ -19,6 +19,8 @@ namespace ModernThemables.Controls
 		private bool setHigh;
 		private bool breakAll = false;
 
+		private Thread thread;
+
 		public CircularProgressBar()
 		{
 			InitializeComponent();
@@ -126,61 +128,63 @@ namespace ModernThemables.Controls
 				this_.indeterminateAngle1 = 0;
 				this_.indeterminateAngle2 = 45;
 
-				Thread thread = new Thread(new ThreadStart(() =>
+				if (this_.thread == null || this_.thread.ThreadState != ThreadState.Running)
 				{
-					while (this_.isIndeterminate && !this_.breakAll)
+					this_.thread = new Thread(new ThreadStart(() =>
 					{
-						var nextAngle2 = (this_.indeterminateAngle2 + this_.indeterminateAngle2Speed) % 360;
-						var nextAngle1 = (this_.indeterminateAngle1 + this_.indeterminateAngle1Speed) % 360;
-						var diff = 360 - Math.Abs((nextAngle2 < nextAngle1 ? nextAngle1 - (nextAngle2 + 360) : nextAngle1 - nextAngle2));
-						var allowedDiff = 50;
-						if (diff < allowedDiff)
+						while (this_.isIndeterminate && !this_.breakAll)
 						{
-							this_.indeterminateAngle2Speed = lowSpeed;
-							this_.setHigh = false;
-						}
-
-						if (diff > (360 - allowedDiff))
-						{
-							this_.indeterminateAngle1Speed = lowSpeed;
-							this_.setHigh = true;
-						}
-
-						if (this_.indeterminateAngle1Speed == this_.indeterminateAngle2Speed)
-						{
-							this_.sameSpeedCount++;
-						}
-
-						if (this_.sameSpeedCount == 50)
-						{
-							this_.sameSpeedCount = 0;
-							if (this_.setHigh)
-								this_.indeterminateAngle2Speed = highSpeed;
-							else
-								this_.indeterminateAngle1Speed = highSpeed;
-						}
-
-						this_.indeterminateAngle1 += this_.indeterminateAngle1Speed;
-						this_.indeterminateAngle2 += this_.indeterminateAngle2Speed;
-						this_.indeterminateAngle1 %= 360;
-						this_.indeterminateAngle2 %= 360;
-
-						try 
-						{ 
-							Application.Current.Dispatcher.Invoke(() =>
+							var nextAngle2 = (this_.indeterminateAngle2 + this_.indeterminateAngle2Speed) % 360;
+							var nextAngle1 = (this_.indeterminateAngle1 + this_.indeterminateAngle1Speed) % 360;
+							var diff = 360 - Math.Abs((nextAngle2 < nextAngle1 ? nextAngle1 - (nextAngle2 + 360) : nextAngle1 - nextAngle2));
+							var allowedDiff = 50;
+							if (diff < allowedDiff)
 							{
-								if (!this_.breakAll)
-								{
-									this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2);
-								}
-							});
-						}
-						catch { break; }
+								this_.indeterminateAngle2Speed = lowSpeed;
+								this_.setHigh = false;
+							}
 
-						Thread.Sleep(1000 / 60);
-					}
-				}));
-				thread.Start();
+							if (diff > (360 - allowedDiff))
+							{
+								this_.indeterminateAngle1Speed = lowSpeed;
+								this_.setHigh = true;
+							}
+
+							if (this_.indeterminateAngle1Speed == this_.indeterminateAngle2Speed)
+							{
+								this_.sameSpeedCount++;
+							}
+
+							if (this_.sameSpeedCount == 50)
+							{
+								this_.sameSpeedCount = 0;
+								if (this_.setHigh)
+									this_.indeterminateAngle2Speed = highSpeed;
+								else
+									this_.indeterminateAngle1Speed = highSpeed;
+							}
+
+							this_.indeterminateAngle1 += this_.indeterminateAngle1Speed;
+							this_.indeterminateAngle2 += this_.indeterminateAngle2Speed;
+							this_.indeterminateAngle1 %= 360;
+							this_.indeterminateAngle2 %= 360;
+
+							if (Application.Current != null)
+							{
+								Application.Current.Dispatcher.Invoke(() =>
+								{
+									if (!this_.breakAll)
+									{
+										this_?.RenderArc(this_.indeterminateAngle1, this_.indeterminateAngle2);
+									}
+								});
+							}
+
+							Thread.Sleep(1000 / 60);
+						}
+					}));
+					this_.thread.Start();
+				}
 			}
 			else
 			{
