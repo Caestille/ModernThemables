@@ -237,11 +237,6 @@ namespace ModernThemables.Charting.Controls
 
 		#region Mouse events
 
-		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
-		{
-			
-		}
-
 		private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
 		{
 			foreach (var series in InternalSeries)
@@ -254,12 +249,6 @@ namespace ModernThemables.Charting.Controls
 		}
 
 		#endregion
-
-		private bool HasGotData()
-		{
-			HasData = Series != null && Series.Any();
-			return HasData;
-		}
 
 		private double GetMouseAngleFromPoint(Point mouseLoc, Point point)
 		{
@@ -300,6 +289,7 @@ namespace ModernThemables.Charting.Controls
 			this.Loaded -= PieChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
+			Coordinator.MouseLeave += MouseCaptureGrid_MouseLeave;
 		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
@@ -307,6 +297,7 @@ namespace ModernThemables.Charting.Controls
 			resizeTrigger.Stop();
 			runRenderThread = false;
 			seriesWatcher.Dispose();
+			Coordinator.MouseLeave -= MouseCaptureGrid_MouseLeave;
 		}
 	}
 }

@@ -56,7 +56,7 @@
 			</Border.BorderBrush>
 			<Border.Visibility>
 				<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-					<Binding ElementName="root" Path="Coordinator.IsMouseOver" />
+					<Binding ElementName="root" Path="IsMouseOverThis" UpdateSourceTrigger="PropertyChanged" />
 					<Binding ElementName="root" Path="ShowCrosshairs" />
 				</MultiBinding>
 			</Border.Visibility>
@@ -88,7 +88,7 @@
 			</Border.BorderBrush>
 			<Border.Visibility>
 				<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-					<Binding ElementName="root" Path="Coordinator.IsMouseOver" />
+					<Binding ElementName="root" Path="IsMouseOverThis" UpdateSourceTrigger="PropertyChanged" />
 					<Binding ElementName="root" Path="ShowCrosshairs" />
 				</MultiBinding>
 			</Border.Visibility>
@@ -113,7 +113,7 @@
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Stretch"
 			IsHitTestVisible="False"
-			Visibility="{Binding ElementName=root, Path=Coordinator.IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}">
+			Visibility="{Binding ElementName=root, Path=IsMouseOverThis, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleIfTrueConverter}}">
 			<ItemsControl
 				x:Name="TooltipLines"
 				HorizontalAlignment="Stretch"

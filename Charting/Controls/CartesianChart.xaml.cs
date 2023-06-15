@@ -594,6 +594,7 @@ namespace ModernThemables.Charting.Controls
 			this.Loaded -= WpfChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
+			Coordinator.MouseWheel += MouseCaptureGrid_MouseWheel;
 		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
@@ -601,6 +602,7 @@ namespace ModernThemables.Charting.Controls
 			resizeTrigger.Stop();
 			runRenderThread = false;
 			seriesWatcher.Dispose();
+			Coordinator.MouseWheel -= MouseCaptureGrid_MouseWheel;
 		}
 	}
 }

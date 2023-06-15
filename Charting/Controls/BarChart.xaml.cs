@@ -284,6 +284,7 @@ namespace ModernThemables.Charting.Controls
 			this.Loaded -= WpfChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
+			Coordinator.MouseLeave += MouseCaptureGrid_MouseLeave;
 		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
@@ -291,6 +292,7 @@ namespace ModernThemables.Charting.Controls
 			resizeTrigger.Stop();
 			runRenderThread = false;
 			seriesWatcher.Dispose();
+			Coordinator.MouseLeave -= MouseCaptureGrid_MouseLeave;
 		}
 	}
 }

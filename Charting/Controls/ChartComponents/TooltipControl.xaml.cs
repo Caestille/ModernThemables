@@ -65,6 +65,17 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(TooltipControl),
 			new UIPropertyMetadata(null, OnSetForceTooltip));
 
+		public bool IsMouseOverThis
+		{
+			get => (bool)GetValue(IsMouseOverThisProperty);
+			private set => SetValue(IsMouseOverThisProperty, value);
+		}
+		public static readonly DependencyProperty IsMouseOverThisProperty = DependencyProperty.Register(
+			"IsMouseOverThis",
+			typeof(bool),
+			typeof(TooltipControl),
+			new UIPropertyMetadata(false));
+
 		public bool? ForcePointIndicators
 		{
 			get => (bool?)GetValue(PointIndicatorsProperty);
@@ -219,13 +230,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(TooltipControl),
 			new PropertyMetadata(null, OnSetMouseCoordinator));
 
-		private static async void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not TooltipControl _this) return;
-
-			_this.Coordinator.MouseMove += _this.Coordinator_MouseMove;
-		}
-
 		public TooltipControl()
 		{
 			InitializeComponent();
@@ -237,10 +241,28 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void TooltipControl_Loaded(object sender, RoutedEventArgs e)
 		{
+			this.Loaded -= TooltipControl_Loaded;
 			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
 			{
 				Coordinator = coordinator;
 			}
+			else
+			{
+				throw new InvalidOperationException("Please add a MouseCoordinator to your chart");
+			}
+		}
+
+		private static async void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not TooltipControl _this) return;
+
+			_this.Coordinator.MouseMove += _this.Coordinator_MouseMove;
+			_this.Coordinator.MouseLeave += _this.Coordinator_MouseLeave;
+		}
+
+		private void Coordinator_MouseLeave(object sender, MouseEventArgs e)
+		{
+			IsMouseOverThis = false;
 		}
 
 		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -282,6 +304,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, MouseEventArgs args) e)
 		{
+			IsMouseOverThis = true;
 			isUserPanning = e.isUserPanning;
 			var mouseLoc = e.args.GetPosition(Grid);
 
@@ -297,6 +320,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			#region Selected range
 			if (AllowSelection && e.isUserDragging)
 			{
+				IsUserSelectingRange = true;
 				var negative = mouseLoc.X < e.lowerSelection.Value.X;
 				var margin = SelectionRangeBorder.Margin;
 				margin.Left = negative ? mouseLoc.X : e.lowerSelection.Value.X;
@@ -304,6 +328,10 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 				SelectionRangeBorder.Width = negative
 					? Math.Max(e.lowerSelection.Value.X - mouseLoc.X, 0)
 					: Math.Max(mouseLoc.X - e.lowerSelection.Value.X, 0);
+			}
+			else
+			{
+				IsUserSelectingRange = false;
 			}
 			#endregion
 

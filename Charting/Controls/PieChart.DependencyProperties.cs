@@ -117,17 +117,6 @@ namespace ModernThemables.Charting.Controls
 			typeof(PieChart),
 			new PropertyMetadata(new ObservableCollection<InternalPieSeriesViewModel>()));
 
-		private bool HasData
-		{
-			get => (bool)GetValue(HasDataProperty);
-			set => SetValue(HasDataProperty, value);
-		}
-		public static readonly DependencyProperty HasDataProperty = DependencyProperty.Register(
-			"HasData",
-			typeof(bool),
-			typeof(PieChart),
-			new PropertyMetadata(false));
-
 		private Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
 		{
 			get => (Func<Point, IEnumerable<TooltipViewModel>>)GetValue(TooltipGetterFuncProperty);
