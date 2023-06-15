@@ -1,5 +1,4 @@
 ﻿using ModernThemables.Charting.Interfaces;
-using ModernThemables.Charting.Models;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,10 +6,10 @@ using System.Windows.Media;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
-    /// <summary>
-    /// Interaction logic for LegendControl.xaml
-    /// </summary>
-    public partial class LegendControl : UserControl
+	/// <summary>
+	/// Interaction logic for LegendControl.xaml
+	/// </summary>
+	public partial class LegendControl : UserControl
 	{
 		public ObservableCollection<ISeries> Items
 		{

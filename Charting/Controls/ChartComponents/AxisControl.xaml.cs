@@ -157,6 +157,22 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(AxisControl),
 			new UIPropertyMetadata(null, OnSetLabelRotation));
 
+		public MouseCoordinator Coordinator
+		{
+			get => (MouseCoordinator)GetValue(MouseCoordinatorProperty);
+			set => SetValue(MouseCoordinatorProperty, value);
+		}
+		public static readonly DependencyProperty MouseCoordinatorProperty = DependencyProperty.Register(
+			"MouseCoordinator",
+			typeof(MouseCoordinator),
+			typeof(AxisControl),
+			new PropertyMetadata(null, OnSetMouseCoordinator));
+
+		private static async void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not AxisControl _this) return;
+		}
+
 		public AxisControl()
 		{
 			InitializeComponent();

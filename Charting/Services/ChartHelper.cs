@@ -1,7 +1,9 @@
-﻿using ModernThemables.Charting.Models;
+﻿using ModernThemables.Charting.Controls.ChartComponents;
+using ModernThemables.Charting.Models;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Media;
 
 namespace ModernThemables.Charting.Services
 {
@@ -104,6 +106,40 @@ namespace ModernThemables.Charting.Services
 			}
 
 			return yVals;
+		}
+
+		public static bool FindMouseCoordinatorFromVisualTree(
+			DependencyObject root,
+			out MouseCoordinator coordinator,
+			bool searchChildrenInsteadOfParents = false,
+			int currentLevel = 0)
+		{
+			var searchDepth = 10;
+
+			var getChildrenOf = searchChildrenInsteadOfParents ? root : VisualTreeHelper.GetParent(root);
+
+			if (currentLevel < searchDepth)
+			{
+				currentLevel++;
+				var childCount = VisualTreeHelper.GetChildrenCount(getChildrenOf);
+				for (int i = 0; i < childCount; i++)
+				{
+					var child = VisualTreeHelper.GetChild(getChildrenOf, i);
+					if (child is MouseCoordinator coord)
+					{
+						coordinator = coord;
+						return true;
+					}
+
+					if (child != root && FindMouseCoordinatorFromVisualTree(child, out coordinator, searchChildrenInsteadOfParents, currentLevel))
+					{
+						return true;
+					}
+				}
+			}
+
+			coordinator = null;
+			return false;
 		}
 	}
 }

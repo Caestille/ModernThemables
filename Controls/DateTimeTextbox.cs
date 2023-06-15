@@ -9,7 +9,6 @@ using CoreUtilities.Services;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Linq;
-using System.ComponentModel;
 
 namespace ModernThemables.Controls
 {

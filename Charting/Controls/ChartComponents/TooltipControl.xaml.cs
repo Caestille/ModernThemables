@@ -3,36 +3,23 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using ModernThemables.Charting.Interfaces;
 using System;
 using ModernThemables.Charting.ViewModels;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
+using ModernThemables.Charting.Services;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
-    /// <summary>
-    /// Interaction logic for TooltipControl.xaml
-    /// </summary>
-    public partial class TooltipControl : UserControl
+	/// <summary>
+	/// Interaction logic for TooltipControl.xaml
+	/// </summary>
+	public partial class TooltipControl : UserControl
 	{
-		private bool ignoreNextMouseMove;
-		private bool isMouseDown;
-		private bool isUserDragging;
-		private bool userCouldBePanning;
-		private bool isUserPanning;
-		private Point? lastMouseMovePoint;
-
-		private DateTime timeLastUpdated;
-		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 16d);
-
-		private Point? lowerSelection;
-		private Point? upperSelection;
-
 		private bool tooltipLeft;
 		private bool tooltipTop;
+
+		private bool isUserPanning;
 
 		private bool ShowPointIndicators
 		{
@@ -221,11 +208,39 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(TooltipControl),
 			new PropertyMetadata(false));
 
+		public MouseCoordinator Coordinator
+		{
+			get => (MouseCoordinator)GetValue(MouseCoordinatorProperty);
+			set => SetValue(MouseCoordinatorProperty, value);
+		}
+		public static readonly DependencyProperty MouseCoordinatorProperty = DependencyProperty.Register(
+			"MouseCoordinator",
+			typeof(MouseCoordinator),
+			typeof(TooltipControl),
+			new PropertyMetadata(null, OnSetMouseCoordinator));
+
+		private static async void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not TooltipControl _this) return;
+
+			_this.Coordinator.MouseMove += _this.Coordinator_MouseMove;
+		}
+
 		public TooltipControl()
 		{
 			InitializeComponent();
 
+			this.Loaded += TooltipControl_Loaded;
+
 			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
+		}
+
+		private void TooltipControl_Loaded(object sender, RoutedEventArgs e)
+		{
+			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
+			{
+				Coordinator = coordinator;
+			}
 		}
 
 		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -265,37 +280,10 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			}
 		}
 
-		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
+		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, MouseEventArgs args) e)
 		{
-			if (ignoreNextMouseMove)
-			{
-				ignoreNextMouseMove = false;
-				return;
-			}
-
-			var mouseLoc = e.GetPosition(Grid);
-
-			if (isMouseDown)
-			{
-				isUserDragging = true;
-				IsUserSelectingRange = !(userCouldBePanning || isUserPanning);
-			}
-
-			#region Chart panning
-			if (userCouldBePanning)
-			{
-				isUserPanning = true;
-				if (lastMouseMovePoint != null)
-				{
-					// Do we want to do anything here?
-				}
-			}
-			lastMouseMovePoint = mouseLoc;
-			#endregion
-
-			if (DateTime.Now - timeLastUpdated < updateLimit || isUserPanning) return;
-
-			timeLastUpdated = DateTime.Now;
+			isUserPanning = e.isUserPanning;
+			var mouseLoc = e.args.GetPosition(Grid);
 
 			#region Crosshairs
 			if (ShowCrosshairs)
@@ -307,15 +295,15 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			#endregion
 
 			#region Selected range
-			if (AllowSelection && IsUserSelectingRange && lowerSelection != null)
+			if (AllowSelection && e.isUserDragging)
 			{
-				var negative = mouseLoc.X < lowerSelection.Value.X;
+				var negative = mouseLoc.X < e.lowerSelection.Value.X;
 				var margin = SelectionRangeBorder.Margin;
-				margin.Left = negative ? mouseLoc.X : lowerSelection.Value.X;
+				margin.Left = negative ? mouseLoc.X : e.lowerSelection.Value.X;
 				SelectionRangeBorder.Margin = margin;
 				SelectionRangeBorder.Width = negative
-					? Math.Max(lowerSelection.Value.X - mouseLoc.X, 0)
-					: Math.Max(mouseLoc.X - lowerSelection.Value.X, 0);
+					? Math.Max(e.lowerSelection.Value.X - mouseLoc.X, 0)
+					: Math.Max(mouseLoc.X - e.lowerSelection.Value.X, 0);
 			}
 			#endregion
 
@@ -360,45 +348,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			{
 				e.Handled = true;
 			}
-			isUserPanning = false;
-			userCouldBePanning = false;
-		}
-
-		private void MouseCaptureGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-		{
-			isMouseDown = true;
-			if (e.ChangedButton == MouseButton.Left)
-			{
-				e.Handled = true;
-				lowerSelection = e.GetPosition(Grid);
-				SelectionRangeBorder.Margin = new Thickness(lowerSelection.Value.X, 0, 0, 0);
-			}
-			else if (e.ChangedButton == MouseButton.Right)
-			{
-				userCouldBePanning = true;
-			}
-		}
-
-		private void MouseCaptureGrid_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-		{
-			isMouseDown = false;
-			IsUserSelectingRange = false;
-
-			if (e.ChangedButton != MouseButton.Left)
-			{
-				isUserDragging = false;
-				return;
-			}
-
-			if (isUserDragging && lowerSelection != null)
-			{
-				upperSelection = e.GetPosition(Grid);
-				isUserDragging = false;
-				isUserPanning = false;
-				return;
-			}
-
-			e.Handled = true;
 		}
 	}
 }

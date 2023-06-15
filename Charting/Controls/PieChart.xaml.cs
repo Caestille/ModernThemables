@@ -153,16 +153,12 @@ namespace ModernThemables.Charting.Controls
 			chart.QueueRenderChart(null, null, true);
 		}
 
-		#region Subscribe to series'
-
 		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not PieChart chart) return;
 
 			chart.seriesWatcher.ProvideSeries(chart.Series);
 		}
-
-		#endregion
 
 		private void QueueRenderChart(
 			IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)

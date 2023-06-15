@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
 namespace ModernThemables.Charting.Converters
 {
-    /// <summary>
-    /// Places a tooltip based on the tooltip size, location and placement within the owning chart
-    /// </summary>
-    public class PointToolTipConverter : IMultiValueConverter
+	/// <summary>
+	/// Places a tooltip based on the tooltip size, location and placement within the owning chart
+	/// </summary>
+	public class PointToolTipConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

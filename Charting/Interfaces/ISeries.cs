@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace ModernThemables.Charting.Interfaces
 {
-    /// <summary>
-    /// Interface for a generic chart series.
-    /// </summary>
-    public interface ISeries
+	/// <summary>
+	/// Interface for a generic chart series.
+	/// </summary>
+	public interface ISeries
     {
         /// <summary>
         /// Event fired when a property of the series changes.

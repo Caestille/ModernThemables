@@ -9,35 +9,26 @@
 	HorizontalAlignment="Stretch"
 	VerticalAlignment="Stretch"
 	mc:Ignorable="d">
-	<Grid x:Name="Grid">
-		<Grid
-			x:Name="MouseCaptureGrid"
-			Background="{DynamicResource MainBackgroundBrush}"
-			ContextMenuOpening="Grid_ContextMenuOpening"
-			MouseMove="MouseCaptureGrid_MouseMove"
-			Opacity="0.001"
-			PreviewMouseDown="MouseCaptureGrid_PreviewMouseDown"
-			PreviewMouseUp="MouseCaptureGrid_PreviewMouseUp">
-			<Grid.ContextMenu>
-				<ContextMenu x:Name="ContextMenu">
-					<MenuItem
-						Header="Crosshair"
-						IsCheckable="True"
-						IsChecked="{Binding Path=ShowCrosshairs, ElementName=root, Mode=TwoWay}"
-						Visibility="{Binding ElementName=root, Path=ForceCrosshairs, Converter={StaticResource VisibleIfNullConverter}}" />
-					<MenuItem
-						Header="Tooltip"
-						IsCheckable="True"
-						IsChecked="{Binding Path=ShowTooltip, ElementName=root, Mode=TwoWay}"
-						Visibility="{Binding ElementName=root, Path=ForceTooltip, Converter={StaticResource VisibleIfNullConverter}}" />
-					<MenuItem
-						Header="Point indicators"
-						IsCheckable="True"
-						IsChecked="{Binding Path=ShowPointIndicators, ElementName=root, Mode=TwoWay}"
-						Visibility="{Binding ElementName=root, Path=ForcePointIndicators, Converter={StaticResource VisibleIfNullConverter}}" />
-				</ContextMenu>
-			</Grid.ContextMenu>
-		</Grid>
+	<Grid x:Name="Grid" ContextMenuOpening="Grid_ContextMenuOpening">
+		<Grid.ContextMenu>
+			<ContextMenu x:Name="ContextMenu">
+				<MenuItem
+					Header="Crosshair"
+					IsCheckable="True"
+					IsChecked="{Binding Path=ShowCrosshairs, ElementName=root, Mode=TwoWay}"
+					Visibility="{Binding ElementName=root, Path=ForceCrosshairs, Converter={StaticResource VisibleIfNullConverter}}" />
+				<MenuItem
+					Header="Tooltip"
+					IsCheckable="True"
+					IsChecked="{Binding Path=ShowTooltip, ElementName=root, Mode=TwoWay}"
+					Visibility="{Binding ElementName=root, Path=ForceTooltip, Converter={StaticResource VisibleIfNullConverter}}" />
+				<MenuItem
+					Header="Point indicators"
+					IsCheckable="True"
+					IsChecked="{Binding Path=ShowPointIndicators, ElementName=root, Mode=TwoWay}"
+					Visibility="{Binding ElementName=root, Path=ForcePointIndicators, Converter={StaticResource VisibleIfNullConverter}}" />
+			</ContextMenu>
+		</Grid.ContextMenu>
 		<Border
 			x:Name="XCrosshair"
 			HorizontalAlignment="Stretch"
@@ -65,7 +56,7 @@
 			</Border.BorderBrush>
 			<Border.Visibility>
 				<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-					<Binding ElementName="Grid" Path="IsMouseOver" />
+					<Binding ElementName="root" Path="Coordinator.IsMouseOver" />
 					<Binding ElementName="root" Path="ShowCrosshairs" />
 				</MultiBinding>
 			</Border.Visibility>
@@ -97,7 +88,7 @@
 			</Border.BorderBrush>
 			<Border.Visibility>
 				<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-					<Binding ElementName="Grid" Path="IsMouseOver" />
+					<Binding ElementName="root" Path="Coordinator.IsMouseOver" />
 					<Binding ElementName="root" Path="ShowCrosshairs" />
 				</MultiBinding>
 			</Border.Visibility>
@@ -122,7 +113,7 @@
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Stretch"
 			IsHitTestVisible="False"
-			Visibility="{Binding ElementName=MouseCaptureGrid, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}">
+			Visibility="{Binding ElementName=root, Path=Coordinator.IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}">
 			<ItemsControl
 				x:Name="TooltipLines"
 				HorizontalAlignment="Stretch"
@@ -140,7 +131,7 @@
 								</MultiBinding>
 							</Grid.Margin>
 							<Border
-								Width="{Binding ElementName=MouseCaptureGrid, Path=ActualWidth}"
+								Width="{Binding ElementName=Grid, Path=ActualWidth}"
 								Height="{Binding LocationY}"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Top"

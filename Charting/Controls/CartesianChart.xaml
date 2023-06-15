@@ -62,8 +62,8 @@
 				Grid.Column="1"
 				BorderBrush="{DynamicResource StatusTextLightBrush}"
 				BorderThickness="1,1,0,0"
-				LabelRotation="0"
 				Foreground="{DynamicResource StatusTextBrush}"
+				LabelRotation="0"
 				Labels="{Binding ElementName=root, Path=XAxisLabels}"
 				Orientation="Horizontal" />
 			<Grid x:Name="Grid" Grid.Column="1">
@@ -72,7 +72,7 @@
 					Margin="0,-1"
 					Foreground="{DynamicResource StatusTextLightBrush}"
 					Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}"
-					YLabels="{Binding YAxisLabels, ElementName=root}"/>
+					YLabels="{Binding YAxisLabels, ElementName=root}" />
 				<Grid
 					Width="{Binding ElementName=Grid, Path=ActualWidth}"
 					Height="{Binding ElementName=Grid, Path=ActualHeight}"
@@ -134,58 +134,10 @@
 				</Grid>
 				<chartcomponents:TooltipControl
 					x:Name="TooltipControl"
-					MouseWheel="MouseCaptureGrid_MouseWheel"
 					TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
 					TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
 					TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
-				<Border
-					x:Name="XCrosshairValueDisplay"
-					Width="Auto"
-					Height="20"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Bottom"
-					Background="{DynamicResource StatusTextLightBrush}"
-					CornerRadius="5"
-					IsHitTestVisible="False">
-					<Border.Visibility>
-						<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-							<Binding ElementName="Grid" Path="IsMouseOver" />
-							<Binding ElementName="root" Path="HasData" />
-							<Binding ElementName="root" Path="IsAxisIndicatorsVisible" />
-						</MultiBinding>
-					</Border.Visibility>
-					<TextBlock
-						x:Name="XCrosshairValueLabel"
-						Margin="6,0"
-						HorizontalAlignment="Center"
-						VerticalAlignment="Center"
-						FontSize="11"
-						Foreground="{DynamicResource TextBrush}" />
-				</Border>
-				<Border
-					x:Name="YCrosshairValueDisplay"
-					Width="Auto"
-					Height="20"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Top"
-					Background="{DynamicResource StatusTextLightBrush}"
-					CornerRadius="5"
-					IsHitTestVisible="False">
-					<Border.Visibility>
-						<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-							<Binding ElementName="Grid" Path="IsMouseOver" />
-							<Binding ElementName="root" Path="HasData" />
-							<Binding ElementName="root" Path="IsAxisIndicatorsVisible" />
-						</MultiBinding>
-					</Border.Visibility>
-					<TextBlock
-						x:Name="YCrosshairValueLabel"
-						Margin="6,0"
-						HorizontalAlignment="Center"
-						VerticalAlignment="Center"
-						FontSize="11"
-						Foreground="{DynamicResource TextBrush}" />
-				</Border>
+				<chartcomponents:MouseCoordinator x:Name="Coordinator"/>
 			</Grid>
 		</Grid>
 	</Grid>

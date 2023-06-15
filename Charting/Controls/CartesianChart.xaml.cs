@@ -4,8 +4,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,14 +88,15 @@ namespace ModernThemables.Charting.Controls
 
 			TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((point =>
 			{
+				var translatedMouseLoc = TooltipControl.TranslatePoint(point, SeriesItemsControl);
 				var pointsUnderMouse = new List<TooltipViewModel>();
 				foreach (var series in InternalSeries)
 				{
 					var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
 						Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)), 1),
 						Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.Y)) - InternalSeries.Min(x => x.Data.Min(y => y.Y)), 1),
-						point.X,
-						point.Y,
+						translatedMouseLoc.X,
+						translatedMouseLoc.Y,
 						SeriesItemsControl.ActualWidth,
 						SeriesItemsControl.ActualHeight,
 						-SeriesItemsControl.Margin.Left,
@@ -111,7 +110,7 @@ namespace ModernThemables.Charting.Controls
 						|| !series.IsTranslatedMouseInBounds(
 								InternalSeries.Max(
 									x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)),
-								point.X,
+								translatedMouseLoc.X,
 								SeriesItemsControl.ActualWidth)) continue;
 
 					if (isSingleXPoint) hoveredChartPoint.X += (plotAreaWidth / 2);
@@ -138,19 +137,19 @@ namespace ModernThemables.Charting.Controls
 				switch (TooltipFindingStrategy)
 				{
 					case TooltipFindingStrategy.None:
-						TooltipPoints.Clear();
+						pointsUnderMouse.Clear();
 						break;
 					case TooltipFindingStrategy.NearestXAllY:
-						TooltipPoints = new ObservableCollection<TooltipViewModel>(pointsUnderMouse);
+						pointsUnderMouse = new List<TooltipViewModel>(pointsUnderMouse);
 						break;
 					case TooltipFindingStrategy.NearestXNearestY:
 						if (nearestPoint != null)
-							TooltipPoints = new ObservableCollection<TooltipViewModel>() { nearestPoint };
+							pointsUnderMouse = new List<TooltipViewModel>() { nearestPoint };
 						else
-							TooltipPoints.Clear();
+							pointsUnderMouse.Clear();
 						break;
 					case TooltipFindingStrategy.NearestXWithinThreshold:
-						TooltipPoints = new ObservableCollection<TooltipViewModel>(
+						pointsUnderMouse = new List<TooltipViewModel>(
 							pointsUnderMouse.Where(
 								x => Math.Abs(x.LocationX - point.X) <= TooltipLocationThreshold));
 						break;
@@ -168,24 +167,17 @@ namespace ModernThemables.Charting.Controls
 			IsZoomed = false;
 		}
 
-		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not CartesianChart chart) return;
+		//private static void OnSetMinMax(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		//{
+		//	if (sender is not CartesianChart chart
+		//		|| chart.Min == -1d
+		//		|| chart.Max == -1d
+		//		|| chart.Series == null
+		//		|| !chart.Series.Any()
+		//		|| chart.preventTrigger) return;
 
-			chart.IsTooltipByCursor = chart.TooltipLocation == TooltipLocation.Cursor;
-		}
-
-		private static void OnSetMinMax(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not CartesianChart chart
-				|| chart.Min == -1d
-				|| chart.Max == -1d
-				|| chart.Series == null
-				|| !chart.Series.Any()
-				|| chart.preventTrigger) return;
-
-			chart.CurrentZoomState = new ZoomState(chart.Min, chart.Max, chart.yMin, chart.yMax, 0, yBuffer, true);
-		}
+		//	chart.CurrentZoomState = new ZoomState(chart.Min, chart.Max, chart.yMin, chart.yMax, 0, yBuffer, true);
+		//}
 
 		private static void OnSetZoomState(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
@@ -219,14 +211,14 @@ namespace ModernThemables.Charting.Controls
 
 			if (doSetY) return;
 
-			if (Math.Abs(chart.Min - chart.CurrentZoomState.XMin) > 0.0001
-				|| Math.Abs(chart.Max - chart.CurrentZoomState.XMax) > 0.0001)
-			{
-				chart.preventTrigger = true;
-				chart.Min = chart.CurrentZoomState.XMin;
-				chart.Max = chart.CurrentZoomState.XMax;
-				chart.preventTrigger = false;
-			}
+			//if (Math.Abs(chart.Min - chart.CurrentZoomState.XMin) > 0.0001
+			//	|| Math.Abs(chart.Max - chart.CurrentZoomState.XMax) > 0.0001)
+			//{
+			//	chart.preventTrigger = true;
+			//	chart.Min = chart.CurrentZoomState.XMin;
+			//	chart.Max = chart.CurrentZoomState.XMax;
+			//	chart.preventTrigger = false;
+			//}
 
 			chart.xDataOffset
 				= chart.CurrentZoomState.XOffset / chart.SeriesItemsControl.ActualWidth * (chart.xMax - chart.xMin);
@@ -235,11 +227,8 @@ namespace ModernThemables.Charting.Controls
 					chart.CurrentZoomState.XMin + chart.xDataOffset, chart.CurrentZoomState.XMax + chart.xDataOffset);
 			_ = chart.SetYAxisLabels(chart.CurrentZoomState.YMin, chart.CurrentZoomState.YMax);
 
-			chart.MouseOverPoint = null;
-			chart.TooltipPoints.Clear();
-
 			chart.IsZoomed = chart.SeriesItemsControl.Margin.Left != 0 || chart.SeriesItemsControl.Margin.Right != 0;
-			chart.currentZoomLevel = (chart.xMax - chart.xMin) / (chart.Max - chart.Min);
+			//chart.currentZoomLevel = (chart.xMax - chart.xMin) / (chart.Max - chart.Min);
 		}
 
 		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -256,8 +245,6 @@ namespace ModernThemables.Charting.Controls
 			await Task.Delay(1);
 			chart.QueueRenderChart(null, null, true);
 		}
-
-		#region Subscribe to series'
 
 		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
@@ -295,8 +282,6 @@ namespace ModernThemables.Charting.Controls
 					? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => y.YValue)) + (yMax - yMin) * yBuffer : 0;
 			});
 		}
-
-		#endregion
 
 		private void QueueRenderChart(
 			IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)

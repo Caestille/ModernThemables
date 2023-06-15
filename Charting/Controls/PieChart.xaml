@@ -33,185 +33,175 @@
 				LegendTemplate="{Binding ElementName=root, Path=LegendTemplate}"
 				TemplatedDataContext="{Binding ElementName=root, Path=Series}" />
 		</Grid>
-		<Grid
-			Grid.Row="1"
-			Grid.Column="1"
-			Margin="0">
-			<Grid
-				x:Name="Grid"
-				Grid.Column="1"
-				VerticalAlignment="Stretch">
-				<Grid Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualHeight}">
-					<ItemsControl
-						x:Name="SeriesItemsControl"
-						Width="{Binding ElementName=Grid, Path=ActualWidth}"
-						Height="{Binding ElementName=Grid, Path=ActualHeight}"
-						ItemsSource="{Binding InternalSeries, ElementName=root}">
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
-									<ItemsControl HorizontalAlignment="Left" ItemsSource="{Binding Wedges}">
-										<ItemsControl.Margin>
-											<MultiBinding Converter="{StaticResource PieCentrererConverter}">
-												<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
-												<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-											</MultiBinding>
-										</ItemsControl.Margin>
-										<ItemsControl.ItemTemplate>
-											<DataTemplate>
-												<Grid
-													Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}"
-													HorizontalAlignment="Left"
-													ClipToBounds="False">
-													<Grid.Margin>
-														<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-															<Binding Path="." />
-															<Binding ElementName="root" Path="InternalSeries" />
-															<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-															<Binding Path="ResizeTrigger" />
-														</MultiBinding>
-													</Grid.Margin>
-													<piechart:PieArc
-														ClipToBounds="False"
-														Fill="{Binding Fill.CoreBrush}"
-														InnerRadiusFraction="{Binding ElementName=root, Path=InnerRadiusFraction}"
-														Percentage="{Binding Percent}"
-														RotationAngle="{Binding StartAngle}"
-														Stroke="{Binding Stroke.CoreBrush}"
-														StrokeThickness="0.6">
-														<piechart:PieArc.Style>
-															<Style>
-																<Style.Triggers>
-																	<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
-																		<DataTrigger.EnterActions>
-																			<BeginStoryboard>
-																				<Storyboard>
-																					<DoubleAnimation
-																						Storyboard.TargetProperty="PushOut"
-																						To="15"
-																						Duration="00:00:00.10">
-																						<DoubleAnimation.EasingFunction>
-																							<BackEase Amplitude="1" EasingMode="EaseOut" />
-																						</DoubleAnimation.EasingFunction>
-																					</DoubleAnimation>
-																				</Storyboard>
-																			</BeginStoryboard>
-																		</DataTrigger.EnterActions>
-																		<DataTrigger.ExitActions>
-																			<BeginStoryboard>
-																				<Storyboard>
-																					<DoubleAnimation
-																						Storyboard.TargetProperty="PushOut"
-																						To="0"
-																						Duration="00:00:00.001" />
-																				</Storyboard>
-																			</BeginStoryboard>
-																		</DataTrigger.ExitActions>
-																	</DataTrigger>
-																</Style.Triggers>
-															</Style>
-														</piechart:PieArc.Style>
-														<piechart:PieArc.CentreX>
-															<MultiBinding Converter="{StaticResource PieCentreRadiusConverter}" ConverterParameter="CentreX">
-																<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
-																<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-																<Binding Path="ResizeTrigger" />
-															</MultiBinding>
-														</piechart:PieArc.CentreX>
-														<piechart:PieArc.CentreY>
-															<MultiBinding Converter="{StaticResource PieCentreRadiusConverter}" ConverterParameter="CentreY">
-																<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
-																<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-																<Binding Path="ResizeTrigger" />
-															</MultiBinding>
-														</piechart:PieArc.CentreY>
-														<piechart:PieArc.Radius>
-															<MultiBinding Converter="{StaticResource PieCentreRadiusConverter}" ConverterParameter="Radius">
-																<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
-																<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-																<Binding Path="ResizeTrigger" />
-															</MultiBinding>
-														</piechart:PieArc.Radius>
-													</piechart:PieArc>
-												</Grid>
-											</DataTemplate>
-										</ItemsControl.ItemTemplate>
-									</ItemsControl>
-								</Grid>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-					<ItemsControl HorizontalAlignment="Left" ItemsSource="{Binding InternalSeries, ElementName=root}">
-						<ItemsControl.Margin>
-							<MultiBinding Converter="{StaticResource PieCentrererConverter}">
-								<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
-								<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-							</MultiBinding>
-						</ItemsControl.Margin>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<ItemsControl ItemsSource="{Binding Wedges}">
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
-												<Grid.Margin>
-													<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-														<Binding Path="." />
-														<Binding ElementName="root" Path="InternalSeries" />
+		<Grid Grid.Row="1" Grid.Column="1">
+			<ItemsControl
+				x:Name="SeriesItemsControl"
+				Width="{Binding ElementName=Grid, Path=ActualWidth}"
+				Height="{Binding ElementName=Grid, Path=ActualHeight}"
+				ItemsSource="{Binding InternalSeries, ElementName=root}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
+							<ItemsControl HorizontalAlignment="Left" ItemsSource="{Binding Wedges}">
+								<ItemsControl.Margin>
+									<MultiBinding Converter="{StaticResource PieCentrererConverter}">
+										<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
+										<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+									</MultiBinding>
+								</ItemsControl.Margin>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Grid
+											Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}"
+											HorizontalAlignment="Left"
+											ClipToBounds="False">
+											<Grid.Margin>
+												<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
+													<Binding Path="." />
+													<Binding ElementName="root" Path="InternalSeries" />
+													<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+													<Binding Path="ResizeTrigger" />
+												</MultiBinding>
+											</Grid.Margin>
+											<piechart:PieArc
+												ClipToBounds="False"
+												Fill="{Binding Fill.CoreBrush}"
+												InnerRadiusFraction="{Binding ElementName=root, Path=InnerRadiusFraction}"
+												Percentage="{Binding Percent}"
+												RotationAngle="{Binding StartAngle}"
+												Stroke="{Binding Stroke.CoreBrush}"
+												StrokeThickness="0.6">
+												<piechart:PieArc.Style>
+													<Style>
+														<Style.Triggers>
+															<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
+																<DataTrigger.EnterActions>
+																	<BeginStoryboard>
+																		<Storyboard>
+																			<DoubleAnimation
+																				Storyboard.TargetProperty="PushOut"
+																				To="15"
+																				Duration="00:00:00.10">
+																				<DoubleAnimation.EasingFunction>
+																					<BackEase Amplitude="1" EasingMode="EaseOut" />
+																				</DoubleAnimation.EasingFunction>
+																			</DoubleAnimation>
+																		</Storyboard>
+																	</BeginStoryboard>
+																</DataTrigger.EnterActions>
+																<DataTrigger.ExitActions>
+																	<BeginStoryboard>
+																		<Storyboard>
+																			<DoubleAnimation
+																				Storyboard.TargetProperty="PushOut"
+																				To="0"
+																				Duration="00:00:00.001" />
+																		</Storyboard>
+																	</BeginStoryboard>
+																</DataTrigger.ExitActions>
+															</DataTrigger>
+														</Style.Triggers>
+													</Style>
+												</piechart:PieArc.Style>
+												<piechart:PieArc.CentreX>
+													<MultiBinding Converter="{StaticResource PieCentreRadiusConverter}" ConverterParameter="CentreX">
+														<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
 														<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
 														<Binding Path="ResizeTrigger" />
 													</MultiBinding>
-												</Grid.Margin>
-												<TextBlock
-													Width="Auto"
-													Height="Auto"
-													HorizontalAlignment="Left"
-													VerticalAlignment="Top"
-													FontSize="12"
-													Foreground="{DynamicResource TextBrush}"
-													Text="{Binding Name}">
-													<TextBlock.Style>
-														<Style>
-															<Style.Triggers>
-																<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
-																	<Setter Property="TextBlock.FontWeight" Value="Bold" />
-																</DataTrigger>
-															</Style.Triggers>
-														</Style>
-													</TextBlock.Style>
-													<TextBlock.Margin>
-														<MultiBinding Converter="{StaticResource PieLabelMarginConverter}">
-															<Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
-															<Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
-															<Binding Path="StartAngle" />
-															<Binding Path="Percent" />
-															<Binding ElementName="root" Path="LabelRadiusFraction" />
-															<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-															<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
-															<Binding Path="IsMouseOver" />
-															<Binding Path="ResizeTrigger" />
-														</MultiBinding>
-													</TextBlock.Margin>
-												</TextBlock>
-											</Grid>
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-				</Grid>
-			</Grid>
+												</piechart:PieArc.CentreX>
+												<piechart:PieArc.CentreY>
+													<MultiBinding Converter="{StaticResource PieCentreRadiusConverter}" ConverterParameter="CentreY">
+														<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
+														<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+														<Binding Path="ResizeTrigger" />
+													</MultiBinding>
+												</piechart:PieArc.CentreY>
+												<piechart:PieArc.Radius>
+													<MultiBinding Converter="{StaticResource PieCentreRadiusConverter}" ConverterParameter="Radius">
+														<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
+														<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+														<Binding Path="ResizeTrigger" />
+													</MultiBinding>
+												</piechart:PieArc.Radius>
+											</piechart:PieArc>
+										</Grid>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</Grid>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<ItemsControl HorizontalAlignment="Left" ItemsSource="{Binding InternalSeries, ElementName=root}">
+				<ItemsControl.Margin>
+					<MultiBinding Converter="{StaticResource PieCentrererConverter}">
+						<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
+						<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+					</MultiBinding>
+				</ItemsControl.Margin>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<ItemsControl ItemsSource="{Binding Wedges}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
+										<Grid.Margin>
+											<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
+												<Binding Path="." />
+												<Binding ElementName="root" Path="InternalSeries" />
+												<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+												<Binding Path="ResizeTrigger" />
+											</MultiBinding>
+										</Grid.Margin>
+										<TextBlock
+											Width="Auto"
+											Height="Auto"
+											HorizontalAlignment="Left"
+											VerticalAlignment="Top"
+											FontSize="12"
+											Foreground="{DynamicResource TextBrush}"
+											Text="{Binding Name}">
+											<TextBlock.Style>
+												<Style>
+													<Style.Triggers>
+														<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
+															<Setter Property="TextBlock.FontWeight" Value="Bold" />
+														</DataTrigger>
+													</Style.Triggers>
+												</Style>
+											</TextBlock.Style>
+											<TextBlock.Margin>
+												<MultiBinding Converter="{StaticResource PieLabelMarginConverter}">
+													<Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+													<Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+													<Binding Path="StartAngle" />
+													<Binding Path="Percent" />
+													<Binding ElementName="root" Path="LabelRadiusFraction" />
+													<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
+													<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
+													<Binding Path="IsMouseOver" />
+													<Binding Path="ResizeTrigger" />
+												</MultiBinding>
+											</TextBlock.Margin>
+										</TextBlock>
+									</Grid>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 			<chartComponents:TooltipControl
 				x:Name="TooltipControl"
 				AllowSelection="False"
 				ForceCrosshairs="False"
 				ForcePointIndicators="False"
 				ForceTooltipTop="True"
-				MouseLeave="MouseCaptureGrid_MouseLeave"
 				TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
 				TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
 				TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
+			<chartComponents:MouseCoordinator x:Name="Coordinator" />
 		</Grid>
 	</Grid>
 </UserControl>

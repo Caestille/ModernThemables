@@ -152,11 +152,11 @@
 					ForcePointIndicators="False"
 					ForceTooltipTop="True"
 					InvertY="True"
-					MouseLeave="MouseCaptureGrid_MouseLeave"
 					TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
 					TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
 					TooltipOffsetX="{Binding ElementName=root, Path=BarWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
 					TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
+				<chartComponents:MouseCoordinator x:Name="Coordinator" />
 			</Grid>
 		</Grid>
 	</Grid>

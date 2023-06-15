@@ -1,4 +1,5 @@
-﻿using ModernThemables.Charting.Interfaces;
+﻿using ModernThemables.Charting.Controls.ChartComponents;
+using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.ViewModels.CartesianChart;
@@ -115,7 +116,7 @@ namespace ModernThemables.Charting.Controls
 		public bool IsZoomed
 		{
 			get => (bool)GetValue(IsZoomedProperty);
-			set => SetValue(IsZoomedProperty, value);
+			private set => SetValue(IsZoomedProperty, value);
 		}
 		public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
 			"IsZoomed",
@@ -176,7 +177,7 @@ namespace ModernThemables.Charting.Controls
 			"TooltipLocation",
 			typeof(TooltipLocation),
 			typeof(CartesianChart),
-			new FrameworkPropertyMetadata(TooltipLocation.Cursor, OnTooltipLocationSet));
+			new FrameworkPropertyMetadata(TooltipLocation.Cursor));
 
 		public double TooltipLocationThreshold
 		{
@@ -200,38 +201,27 @@ namespace ModernThemables.Charting.Controls
 			typeof(CartesianChart),
 			new PropertyMetadata(1d));
 
-		public new double FontSize
-		{
-			get => (double)GetValue(FontSizeProperty);
-			set => SetValue(FontSizeProperty, value);
-		}
-		public static readonly new DependencyProperty FontSizeProperty = DependencyProperty.Register(
-			"FontSize",
-			typeof(double),
-			typeof(CartesianChart),
-			new PropertyMetadata(12d));
+		//public double Min
+		//{
+		//	get => (double)GetValue(MinProperty);
+		//	set => SetValue(MinProperty, value);
+		//}
+		//public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
+		//	"Min",
+		//	typeof(double),
+		//	typeof(CartesianChart),
+		//	new UIPropertyMetadata(-1d, OnSetMinMax));
 
-		public double Min
-		{
-			get => (double)GetValue(MinProperty);
-			set => SetValue(MinProperty, value);
-		}
-		public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
-			"Min",
-			typeof(double),
-			typeof(CartesianChart),
-			new UIPropertyMetadata(-1d, OnSetMinMax));
-
-		public double Max
-		{
-			get => (double)GetValue(MaxProperty);
-			set => SetValue(MaxProperty, value);
-		}
-		public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
-			"Max",
-			typeof(double),
-			typeof(CartesianChart),
-			new UIPropertyMetadata(-1d, OnSetMinMax));
+		//public double Max
+		//{
+		//	get => (double)GetValue(MaxProperty);
+		//	set => SetValue(MaxProperty, value);
+		//}
+		//public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
+		//	"Max",
+		//	typeof(double),
+		//	typeof(CartesianChart),
+		//	new UIPropertyMetadata(-1d, OnSetMinMax));
 
 		public Func<IEnumerable<IChartEntity>, IChartEntity, object> TooltipContentGetter
 		{
@@ -247,39 +237,6 @@ namespace ModernThemables.Charting.Controls
 		#endregion
 
 		#region Private properties
-
-		private ObservableCollection<TooltipViewModel> TooltipPoints
-		{
-			get => (ObservableCollection<TooltipViewModel>)GetValue(TooltipPointsProperty);
-			set => SetValue(TooltipPointsProperty, value);
-		}
-		public static readonly DependencyProperty TooltipPointsProperty = DependencyProperty.Register(
-			"TooltipPoints",
-			typeof(ObservableCollection<TooltipViewModel>),
-			typeof(CartesianChart),
-			new PropertyMetadata(new ObservableCollection<TooltipViewModel>()));
-
-		private bool IsTooltipByCursor
-		{
-			get => (bool)GetValue(IsTooltipByCursorProperty);
-			set => SetValue(IsTooltipByCursorProperty, value);
-		}
-		public static readonly DependencyProperty IsTooltipByCursorProperty = DependencyProperty.Register(
-			"IsTooltipByCursor",
-			typeof(bool),
-			typeof(CartesianChart),
-			new PropertyMetadata(true));
-
-		private InternalChartEntity? MouseOverPoint
-		{
-			get => (InternalChartEntity)GetValue(MouseOverPointProperty);
-			set => SetValue(MouseOverPointProperty, value);
-		}
-		public static readonly DependencyProperty MouseOverPointProperty = DependencyProperty.Register(
-			"MouseOverPoint",
-			typeof(InternalChartEntity),
-			typeof(CartesianChart),
-			new PropertyMetadata(null));
 
 		private ObservableCollection<InternalPathSeriesViewModel> InternalSeries
 		{
@@ -314,61 +271,6 @@ namespace ModernThemables.Charting.Controls
 			typeof(CartesianChart),
 			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
-		private bool IsCrosshairVisible
-		{
-			get => (bool)GetValue(IsCrosshairVisibleProperty);
-			set => SetValue(IsCrosshairVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsCrosshairVisibleProperty = DependencyProperty.Register(
-			"IsCrosshairVisible",
-			typeof(bool),
-			typeof(CartesianChart),
-			new PropertyMetadata(true));
-
-		private bool IsTooltipVisible
-		{
-			get => (bool)GetValue(IsTooltipVisibleProperty);
-			set => SetValue(IsTooltipVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsTooltipVisibleProperty = DependencyProperty.Register(
-			"IsTooltipVisible",
-			typeof(bool),
-			typeof(CartesianChart),
-			new PropertyMetadata(true));
-
-		private bool IsAxisIndicatorsVisible
-		{
-			get => (bool)GetValue(IsAxisIndicatorsVisibleProperty);
-			set => SetValue(IsAxisIndicatorsVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsAxisIndicatorsVisibleProperty = DependencyProperty.Register(
-			"IsAxisIndicatorsVisible",
-			typeof(bool),
-			typeof(CartesianChart),
-			new PropertyMetadata(true));
-
-		private bool IsPointIndicatorsVisible
-		{
-			get => (bool)GetValue(IsPointIndicatorsVisibleProperty);
-			set => SetValue(IsPointIndicatorsVisibleProperty, value);
-		}
-		public static readonly DependencyProperty IsPointIndicatorsVisibleProperty = DependencyProperty.Register(
-			"IsPointIndicatorsVisible",
-			typeof(bool),
-			typeof(CartesianChart),
-			new PropertyMetadata(true));
-
-		private bool IsUserSelectingRange
-		{
-			get => (bool)GetValue(IsUserSelectingRangeProperty);
-			set => SetValue(IsUserSelectingRangeProperty, value);
-		}
-		public static readonly DependencyProperty IsUserSelectingRangeProperty = DependencyProperty.Register(
-			"IsUserSelectingRange",
-			typeof(bool),
-			typeof(CartesianChart),
-			new PropertyMetadata(false));
-
 		private ZoomState CurrentZoomState
 		{
 			get => (ZoomState)GetValue(CurrentZoomStateProperty);
@@ -379,17 +281,6 @@ namespace ModernThemables.Charting.Controls
 			typeof(ZoomState),
 			typeof(CartesianChart),
 			new UIPropertyMetadata(new ZoomState(0, 0, 0, 0, 0, yBuffer), OnSetZoomState));
-		
-		private bool HasData
-		{
-			get => (bool)GetValue(HasDataProperty);
-			set => SetValue(HasDataProperty, value);
-		}
-		public static readonly DependencyProperty HasDataProperty = DependencyProperty.Register(
-			"HasData",
-			typeof(bool),
-			typeof(CartesianChart),
-			new PropertyMetadata(false));
 
 		private Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
 		{

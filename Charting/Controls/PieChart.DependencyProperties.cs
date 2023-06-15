@@ -1,4 +1,5 @@
-﻿using ModernThemables.Charting.Interfaces;
+﻿using ModernThemables.Charting.Controls.ChartComponents;
+using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.ViewModels.PieChart;

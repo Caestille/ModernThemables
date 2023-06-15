@@ -5,6 +5,7 @@ using System.Windows;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Interfaces;
 using System.Collections.Generic;
+using ModernThemables.Charting.Controls.ChartComponents;
 
 namespace ModernThemables.Charting.Controls
 {
