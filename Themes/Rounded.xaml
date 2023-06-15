@@ -758,13 +758,13 @@
 								Background="Transparent"
 								BorderThickness="0"
 								CornerRadius="3"
+								Foreground="{DynamicResource StatusTextBrush}"
 								MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}">
 								<scalableicons:CloseIcon
 									Margin="2"
 									HorizontalAlignment="Stretch"
 									VerticalAlignment="Stretch"
-									Background="Transparent"
-									Foreground="{DynamicResource StatusTextBrush}" />
+									Background="Transparent" />
 							</controls:ExtendedButton>
 						</Grid>
 					</Grid>
