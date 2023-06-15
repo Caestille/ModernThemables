@@ -60,6 +60,10 @@
 	<chartConverters:PieCentreRadiusConverter x:Key="PieCentreRadiusConverter" />
 	<chartConverters:PieLabelMarginConverter x:Key="PieLabelMarginConverter" />
 	<chartConverters:PieCentrererConverter x:Key="PieCentrererConverter" />
+	<chartConverters:AxisLabelMarginConverter x:Key="AxisLabelMarginConverter" />
+	<chartConverters:PointHighlightMarginConverter x:Key="PointHighlightMarginConverter" />
+
+
 
 	<!--#endregion End Converters-->
 
@@ -129,32 +133,24 @@
 							RecognizesAccessKey="True"
 							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 					</Border>
-					<!--<ControlTemplate.Triggers>
-						<Trigger Property="IsDefaulted" Value="true">
-							-->
-					<!--<Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />-->
-					<!--
+					<ControlTemplate.Triggers>
+						<!--<Trigger Property="IsDefaulted" Value="true">
+							<Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="true">
 							<Setter TargetName="border" Property="Background" Value="{Binding MouseOverColour, RelativeSource={RelativeSource TemplatedParent}}" />
-							-->
-					<!--<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />-->
-					<!--
+							<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
 						</Trigger>
 						<Trigger Property="IsPressed" Value="true">
 							<Setter TargetName="border" Property="Background" Value="{Binding MouseDownColour, RelativeSource={RelativeSource TemplatedParent}}" />
-							-->
-					<!--<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />-->
-					<!--
-						</Trigger>
+							<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
+						</Trigger>-->
 						<Trigger Property="IsEnabled" Value="false">
-							<Setter TargetName="border" Property="Background" Value="{Binding DisabledBackgroundColour, RelativeSource={RelativeSource TemplatedParent}}" />
-							-->
-					<!--<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Disabled.Border}" />-->
-					<!--
+							<!--<Setter TargetName="border" Property="Background" Value="{Binding DisabledBackgroundColour, RelativeSource={RelativeSource TemplatedParent}}" />
+							<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Disabled.Border}" />-->
 							<Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding DisabledForegroundColour, RelativeSource={RelativeSource TemplatedParent}}" />
 						</Trigger>
-					</ControlTemplate.Triggers>-->
+					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -185,30 +181,24 @@
 							RecognizesAccessKey="True"
 							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 					</Border>
-					<!--<ControlTemplate.Triggers>
-						<Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="{Binding MouseOverColour, RelativeSource={RelativeSource TemplatedParent}}" />
-							-->
-					<!--<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />-->
-					<!--
+					<ControlTemplate.Triggers>
+						<!--<Trigger Property="IsMouseOver" Value="true">
+							<Setter TargetName="border" Property="Background" Value="{Binding MouseOverColour, RelativeSource={RelativeSource TemplatedParent}}" />
+							<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
 						</Trigger>
 						<Trigger Property="IsChecked" Value="True">
 							<Setter TargetName="border" Property="Background" Value="{Binding CheckedColour, RelativeSource={RelativeSource TemplatedParent}}" />
 						</Trigger>
 						<Trigger Property="IsPressed" Value="true">
 							<Setter TargetName="border" Property="Background" Value="{Binding MouseDownColour, RelativeSource={RelativeSource TemplatedParent}}" />
-							-->
-					<!--<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />-->
-					<!--
-						</Trigger>
+							<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
+						</Trigger>-->
 						<Trigger Property="IsEnabled" Value="false">
-							<Setter TargetName="border" Property="Background" Value="{Binding DisabledBackgroundColour, RelativeSource={RelativeSource TemplatedParent}}" />
-							-->
-					<!--<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Disabled.Border}" />-->
-					<!--
+							<!--<Setter TargetName="border" Property="Background" Value="{Binding DisabledBackgroundColour, RelativeSource={RelativeSource TemplatedParent}}" />
+							<Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Disabled.Border}" />-->
 							<Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding DisabledForegroundColour, RelativeSource={RelativeSource TemplatedParent}}" />
 						</Trigger>
-					</ControlTemplate.Triggers>-->
+					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
