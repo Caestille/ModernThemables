@@ -140,8 +140,9 @@
 								</MultiBinding>
 							</Grid.Margin>
 							<Border
-								Height="{Binding IndicatorHeight}"
-								HorizontalAlignment="Stretch"
+								Width="{Binding ElementName=MouseCaptureGrid, Path=ActualWidth}"
+								Height="{Binding LocationY}"
+								HorizontalAlignment="Left"
 								VerticalAlignment="Top"
 								BorderBrush="{DynamicResource StatusTextBrush}"
 								BorderThickness="0,0,0,1"
@@ -177,33 +178,25 @@
 								</MultiBinding>
 							</Grid.Margin>
 							<Ellipse
-								x:Name="IsHighlightedEllipse"
 								Width="30"
 								Height="30"
-								Margin="{Binding LargeMargin}"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Top"
 								Fill="{DynamicResource TextBrush}"
 								IsHitTestVisible="False"
-								RenderTransformOrigin="0.5,0.5"
-								StrokeThickness="1">
-								<Ellipse.Style>
-									<Style>
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding Path=IsNearest}" Value="True">
-												<Setter Property="Ellipse.Opacity" Value="0.1" />
-											</DataTrigger>
-											<DataTrigger Binding="{Binding Path=IsNearest}" Value="False">
-												<Setter Property="Ellipse.Opacity" Value="0" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</Ellipse.Style>
+								Opacity="0.1"
+								Visibility="{Binding IsNearest, Converter={StaticResource VisibleIfTrueConverter}}">
+								<Ellipse.Margin>
+									<MultiBinding Converter="{StaticResource PointHighlightMarginConverter}" ConverterParameter="15">
+										<Binding Path="LocationY" />
+										<Binding Path="LocationX" />
+									</MultiBinding>
+								</Ellipse.Margin>
 							</Ellipse>
 							<Ellipse
+								x:Name="SelectedEllipse"
 								Width="10"
 								Height="10"
-								Margin="{Binding Margin}"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Top"
 								IsHitTestVisible="False"
@@ -211,10 +204,16 @@
 								RenderTransformOrigin="0.5,0.5"
 								Stroke="{DynamicResource TextBrush}"
 								StrokeThickness="1">
+								<Ellipse.Margin>
+									<MultiBinding Converter="{StaticResource PointHighlightMarginConverter}" ConverterParameter="5">
+										<Binding Path="LocationY" />
+										<Binding Path="LocationX" />
+									</MultiBinding>
+								</Ellipse.Margin>
 								<Ellipse.RenderTransform>
 									<ScaleTransform x:Name="Scale" ScaleX="1" ScaleY="1" />
 								</Ellipse.RenderTransform>
-								<Ellipse.Style>
+								<!--<Ellipse.Style>
 									<Style>
 										<Style.Triggers>
 											<DataTrigger Binding="{Binding Path=WasClicked}" Value="True">
@@ -259,18 +258,24 @@
 											</DataTrigger>
 										</Style.Triggers>
 									</Style>
-								</Ellipse.Style>
+								</Ellipse.Style>-->
 							</Ellipse>
 							<Ellipse
 								Width="10"
 								Height="10"
-								Margin="{Binding Margin}"
 								HorizontalAlignment="Left"
 								VerticalAlignment="Top"
 								Fill="{Binding Fill}"
 								IsHitTestVisible="False"
 								Stroke="{DynamicResource MainBackgroundBrush}"
-								StrokeThickness="1.5" />
+								StrokeThickness="1.5">
+								<Ellipse.Margin>
+									<MultiBinding Converter="{StaticResource PointHighlightMarginConverter}" ConverterParameter="5">
+										<Binding Path="LocationY" />
+										<Binding Path="LocationX" />
+									</MultiBinding>
+								</Ellipse.Margin>
+							</Ellipse>
 						</Grid>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
@@ -289,12 +294,16 @@
 						<Grid Height="{Binding ElementName=Grid, Path=ActualHeight, ConverterParameter=100, Converter={StaticResource ValueAdderConverter}}">
 							<Grid.Margin>
 								<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-									<Binding Path="." />
-									<Binding ElementName="root" Path="TooltipPoints" />
+									<Binding IsAsync="True" Path="." />
+									<Binding
+										ElementName="root"
+										IsAsync="True"
+										Path="TooltipPoints" />
 									<Binding
 										Converter="{StaticResource ValueAdderConverter}"
 										ConverterParameter="100"
 										ElementName="Grid"
+										IsAsync="True"
 										Path="ActualHeight" />
 								</MultiBinding>
 							</Grid.Margin>
@@ -341,12 +350,19 @@
 							Opacity="{Binding ElementName=root, Path=TooltipOpacity}">
 							<Grid.Visibility>
 								<MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-									<Binding ElementName="root" Path="ShowTooltip" />
+									<Binding
+										ElementName="root"
+										IsAsync="True"
+										Path="ShowTooltip" />
 									<Binding
 										Converter="{StaticResource SequenceHasElementsBooleanConverter}"
 										ElementName="root"
+										IsAsync="True"
 										Path="TooltipPoints" />
-									<Binding ElementName="root" Path="IsTooltipByCursor" />
+									<Binding
+										ElementName="root"
+										IsAsync="True"
+										Path="IsTooltipByCursor" />
 								</MultiBinding>
 							</Grid.Visibility>
 							<chartcomponents:DefaultTooltip />

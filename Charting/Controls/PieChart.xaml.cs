@@ -104,8 +104,8 @@ namespace ModernThemables.Charting.Controls
 
 							var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
 							var matchingWedge = matchingSeries.Values.First(x => x.Identifier == wedge.Identifier);
-							var formattedValue = matchingSeries.TooltipLabelFormatter != null
-								? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
+							var formattedValue = matchingSeries.ValueFormatter != null
+								? matchingSeries.ValueFormatter(matchingWedge)
 								: matchingWedge.XValue.ToString();
 							var formattedPercent = $"{Math.Round(wedge.Percent, 1)} %";
 

@@ -19,9 +19,6 @@ namespace ModernThemables.Charting.Models
         public event EventHandler<NotifyCollectionChangedEventArgs> CollectionChanged;
 
         /// <inheritdoc />
-        public Func<IEnumerable<IChartEntity>, IChartEntity, string> TooltipLabelFormatter { get; set; }
-
-        /// <inheritdoc />
         public Func<IChartEntity, string> ValueFormatter { get; set; }
 
         /// <inheritdoc />

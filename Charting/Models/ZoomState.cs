@@ -1,4 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using ModernThemables.Charting.Interfaces;
 
 namespace ModernThemables.Charting.Models
 {
@@ -63,16 +64,27 @@ namespace ModernThemables.Charting.Models
                 YMax = yMax;
             }
             XOffset = xOffset;
-        }
+		}
 
-        /// <summary>
-        /// Given a point in the same scale, indicates whether it would be visible.
-        /// </summary>
-        /// <param name="x">The X component of the point.</param>
-        /// <param name="y">The Y component of the point.</param>
-        /// <returns>A <see cref="bool"/> indicating whether the given point is contained by the current zoom level.
-        /// </returns>
-        public bool IsPointInBounds(double x, double y)
+		/// <summary>
+		/// Given a point in the same scale, indicates whether it would be visible.
+		/// </summary>
+		/// <param name="chartPoint">The chart point to test.</param>
+		/// <returns>A <see cref="bool"/> indicating whether the given point is contained by the current zoom level.
+		/// </returns>
+		public bool IsPointInBounds(IChartEntity chartPoint)
+		{
+            return IsPointInBounds(chartPoint.XValue, chartPoint.YValue);
+		}
+
+		/// <summary>
+		/// Given a point in the same scale, indicates whether it would be visible.
+		/// </summary>
+		/// <param name="x">The X component of the point.</param>
+		/// <param name="y">The Y component of the point.</param>
+		/// <returns>A <see cref="bool"/> indicating whether the given point is contained by the current zoom level.
+		/// </returns>
+		public bool IsPointInBounds(double x, double y)
         {
             return x <= XMax && x >= XMin && y <= YMax && y >= YMin;
         }

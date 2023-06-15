@@ -22,12 +22,6 @@ namespace ModernThemables.Charting.Interfaces
         event EventHandler<NotifyCollectionChangedEventArgs> CollectionChanged;
 
         /// <summary>
-        /// A <see cref="Func{T1, T2, TResult}"/> Which given a list of series points and the current highlighted
-        /// point, returns a string which is the formatted tooltip.
-        /// </summary>
-        Func<IEnumerable<IChartEntity>, IChartEntity, string> TooltipLabelFormatter { get; set; }
-
-        /// <summary>
         /// A <see cref="Func{T1, TResult}"/> Which given a point, returns a string which is the formatted value.
         /// </summary>
         public Func<IChartEntity, string> ValueFormatter { get; set; }

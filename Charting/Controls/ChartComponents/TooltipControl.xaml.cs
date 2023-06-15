@@ -26,7 +26,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		private Point? lastMouseMovePoint;
 
 		private DateTime timeLastUpdated;
-		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 60d);
+		private TimeSpan updateLimit = TimeSpan.FromMilliseconds(1000 / 16d);
 
 		private Point? lowerSelection;
 		private Point? upperSelection;
@@ -324,22 +324,27 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			{
 				TooltipPoints = new ObservableCollection<TooltipViewModel>(TooltipGetterFunc(mouseLoc));
 
-				if (TooltipLocation == TooltipLocation.Cursor)
+				if (TooltipPoints.Any())
 				{
-					// Get tooltip position variables
-					if (!tooltipLeft && (ActualWidth - mouseLoc.X) < (TooltipsByCursor.ActualWidth + 10))
-						tooltipLeft = true;
-					if (tooltipLeft && (mouseLoc.X) < (TooltipsByCursor.ActualWidth + 5))
-						tooltipLeft = false;
-					if (!tooltipTop && (ActualHeight - mouseLoc.Y) < (TooltipsByCursor.ActualHeight + 10))
-						tooltipTop = true;
-					if (tooltipTop && (mouseLoc.Y) < (TooltipsByCursor.ActualHeight + 5))
-						tooltipTop = false;
+					TooltipPoints.First(x => x.LocationY - mouseLoc.Y == TooltipPoints.Min(y => y.LocationY - mouseLoc.Y)).IsNearest = true;
 
-					TooltipsByCursor.Margin = new Thickness(
-						!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipsByCursor.ActualWidth - 5,
-						!tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipsByCursor.ActualHeight - 5,
-						0, 0);
+					if (TooltipLocation == TooltipLocation.Cursor)
+					{
+						// Get tooltip position variables
+						if (!tooltipLeft && (ActualWidth - mouseLoc.X) < (TooltipsByCursor.ActualWidth + 10))
+							tooltipLeft = true;
+						if (tooltipLeft && (mouseLoc.X) < (TooltipsByCursor.ActualWidth + 5))
+							tooltipLeft = false;
+						if (!tooltipTop && (ActualHeight - mouseLoc.Y) < (TooltipsByCursor.ActualHeight + 10))
+							tooltipTop = true;
+						if (tooltipTop && (mouseLoc.Y) < (TooltipsByCursor.ActualHeight + 5))
+							tooltipTop = false;
+
+						TooltipsByCursor.Margin = new Thickness(
+							!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipsByCursor.ActualWidth - 5,
+							!tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipsByCursor.ActualHeight - 5,
+							0, 0);
+					}
 				}
 			}
 			else

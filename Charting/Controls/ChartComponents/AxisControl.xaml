@@ -13,6 +13,7 @@
 			x:Name="MainItemsControl"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Stretch"
+			ClipToBounds="True"
 			ItemsSource="{Binding Labels, ElementName=root}">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
@@ -32,6 +33,7 @@
 							</MultiBinding>
 						</Grid.Margin>
 						<TextBlock
+							x:Name="Text"
 							Width="200"
 							Height="12"
 							HorizontalAlignment="Left"
@@ -41,6 +43,18 @@
 							RenderTransformOrigin="0,0.5"
 							Text="{Binding Value}"
 							TextAlignment="Left">
+							<TextBlock.Margin>
+								<MultiBinding Converter="{StaticResource AxisLabelMarginConverter}">
+									<Binding Path="Value" />
+									<Binding ElementName="Text" Path="FontSize" />
+									<Binding ElementName="Text" Path="FontFamily" />
+									<Binding ElementName="Text" Path="FontStyle" />
+									<Binding ElementName="Text" Path="FontWeight" />
+									<Binding ElementName="Text" Path="FontStretch" />
+									<Binding ElementName="root" Path="LabelAlignment" />
+									<Binding ElementName="root" Path="Orientation" />
+								</MultiBinding>
+							</TextBlock.Margin>
 							<TextBlock.RenderTransform>
 								<RotateTransform Angle="{Binding ElementName=root, Path=LabelRotation}" />
 							</TextBlock.RenderTransform>

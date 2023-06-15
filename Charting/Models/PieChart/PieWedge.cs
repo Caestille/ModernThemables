@@ -8,8 +8,6 @@ namespace ModernThemables.Charting.Models.PieChart
     /// </summary>
     public class PieWedge : IChartEntity
     {
-        public event EventHandler<bool> FocusedChanged;
-
         /// <summary>
         /// The name of the pie wedge.
         /// </summary>
@@ -28,18 +26,6 @@ namespace ModernThemables.Charting.Models.PieChart
 
         /// <inheritdoc />
         public Guid Identifier { get; } = Guid.NewGuid();
-
-        private bool isFocused;
-        /// <inheritdoc />
-        public bool IsFocused
-        {
-            get => isFocused;
-            set
-            {
-                isFocused = value;
-                FocusedChanged?.Invoke(this, value);
-            }
-        }
 
         public double XValue { get; }
 

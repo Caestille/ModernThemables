@@ -59,11 +59,6 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
         /// </summary>
         public string Name { get; }
 
-        /// <summary>
-        /// A <see cref="Func{T1, T2, TResult}"/> used to format the tooltip string.
-        /// </summary>
-        public Func<IEnumerable<IChartEntity>, IChartEntity, string> TooltipLabelFormatter;
-
         private bool resizeTrigger;
         /// <summary>
         /// A <see cref="bool"/> property used to for the series to resize itself when desired by triggering a
@@ -91,16 +86,13 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
             Guid guid,
             IEnumerable<InternalChartEntity> data,
             IChartBrush? stroke,
-            IChartBrush? fill,
-            double yBuffer,
-            Func<IEnumerable<IChartEntity>, IChartEntity, string> tooltipFormatter)
+            IChartBrush? fill)
         {
             Name = name;
             Identifier = guid;
             Data = data;
             Stroke = stroke;
             Fill = fill;
-            TooltipLabelFormatter = tooltipFormatter;
 
             if (!data.Any()) return;
 

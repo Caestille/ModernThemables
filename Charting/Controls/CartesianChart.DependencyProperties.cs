@@ -3,12 +3,13 @@ using ModernThemables.Charting.Models;
 using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.ViewModels.CartesianChart;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace ModernThemables.Charting.Controls
 {
-    public partial class CartesianChart // .DependencyProperties
+	public partial class CartesianChart // .DependencyProperties
 	{
 		#region Public properties
 
@@ -232,6 +233,17 @@ namespace ModernThemables.Charting.Controls
 			typeof(CartesianChart),
 			new UIPropertyMetadata(-1d, OnSetMinMax));
 
+		public Func<IEnumerable<IChartEntity>, IChartEntity, object> TooltipContentGetter
+		{
+			get => (Func<IEnumerable<IChartEntity>, IChartEntity, object>)GetValue(TooltipContentGetterProperty);
+			set => SetValue(TooltipContentGetterProperty, value);
+		}
+		public static readonly DependencyProperty TooltipContentGetterProperty = DependencyProperty.Register(
+			"TooltipContentGetter",
+			typeof(Func<IEnumerable<IChartEntity>, IChartEntity, object>),
+			typeof(CartesianChart),
+			new PropertyMetadata(null));
+
 		#endregion
 
 		#region Private properties
@@ -378,6 +390,17 @@ namespace ModernThemables.Charting.Controls
 			typeof(bool),
 			typeof(CartesianChart),
 			new PropertyMetadata(false));
+
+		private Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
+		{
+			get => (Func<Point, IEnumerable<TooltipViewModel>>)GetValue(TooltipGetterFuncProperty);
+			set => SetValue(TooltipGetterFuncProperty, value);
+		}
+		public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
+			"TooltipGetterFunc",
+			typeof(Func<Point, IEnumerable<TooltipViewModel>>),
+			typeof(CartesianChart),
+			new PropertyMetadata(null));
 
 		#endregion
 	}

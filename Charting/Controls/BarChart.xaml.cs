@@ -77,8 +77,8 @@ namespace ModernThemables.Charting.Controls
 					var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == tooltipBar.Identifier));
 					var formattedValue = matchingSeries.ValueFormatter(tooltipBar.BackingPoint);
 					var matchingWedge = matchingSeries.Values.First(x => x.Identifier == tooltipBar.Identifier);
-					var category = matchingSeries.TooltipLabelFormatter != null
-						? matchingSeries.TooltipLabelFormatter(matchingSeries.Values, matchingWedge)
+					var category = matchingSeries.ValueFormatter != null
+						? matchingSeries.ValueFormatter(matchingWedge)
 						: matchingSeries.Name;
 					var formattedDate = tooltipBar.BackingPoint.Name;
 

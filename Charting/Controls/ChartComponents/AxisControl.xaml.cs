@@ -91,6 +91,17 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(AxisControl),
 			new UIPropertyMetadata(0d));
 
+		private HorizontalAlignment LabelAlignment
+		{
+			get => (HorizontalAlignment)GetValue(LabelAlignmentProperty);
+			set => SetValue(LabelAlignmentProperty, value);
+		}
+		public static readonly DependencyProperty LabelAlignmentProperty = DependencyProperty.Register(
+			"LabelAlignment",
+			typeof(HorizontalAlignment),
+			typeof(AxisControl),
+			new UIPropertyMetadata(HorizontalAlignment.Center));
+
 		private Thickness DividerBorderThickness
 		{
 			get => (Thickness)GetValue(DividerBorderThicknessProperty);
@@ -193,7 +204,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			var mult = _this.Orientation == Orientation.Vertical
 					? Math.Cos(_this.LabelRotation * Math.PI / 180)
 					: Math.Sin(_this.LabelRotation * Math.PI / 180);
-			var value2 = width * mult + 10;
+			var value2 = width * mult + (_this.Orientation == Orientation.Horizontal ? 20 : 10);
 
 			switch (_this.Orientation)
 			{

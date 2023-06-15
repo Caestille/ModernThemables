@@ -67,8 +67,4 @@
     </Page>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Charting\ViewModels\BarChart\" />
-  </ItemGroup>
-
 </Project>

@@ -23,18 +23,12 @@ namespace ModernThemables.Charting.Models.BarChart
         /// <inheritdoc />
         public Guid Identifier { get; } = Guid.NewGuid();
 
-        /// <inheritdoc />
-        public bool IsFocused { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
         public LabelledBar(double value, string label, int position)
         {
             Name = label;
             XValue = position;
             YValue = value;
         }
-
-        /// <inheritdoc />
-        public event EventHandler<bool> FocusedChanged;
 
         /// <inheritdoc />
         public object XValueToImplementation()

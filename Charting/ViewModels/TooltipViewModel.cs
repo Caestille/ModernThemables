@@ -22,12 +22,17 @@ namespace ModernThemables.Charting.ViewModels
         /// An <see cref="object"/> which can be used to display custom content if a <see cref="DataTemplate"/> is set
         /// in the chart.
         /// </summary>
-        public object TemplatedContent { get; }
+        public object TemplatedContent { get; set; }
 
         /// <summary>
         /// <see cref="DataTemplate"/> to inform how to render the <see cref="TemplatedContent"/>.
         /// </summary>
-        public DataTemplate TooltipTemplate { get; }
+        public DataTemplate TooltipTemplate { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether the tooltip is the nearest one.
+		/// </summary>
+		public bool IsNearest { get; set; }
 
 		/// <summary>
 		/// The tooltip value to display
