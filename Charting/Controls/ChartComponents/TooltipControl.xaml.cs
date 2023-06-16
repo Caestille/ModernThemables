@@ -8,6 +8,7 @@ using ModernThemables.Charting.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using ModernThemables.Charting.Services;
+using System.Threading.Tasks;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
@@ -72,6 +73,17 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		}
 		public static readonly DependencyProperty IsMouseOverThisProperty = DependencyProperty.Register(
 			"IsMouseOverThis",
+			typeof(bool),
+			typeof(TooltipControl),
+			new UIPropertyMetadata(false));
+
+		public bool PointClicked
+		{
+			get => (bool)GetValue(PointClickedProperty);
+			private set => SetValue(PointClickedProperty, value);
+		}
+		public static readonly DependencyProperty PointClickedProperty = DependencyProperty.Register(
+			"PointClicked",
 			typeof(bool),
 			typeof(TooltipControl),
 			new UIPropertyMetadata(false));
@@ -258,6 +270,28 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 			_this.Coordinator.MouseMove += _this.Coordinator_MouseMove;
 			_this.Coordinator.MouseLeave += _this.Coordinator_MouseLeave;
+			_this.Coordinator.PointClicked += _this.Coordinator_PointClicked;
+			_this.Coordinator.PointRangeSelected += _this.Coordinator_PointRangeSelected;
+			_this.Coordinator.PreviewMouseUp += _this.Coordinator_PreviewMouseUp;
+		}
+
+		private void Coordinator_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ChangedButton == MouseButton.Right && !isUserPanning)
+			{
+				ContextMenu.IsOpen = true;
+			}
+		}
+
+		private void Coordinator_PointRangeSelected(object? sender, (Point lowerValue, Point upperValue) e)
+		{
+			IsUserSelectingRange = false;
+		}
+
+		private void Coordinator_PointClicked(object? sender, Point e)
+		{
+			PointClicked = true;
+			PointClicked = false;
 		}
 
 		private void Coordinator_MouseLeave(object sender, MouseEventArgs e)
@@ -302,11 +336,17 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			}
 		}
 
-		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, MouseEventArgs args) e)
+		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args) e)
 		{
 			IsMouseOverThis = true;
-			isUserPanning = e.isUserPanning;
 			var mouseLoc = e.args.GetPosition(Grid);
+			isUserPanning = e.isUserPanning;
+
+			if (isUserPanning)
+			{
+				IsMouseOverThis = false;
+				return;
+			}
 
 			#region Crosshairs
 			if (ShowCrosshairs)
@@ -336,7 +376,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			#endregion
 
 			#region Tooltip
-			if (ShowTooltip && TooltipGetterFunc != null)
+			if ((ShowTooltip || ShowPointIndicators) && TooltipGetterFunc != null)
 			{
 				TooltipPoints = new ObservableCollection<TooltipViewModel>(TooltipGetterFunc(mouseLoc));
 
@@ -344,7 +384,12 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 				{
 					TooltipPoints.First(x => x.LocationY - mouseLoc.Y == TooltipPoints.Min(y => y.LocationY - mouseLoc.Y)).IsNearest = true;
 
-					if (TooltipLocation == TooltipLocation.Cursor)
+					foreach (var point in TooltipPoints)
+					{
+						point.ResizeTrigger = true;
+					}
+
+					if (ShowTooltip && TooltipLocation == TooltipLocation.Cursor)
 					{
 						// Get tooltip position variables
 						if (!tooltipLeft && (ActualWidth - mouseLoc.X) < (TooltipsByCursor.ActualWidth + 10))
@@ -368,14 +413,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 				TooltipPoints.Clear();
 			}
 			#endregion
-		}
-
-		private void Grid_ContextMenuOpening(object sender, ContextMenuEventArgs e)
-		{
-			if (isUserPanning)
-			{
-				e.Handled = true;
-			}
 		}
 	}
 }

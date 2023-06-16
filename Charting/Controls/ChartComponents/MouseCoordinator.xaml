@@ -12,6 +12,7 @@
 	<Grid
 		x:Name="MouseCaptureGrid"
 		Background="{DynamicResource MainBackgroundBrush}"
+		MouseDown="MouseCaptureGrid_MouseDown"
 		MouseMove="MouseCaptureGrid_MouseMove"
 		Opacity="0.001"
 		PreviewMouseDown="MouseCaptureGrid_PreviewMouseDown"

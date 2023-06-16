@@ -137,7 +137,7 @@
 					TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
 					TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
 					TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
-				<chartcomponents:MouseCoordinator x:Name="Coordinator"/>
+				<chartcomponents:MouseCoordinator x:Name="Coordinator" MouseMoveThrottleMs="16"/>
 			</Grid>
 		</Grid>
 	</Grid>

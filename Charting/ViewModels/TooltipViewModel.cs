@@ -49,6 +49,17 @@ namespace ModernThemables.Charting.ViewModels
 		/// </summary>
 		public string TertiaryValue { get; }
 
+		private bool resizeTrigger;
+		/// <summary>
+		/// A <see cref="bool"/> property used to for the series to resize itself when desired by triggering a
+		/// converter.
+		/// </summary>
+		public bool ResizeTrigger
+		{
+			get => resizeTrigger;
+			set => SetProperty(ref resizeTrigger, value);
+		}
+
 		/// <summary>
 		/// Initialises a new <see cref="TooltipViewModel"/>.
 		/// </summary>

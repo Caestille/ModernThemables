@@ -6,6 +6,8 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Globalization;
+using ModernThemables.Charting.Services;
+using System.Windows.Input;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
@@ -168,15 +170,20 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(AxisControl),
 			new PropertyMetadata(null, OnSetMouseCoordinator));
 
-		private static async void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not AxisControl _this) return;
-		}
-
 		public AxisControl()
 		{
 			InitializeComponent();
 			MainItemsControl.SizeChanged += MainItemsControl_SizeChanged;
+			this.Loaded += AxisControl_Loaded;
+		}
+
+		private void AxisControl_Loaded(object sender, RoutedEventArgs e)
+		{
+			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
+			{
+				this.Coordinator = coordinator;
+			}
+			this.Loaded -= AxisControl_Loaded;
 		}
 
 		private void MainItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -199,6 +206,13 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			}
 
 			OnSetLabelRotation(sender, e);
+		}
+
+		private static async void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is not AxisControl _this) return;
+
+			_this.Coordinator.MouseMove += _this.Coordinator_MouseMove;
 		}
 
 		private static async void OnSetLabelRotation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -266,6 +280,11 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			}
 
 			return new Size(0, 0);
+		}
+
+		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args) e)
+		{
+
 		}
 	}
 }

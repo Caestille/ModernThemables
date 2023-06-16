@@ -12,7 +12,9 @@ namespace ModernThemables.Charting.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] is double locationX
+            if (values[9] is bool resizeTrigger
+                && resizeTrigger
+                && values[0] is double locationX
                 && values[1] is double locationY
 				&& values[2] is double tooltipWidth
                 && tooltipWidth > 0

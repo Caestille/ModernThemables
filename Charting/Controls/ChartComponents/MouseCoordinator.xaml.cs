@@ -12,19 +12,19 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 	{
 		public event EventHandler<Point>? PointClicked;
 		public event EventHandler<(Point lowerValue, Point upperValue)>? PointRangeSelected;
-		public event EventHandler<(bool isUserDragging, bool isUserPanning, Point? lowerSelection, MouseEventArgs args)>? MouseMove;
+		public event EventHandler<(bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args)>? MouseMove;
 
-		private bool isMouseDown;
-		private bool isUserDragging;
-		private bool userCouldBePanning;
-		private bool isUserPanning;
-		private Point? lastMouseMovePoint;
+		private MouseButton? mouseDown;
 
 		private DateTime timeLastUpdated;
 		private TimeSpan? updateLimit;
 
-		private Point? lowerSelection;
-		private Point? upperSelection;
+		private Point? mouseDownPoint;
+		private Point? mouseUpPoint;
+
+		private Point? lastMouseMovePoint;
+
+		private MouseEventArgs lastArgs;
 
 		public double? MouseMoveThrottleMs
 		{
@@ -52,65 +52,50 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
 		{
+			lastArgs = e;
 			var mouseLoc = e.GetPosition(MouseCaptureGrid);
-
-			if (isMouseDown)
-			{
-				isUserDragging = true;
-			}
-
-			if (userCouldBePanning)
-			{
-				isUserPanning = true;
-				if (lastMouseMovePoint != null)
-				{
-					// Do we want to do anything here?
-				}
-			}
-			lastMouseMovePoint = mouseLoc;
 
 			if (updateLimit != null && DateTime.Now - timeLastUpdated < updateLimit) return;
 
 			timeLastUpdated = DateTime.Now;
 
-			MouseMove?.Invoke(this, (isUserDragging, isUserPanning, lowerSelection, e));
+			MouseMove?.Invoke(this, (mouseDown == MouseButton.Left, mouseDown == MouseButton.Right, mouseDownPoint, lastMouseMovePoint ?? mouseLoc, e));
+
+			lastMouseMovePoint = mouseLoc;
 		}
 
 		private void MouseCaptureGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
 		{
-			isMouseDown = true;
-			if (e.ChangedButton == MouseButton.Left)
-			{
-				e.Handled = true;
-				lowerSelection = e.GetPosition(MouseCaptureGrid);
-			}
-			else if (e.ChangedButton == MouseButton.Right)
-			{
-				userCouldBePanning = true;
-			}
+			mouseDown = e.ChangedButton;
+			mouseDownPoint = e.GetPosition(MouseCaptureGrid);
 		}
 
 		private void MouseCaptureGrid_PreviewMouseUp(object sender, MouseButtonEventArgs e)
 		{
-			isMouseDown = false;
+			mouseUpPoint = e.GetPosition(MouseCaptureGrid);
 
-			if (e.ChangedButton != MouseButton.Left)
+			if (mouseDown == MouseButton.Left)
 			{
-				isUserDragging = false;
-				PointClicked?.Invoke(this, lowerSelection.Value);
-				return;
+				if (mouseUpPoint == mouseDownPoint)
+				{
+					PointClicked?.Invoke(this, mouseDownPoint.Value);
+					e.Handled = true;
+				}
+				else
+				{
+					PointRangeSelected?.Invoke(this, (mouseDownPoint.Value, mouseUpPoint.Value));
+					e.Handled = true;
+				}
 			}
 
-			if (isUserDragging && lowerSelection != null)
-			{
-				upperSelection = e.GetPosition(MouseCaptureGrid);
-				isUserDragging = false;
-				isUserPanning = false;
-				PointRangeSelected?.Invoke(this, (lowerSelection.Value, upperSelection.Value));
-				return;
-			}
+			mouseDown = null;
+			mouseDownPoint = null;
+			mouseUpPoint = null;
+		}
 
-			e.Handled = true;
+		private void MouseCaptureGrid_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			e.Handled = false;
 		}
 	}
 }
