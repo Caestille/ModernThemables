@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ModernThemables.ScalableIcons;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -9,9 +10,6 @@ namespace ModernThemables.Controls
     {
         readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
         private Border border;
-
-        private bool? allowSetChildForeground;
-        private bool? allowSetChildBackground;
 
         public SolidColorBrush MouseOverColour
 		{
@@ -151,25 +149,16 @@ namespace ModernThemables.Controls
 
         private void RecursivelySetContentBrushes(DependencyObject item, Brush foregroundBrush, Brush backgroundBrush)
         {
-            if (item is Control fe)
+            if (item is Control control && control.IsLoaded)
             {
-                if (allowSetChildBackground == null)
+                if (control.ReadLocalValue(BackgroundProperty) == DependencyProperty.UnsetValue)
                 {
-                    allowSetChildBackground = fe.ReadLocalValue(BackgroundProperty) == DependencyProperty.UnsetValue;
-                }
-                if (allowSetChildForeground == null)
-                {
-                    allowSetChildForeground = fe.ReadLocalValue(ForegroundProperty) == DependencyProperty.UnsetValue;
+                    control.Background = backgroundBrush;
                 }
 
-                if (allowSetChildBackground.HasValue && allowSetChildBackground.Value)
+                if (control.ReadLocalValue(ForegroundProperty) == DependencyProperty.UnsetValue)
                 {
-                    fe.Background = backgroundBrush;
-                }
-
-                if (allowSetChildForeground.HasValue && allowSetChildForeground.Value)
-                {
-                    fe.Foreground = foregroundBrush;
+                    control.Foreground = foregroundBrush;
                 }
             }
 
