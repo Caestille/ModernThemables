@@ -105,15 +105,15 @@
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 		<Border
-			Visibility="Collapsed"
 			x:Name="ValueDisplay"
-			Height="18"
 			Width="Auto"
+			Height="18"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"
 			Background="{DynamicResource StatusTextLightBrush}"
 			CornerRadius="5"
-			IsHitTestVisible="False">
+			IsHitTestVisible="False"
+			Visibility="Collapsed">
 			<TextBlock
 				x:Name="ValueLabel"
 				Margin="2,0"

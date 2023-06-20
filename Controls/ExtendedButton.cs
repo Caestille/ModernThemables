@@ -1,4 +1,5 @@
 ﻿using ModernThemables.ScalableIcons;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,7 +12,10 @@ namespace ModernThemables.Controls
         readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
         private Border border;
 
-        public SolidColorBrush MouseOverColour
+		private bool? allowSetChildForeground;
+		private bool? allowSetChildBackground;
+
+		public SolidColorBrush MouseOverColour
 		{
             get => (SolidColorBrush)GetValue(MouseOverColourProperty);
 			set => SetValue(MouseOverColourProperty, value);
@@ -147,22 +151,34 @@ namespace ModernThemables.Controls
             base.OnMouseLeave(e);
         }
 
-        private void RecursivelySetContentBrushes(DependencyObject item, Brush foregroundBrush, Brush backgroundBrush)
+        private async void RecursivelySetContentBrushes(DependencyObject item, Brush foregroundBrush, Brush backgroundBrush)
         {
+            var didSet = false;
             if (item is Control control && control.IsLoaded)
             {
-                if (control.ReadLocalValue(BackgroundProperty) == DependencyProperty.UnsetValue)
-                {
-                    control.Background = backgroundBrush;
-                }
+				if (allowSetChildBackground == null)
+				{
+                    allowSetChildBackground = control.Background == null;
+				}
+				if (allowSetChildForeground == null)
+				{
+                    allowSetChildForeground = control.Foreground == null;
+				}
 
-                if (control.ReadLocalValue(ForegroundProperty) == DependencyProperty.UnsetValue)
-                {
-                    control.Foreground = foregroundBrush;
-                }
-            }
+				if (allowSetChildBackground.HasValue && allowSetChildBackground.Value)
+				{
+                    didSet = true;
+					control.Background = backgroundBrush;
+				}
 
-            if (item != null)
+				if (allowSetChildForeground.HasValue && allowSetChildForeground.Value)
+				{
+					didSet = true;
+					control.Foreground = foregroundBrush;
+				}
+			}
+
+            if (item != null && !didSet)
             {
                 var childCount = VisualTreeHelper.GetChildrenCount(item);
                 if (childCount > 0)

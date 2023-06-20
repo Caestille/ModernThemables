@@ -187,30 +187,33 @@ namespace ModernThemables.Controls
 
         private void RecursivelySetContentBrushes(DependencyObject item, Brush foregroundBrush, Brush backgroundBrush)
         {
-            if (item is Control fe)
-            {
-                if (allowSetChildBackground == null)
-                {
-                    allowSetChildBackground = fe.ReadLocalValue(BackgroundProperty) == DependencyProperty.UnsetValue;
-                }
-                if (allowSetChildForeground == null)
-                {
-                    allowSetChildForeground = fe.ReadLocalValue(ForegroundProperty) == DependencyProperty.UnsetValue;
-                }
+			var didSet = false;
+			if (item is Control control && control.IsLoaded)
+			{
+				if (allowSetChildBackground == null)
+				{
+					allowSetChildBackground = control.Background == null;
+				}
+				if (allowSetChildForeground == null)
+				{
+					allowSetChildForeground = control.Foreground == null;
+				}
 
-                if (allowSetChildBackground.HasValue && allowSetChildBackground.Value)
-                {
-                    fe.Background = backgroundBrush;
-                }
+				if (allowSetChildBackground.HasValue && allowSetChildBackground.Value)
+				{
+					didSet = true;
+					control.Background = backgroundBrush;
+				}
 
-                if (allowSetChildForeground.HasValue && allowSetChildForeground.Value)
-                {
-                    fe.Foreground = foregroundBrush;
-                }
-            }
+				if (allowSetChildForeground.HasValue && allowSetChildForeground.Value)
+				{
+					didSet = true;
+					control.Foreground = foregroundBrush;
+				}
+			}
 
-            if (item != null)
-            {
+			if (item != null && !didSet)
+			{
                 var childCount = VisualTreeHelper.GetChildrenCount(item);
                 if (childCount > 0)
                 {
