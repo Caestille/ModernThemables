@@ -54,11 +54,12 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
 		{
-			isRunning = true;
 			lastArgs = e;
 			var mouseLoc = e.GetPosition(MouseCaptureGrid);
 
 			if (isRunning || (updateLimit != null && DateTime.Now - timeLastUpdated < updateLimit)) return;
+
+			isRunning = true;
 
 			timeLastUpdated = DateTime.Now;
 
