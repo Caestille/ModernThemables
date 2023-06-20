@@ -192,11 +192,11 @@ namespace ModernThemables.Controls
 			{
 				if (allowSetChildBackground == null)
 				{
-					allowSetChildBackground = control.Background == null;
+					allowSetChildBackground = control.ReadLocalValue(BackgroundProperty) == DependencyProperty.UnsetValue;
 				}
 				if (allowSetChildForeground == null)
 				{
-					allowSetChildForeground = control.Foreground == null;
+					allowSetChildForeground = control.ReadLocalValue(ForegroundProperty) == DependencyProperty.UnsetValue;
 				}
 
 				if (allowSetChildBackground.HasValue && allowSetChildBackground.Value)
