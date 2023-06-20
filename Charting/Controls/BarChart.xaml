@@ -57,7 +57,8 @@
 				Foreground="{DynamicResource StatusTextBrush}"
 				LabelRotation="90"
 				Labels="{Binding ElementName=root, Path=XAxisLabels}"
-				Orientation="Horizontal" />
+				Orientation="Horizontal"
+				ShowIndicators="False" />
 			<Grid x:Name="Grid" Grid.Column="1">
 				<chartComponents:GridControl
 					Margin="-1"

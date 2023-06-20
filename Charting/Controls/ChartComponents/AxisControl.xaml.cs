@@ -17,7 +17,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 	/// </summary>
 	public partial class AxisControl : UserControl
 	{
-		private bool showIndicators = false;
+		private bool allowIndicators = false;
 
 		public Orientation Orientation
 		{
@@ -48,6 +48,17 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		}
 		public static readonly DependencyProperty ShowDividersProperty = DependencyProperty.Register(
 			"ShowDividers",
+			typeof(bool),
+			typeof(AxisControl),
+			new UIPropertyMetadata(true));
+
+		public bool ShowIndicators
+		{
+			get => (bool)GetValue(ShowIndicatorsProperty);
+			set => SetValue(ShowIndicatorsProperty, value);
+		}
+		public static readonly DependencyProperty ShowIndicatorsProperty = DependencyProperty.Register(
+			"ShowIndicators",
 			typeof(bool),
 			typeof(AxisControl),
 			new UIPropertyMetadata(true));
@@ -224,7 +235,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		{
 			if (sender is not AxisControl _this || _this.Labels == null || !_this.Labels.Any()) return;
 
-			_this.showIndicators = _this.Labels.All(x => x.Value != null);
+			_this.allowIndicators = _this.Labels.All(x => x.Value != null);
 
 			var sizes = _this.Labels.Select(
 				x => StringWidthGetterConverter.MeasureString(
@@ -271,7 +282,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args) e)
 		{
-			if (!showIndicators) return;
+			if (!allowIndicators || !ShowIndicators) return;
 
 			var mouseLoc = e.args.GetPosition(Coordinator);
 			var axisLength = Orientation == Orientation.Horizontal ? Grid.ActualWidth : Grid.ActualHeight;
@@ -302,7 +313,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_MouseEnter(object sender, MouseEventArgs e)
 		{
-			if (ValueDisplay.Visibility == Visibility.Collapsed) ValueDisplay.Visibility = Visibility.Visible;
+			if (ShowIndicators && allowIndicators && ValueDisplay.Visibility == Visibility.Collapsed) ValueDisplay.Visibility = Visibility.Visible;
 		}
 	}
 }
