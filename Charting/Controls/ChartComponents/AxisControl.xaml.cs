@@ -288,22 +288,24 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			var axisLength = Orientation == Orientation.Horizontal ? Grid.ActualWidth : Grid.ActualHeight;
 			var axisFrac = Orientation == Orientation.Horizontal
 				? mouseLoc.X / axisLength
-				: mouseLoc.Y / axisLength;
-			var labelMin = Labels.First(x => x.Location == Labels.Min(y => y.Location));
-			var minFrac = labelMin.Location / axisLength;
-			var labelMax = Labels.First(x => x.Location == Labels.Max(y => y.Location));
-			var maxFrac = labelMax.Location / axisLength;
-			var fullRange = (labelMax.Value - labelMin.Value) / (maxFrac - minFrac);
+				: 1 - (mouseLoc.Y / axisLength);
+			AxisLabel? labelMin = Labels.FirstOrDefault(x => x.Location == Labels.Min(y => y.Location));
+			var minFrac = (labelMin?.Location ?? 0) / axisLength;
+			AxisLabel? labelMax = Labels.FirstOrDefault(x => x.Location == Labels.Max(y => y.Location));
+			var maxFrac = (labelMax?.Location ?? 0) / axisLength;
+			var fullRange = (labelMax.Value.Value - labelMin.Value.Value) / (maxFrac - minFrac);
 
-			var min = labelMin.Value - minFrac * fullRange;
-			var max = labelMax.Value + (1 - maxFrac) * fullRange;
+			if (double.IsNaN(fullRange)) return;
 
-			var value = min + (1 - axisFrac) * (max - min);
+			var min = labelMin.Value.Value - minFrac * fullRange;
+			var max = labelMax.Value.Value + (1 - maxFrac) * fullRange;
+
+			var value = min + axisFrac * (max - min);
 
 			ValueLabel.Text = (Labels.First().IndicatorFormatter ?? Labels.First().ValueFormatter)(value);
 			ValueDisplay.Margin = Orientation == Orientation.Horizontal
 				? new Thickness(axisFrac * Grid.ActualWidth - (ValueDisplay.ActualWidth / 2), 4, -100, -100)
-				: new Thickness(-5, axisFrac * Grid.ActualHeight - 9, -100, 0);
+				: new Thickness(-5, (1 - axisFrac) * Grid.ActualHeight - 9, -100, 0);
 		}
 
 		private void Coordinator_MouseLeave(object sender, MouseEventArgs e)
