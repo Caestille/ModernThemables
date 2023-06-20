@@ -50,22 +50,6 @@
 				<ColumnDefinition Width="Auto" MinWidth="5" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<chartcomponents:AxisControl
-				Margin="0,0,-1,0"
-				BorderBrush="{DynamicResource StatusTextLightBrush}"
-				BorderThickness="0,0,1,0"
-				Foreground="{DynamicResource StatusTextBrush}"
-				Labels="{Binding ElementName=root, Path=YAxisLabels}"
-				Orientation="Vertical" />
-			<chartcomponents:AxisControl
-				Grid.Row="1"
-				Grid.Column="1"
-				BorderBrush="{DynamicResource StatusTextLightBrush}"
-				BorderThickness="1,1,0,0"
-				Foreground="{DynamicResource StatusTextBrush}"
-				LabelRotation="0"
-				Labels="{Binding ElementName=root, Path=XAxisLabels}"
-				Orientation="Horizontal" />
 			<Grid x:Name="Grid" Grid.Column="1">
 				<chartcomponents:GridControl
 					x:Name="GridControl"
@@ -137,8 +121,24 @@
 					TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
 					TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
 					TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
-				<chartcomponents:MouseCoordinator x:Name="Coordinator" MouseMoveThrottleMs="16"/>
+				<chartcomponents:MouseCoordinator x:Name="Coordinator" MouseMoveThrottleMs="16" />
 			</Grid>
+			<chartcomponents:AxisControl
+				Margin="0,0,-1,0"
+				BorderBrush="{DynamicResource StatusTextLightBrush}"
+				BorderThickness="0,0,1,0"
+				Foreground="{DynamicResource StatusTextBrush}"
+				Labels="{Binding ElementName=root, Path=YAxisLabels}"
+				Orientation="Vertical" />
+			<chartcomponents:AxisControl
+				Grid.Row="1"
+				Grid.Column="1"
+				BorderBrush="{DynamicResource StatusTextLightBrush}"
+				BorderThickness="1,1,0,0"
+				Foreground="{DynamicResource StatusTextBrush}"
+				LabelRotation="0"
+				Labels="{Binding ElementName=root, Path=XAxisLabels}"
+				Orientation="Horizontal" />
 		</Grid>
 	</Grid>
 </UserControl>
