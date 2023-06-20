@@ -26,6 +26,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private MouseEventArgs lastArgs;
 
+		private bool isRunning;
+
 		public double? MouseMoveThrottleMs
 		{
 			get => (double?)GetValue(MouseMoveThrottleMsProperty);
@@ -52,16 +54,18 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
 		{
+			isRunning = true;
 			lastArgs = e;
 			var mouseLoc = e.GetPosition(MouseCaptureGrid);
 
-			if (updateLimit != null && DateTime.Now - timeLastUpdated < updateLimit) return;
+			if (isRunning || (updateLimit != null && DateTime.Now - timeLastUpdated < updateLimit)) return;
 
 			timeLastUpdated = DateTime.Now;
 
 			MouseMove?.Invoke(this, (mouseDown == MouseButton.Left, mouseDown == MouseButton.Right, mouseDownPoint, lastMouseMovePoint ?? mouseLoc, e));
 
 			lastMouseMovePoint = mouseLoc;
+			isRunning = true;
 		}
 
 		private void MouseCaptureGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
