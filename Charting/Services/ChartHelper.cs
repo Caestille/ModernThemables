@@ -6,24 +6,27 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace ModernThemables.Charting.Services
 {
 	public static class ChartHelper
 	{
-		public static (int row, int column, Visibility visibility, Thickness margin) GetLegendProperties(LegendLocation legendLocation)
+		public static (int row, int column, Visibility visibility, Thickness margin, Orientation orientation) GetLegendProperties(LegendLocation legendLocation)
 		{
 			int row = 0;
 			int column = 0;
 			Visibility visibility = Visibility.Visible;
 			Thickness margin = new Thickness(0);
+			Orientation orientation = Orientation.Horizontal;
 
 			switch (legendLocation)
 			{
 				case LegendLocation.Left:
 					row = 1;
 					margin = new Thickness(0, 10, 15, 0);
+					orientation = Orientation.Vertical;
 					break;
 				case LegendLocation.Top:
 					column = 1;
@@ -33,6 +36,7 @@ namespace ModernThemables.Charting.Services
 					row = 1;
 					column = 2;
 					margin = new Thickness(15, 10, 0, 0);
+					orientation = Orientation.Vertical;
 					break;
 				case LegendLocation.Bottom:
 					row = 2;
@@ -44,7 +48,7 @@ namespace ModernThemables.Charting.Services
 					break;
 			}
 
-			return (row, column, visibility, margin);
+			return (row, column, visibility, margin, orientation);
 		}
 
 		public static List<double> IdealAxisSteps(int itemCount, double min, double max)

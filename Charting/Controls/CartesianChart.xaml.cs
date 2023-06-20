@@ -187,6 +187,7 @@ namespace ModernThemables.Charting.Controls
 			chart.LegendGrid.SetValue(Grid.ColumnProperty, properties.column);
 			chart.LegendGrid.Visibility = properties.visibility;
 			chart.LegendGrid.Margin = properties.margin;
+			chart.LegendGrid.Orientation = properties.orientation;
 
 			await Task.Delay(1);
 			chart.QueueRenderChart(null, null, true);

@@ -20,19 +20,15 @@
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
-		<Grid
+		<chartComponents:LegendControl
 			x:Name="LegendGrid"
 			Grid.Row="1"
 			Grid.Column="2"
-			Margin="0"
 			HorizontalAlignment="Center"
 			VerticalAlignment="Center"
-			Cursor="Arrow">
-			<chartComponents:LegendControl
-				x:Name="Legend"
-				LegendTemplate="{Binding ElementName=root, Path=LegendTemplate}"
-				TemplatedDataContext="{Binding ElementName=root, Path=Series}" />
-		</Grid>
+			Cursor="Arrow"
+			LegendTemplate="{Binding ElementName=root, Path=LegendTemplate}"
+			TemplatedDataContext="{Binding ElementName=root, Path=Series}" />
 		<Grid Grid.Row="1" Grid.Column="1">
 			<ItemsControl
 				x:Name="SeriesItemsControl"
