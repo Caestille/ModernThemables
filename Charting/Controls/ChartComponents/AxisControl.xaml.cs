@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Globalization;
 using ModernThemables.Charting.Services;
 using System.Windows.Input;
+using CoreUtilities.Converters;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
@@ -16,6 +17,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 	/// </summary>
 	public partial class AxisControl : UserControl
 	{
+		private bool showIndicators = false;
+
 		public Orientation Orientation
 		{
 			get => (Orientation)GetValue(OrientationProperty);
@@ -213,15 +216,19 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			if (sender is not AxisControl _this) return;
 
 			_this.Coordinator.MouseMove += _this.Coordinator_MouseMove;
+			_this.Coordinator.MouseLeave += _this.Coordinator_MouseLeave;
+			_this.Coordinator.MouseEnter += _this.Coordinator_MouseEnter;
 		}
 
 		private static async void OnSetLabelRotation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not AxisControl _this || _this.Labels == null || !_this.Labels.Any()) return;
 
+			_this.showIndicators = _this.Labels.All(x => x.Value != null);
+
 			var sizes = _this.Labels.Select(
-				x => _this.MeasureString(
-					x.Value,
+				x => StringWidthGetterConverter.MeasureString(
+					x.FormattedValue,
 					_this.FontSize,
 					_this.FontFamily,
 					_this.FontStyle,
@@ -262,29 +269,40 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			}
 		}
 
-		private Size MeasureString(string? text, double fontSize, FontFamily fontFamily, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch)
-		{
-			if (text != null)
-			{
-#pragma warning disable CS0618
-				var formattedText = new FormattedText(
-#pragma warning restore CS0618
-					text,
-					CultureInfo.CurrentCulture,
-					FlowDirection.LeftToRight,
-					new Typeface(fontFamily, fontStyle, fontWeight, fontStretch),
-					fontSize,
-					Brushes.Black);
-
-				return new Size(formattedText.Width, formattedText.Height);
-			}
-
-			return new Size(0, 0);
-		}
-
 		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args) e)
 		{
+			if (!showIndicators) return;
 
+			var mouseLoc = e.args.GetPosition(Coordinator);
+			var axisLength = Orientation == Orientation.Horizontal ? Grid.ActualWidth : Grid.ActualHeight;
+			var axisFrac = Orientation == Orientation.Horizontal
+				? mouseLoc.X / axisLength
+				: mouseLoc.Y / axisLength;
+			var labelMin = Labels.First(x => x.Location == Labels.Min(y => y.Location));
+			var minFrac = labelMin.Location / axisLength;
+			var labelMax = Labels.First(x => x.Location == Labels.Max(y => y.Location));
+			var maxFrac = labelMax.Location / axisLength;
+			var fullRange = (labelMax.Value - labelMin.Value) / (maxFrac - minFrac);
+
+			var min = labelMin.Value - minFrac * fullRange;
+			var max = labelMax.Value + (1 - maxFrac) * fullRange;
+
+			var value = min + (1 - axisFrac) * (max - min);
+
+			ValueLabel.Text = (Labels.First().IndicatorFormatter ?? Labels.First().ValueFormatter)(value);
+			ValueDisplay.Margin = Orientation == Orientation.Horizontal
+				? new Thickness(axisFrac * Grid.ActualWidth - (ValueDisplay.ActualWidth / 2), 4, -100, -100)
+				: new Thickness(-5, axisFrac * Grid.ActualHeight - 9, -100, 0);
+		}
+
+		private void Coordinator_MouseLeave(object sender, MouseEventArgs e)
+		{
+			if (ValueDisplay.Visibility == Visibility.Visible) ValueDisplay.Visibility = Visibility.Collapsed;
+		}
+
+		private void Coordinator_MouseEnter(object sender, MouseEventArgs e)
+		{
+			if (ValueDisplay.Visibility == Visibility.Collapsed) ValueDisplay.Visibility = Visibility.Visible;
 		}
 	}
 }

@@ -323,26 +323,25 @@ namespace ModernThemables.Charting.Controls
 		{
 			if (!hasData) return;
 
+			var first = Series.First().Values.First();
 			var xRange = xMax - xMin;
 			var xAxisItemCount = (int)Math.Floor(plotAreaWidth / 60);
 			var labels = await GetXSteps(xAxisItemCount, xMin, xMax);
-			var labels2 = labels.Select(x => new AxisLabel()
-			{
-				Value = XAxisFormatter == null
-					? x.ToString()
-					: XAxisFormatter(Series.First().Values.First().XValueToImplementation(x)),
-				Location = (x - xMin) / xRange * plotAreaWidth,
-			});
+			var labels2 = labels.Select(xValue => new AxisLabel(
+				xValue,
+				(xValue - xMin) / xRange * plotAreaWidth,
+				value => XAxisFormatter == null ? value.ToString() : XAxisFormatter(first.XValueToImplementation(value)),
+				value => XAxisCursorLabelFormatter(first.XValueToImplementation(value))));
 			XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
 			if (isSingleXPoint)
 			{
 				XAxisLabels = new ObservableCollection<AxisLabel>()
 				{
 					new AxisLabel(
-						XAxisFormatter == null
-							? xMin.ToString()
-							: XAxisFormatter(Series.First().Values.First().XValueToImplementation(xMin)),
-						plotAreaWidth / 2)
+						xMin,
+						plotAreaWidth / 2,
+						value => XAxisFormatter == null ? value.ToString() : XAxisFormatter(first.XValueToImplementation(value)),
+						XAxisCursorLabelFormatter != null ? value => XAxisCursorLabelFormatter(first.XValueToImplementation(value)) : null)
 				};
 			}
 		}
@@ -351,16 +350,15 @@ namespace ModernThemables.Charting.Controls
 		{
 			if (!hasData) return;
 
+			var first = Series.First().Values.First();
 			var yRange = yMax - yMin;
 			var yAxisItemsCount = (int)Math.Max(1, Math.Floor(plotAreaHeight / 50));
 			var labels = (await GetYSteps(yAxisItemsCount, yMin, yMax)).ToList();
-			var labels2 = labels.Select(y => new AxisLabel()
-			{
-				Value = YAxisFormatter == null
-					? Math.Round(y, 2).ToString()
-					: YAxisFormatter(Series.First().Values.First().YValueToImplementation(y)),
-				Location = (y - yMin) / yRange * plotAreaHeight,
-			});
+			var labels2 = labels.Select(yValue => new AxisLabel(
+				yValue,
+				(yValue - yMin) / yRange * plotAreaHeight,
+				value => YAxisFormatter == null ? Math.Round(value, 2).ToString() : YAxisFormatter(first.YValueToImplementation(value)),
+				YAxisCursorLabelFormatter != null ? value =>  YAxisCursorLabelFormatter(first.YValueToImplementation(value)) : null));
 			YAxisLabels = new ObservableCollection<AxisLabel>(labels2.Reverse());
 		}
 

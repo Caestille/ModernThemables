@@ -205,17 +205,16 @@ namespace ModernThemables.Charting.Controls
 		{
 			if (!hasData) return;
 
-			var labels2 = labels.Select(x => new AxisLabel()
-			{
-				Value = x.ToString(),
-				Location = InternalSeries.First(y => y.BackingPoint.Name == x).X + GroupWidth / 2,
-			});
+			var labels2 = labels.Select(x => new AxisLabel(
+				0,
+				InternalSeries.First(y => y.BackingPoint.Name == x).X + GroupWidth / 2,
+				_ => x));
 			XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
 			if (isSingleXPoint)
 			{
 				XAxisLabels = new ObservableCollection<AxisLabel>()
 				{
-					new AxisLabel(labels.First(), plotAreaWidth / 2)
+					new AxisLabel(0, plotAreaWidth / 2, _ => labels.First())
 				};
 			}
 		}
@@ -230,13 +229,12 @@ namespace ModernThemables.Charting.Controls
 			var yRange = yMax - yMin;
 			var yAxisItemsCount = (int)Math.Max(1, Math.Floor(plotAreaHeight / 50));
 			var labels = (await GetYSteps(yAxisItemsCount, yMin, yMax)).ToList();
-			var labels2 = labels.Select(y => new AxisLabel()
-			{
-				Value = YAxisFormatter == null
-					? Math.Round(y, 2).ToString()
-					: YAxisFormatter(y),
-				Location = ((double)(y - yMin) / (double)yRange) * plotAreaHeight,
-			});
+			var labels2 = labels.Select(y => new AxisLabel(
+				y,
+				((double)(y - yMin) / (double)yRange) * plotAreaHeight,
+				value => YAxisFormatter == null
+					? Math.Round(value, 2).ToString()
+					: YAxisFormatter(value)));
 			YAxisLabels = new ObservableCollection<AxisLabel>(labels2.Reverse());
 		}
 

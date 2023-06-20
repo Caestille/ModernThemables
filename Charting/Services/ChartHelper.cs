@@ -1,7 +1,10 @@
-﻿using ModernThemables.Charting.Controls.ChartComponents;
+﻿using ModernThemables.Charting.Controls;
+using ModernThemables.Charting.Controls.ChartComponents;
 using ModernThemables.Charting.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 
@@ -111,27 +114,39 @@ namespace ModernThemables.Charting.Services
 		public static bool FindMouseCoordinatorFromVisualTree(
 			DependencyObject root,
 			out MouseCoordinator coordinator,
-			bool searchChildrenInsteadOfParents = false,
+			bool foundParentChart = false,
 			int currentLevel = 0)
 		{
-			var searchDepth = 10;
+			var parentSearchDepth = 10;
+			var childSearchDepth = 10;
 
-			var getChildrenOf = searchChildrenInsteadOfParents ? root : VisualTreeHelper.GetParent(root);
+			if (!foundParentChart)
+			{
+				for (int i = 0; i < parentSearchDepth; i++)
+				{
+					var parent = VisualTreeHelper.GetParent(root);
+					if (parent is CartesianChart || parent is PieChart || parent is BarChart)
+					{
+						return FindMouseCoordinatorFromVisualTree(parent, out coordinator, true, 0);
+					}
+					root = parent;
+				}
+			}
 
-			if (currentLevel < searchDepth)
+			if (foundParentChart && currentLevel < childSearchDepth)
 			{
 				currentLevel++;
-				var childCount = VisualTreeHelper.GetChildrenCount(getChildrenOf);
+				var childCount = VisualTreeHelper.GetChildrenCount(root);
 				for (int i = 0; i < childCount; i++)
 				{
-					var child = VisualTreeHelper.GetChild(getChildrenOf, i);
+					var child = VisualTreeHelper.GetChild(root, i);
 					if (child is MouseCoordinator coord)
 					{
 						coordinator = coord;
 						return true;
 					}
 
-					if (child != root && FindMouseCoordinatorFromVisualTree(child, out coordinator, searchChildrenInsteadOfParents, currentLevel))
+					if (FindMouseCoordinatorFromVisualTree(child, out coordinator, true, currentLevel))
 					{
 						return true;
 					}

@@ -29,7 +29,7 @@ namespace ModernThemables.Charting.Converters
 
 				if (alignment != HorizontalAlignment.Left && orientation == Orientation.Horizontal)
 				{
-					var textWidth = StringWidthGetterConverter.MeasureString(text, fontSize, fontFamily, fontStyle, fontWeight, fontStretch);
+					var textWidth = StringWidthGetterConverter.MeasureString(text, fontSize, fontFamily, fontStyle, fontWeight, fontStretch).Width;
 					left = -textWidth / 2;
 				}
 
