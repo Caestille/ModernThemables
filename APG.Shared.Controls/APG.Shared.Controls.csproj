@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFrameworks>net7.0-windows;net6.0-windows;net48</TargetFrameworks>
+    <UseWPF>True</UseWPF>
+    <RootNamespace>APG.Shared</RootNamespace>
+    <AssemblyName>APG.Shared.Controls</AssemblyName>
+    <Description>Custom controls used in APG clients</Description>
+  </PropertyGroup>
+
+  <Import Project="../Global.proj" />
+
+</Project>
