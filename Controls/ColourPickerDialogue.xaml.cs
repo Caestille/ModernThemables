@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace ModernThemables.Controls
@@ -8,6 +9,9 @@ namespace ModernThemables.Controls
 	/// </summary>
 	public partial class ColourPickerDialogue : Window
 	{
+		private Color initialColour;
+		private Action<Color> colourChangedCallback;
+
 		public Color Colour
 		{
 			get => (Color)GetValue(ColourProperty);
@@ -19,9 +23,12 @@ namespace ModernThemables.Controls
 			typeof(ColourPickerDialogue),
 			new FrameworkPropertyMetadata(Colors.Black, OnColourSet));
 
-		public ColourPickerDialogue(Color inputColour)
+		public ColourPickerDialogue(Color inputColour, Action<Color>? colourChangedCallback)
 		{
 			InitializeComponent();
+			this.initialColour = inputColour;
+			this.colourChangedCallback = colourChangedCallback;
+			this.ColourPickerControl.colourChangedCallback = colourChangedCallback;
 			this.Colour = inputColour;
 		}
 
@@ -30,6 +37,7 @@ namespace ModernThemables.Controls
 			if (sender is not ColourPickerDialogue dialog) return;
 
 			dialog.ColourPickerControl.Colour = (Color)e.NewValue;
+			if (dialog.colourChangedCallback != null) dialog.colourChangedCallback((Color)e.NewValue);
 		}
 
 		private void OkButton_Click(object sender, RoutedEventArgs e)
@@ -40,6 +48,7 @@ namespace ModernThemables.Controls
 
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
 		{
+			if (colourChangedCallback != null) colourChangedCallback(initialColour);
 			DialogResult = false;
 		}
 	}

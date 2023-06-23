@@ -87,6 +87,7 @@
                             x:Name="ThemingControl"
                             Width="Auto"
                             Height="Auto"
+							Margin="0,0,40,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom" />
                     </controls:BlurHost>

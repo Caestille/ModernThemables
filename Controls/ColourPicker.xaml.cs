@@ -16,6 +16,8 @@ namespace ModernThemables.Controls
 	/// </summary>
 	public partial class ColourPicker : UserControl
 	{
+		public Action<Color> colourChangedCallback;
+
 		public Color Colour
 		{
 			get => (Color)GetValue(ColourProperty);
@@ -79,6 +81,7 @@ namespace ModernThemables.Controls
 			this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 			var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
 			Colour = c;
+			if (colourChangedCallback != null) colourChangedCallback(Colour);
 		}
 
 		public Color GetColorAt(int x, int y)
@@ -130,6 +133,7 @@ namespace ModernThemables.Controls
 
 			var point = GetPointAtColour(Colour);
 			AdjustSelectedColourCursor((int)point.X, (int)point.Y);
+			if (colourChangedCallback != null) colourChangedCallback(Colour);
 		}
 
 		private void ColourSelectionBorder_MouseDown(object sender, MouseButtonEventArgs e)
@@ -138,6 +142,7 @@ namespace ModernThemables.Controls
 			AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
 			var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
 			Colour = c;
+			if (colourChangedCallback != null) colourChangedCallback(Colour);
 		}
 
 		private void AdjustSelectedColourCursor(int x, int y)

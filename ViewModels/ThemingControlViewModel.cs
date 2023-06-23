@@ -9,6 +9,10 @@ using CoreUtilities.Interfaces.RegistryInteraction;
 using CoreUtilities.Services.RegistryInteraction;
 using System.Timers;
 using CoreUtilities.HelperClasses.Extensions;
+using CoreUtilities.Interfaces.Dialogues;
+using Microsoft.Toolkit.Mvvm.Input;
+using System.Windows.Input;
+using ModernThemables.Services;
 
 namespace ModernThemables.ViewModels
 {
@@ -34,8 +38,16 @@ namespace ModernThemables.ViewModels
 		private Color? themeBeforeMono;
 
 		private IRegistryService registryService;
+		private IDialogueService dialogueService;
 
 		private Timer osThemePollTimer = new Timer(1000);
+
+		public ICommand ChangeColourCommand => new RelayCommand(ChangeColour);
+
+		private void ChangeColour()
+		{
+			ThemeColourProperty = dialogueService.ShowColourPickerDialogue(ThemeColourProperty, (colour) => ThemeColourProperty = colour);
+		}
 
 		/// <summary>
 		/// Gets or sets the current Theme colour.
@@ -131,6 +143,7 @@ namespace ModernThemables.ViewModels
 		public ThemingControlViewModel()
 		{
 			this.registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
+			this.dialogueService = new DialogueService();
 
 			registryService.TryGetSetting(ColourModeSettingName, lightModeKey, out string? mode);
 			IsDarkMode = mode == darkModeKey;
