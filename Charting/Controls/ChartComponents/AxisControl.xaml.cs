@@ -4,18 +4,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
-using System.Globalization;
 using ModernThemables.Charting.Services;
 using System.Windows.Input;
 using CoreUtilities.Converters;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
-	/// <summary>
-	/// Interaction logic for AxisControl.xaml
-	/// </summary>
-	public partial class AxisControl : UserControl
+    /// <summary>
+    /// Interaction logic for AxisControl.xaml
+    /// </summary>
+    public partial class AxisControl : UserControl
 	{
 		private bool allowIndicators = false;
 

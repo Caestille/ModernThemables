@@ -1,5 +1,4 @@
-﻿using ModernThemables.Charting.Controls.ChartComponents;
-using ModernThemables.Charting.Interfaces;
+﻿using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.ViewModels.PieChart;
@@ -10,7 +9,7 @@ using System.Windows;
 
 namespace ModernThemables.Charting.Controls
 {
-	public partial class PieChart // .DependencyProperties
+    public partial class PieChart // .DependencyProperties
 	{
 		#region Public properties
 

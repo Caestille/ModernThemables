@@ -1,13 +1,11 @@
-﻿using ModernThemables.ScalableIcons;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
-	public class ExtendedButton : Button
+    public class ExtendedButton : Button
     {
         readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
         private Border border;

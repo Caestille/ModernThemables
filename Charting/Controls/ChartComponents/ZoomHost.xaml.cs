@@ -1,21 +1,14 @@
-﻿using ModernThemables.Charting.Models;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 using System;
-using ModernThemables.Charting.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
 using ModernThemables.Charting.Services;
-using System.Threading.Tasks;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
-	/// <summary>
-	/// Interaction logic for ZoomHost.xaml
-	/// </summary>
-	public partial class ZoomHost : UserControl
+    /// <summary>
+    /// Interaction logic for ZoomHost.xaml
+    /// </summary>
+    public partial class ZoomHost : UserControl
 	{
 		public MouseCoordinator Coordinator
 		{

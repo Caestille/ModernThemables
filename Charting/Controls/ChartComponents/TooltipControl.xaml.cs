@@ -8,14 +8,13 @@ using ModernThemables.Charting.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using ModernThemables.Charting.Services;
-using System.Threading.Tasks;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
-	/// <summary>
-	/// Interaction logic for TooltipControl.xaml
-	/// </summary>
-	public partial class TooltipControl : UserControl
+    /// <summary>
+    /// Interaction logic for TooltipControl.xaml
+    /// </summary>
+    public partial class TooltipControl : UserControl
 	{
 		private bool tooltipLeft;
 		private bool tooltipTop;

@@ -3,15 +3,13 @@ using ModernThemables.Charting.Controls.ChartComponents;
 using ModernThemables.Charting.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace ModernThemables.Charting.Services
 {
-	public static class ChartHelper
+    public static class ChartHelper
 	{
 		public static (int row, int column, Visibility visibility, Thickness margin, Orientation orientation) GetLegendProperties(LegendLocation legendLocation)
 		{
