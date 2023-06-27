@@ -209,9 +209,12 @@ namespace ModernThemables.ViewModels
 			Application.Current.Resources["MenuBorderBrush"] = isDarkMode 
 				? new SolidColorBrush(MenuBorderColourDark) 
 				: new SolidColorBrush(MenuBorderColourLight);
-			Application.Current.Resources["DisabledControlClickablePartBrush"] = isDarkMode 
+			Application.Current.Resources["DisabledControlClickablePartBrush"] = isDarkMode
 				? new SolidColorBrush(DisabledControlClickablePartColourDark) 
 				: new SolidColorBrush(DisabledControlClickablePartColourLight);
+			Application.Current.Resources["DisabledControlClickablePartColour"] = isDarkMode
+				? Color.FromArgb(DisabledControlClickablePartColourDark.A, DisabledControlClickablePartColourDark.R, DisabledControlClickablePartColourDark.G, DisabledControlClickablePartColourDark.B)
+				: Color.FromArgb(DisabledControlClickablePartColourLight.A, DisabledControlClickablePartColourLight.R, DisabledControlClickablePartColourLight.G, DisabledControlClickablePartColourLight.B);
 			Application.Current.Resources["DisabledControlNonClickablePartBrush"] = isDarkMode 
 				? new SolidColorBrush(DisabledControlNonClickablePartColourDark) 
 				: new SolidColorBrush(DisabledControlNonClickablePartColourLight);
@@ -327,6 +330,7 @@ namespace ModernThemables.ViewModels
 
 			Application.Current.Resources["ThemeBackgroundBrush"] = new SolidColorBrush(ThemeBackgroundColour);
 			Application.Current.Resources["ThemeMouseOverBrush"] = new SolidColorBrush(ThemeMouseOverColour);
+			Application.Current.Resources["ThemeMouseOverColour"] = ThemeMouseOverColour;
 			Application.Current.Resources["ThemeMouseDownBrush"] = new SolidColorBrush(ThemeMouseDownColour);
 			Application.Current.Resources["ThemeNearBackgroundBrush"] = new SolidColorBrush(ThemeNearBackgroundColour);
 			Application.Current.Resources["ThemeBackgroundNearBackgroundBrush"]

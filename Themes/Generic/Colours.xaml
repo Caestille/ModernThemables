@@ -4,6 +4,8 @@
 	<SolidColorBrush x:Key="TextBrush" Color="White" />
 	<Color x:Key="TextColour" />
 	<Color x:Key="InvertedTextColour" />
+	<Color x:Key="ThemeMouseOverColour" />
+	<Color x:Key="DisabledControlClickablePartColour" />
 	<SolidColorBrush x:Key="InvertedTextBrush" Color="White" />
 	<SolidColorBrush x:Key="StatusTextBrush" Color="DarkGray" />
 	<SolidColorBrush x:Key="StatusTextLightBrush" Color="#282828" />

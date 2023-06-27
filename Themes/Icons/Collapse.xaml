@@ -4,7 +4,8 @@
 	xmlns:icons="clr-namespace:ModernThemables.ScalableIcons">
 
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Icons/Expand.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
+		<ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
 	<Style TargetType="{x:Type icons:CollapseIcon}">

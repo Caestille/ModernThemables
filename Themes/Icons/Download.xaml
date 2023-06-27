@@ -4,6 +4,11 @@
 	xmlns:icons="clr-namespace:ModernThemables.ScalableIcons"
 	xmlns:metroIcons="http://metro.mahapps.com/winfx/xaml/iconpacks">
 
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
+		<ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+
 	<Style TargetType="{x:Type icons:DownloadIcon}">
 		<Setter Property="Template">
 			<Setter.Value>

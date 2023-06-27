@@ -26,7 +26,12 @@ using MahApps.Metro.ValueBoxes;
 using Microsoft.Xaml.Behaviors;
 using MahApps.Metro.Controls;
 using System.Runtime.InteropServices;
+using global::Windows.Win32;
+using global::Windows.Win32.Foundation;
+using global::Windows.Win32.Graphics.Dwm;
+using global::Windows.Win32.UI.WindowsAndMessaging;
 using System.Text;
+using System.Windows.Data;
 
 namespace ModernThemables.Controls
 {
@@ -63,7 +68,6 @@ namespace ModernThemables.Controls
 		private Thumb? windowTitleThumb;
 		private UIElement? titleBar;
 		private UIElement? titleBarBackground;
-		private IInputElement? restoreFocus;
 
 		/// <summary>Identifies the <see cref="ShowIconOnTitleBar"/> dependency property.</summary>
 		public static readonly DependencyProperty ShowIconOnTitleBarProperty
@@ -904,6 +908,8 @@ namespace ModernThemables.Controls
 			var x = (int)wpfPoint.X;
 			var y = (int)wpfPoint.Y;
 			PInvoke.SendMessage(new HWND(window.CriticalHandle), PInvoke.WM_NCLBUTTONDOWN, new WPARAM((nuint)HT.CAPTION), new IntPtr(x | (y << 16)));
+
+			//var what = DwmHelper.SetWindowAttributeValue(new HWND(window.CriticalHandle), DWMWINDOWATTRIBUTE.DWMWA_BORDER_COLOR, 3289650);
 		}
 
 		internal static void DoWindowTitleThumbChangeWindowStateOnMouseDoubleClick(ThemableWindow2 window, MouseButtonEventArgs mouseButtonEventArgs)
