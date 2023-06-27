@@ -95,6 +95,16 @@
 				Style="{StaticResource RoundedSlider}"
 				ValueChanged="Slider_ValueChanged"
 				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=R}" />
+			<TextBox
+				Grid.Row="0"
+				Grid.Column="3"
+				MinWidth="30"
+				VerticalContentAlignment="Center"
+				Background="Transparent"
+				BorderBrush="{DynamicResource StatusTextLightBrush}"
+				BorderThickness="0,0,0,1"
+				Foreground="{DynamicResource TextBrush}"
+				Text="{Binding Colour, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColourRgbConverter}, ConverterParameter=R}" />
 			<Label
 				Grid.Row="1"
 				Grid.Column="1"
@@ -109,7 +119,17 @@
 				Minimum="0"
 				Style="{StaticResource RoundedSlider}"
 				ValueChanged="Slider_ValueChanged"
-				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=G}" />
+				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbTextConverter}, ConverterParameter=G}" />
+			<TextBox
+				Grid.Row="1"
+				Grid.Column="3"
+				MinWidth="30"
+				VerticalContentAlignment="Center"
+				Background="Transparent"
+				BorderBrush="{DynamicResource StatusTextLightBrush}"
+				BorderThickness="0,0,0,1"
+				Foreground="{DynamicResource TextBrush}"
+				Text="{Binding Colour, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColourRgbConverter}, ConverterParameter=G}" />
 			<Label
 				Grid.Row="2"
 				Grid.Column="1"
@@ -127,6 +147,16 @@
 				Style="{StaticResource RoundedSlider}"
 				ValueChanged="Slider_ValueChanged"
 				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=B}" />
+			<TextBox
+				Grid.Row="2"
+				Grid.Column="3"
+				MinWidth="30"
+				VerticalContentAlignment="Center"
+				Background="Transparent"
+				BorderBrush="{DynamicResource StatusTextLightBrush}"
+				BorderThickness="0,0,0,1"
+				Foreground="{DynamicResource TextBrush}"
+				Text="{Binding Colour, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColourRgbConverter}, ConverterParameter=B}" />
 		</Grid>
 		<Border
 			Grid.Row="1"

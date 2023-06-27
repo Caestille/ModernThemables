@@ -43,7 +43,7 @@ namespace ModernThemables.Services
 				DataType = dataContext.GetType(),
 				VisualTree = new FrameworkElementFactory(registeredViews[dataContext.GetType()]),
 			});
-			window.Content = new MainWindowControl() { VisibleViewModel = (ObservableObject)dataContext, IsToolWindow = true };
+			//window.Content = new MainWindowControl() { VisibleViewModel = (ObservableObject)dataContext, IsToolWindow = true };
 			if (dialogueSize == null)
 			{
 				window.SizeToContent = SizeToContent.WidthAndHeight;

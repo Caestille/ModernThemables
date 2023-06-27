@@ -21,7 +21,7 @@
 		<WindowChrome CaptionHeight="24" ResizeBorderThickness="5" />
 	</WindowChrome.WindowChrome>
 	<Grid>
-		<local:MainWindowControl IsToolWindow="True" />
+		<local:ThemableWindow IsToolWindow="True" />
 		<local:ColourPicker x:Name="ColourPickerControl" Margin="10,40,10,50" />
 		<Border
 			Height="40"

@@ -223,56 +223,56 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type icons:BuildingIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:BuildingIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconMaterial
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="Bank" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:BuildingIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:BuildingIcon}">
+					<Viewbox>
+						<metroIcons:PackIconMaterial
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="Bank" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type icons:CalculatorIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:CalculatorIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconBoxIcons
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="SolidCalculator" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:CalculatorIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:CalculatorIcon}">
+					<Viewbox>
+						<metroIcons:PackIconBoxIcons
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="SolidCalculator" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type icons:CalendarIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:CalendarIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconModern
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="Calendar" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:CalendarIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:CalendarIcon}">
+					<Viewbox>
+						<metroIcons:PackIconModern
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="Calendar" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
     <Style TargetType="{x:Type icons:CloseIcon}">
         <Setter Property="Template">
@@ -318,22 +318,22 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type icons:DownloadIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:DownloadIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconMaterial
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="Download" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:DownloadIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:DownloadIcon}">
+					<Viewbox>
+						<metroIcons:PackIconMaterial
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="Download" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
     <Style TargetType="{x:Type icons:ExpandIcon}">
         <Setter Property="Template">
@@ -362,39 +362,39 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type icons:GearIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:GearIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconMaterial
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="Cog" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:GearIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:GearIcon}">
+					<Viewbox>
+						<metroIcons:PackIconMaterial
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="Cog" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type icons:GraphIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:GraphIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconVaadinIcons
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="LineBarChart" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:GraphIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:GraphIcon}">
+					<Viewbox>
+						<metroIcons:PackIconVaadinIcons
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="LineBarChart" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
     <Style TargetType="{x:Type icons:MagnifyingGlassIcon}">
         <Setter Property="Template">
@@ -477,73 +477,73 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type icons:MonitorIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:MonitorIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconMaterial
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="DesktopMacDashboard" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:MonitorIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:MonitorIcon}">
+					<Viewbox>
+						<metroIcons:PackIconMaterial
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="DesktopMacDashboard" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type icons:MoonIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:MoonIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconEvaIcons
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="Moon" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:MoonIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:MoonIcon}">
+					<Viewbox>
+						<metroIcons:PackIconEvaIcons
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="Moon" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type icons:OpenFileIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:OpenFileIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconForkAwesome
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="FolderOpen" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:OpenFileIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:OpenFileIcon}">
+					<Viewbox>
+						<metroIcons:PackIconForkAwesome
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="FolderOpen" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type icons:PenIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:PenIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconZondicons
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="EditPencil" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:PenIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:PenIcon}">
+					<Viewbox>
+						<metroIcons:PackIconZondicons
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="EditPencil" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
     <Style TargetType="{x:Type icons:PinIcon}">
         <Setter Property="Template">
@@ -602,22 +602,22 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type icons:PlayIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:PlayIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconFontisto
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="Play" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:PlayIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:PlayIcon}">
+					<Viewbox>
+						<metroIcons:PackIconFontisto
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="Play" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
     <Style TargetType="{x:Type icons:PlusIcon}">
         <Setter Property="Template">
@@ -674,56 +674,56 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type icons:SaveIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:SaveIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconRemixIcon
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="SaveFill" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:SaveIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:SaveIcon}">
+					<Viewbox>
+						<metroIcons:PackIconRemixIcon
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="SaveFill" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type icons:SunIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:SunIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconEvaIcons
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="Sun" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:SunIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:SunIcon}">
+					<Viewbox>
+						<metroIcons:PackIconEvaIcons
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="Sun" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type icons:TagIcon}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:TagIcon}">
-                    <Viewbox>
-                        <metroIcons:PackIconIonicons
-                            Width="50"
-                            Height="50"
-                            Background="{TemplateBinding Background}"
-                            Foreground="{TemplateBinding Foreground}"
-                            Kind="PricetagMD" />
-                    </Viewbox>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="{x:Type icons:TagIcon}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type icons:TagIcon}">
+					<Viewbox>
+						<metroIcons:PackIconIonicons
+							Width="50"
+							Height="50"
+							Background="{TemplateBinding Background}"
+							Foreground="{TemplateBinding Foreground}"
+							Kind="PricetagMD" />
+					</Viewbox>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
     <Style TargetType="{x:Type icons:TickIcon}">
         <Setter Property="Template">
