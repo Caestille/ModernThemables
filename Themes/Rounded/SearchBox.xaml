@@ -1,0 +1,121 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:controls="clr-namespace:ModernThemables.Controls"
+	xmlns:scalableicons="clr-namespace:ModernThemables.ScalableIcons">
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+
+	<Style TargetType="{x:Type controls:SearchBox}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:SearchBox}">
+					<Grid>
+						<Border
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="5"
+							Opacity="{TemplateBinding BackgroundOpacity}" />
+						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<scalableicons:MagnifyingGlassIcon
+								Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+								Margin="2"
+								HorizontalAlignment="Left"
+								Foreground="{DynamicResource StatusTextBrush}"
+								StrokeStyle="Round"
+								StrokeThickness="1.5" />
+							<TextBox
+								x:Name="PART_textBox"
+								Grid.Column="1"
+								Width="Auto"
+								Height="Auto"
+								HorizontalAlignment="Stretch"
+								VerticalAlignment="Center"
+								BorderThickness="0"
+								Cursor="IBeam"
+								Foreground="{TemplateBinding Foreground}"
+								SnapsToDevicePixels="True"
+								Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+								<TextBox.Background>
+									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
+								</TextBox.Background>
+							</TextBox>
+							<TextBlock
+								x:Name="PART_textBlock"
+								Grid.Column="1"
+								Width="Auto"
+								Height="Auto"
+								Margin="3,0,0,0"
+								HorizontalAlignment="Stretch"
+								VerticalAlignment="Center"
+								Foreground="{DynamicResource StatusTextBrush}"
+								IsHitTestVisible="False"
+								SnapsToDevicePixels="True"
+								Text="Search"
+								Visibility="{Binding ElementName=PART_textBox, Path=Text, Converter={StaticResource StringNotEmptyVisibilityConverter}, ConverterParameter=true}">
+								<TextBlock.Style>
+									<Style>
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsKeyboardFocused, ElementName=PART_textBox}" Value="True">
+												<DataTrigger.EnterActions>
+													<BeginStoryboard>
+														<Storyboard>
+															<DoubleAnimation
+																Storyboard.TargetProperty="Opacity"
+																To="0"
+																Duration="0:0:0.1" />
+														</Storyboard>
+													</BeginStoryboard>
+												</DataTrigger.EnterActions>
+												<DataTrigger.ExitActions>
+													<BeginStoryboard>
+														<Storyboard>
+															<DoubleAnimation
+																Storyboard.TargetProperty="Opacity"
+																To="1"
+																Duration="0:0:0.1" />
+														</Storyboard>
+													</BeginStoryboard>
+												</DataTrigger.ExitActions>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+							<controls:ExtendedButton
+								x:Name="PART_button"
+								Grid.Column="2"
+								Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+								Margin="3,2"
+								HorizontalAlignment="Right"
+								HorizontalContentAlignment="Stretch"
+								VerticalContentAlignment="Stretch"
+								Background="Transparent"
+								BorderThickness="0"
+								CornerRadius="3"
+								Foreground="{DynamicResource StatusTextBrush}"
+								MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}">
+								<scalableicons:CloseIcon
+									Margin="2"
+									HorizontalAlignment="Stretch"
+									VerticalAlignment="Stretch"
+									Background="Transparent" />
+							</controls:ExtendedButton>
+						</Grid>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</ResourceDictionary>

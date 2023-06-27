@@ -1,0 +1,114 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+
+	<ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
+		<Grid Width="20" Height="20">
+			<Ellipse
+				x:Name="grip"
+				Width="14"
+				Height="14"
+				VerticalAlignment="Center"
+				Fill="{DynamicResource ControlClickablePartBrush}"
+				Stroke="{DynamicResource MenuBrush}" />
+			<Border
+				x:Name="gripBorder"
+				Width="12"
+				Height="12"
+				VerticalAlignment="Center"
+				Background="Transparent"
+				BorderBrush="Transparent"
+				BorderThickness="1"
+				CornerRadius="6.5" />
+		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsMouseOver" Value="true">
+				<Setter TargetName="grip" Property="Fill" Value="{DynamicResource ThemeMouseOverBrush}" />
+				<Setter TargetName="gripBorder" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverNearBackgroundBrush}" />
+			</Trigger>
+			<Trigger Property="IsDragging" Value="true">
+				<Setter TargetName="grip" Property="Fill" Value="{DynamicResource ThemeMouseDownBrush}" />
+				<Setter TargetName="gripBorder" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownNearBackgroundBrush}" />
+			</Trigger>
+			<Trigger Property="IsEnabled" Value="false">
+				<Setter TargetName="grip" Property="Fill" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+				<Setter TargetName="gripBorder" Property="BorderBrush" Value="Transparent" />
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+		<Setter Property="SnapsToDevicePixels" Value="true" />
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="IsTabStop" Value="false" />
+		<Setter Property="Focusable" Value="false" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="RepeatButton">
+					<Border
+						Height="4"
+						Margin="-10,0,7,0"
+						Background="{DynamicResource ControlNonClickablePartBrush}"
+						BorderBrush="{DynamicResource ControlNonClickablePartBrush}"
+						BorderThickness="1"
+						CornerRadius="1" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+		<Setter Property="SnapsToDevicePixels" Value="true" />
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="RepeatButton">
+					<Border
+						Height="6"
+						Margin="7,-1,-10,0"
+						Background="{DynamicResource ThemeBackgroundBrush}"
+						BorderBrush="{DynamicResource ThemeBackgroundNearBackgroundBrush}"
+						BorderThickness="1"
+						CornerRadius="1"
+						SnapsToDevicePixels="True" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<ControlTemplate x:Key="SliderRound" TargetType="Slider">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Track x:Name="PART_Track" Grid.Row="1">
+				<Track.DecreaseRepeatButton>
+					<RepeatButton Command="Slider.DecreaseLarge" Style="{StaticResource SliderRepeatButton1}" />
+				</Track.DecreaseRepeatButton>
+				<Track.IncreaseRepeatButton>
+					<RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource SliderRepeatButton}" />
+				</Track.IncreaseRepeatButton>
+				<Track.Thumb>
+					<Thumb Template="{StaticResource SliderThumbHorizontalDefault}" />
+				</Track.Thumb>
+			</Track>
+		</Grid>
+	</ControlTemplate>
+
+	<Style TargetType="Slider">
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="SnapsToDevicePixels" Value="true" />
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="Template" Value="{StaticResource SliderRound}" />
+		<Setter Property="MinHeight" Value="21" />
+		<Setter Property="MinWidth" Value="104" />
+	</Style>
+
+</ResourceDictionary>

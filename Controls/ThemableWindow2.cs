@@ -25,6 +25,8 @@ using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.ValueBoxes;
 using Microsoft.Xaml.Behaviors;
 using MahApps.Metro.Controls;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace ModernThemables.Controls
 {
@@ -38,6 +40,19 @@ namespace ModernThemables.Controls
 	[TemplatePart(Name = PART_WindowTitleThumb, Type = typeof(Thumb))]
 	public class ThemableWindow2 : WindowChromeWindow
 	{
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, nuint wParam, StringBuilder lParam);
+
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, nuint wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
+
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, nuint wParam, ref nint lParam);
+
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, nuint wParam, nint lParam);
+
+
 		private const string PART_Icon = "PART_Icon";
 		private const string PART_WindowTitleThumb = "PART_WindowTitleThumb";
 		private const string PART_TitleBar = "PART_TitleBar";
@@ -862,7 +877,7 @@ namespace ModernThemables.Controls
 			}
 
 			// for the touch usage
-			//PInvoke.ReleaseCapture();
+			PInvoke.ReleaseCapture();
 
 			if (windowIsMaximized)
 			{
