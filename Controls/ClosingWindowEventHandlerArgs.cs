@@ -6,7 +6,7 @@ using System;
 
 namespace ModernThemables.Controls
 {
-    public class ClosingWindowEventHandlerArgs : EventArgs
+    public class WindowEventHandlerArgs : EventArgs
     {
         public bool Cancelled { get; set; }
     }

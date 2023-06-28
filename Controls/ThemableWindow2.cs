@@ -15,6 +15,7 @@ using MahApps.Metro.Automation.Peers;
 using MahApps.Metro.ValueBoxes;
 using MahApps.Metro.Controls;
 using System.Collections;
+using System.Windows.Data;
 
 namespace ModernThemables.Controls
 {
@@ -47,6 +48,8 @@ namespace ModernThemables.Controls
 		private ContentPresenter? LeftWindowCommandsPresenter;
 		private ContentPresenter? RightWindowCommandsPresenter;
 		private ContentPresenter? WindowButtonCommandsPresenter;
+
+		private Binding cachedGlowBinding; 
 
 		#region Properties
 
@@ -568,6 +571,16 @@ namespace ModernThemables.Controls
 			//this.RightWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
 			this.WindowButtonCommands.SetValue(WindowButtonCommands.ParentWindowPropertyKey, this);
 
+			//this.WindowButtonCommands.MaximisingWindow += (sender, e) =>
+			//{
+   //             var bindingExpression = BindingOperations.GetBindingExpression(this, GlowColorProperty);
+   //             this.GlowColor = null;
+			//};
+			//this.WindowButtonCommands.MaximisedWindow += (sender, e) =>
+			//{
+			//	this.SetBinding(ThemableWindow2.GlowColorProperty, cachedGlowBinding);
+			//};
+
 			this.icon = this.GetTemplateChild(PART_Icon) as FrameworkElement;
 			this.titleBar = this.GetTemplateChild(PART_TitleBar) as UIElement;
 			this.titleBarBackground = this.GetTemplateChild(PART_WindowTitleBackground) as UIElement;
@@ -613,14 +626,14 @@ namespace ModernThemables.Controls
 				thumbContentControl.DragDelta -= this.WindowTitleThumbMoveOnDragDelta;
 				thumbContentControl.MouseDoubleClick -= this.WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
 				thumbContentControl.MouseRightButtonUp -= this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
-            }
+			}
 
-            if (this.icon != null)
-            {
-                this.icon.PreviewMouseLeftButtonUp -= this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
-            }
+			if (this.icon != null)
+			{
+				this.icon.PreviewMouseLeftButtonUp -= this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
+			}
 
-            this.SizeChanged -= this.ThemableWindow2_SizeChanged;
+			this.SizeChanged -= this.ThemableWindow2_SizeChanged;
 		}
 
 		private void SetWindowEvents()
@@ -647,7 +660,7 @@ namespace ModernThemables.Controls
 			if (this.icon != null)
 			{
 				this.icon.PreviewMouseLeftButtonUp += this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
-            }
+			}
 
 			// handle size if we have a Grid for the title (e.g. clean window have a centered title)
 			if (this.titleBar != null && this.TitleAlignment == HorizontalAlignment.Center)

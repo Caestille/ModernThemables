@@ -12,136 +12,24 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Windows.Win32;
-using Windows.Win32.Foundation;
 
 namespace ModernThemables.Controls
 {
     [TemplatePart(Name = "PART_Min", Type = typeof(Button))]
     [TemplatePart(Name = "PART_Max", Type = typeof(Button))]
     [TemplatePart(Name = "PART_Close", Type = typeof(Button))]
-    [StyleTypedProperty(Property = nameof(LightMinButtonStyle), StyleTargetType = typeof(Button))]
-    [StyleTypedProperty(Property = nameof(LightMaxButtonStyle), StyleTargetType = typeof(Button))]
-    [StyleTypedProperty(Property = nameof(LightCloseButtonStyle), StyleTargetType = typeof(Button))]
-    [StyleTypedProperty(Property = nameof(DarkMinButtonStyle), StyleTargetType = typeof(Button))]
-    [StyleTypedProperty(Property = nameof(DarkMaxButtonStyle), StyleTargetType = typeof(Button))]
-    [StyleTypedProperty(Property = nameof(DarkCloseButtonStyle), StyleTargetType = typeof(Button))]
     public class WindowButtonCommands : ContentControl
     {
-        public event ClosingWindowEventHandler? ClosingWindow;
+        public event WindowEventHandler? ClosingWindow;
+        public event WindowEventHandler? MaximisingWindow;
+        public event WindowEventHandler? MinimisingWindow;
+        public event WindowEventHandler? RestoringWindow;
 
-        public delegate void ClosingWindowEventHandler(object sender, ClosingWindowEventHandlerArgs args);
+        public event WindowEventHandler? MaximisedWindow;
+        public event WindowEventHandler? MinimisedWindow;
+        public event WindowEventHandler? RestoredWindow;
 
-        /// <summary>Identifies the <see cref="LightMinButtonStyle"/> dependency property.</summary>
-        public static readonly DependencyProperty LightMinButtonStyleProperty
-            = DependencyProperty.Register(nameof(LightMinButtonStyle),
-                                          typeof(Style),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
-
-        /// <summary>
-        /// Gets or sets the value indicating current light style for the minimize button.
-        /// </summary>
-        public Style? LightMinButtonStyle
-        {
-            get => (Style?)this.GetValue(LightMinButtonStyleProperty);
-            set => this.SetValue(LightMinButtonStyleProperty, value);
-        }
-
-        /// <summary>Identifies the <see cref="LightMaxButtonStyle"/> dependency property.</summary>
-        public static readonly DependencyProperty LightMaxButtonStyleProperty
-            = DependencyProperty.Register(nameof(LightMaxButtonStyle),
-                                          typeof(Style),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
-
-        /// <summary>
-        /// Gets or sets the value indicating current light style for the maximize button.
-        /// </summary>
-        public Style? LightMaxButtonStyle
-        {
-            get => (Style?)this.GetValue(LightMaxButtonStyleProperty);
-            set => this.SetValue(LightMaxButtonStyleProperty, value);
-        }
-
-        /// <summary>Identifies the <see cref="LightCloseButtonStyle"/> dependency property.</summary>
-        public static readonly DependencyProperty LightCloseButtonStyleProperty
-            = DependencyProperty.Register(nameof(LightCloseButtonStyle),
-                                          typeof(Style),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
-
-        /// <summary>
-        /// Gets or sets the value indicating current light style for the close button.
-        /// </summary>
-        public Style? LightCloseButtonStyle
-        {
-            get => (Style?)this.GetValue(LightCloseButtonStyleProperty);
-            set => this.SetValue(LightCloseButtonStyleProperty, value);
-        }
-
-        /// <summary>Identifies the <see cref="DarkMinButtonStyle"/> dependency property.</summary>
-        public static readonly DependencyProperty DarkMinButtonStyleProperty
-            = DependencyProperty.Register(nameof(DarkMinButtonStyle),
-                                          typeof(Style),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
-
-        /// <summary>
-        /// Gets or sets the value indicating current dark style for the minimize button.
-        /// </summary>
-        public Style? DarkMinButtonStyle
-        {
-            get => (Style?)this.GetValue(DarkMinButtonStyleProperty);
-            set => this.SetValue(DarkMinButtonStyleProperty, value);
-        }
-
-        /// <summary>Identifies the <see cref="DarkMaxButtonStyle"/> dependency property.</summary>
-        public static readonly DependencyProperty DarkMaxButtonStyleProperty
-            = DependencyProperty.Register(nameof(DarkMaxButtonStyle),
-                                          typeof(Style),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
-
-        /// <summary>
-        /// Gets or sets the value indicating current dark style for the maximize button.
-        /// </summary>
-        public Style? DarkMaxButtonStyle
-        {
-            get => (Style?)this.GetValue(DarkMaxButtonStyleProperty);
-            set => this.SetValue(DarkMaxButtonStyleProperty, value);
-        }
-
-        /// <summary>Identifies the <see cref="DarkCloseButtonStyle"/> dependency property.</summary>
-        public static readonly DependencyProperty DarkCloseButtonStyleProperty
-            = DependencyProperty.Register(nameof(DarkCloseButtonStyle),
-                                          typeof(Style),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
-
-        /// <summary>
-        /// Gets or sets the value indicating current dark style for the close button.
-        /// </summary>
-        public Style? DarkCloseButtonStyle
-        {
-            get => (Style?)this.GetValue(DarkCloseButtonStyleProperty);
-            set => this.SetValue(DarkCloseButtonStyleProperty, value);
-        }
-
-        /// <summary>Identifies the <see cref="Theme"/> dependency property.</summary>
-        public static readonly DependencyProperty ThemeProperty
-            = DependencyProperty.Register(nameof(Theme),
-                                          typeof(string),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(ThemeManager.BaseColorLight));
-
-        /// <summary>
-        /// Gets or sets the value indicating current theme.
-        /// </summary>
-        public string Theme
-        {
-            get => (string)this.GetValue(ThemeProperty);
-            set => this.SetValue(ThemeProperty, value);
-        }
+        public delegate void WindowEventHandler(object sender, WindowEventHandlerArgs args);
 
         /// <summary>Identifies the <see cref="Minimize"/> dependency property.</summary>
         public static readonly DependencyProperty MinimizeProperty
@@ -354,7 +242,16 @@ namespace ModernThemables.Controls
         {
             if (this.ParentWindow != null)
             {
+                var args = new WindowEventHandlerArgs();
+                this.MinimisingWindow?.Invoke(this, args);
+
+                if (args.Cancelled)
+                {
+                    return;
+                }
+
                 SystemCommands.MinimizeWindow(this.ParentWindow);
+                this.MinimisedWindow?.Invoke(this, new WindowEventHandlerArgs());
             }
         }
 
@@ -362,7 +259,16 @@ namespace ModernThemables.Controls
         {
             if (this.ParentWindow != null)
             {
+                var args = new WindowEventHandlerArgs();
+                this.MaximisingWindow?.Invoke(this, args);
+
+                if (args.Cancelled)
+                {
+                    return;
+                }
+
                 SystemCommands.MaximizeWindow(this.ParentWindow);
+                this.MaximisedWindow?.Invoke(this, new WindowEventHandlerArgs());
             }
         }
 
@@ -370,7 +276,16 @@ namespace ModernThemables.Controls
         {
             if (this.ParentWindow != null)
             {
+                var args = new WindowEventHandlerArgs();
+                this.RestoringWindow?.Invoke(this, args);
+
+                if (args.Cancelled)
+                {
+                    return;
+                }
+
                 SystemCommands.RestoreWindow(this.ParentWindow);
+                this.RestoredWindow?.Invoke(this, new WindowEventHandlerArgs());
             }
         }
 
@@ -378,7 +293,7 @@ namespace ModernThemables.Controls
         {
             if (this.ParentWindow != null)
             {
-                var args = new ClosingWindowEventHandlerArgs();
+                var args = new WindowEventHandlerArgs();
                 this.ClosingWindow?.Invoke(this, args);
 
                 if (args.Cancelled)
