@@ -613,9 +613,14 @@ namespace ModernThemables.Controls
 				thumbContentControl.DragDelta -= this.WindowTitleThumbMoveOnDragDelta;
 				thumbContentControl.MouseDoubleClick -= this.WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
 				thumbContentControl.MouseRightButtonUp -= this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
-			}
+            }
 
-			this.SizeChanged -= this.ThemableWindow2_SizeChanged;
+            if (this.icon != null)
+            {
+                this.icon.PreviewMouseLeftButtonUp -= this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
+            }
+
+            this.SizeChanged -= this.ThemableWindow2_SizeChanged;
 		}
 
 		private void SetWindowEvents()
@@ -638,6 +643,11 @@ namespace ModernThemables.Controls
 				this.windowTitleThumb.MouseDoubleClick += this.WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
 				this.windowTitleThumb.MouseRightButtonUp += this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
 			}
+
+			if (this.icon != null)
+			{
+				this.icon.PreviewMouseLeftButtonUp += this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
+            }
 
 			// handle size if we have a Grid for the title (e.g. clean window have a centered title)
 			if (this.titleBar != null && this.TitleAlignment == HorizontalAlignment.Center)
