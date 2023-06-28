@@ -22,7 +22,7 @@ namespace ModernThemables.Controls
 		    "MouseOverColour",
             typeof(SolidColorBrush),
             typeof(ExtendedButton),
-            new UIPropertyMetadata(DefaultMouseOverProperty, OnBindingChanged));
+            new UIPropertyMetadata(DefaultMouseOverProperty/*, OnBindingChanged*/));
 
 		public SolidColorBrush MouseDownColour
 		{
@@ -33,7 +33,7 @@ namespace ModernThemables.Controls
 		    "MouseDownColour",
             typeof(SolidColorBrush),
             typeof(ExtendedButton),
-            new UIPropertyMetadata(DefaultMouseOverProperty, OnBindingChanged));
+            new UIPropertyMetadata(DefaultMouseOverProperty/*, OnBindingChanged*/));
 
 		public SolidColorBrush DisabledBackgroundColour
 		{
@@ -44,7 +44,7 @@ namespace ModernThemables.Controls
 		    "DisabledBackgroundColour",
             typeof(SolidColorBrush),
             typeof(ExtendedButton),
-            new UIPropertyMetadata(DefaultMouseOverProperty, OnBindingChanged));
+            new UIPropertyMetadata(DefaultMouseOverProperty/*, OnBindingChanged*/));
 
 		public SolidColorBrush DisabledForegroundColour
 		{
@@ -55,7 +55,7 @@ namespace ModernThemables.Controls
 		    "DisabledForegroundColour",
             typeof(SolidColorBrush),
             typeof(ExtendedButton),
-            new UIPropertyMetadata(DefaultMouseOverProperty, OnBindingChanged));
+            new UIPropertyMetadata(DefaultMouseOverProperty/*, OnBindingChanged*/));
 
 		public CornerRadius CornerRadius
 		{
@@ -70,131 +70,131 @@ namespace ModernThemables.Controls
 
         public ExtendedButton()
         {
-			this.Loaded += ExtendedButton_Loaded;
+			//this.Loaded += ExtendedButton_Loaded;
         }
 
 		private void ExtendedButton_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
-			this.Loaded -= ExtendedButton_Loaded;
-            ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+			//this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
+			//this.Loaded -= ExtendedButton_Loaded;
+            //ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
         }
 
-		private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (border != null)
-            {
-                if (this.IsEnabled)
-                {
-                    border.Background = Background;
-                    RecursivelySetContentBrushes(Content as DependencyObject, Foreground, Background);
-                }
-                else
-                {
-                    border.Background = DisabledBackgroundColour;
-                    RecursivelySetContentBrushes(Content as DependencyObject, DisabledForegroundColour, DisabledBackgroundColour);
-                }
-            }
-        }
+		//private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+  //      {
+  //          if (border != null)
+  //          {
+  //              if (this.IsEnabled)
+  //              {
+  //                  border.Background = Background;
+  //                  RecursivelySetContentBrushes(Content as DependencyObject, Foreground, Background);
+  //              }
+  //              else
+  //              {
+  //                  border.Background = DisabledBackgroundColour;
+  //                  RecursivelySetContentBrushes(Content as DependencyObject, DisabledForegroundColour, DisabledBackgroundColour);
+  //              }
+  //          }
+  //      }
 
         static ExtendedButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedButton), new FrameworkPropertyMetadata(typeof(ExtendedButton)));
         }
 
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            this.border = GetTemplateChild("PART_border") as Border;
-            ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
-        }
+   //     public override void OnApplyTemplate()
+   //     {
+   //         base.OnApplyTemplate();
+   //         this.border = GetTemplateChild("PART_border") as Border;
+   //         ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+   //     }
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            if (border != null && IsEnabled)
-            {
-                border.Background = MouseDownColour;
-                RecursivelySetContentBrushes(Content as DependencyObject, Foreground, MouseDownColour);
-            }
-            base.OnMouseLeftButtonDown(e);
-        }
+   //     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+   //     {
+   //         if (border != null && IsEnabled)
+   //         {
+   //             border.Background = MouseDownColour;
+   //             RecursivelySetContentBrushes(Content as DependencyObject, Foreground, MouseDownColour);
+   //         }
+   //         base.OnMouseLeftButtonDown(e);
+   //     }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            if (border != null && IsEnabled)
-            {
-                border.Background = MouseOverColour;
-                RecursivelySetContentBrushes(Content as DependencyObject, Foreground, MouseOverColour);
-            }
-            base.OnMouseLeftButtonUp(e);
-        }
+   //     protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+   //     {
+   //         if (border != null && IsEnabled)
+   //         {
+   //             border.Background = MouseOverColour;
+   //             RecursivelySetContentBrushes(Content as DependencyObject, Foreground, MouseOverColour);
+   //         }
+   //         base.OnMouseLeftButtonUp(e);
+   //     }
 
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            if (border != null && IsEnabled)
-            {
-                border.Background = MouseOverColour;
-                RecursivelySetContentBrushes(Content as DependencyObject, Foreground, MouseOverColour);
-            }
-            base.OnMouseEnter(e);
-        }
+   //     protected override void OnMouseEnter(MouseEventArgs e)
+   //     {
+   //         if (border != null && IsEnabled)
+   //         {
+   //             border.Background = MouseOverColour;
+   //             RecursivelySetContentBrushes(Content as DependencyObject, Foreground, MouseOverColour);
+   //         }
+   //         base.OnMouseEnter(e);
+   //     }
 
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            if (border != null && IsEnabled)
-			{
-                border.Background = Background;
-                RecursivelySetContentBrushes(Content as DependencyObject, Foreground, Background);
-            }
-            base.OnMouseLeave(e);
-        }
+   //     protected override void OnMouseLeave(MouseEventArgs e)
+   //     {
+   //         if (border != null && IsEnabled)
+			//{
+   //             border.Background = Background;
+   //             RecursivelySetContentBrushes(Content as DependencyObject, Foreground, Background);
+   //         }
+   //         base.OnMouseLeave(e);
+   //     }
 
-        private async void RecursivelySetContentBrushes(DependencyObject item, Brush foregroundBrush, Brush backgroundBrush)
-        {
-            var didSet = false;
-            if (item is Control control && control.IsLoaded)
-            {
-				if (allowSetChildBackground == null)
-				{
-                    allowSetChildBackground = control.ReadLocalValue(BackgroundProperty) == DependencyProperty.UnsetValue;
-				}
-				if (allowSetChildForeground == null)
-				{
-                    allowSetChildForeground = control.ReadLocalValue(ForegroundProperty) == DependencyProperty.UnsetValue;
-				}
+   //     private async void RecursivelySetContentBrushes(DependencyObject item, Brush foregroundBrush, Brush backgroundBrush)
+   //     {
+   //         var didSet = false;
+   //         if (item is Control control && control.IsLoaded)
+   //         {
+			//	if (allowSetChildBackground == null)
+			//	{
+   //                 allowSetChildBackground = control.ReadLocalValue(BackgroundProperty) == DependencyProperty.UnsetValue;
+			//	}
+			//	if (allowSetChildForeground == null)
+			//	{
+   //                 allowSetChildForeground = control.ReadLocalValue(ForegroundProperty) == DependencyProperty.UnsetValue;
+			//	}
 
-				if (allowSetChildBackground.HasValue && allowSetChildBackground.Value)
-				{
-                    didSet = true;
-					control.Background = backgroundBrush;
-				}
+			//	if (allowSetChildBackground.HasValue && allowSetChildBackground.Value)
+			//	{
+   //                 didSet = true;
+			//		control.Background = backgroundBrush;
+			//	}
 
-				if (allowSetChildForeground.HasValue && allowSetChildForeground.Value)
-				{
-					didSet = true;
-					control.Foreground = foregroundBrush;
-				}
-			}
+			//	if (allowSetChildForeground.HasValue && allowSetChildForeground.Value)
+			//	{
+			//		didSet = true;
+			//		control.Foreground = foregroundBrush;
+			//	}
+			//}
 
-            if (item != null && !didSet)
-            {
-                var childCount = VisualTreeHelper.GetChildrenCount(item);
-                if (childCount > 0)
-                {
-                    for (int i = 0; i < childCount; i++)
-                    {
-                        var child = VisualTreeHelper.GetChild(item, i);
-                        RecursivelySetContentBrushes(child, foregroundBrush, backgroundBrush);
-                    }
-                }
-            }
-        }
+   //         if (item != null && !didSet)
+   //         {
+   //             var childCount = VisualTreeHelper.GetChildrenCount(item);
+   //             if (childCount > 0)
+   //             {
+   //                 for (int i = 0; i < childCount; i++)
+   //                 {
+   //                     var child = VisualTreeHelper.GetChild(item, i);
+   //                     RecursivelySetContentBrushes(child, foregroundBrush, backgroundBrush);
+   //                 }
+   //             }
+   //         }
+   //     }
 
-        private static void OnBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (sender is not ExtendedButton button) return;
+   //     private static void OnBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+   //     {
+   //         if (sender is not ExtendedButton button) return;
 
-            button.ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
-        }
+   //         button.ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+   //     }
     }
 }
