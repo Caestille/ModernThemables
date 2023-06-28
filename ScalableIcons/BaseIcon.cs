@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Microsoft.Xaml.Behaviors;
+using ModernThemables.Behaviours;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -31,6 +33,17 @@ namespace ModernThemables.ScalableIcons
             { 
                 SetValue(IsVisuallyDisabledProperty, value); 
             }
+        }
+
+        public BaseIcon()
+        {
+            this.Loaded += BaseIcon_Loaded;
+        }
+
+        private void BaseIcon_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Loaded -= BaseIcon_Loaded;
+            Interaction.GetBehaviors(this).Add(new ButtonIconColourSyncBehaviour());
         }
     }
 }
