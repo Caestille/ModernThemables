@@ -19,6 +19,7 @@
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ThemableWindow.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ThemableWindow2.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/WindowButtonCommands.xaml" />
 
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Icons.xaml" />
 	</ResourceDictionary.MergedDictionaries>

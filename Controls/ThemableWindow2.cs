@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Automation;
@@ -11,27 +6,15 @@ using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using ControlzEx;
 using ControlzEx.Native;
-using ControlzEx.Theming;
 using MahApps.Metro.Automation.Peers;
-using MahApps.Metro.Behaviors;
-using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.ValueBoxes;
-using Microsoft.Xaml.Behaviors;
 using MahApps.Metro.Controls;
-using System.Runtime.InteropServices;
-using global::Windows.Win32;
-using global::Windows.Win32.Foundation;
-using global::Windows.Win32.Graphics.Dwm;
-using global::Windows.Win32.UI.WindowsAndMessaging;
-using System.Text;
-using System.Windows.Data;
+using System.Collections;
 
 namespace ModernThemables.Controls
 {
@@ -43,40 +26,45 @@ namespace ModernThemables.Controls
 	[TemplatePart(Name = PART_WindowTitleBackground, Type = typeof(UIElement))]
 	[TemplatePart(Name = PART_Content, Type = typeof(MetroContentControl))]
 	[TemplatePart(Name = PART_WindowTitleThumb, Type = typeof(Thumb))]
+	[TemplatePart(Name = PART_LeftWindowCommands, Type = typeof(ContentPresenter))]
+	[TemplatePart(Name = PART_RightWindowCommands, Type = typeof(ContentPresenter))]
+	[TemplatePart(Name = PART_WindowButtonCommands, Type = typeof(ContentPresenter))]
 	public class ThemableWindow2 : WindowChromeWindow
 	{
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, nuint wParam, StringBuilder lParam);
-
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, nuint wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
-
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, nuint wParam, ref nint lParam);
-
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, nuint wParam, nint lParam);
-
-
 		private const string PART_Icon = "PART_Icon";
 		private const string PART_WindowTitleThumb = "PART_WindowTitleThumb";
 		private const string PART_TitleBar = "PART_TitleBar";
 		private const string PART_WindowTitleBackground = "PART_WindowTitleBackground";
 		private const string PART_Content = "PART_Content";
+		private const string PART_LeftWindowCommands = "PART_LeftWindowCommands";
+		private const string PART_RightWindowCommands = "PART_RightWindowCommands";
+		private const string PART_WindowButtonCommands = "PART_WindowButtonCommands";
 
 		private FrameworkElement? icon;
 		private Thumb? windowTitleThumb;
 		private UIElement? titleBar;
 		private UIElement? titleBarBackground;
+		private ContentPresenter? LeftWindowCommandsPresenter;
+		private ContentPresenter? RightWindowCommandsPresenter;
+		private ContentPresenter? WindowButtonCommandsPresenter;
 
-		/// <summary>Identifies the <see cref="ShowIconOnTitleBar"/> dependency property.</summary>
-		public static readonly DependencyProperty ShowIconOnTitleBarProperty
-			= DependencyProperty.Register(nameof(ShowIconOnTitleBar),
-										  typeof(bool),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BooleanBoxes.TrueBox, OnShowIconOnTitleBarPropertyChangedCallback));
+		#region Properties
 
-		private static void OnShowIconOnTitleBarPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		/// <summary>
+		/// Get or sets whether the TitleBar icon is visible or not.
+		/// </summary>
+		public bool ShowIcon
+		{
+			get => (bool)this.GetValue(ShowIconProperty);
+			set => this.SetValue(ShowIconProperty, BooleanBoxes.Box(value));
+		}
+		public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
+			nameof(ShowIcon),
+			typeof(bool),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(BooleanBoxes.TrueBox, OnShowIconPropertyChangedCallback));
+
+		private static void OnShowIconPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var window = (ThemableWindow2)d;
 			if (e.NewValue != e.OldValue)
@@ -86,22 +74,6 @@ namespace ModernThemables.Controls
 		}
 
 		/// <summary>
-		/// Get or sets whether the TitleBar icon is visible or not.
-		/// </summary>
-		public bool ShowIconOnTitleBar
-		{
-			get => (bool)this.GetValue(ShowIconOnTitleBarProperty);
-			set => this.SetValue(ShowIconOnTitleBarProperty, BooleanBoxes.Box(value));
-		}
-
-		/// <summary>Identifies the <see cref="IconEdgeMode"/> dependency property.</summary>
-		public static readonly DependencyProperty IconEdgeModeProperty
-			= DependencyProperty.Register(nameof(IconEdgeMode),
-										  typeof(EdgeMode),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(EdgeMode.Aliased));
-
-		/// <summary>
 		/// Gets or sets the edge mode for the TitleBar icon.
 		/// </summary>
 		public EdgeMode IconEdgeMode
@@ -109,13 +81,11 @@ namespace ModernThemables.Controls
 			get => (EdgeMode)this.GetValue(IconEdgeModeProperty);
 			set => this.SetValue(IconEdgeModeProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="IconBitmapScalingMode"/> dependency property.</summary>
-		public static readonly DependencyProperty IconBitmapScalingModeProperty
-			= DependencyProperty.Register(nameof(IconBitmapScalingMode),
-										  typeof(BitmapScalingMode),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BitmapScalingMode.HighQuality));
+		public static readonly DependencyProperty IconEdgeModeProperty = DependencyProperty.Register(
+			nameof(IconEdgeMode),
+			typeof(EdgeMode),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(EdgeMode.Aliased));
 
 		/// <summary>
 		/// Gets or sets the bitmap scaling mode for the TitleBar icon.
@@ -125,13 +95,11 @@ namespace ModernThemables.Controls
 			get => (BitmapScalingMode)this.GetValue(IconBitmapScalingModeProperty);
 			set => this.SetValue(IconBitmapScalingModeProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="IconScalingMode"/> dependency property.</summary>
-		public static readonly DependencyProperty IconScalingModeProperty
-			= DependencyProperty.Register(nameof(IconScalingMode),
-										  typeof(MultiFrameImageMode),
-										  typeof(ThemableWindow2),
-										  new FrameworkPropertyMetadata(MultiFrameImageMode.ScaleDownLargerFrame, FrameworkPropertyMetadataOptions.AffectsRender));
+		public static readonly DependencyProperty IconBitmapScalingModeProperty = DependencyProperty.Register(
+			nameof(IconBitmapScalingMode),
+			typeof(BitmapScalingMode),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(BitmapScalingMode.HighQuality));
 
 		/// <summary>
 		/// Gets or sets the scaling mode for the TitleBar icon.
@@ -141,13 +109,11 @@ namespace ModernThemables.Controls
 			get => (MultiFrameImageMode)this.GetValue(IconScalingModeProperty);
 			set => this.SetValue(IconScalingModeProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="ShowTitleBar"/> dependency property.</summary>
-		public static readonly DependencyProperty ShowTitleBarProperty
-			= DependencyProperty.Register(nameof(ShowTitleBar),
-										  typeof(bool),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BooleanBoxes.TrueBox, OnShowTitleBarPropertyChangedCallback));
+		public static readonly DependencyProperty IconScalingModeProperty = DependencyProperty.Register(
+			nameof(IconScalingMode),
+			typeof(MultiFrameImageMode),
+			typeof(ThemableWindow2),
+			new FrameworkPropertyMetadata(MultiFrameImageMode.ScaleDownLargerFrame, FrameworkPropertyMetadataOptions.AffectsRender));
 
 		/// <summary>
 		/// Gets or sets whether the TitleBar is visible or not.
@@ -157,98 +123,11 @@ namespace ModernThemables.Controls
 			get => (bool)this.GetValue(ShowTitleBarProperty);
 			set => this.SetValue(ShowTitleBarProperty, BooleanBoxes.Box(value));
 		}
-
-		/// <summary>Identifies the <see cref="ShowCloseButton"/> dependency property.</summary>
-		public static readonly DependencyProperty ShowCloseButtonProperty
-			= DependencyProperty.Register(nameof(ShowCloseButton),
-										  typeof(bool),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BooleanBoxes.TrueBox));
-
-		/// <summary>
-		/// Gets or sets whether if the close button is visible.
-		/// </summary>
-		public bool ShowCloseButton
-		{
-			get => (bool)this.GetValue(ShowCloseButtonProperty);
-			set => this.SetValue(ShowCloseButtonProperty, BooleanBoxes.Box(value));
-		}
-
-		/// <summary>Identifies the <see cref="IsMinButtonEnabled"/> dependency property.</summary>
-		public static readonly DependencyProperty IsMinButtonEnabledProperty
-			= DependencyProperty.Register(nameof(IsMinButtonEnabled),
-										  typeof(bool),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BooleanBoxes.TrueBox));
-
-		/// <summary>
-		/// Gets or sets if the minimize button is enabled.
-		/// </summary>
-		public bool IsMinButtonEnabled
-		{
-			get => (bool)this.GetValue(IsMinButtonEnabledProperty);
-			set => this.SetValue(IsMinButtonEnabledProperty, BooleanBoxes.Box(value));
-		}
-
-		/// <summary>Identifies the <see cref="IsMaxRestoreButtonEnabled"/> dependency property.</summary>
-		public static readonly DependencyProperty IsMaxRestoreButtonEnabledProperty
-			= DependencyProperty.Register(nameof(IsMaxRestoreButtonEnabled),
-										  typeof(bool),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BooleanBoxes.TrueBox));
-
-		/// <summary>
-		/// Gets or sets if the maximize/restore button is enabled.
-		/// </summary>
-		public bool IsMaxRestoreButtonEnabled
-		{
-			get => (bool)this.GetValue(IsMaxRestoreButtonEnabledProperty);
-			set => this.SetValue(IsMaxRestoreButtonEnabledProperty, BooleanBoxes.Box(value));
-		}
-
-		/// <summary>Identifies the <see cref="IsCloseButtonEnabled"/> dependency property.</summary>
-		public static readonly DependencyProperty IsCloseButtonEnabledProperty
-			= DependencyProperty.Register(nameof(IsCloseButtonEnabled),
-										  typeof(bool),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BooleanBoxes.TrueBox));
-
-		/// <summary>
-		/// Gets or sets if the close button is enabled.
-		/// </summary>
-		public bool IsCloseButtonEnabled
-		{
-			get => (bool)this.GetValue(IsCloseButtonEnabledProperty);
-			set => this.SetValue(IsCloseButtonEnabledProperty, BooleanBoxes.Box(value));
-		}
-
-		/// <summary>Identifies the <see cref="IsCloseButtonEnabledWithDialog"/> dependency property.</summary>
-		internal static readonly DependencyPropertyKey IsCloseButtonEnabledWithDialogPropertyKey
-			= DependencyProperty.RegisterReadOnly(nameof(IsCloseButtonEnabledWithDialog),
-												  typeof(bool),
-												  typeof(ThemableWindow2),
-												  new PropertyMetadata(BooleanBoxes.TrueBox));
-
-		/// <summary>Identifies the <see cref="IsCloseButtonEnabledWithDialog"/> dependency property.</summary>
-		public static readonly DependencyProperty IsCloseButtonEnabledWithDialogProperty = IsCloseButtonEnabledWithDialogPropertyKey.DependencyProperty;
-
-		/// <summary>
-		/// Gets whether if the close button is enabled if a dialog is open.
-		/// It's true if <see cref="ShowDialogsOverTitleBar"/> or the <see cref="MetroDialogSettings.OwnerCanCloseWithDialog"/> is set to true
-		/// otherwise false.
-		/// </summary>
-		public bool IsCloseButtonEnabledWithDialog
-		{
-			get => (bool)this.GetValue(IsCloseButtonEnabledWithDialogProperty);
-			protected set => this.SetValue(IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.Box(value));
-		}
-
-		/// <summary>Identifies the <see cref="ShowSystemMenu"/> dependency property.</summary>
-		public static readonly DependencyProperty ShowSystemMenuProperty
-			= DependencyProperty.Register(nameof(ShowSystemMenu),
-										  typeof(bool),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BooleanBoxes.TrueBox));
+		public static readonly DependencyProperty ShowTitleBarProperty = DependencyProperty.Register(
+			nameof(ShowTitleBar),
+			typeof(bool),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(BooleanBoxes.TrueBox, OnShowTitleBarPropertyChangedCallback));
 
 		/// <summary>
 		/// Gets or sets a value that indicates whether the system menu should popup with left mouse click on the window icon.
@@ -258,13 +137,11 @@ namespace ModernThemables.Controls
 			get => (bool)this.GetValue(ShowSystemMenuProperty);
 			set => this.SetValue(ShowSystemMenuProperty, BooleanBoxes.Box(value));
 		}
-
-		/// <summary>Identifies the <see cref="ShowSystemMenuOnRightClick"/> dependency property.</summary>
-		public static readonly DependencyProperty ShowSystemMenuOnRightClickProperty
-			= DependencyProperty.Register(nameof(ShowSystemMenuOnRightClick),
-										  typeof(bool),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BooleanBoxes.TrueBox));
+		public static readonly DependencyProperty ShowSystemMenuProperty = DependencyProperty.Register(
+			nameof(ShowSystemMenu),
+			typeof(bool),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(BooleanBoxes.TrueBox));
 
 		/// <summary>
 		/// Gets or sets a value that indicates whether the system menu should popup with right mouse click if the mouse position is on title bar or on the entire window if it has no TitleBar (and no TitleBar height).
@@ -274,13 +151,25 @@ namespace ModernThemables.Controls
 			get => (bool)this.GetValue(ShowSystemMenuOnRightClickProperty);
 			set => this.SetValue(ShowSystemMenuOnRightClickProperty, BooleanBoxes.Box(value));
 		}
+		public static readonly DependencyProperty ShowSystemMenuOnRightClickProperty = DependencyProperty.Register(
+			nameof(ShowSystemMenuOnRightClick),
+			typeof(bool),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(BooleanBoxes.TrueBox));
 
-		/// <summary>Identifies the <see cref="TitleBarHeight"/> dependency property.</summary>
-		public static readonly DependencyProperty TitleBarHeightProperty
-			= DependencyProperty.Register(nameof(TitleBarHeight),
-										  typeof(int),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(30, TitleBarHeightPropertyChangedCallback));
+		/// <summary>
+		/// Gets or sets the TitleBar's height.
+		/// </summary>
+		public int TitleBarHeight
+		{
+			get => (int)this.GetValue(TitleBarHeightProperty);
+			set => this.SetValue(TitleBarHeightProperty, value);
+		}
+		public static readonly DependencyProperty TitleBarHeightProperty = DependencyProperty.Register(
+			nameof(TitleBarHeight),
+			typeof(int),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(30, TitleBarHeightPropertyChangedCallback));
 
 		private static void TitleBarHeightPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -291,37 +180,18 @@ namespace ModernThemables.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets the TitleBar's height.
+		/// Gets or sets the horizontal alignment of the title.
 		/// </summary>
-		public int TitleBarHeight
+		public HorizontalAlignment TitleAlignment
 		{
-			get => (int)this.GetValue(TitleBarHeightProperty);
-			set => this.SetValue(TitleBarHeightProperty, value);
+			get => (HorizontalAlignment)this.GetValue(TitleAlignmentProperty);
+			set => this.SetValue(TitleAlignmentProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="TitleCharacterCasing"/> dependency property.</summary>
-		public static readonly DependencyProperty TitleCharacterCasingProperty
-			= DependencyProperty.Register(nameof(TitleCharacterCasing),
-										  typeof(CharacterCasing),
-										  typeof(ThemableWindow2),
-										  new FrameworkPropertyMetadata(CharacterCasing.Upper, FrameworkPropertyMetadataOptions.Inherits | FrameworkPropertyMetadataOptions.AffectsMeasure),
-										  value => CharacterCasing.Normal <= (CharacterCasing)value && (CharacterCasing)value <= CharacterCasing.Upper);
-
-		/// <summary>
-		/// Gets or sets the Character casing of the title.
-		/// </summary>
-		public CharacterCasing TitleCharacterCasing
-		{
-			get => (CharacterCasing)this.GetValue(TitleCharacterCasingProperty);
-			set => this.SetValue(TitleCharacterCasingProperty, value);
-		}
-
-		/// <summary>Identifies the <see cref="TitleAlignment"/> dependency property.</summary>
-		public static readonly DependencyProperty TitleAlignmentProperty
-			= DependencyProperty.Register(nameof(TitleAlignment),
-										  typeof(HorizontalAlignment),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(HorizontalAlignment.Stretch, OnTitleAlignmentChanged));
+		public static readonly DependencyProperty TitleAlignmentProperty = DependencyProperty.Register(
+			nameof(TitleAlignment),
+			typeof(HorizontalAlignment),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(HorizontalAlignment.Stretch, OnTitleAlignmentChanged));
 
 		private static void OnTitleAlignmentChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -338,21 +208,6 @@ namespace ModernThemables.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets the horizontal alignment of the title.
-		/// </summary>
-		public HorizontalAlignment TitleAlignment
-		{
-			get => (HorizontalAlignment)this.GetValue(TitleAlignmentProperty);
-			set => this.SetValue(TitleAlignmentProperty, value);
-		}
-
-		/// <summary>Identifies the <see cref="TitleForeground"/> dependency property.</summary>
-		public static readonly DependencyProperty TitleForegroundProperty
-			= DependencyProperty.Register(nameof(TitleForeground),
-										  typeof(Brush),
-										  typeof(ThemableWindow2));
-
-		/// <summary>
 		/// Gets or sets the brush used for the TitleBar's foreground.
 		/// </summary>
 		public Brush? TitleForeground
@@ -360,13 +215,23 @@ namespace ModernThemables.Controls
 			get => (Brush?)this.GetValue(TitleForegroundProperty);
 			set => this.SetValue(TitleForegroundProperty, value);
 		}
+		public static readonly DependencyProperty TitleForegroundProperty = DependencyProperty.Register(
+			nameof(TitleForeground),
+			typeof(Brush),
+			typeof(ThemableWindow2));
 
-		/// <summary>Identifies the <see cref="TitleTemplate"/> dependency property.</summary>
-		public static readonly DependencyProperty TitleTemplateProperty
-			= DependencyProperty.Register(nameof(TitleTemplate),
-										  typeof(DataTemplate),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(null));
+		/// <summary>
+		/// Gets or sets the brush used for the TitleBar's foreground.
+		/// </summary>
+		public Brush? NonActiveTitleForeground
+		{
+			get => (Brush?)this.GetValue(NonActiveTitleForegroundProperty);
+			set => this.SetValue(NonActiveTitleForegroundProperty, value);
+		}
+		public static readonly DependencyProperty NonActiveTitleForegroundProperty = DependencyProperty.Register(
+			nameof(NonActiveTitleForeground),
+			typeof(Brush),
+			typeof(ThemableWindow2));
 
 		/// <summary>
 		/// Gets or sets the <see cref="DataTemplate"/> for the <see cref="Window.Title"/>.
@@ -376,13 +241,11 @@ namespace ModernThemables.Controls
 			get => (DataTemplate?)this.GetValue(TitleTemplateProperty);
 			set => this.SetValue(TitleTemplateProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="WindowTitleBrush"/> dependency property.</summary>
-		public static readonly DependencyProperty WindowTitleBrushProperty
-			= DependencyProperty.Register(nameof(WindowTitleBrush),
-										  typeof(Brush),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(Brushes.Transparent));
+		public static readonly DependencyProperty TitleTemplateProperty = DependencyProperty.Register(
+			nameof(TitleTemplate),
+			typeof(DataTemplate),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(null));
 
 		/// <summary>
 		/// Gets or sets the brush used for the background of the TitleBar.
@@ -392,13 +255,11 @@ namespace ModernThemables.Controls
 			get => (Brush)this.GetValue(WindowTitleBrushProperty);
 			set => this.SetValue(WindowTitleBrushProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="NonActiveWindowTitleBrush"/> dependency property.</summary>
-		public static readonly DependencyProperty NonActiveWindowTitleBrushProperty
-			= DependencyProperty.Register(nameof(NonActiveWindowTitleBrush),
-										  typeof(Brush),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(Brushes.Gray));
+		public static readonly DependencyProperty WindowTitleBrushProperty = DependencyProperty.Register(
+			nameof(WindowTitleBrush),
+			typeof(Brush),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(Brushes.Transparent));
 
 		/// <summary>
 		/// Gets or sets the non-active brush used for the background of the TitleBar.
@@ -408,13 +269,11 @@ namespace ModernThemables.Controls
 			get => (Brush)this.GetValue(NonActiveWindowTitleBrushProperty);
 			set => this.SetValue(NonActiveWindowTitleBrushProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="NonActiveBorderBrush"/> dependency property.</summary>
-		public static readonly DependencyProperty NonActiveBorderBrushProperty
-			= DependencyProperty.Register(nameof(NonActiveBorderBrush),
-										  typeof(Brush),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(Brushes.Gray));
+		public static readonly DependencyProperty NonActiveWindowTitleBrushProperty = DependencyProperty.Register(
+			nameof(NonActiveWindowTitleBrush),
+			typeof(Brush),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(Brushes.Gray));
 
 		/// <summary>
 		/// Gets or sets the non-active brush used for the border of the window.
@@ -424,19 +283,11 @@ namespace ModernThemables.Controls
 			get => (Brush)this.GetValue(NonActiveBorderBrushProperty);
 			set => this.SetValue(NonActiveBorderBrushProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="IconTemplate"/> dependency property.</summary>
-		public static readonly DependencyProperty IconTemplateProperty
-			= DependencyProperty.Register(nameof(IconTemplate),
-										  typeof(DataTemplate),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(null, (o, e) =>
-										  {
-											  if (e.NewValue != e.OldValue)
-											  {
-												  (o as ThemableWindow2)?.UpdateIconVisibility();
-											  }
-										  }));
+		public static readonly DependencyProperty NonActiveBorderBrushProperty = DependencyProperty.Register(
+			nameof(NonActiveBorderBrush),
+			typeof(Brush),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(Brushes.Gray));
 
 		/// <summary>
 		/// Gets or sets the <see cref="DataTemplate"/> for the icon on the TitleBar.
@@ -446,23 +297,17 @@ namespace ModernThemables.Controls
 			get => (DataTemplate?)this.GetValue(IconTemplateProperty);
 			set => this.SetValue(IconTemplateProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="LeftWindowCommands"/> dependency property.</summary>
-		public static readonly DependencyProperty LeftWindowCommandsProperty
-			= DependencyProperty.Register(nameof(LeftWindowCommands),
-										  typeof(WindowCommands),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(null, OnLeftWindowCommandsPropertyChanged));
-
-		private static void OnLeftWindowCommandsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			if (e.NewValue is WindowCommands windowCommands)
+		public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.Register(
+			nameof(IconTemplate),
+			typeof(DataTemplate),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(null, (o, e) =>
 			{
-				AutomationProperties.SetName(windowCommands, nameof(LeftWindowCommands));
-			}
-
-			UpdateLogicalChildren(d, e);
-		}
+				if (e.NewValue != e.OldValue)
+				{
+					(o as ThemableWindow2)?.UpdateIconVisibility();
+				}
+			}));
 
 		/// <summary>
 		/// Gets or sets the <see cref="WindowCommands"/> host on the left side of the TitleBar.
@@ -472,19 +317,17 @@ namespace ModernThemables.Controls
 			get => (WindowCommands?)this.GetValue(LeftWindowCommandsProperty);
 			set => this.SetValue(LeftWindowCommandsProperty, value);
 		}
+		public static readonly DependencyProperty LeftWindowCommandsProperty = DependencyProperty.Register(
+			nameof(LeftWindowCommands),
+			typeof(WindowCommands),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(null, OnLeftWindowCommandsPropertyChanged));
 
-		/// <summary>Identifies the <see cref="RightWindowCommands"/> dependency property.</summary>
-		public static readonly DependencyProperty RightWindowCommandsProperty
-			= DependencyProperty.Register(nameof(RightWindowCommands),
-										  typeof(WindowCommands),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(null, OnRightWindowCommandsPropertyChanged));
-
-		private static void OnRightWindowCommandsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		private static void OnLeftWindowCommandsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (e.NewValue is WindowCommands windowCommands)
 			{
-				AutomationProperties.SetName(windowCommands, nameof(RightWindowCommands));
+				AutomationProperties.SetName(windowCommands, nameof(LeftWindowCommands));
 			}
 
 			UpdateLogicalChildren(d, e);
@@ -499,12 +342,21 @@ namespace ModernThemables.Controls
 			set => this.SetValue(RightWindowCommandsProperty, value);
 		}
 
-		/// <summary>Identifies the <see cref="WindowButtonCommands"/> dependency property.</summary>
-		public static readonly DependencyProperty WindowButtonCommandsProperty
-			= DependencyProperty.Register(nameof(WindowButtonCommands),
-										  typeof(WindowButtonCommands),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(null, UpdateLogicalChildren));
+		public static readonly DependencyProperty RightWindowCommandsProperty = DependencyProperty.Register(
+			nameof(RightWindowCommands),
+			typeof(WindowCommands),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(null, OnRightWindowCommandsPropertyChanged));
+
+		private static void OnRightWindowCommandsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			if (e.NewValue is WindowCommands windowCommands)
+			{
+				AutomationProperties.SetName(windowCommands, nameof(RightWindowCommands));
+			}
+
+			UpdateLogicalChildren(d, e);
+		}
 
 		/// <summary>
 		/// Gets or sets the <see cref="WindowButtonCommands"/> host that shows the minimize/maximize/restore/close buttons.
@@ -514,13 +366,11 @@ namespace ModernThemables.Controls
 			get => (WindowButtonCommands?)this.GetValue(WindowButtonCommandsProperty);
 			set => this.SetValue(WindowButtonCommandsProperty, value);
 		}
-
-		/// <summary>Identifies the <see cref="LeftWindowCommandsOverlayBehavior"/> dependency property.</summary>
-		public static readonly DependencyProperty LeftWindowCommandsOverlayBehaviorProperty
-			= DependencyProperty.Register(nameof(LeftWindowCommandsOverlayBehavior),
-										  typeof(WindowCommandsOverlayBehavior),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(WindowCommandsOverlayBehavior.Never, OnShowTitleBarPropertyChangedCallback));
+		public static readonly DependencyProperty WindowButtonCommandsProperty = DependencyProperty.Register(
+			nameof(WindowButtonCommands),
+			typeof(WindowButtonCommands),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(null, UpdateLogicalChildren));
 
 		private static void OnShowTitleBarPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -531,85 +381,6 @@ namespace ModernThemables.Controls
 		}
 
 		/// <summary>
-		/// Gets or sets the overlay behavior for the <see cref="WindowCommands"/> host on the left side.
-		/// </summary>
-		public WindowCommandsOverlayBehavior LeftWindowCommandsOverlayBehavior
-		{
-			get => (WindowCommandsOverlayBehavior)this.GetValue(LeftWindowCommandsOverlayBehaviorProperty);
-			set => this.SetValue(LeftWindowCommandsOverlayBehaviorProperty, value);
-		}
-
-		/// <summary>Identifies the <see cref="RightWindowCommandsOverlayBehavior"/> dependency property.</summary>
-		public static readonly DependencyProperty RightWindowCommandsOverlayBehaviorProperty
-			= DependencyProperty.Register(nameof(RightWindowCommandsOverlayBehavior),
-										  typeof(WindowCommandsOverlayBehavior),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(WindowCommandsOverlayBehavior.Never, OnShowTitleBarPropertyChangedCallback));
-
-		/// <summary>
-		/// Gets or sets the overlay behavior for the <see cref="WindowCommands"/> host on the right side.
-		/// </summary>
-		public WindowCommandsOverlayBehavior RightWindowCommandsOverlayBehavior
-		{
-			get => (WindowCommandsOverlayBehavior)this.GetValue(RightWindowCommandsOverlayBehaviorProperty);
-			set => this.SetValue(RightWindowCommandsOverlayBehaviorProperty, value);
-		}
-
-		/// <summary>Identifies the <see cref="WindowButtonCommandsOverlayBehavior"/> dependency property.</summary>
-		public static readonly DependencyProperty WindowButtonCommandsOverlayBehaviorProperty
-			= DependencyProperty.Register(nameof(WindowButtonCommandsOverlayBehavior),
-										  typeof(OverlayBehavior),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(OverlayBehavior.Always, OnShowTitleBarPropertyChangedCallback));
-
-		/// <summary>
-		/// Gets or sets the overlay behavior for the <see cref="WindowButtonCommands"/> host.
-		/// </summary>
-		public OverlayBehavior WindowButtonCommandsOverlayBehavior
-		{
-			get => (OverlayBehavior)this.GetValue(WindowButtonCommandsOverlayBehaviorProperty);
-			set => this.SetValue(WindowButtonCommandsOverlayBehaviorProperty, value);
-		}
-
-		/// <summary>Identifies the <see cref="IconOverlayBehavior"/> dependency property.</summary>
-		public static readonly DependencyProperty IconOverlayBehaviorProperty
-			= DependencyProperty.Register(nameof(IconOverlayBehavior),
-										  typeof(OverlayBehavior),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(OverlayBehavior.Never, OnShowTitleBarPropertyChangedCallback));
-
-		/// <summary>
-		/// Gets or sets the overlay behavior for the <see cref="Window.Icon"/>.
-		/// </summary>
-		public OverlayBehavior IconOverlayBehavior
-		{
-			get => (OverlayBehavior)this.GetValue(IconOverlayBehaviorProperty);
-			set => this.SetValue(IconOverlayBehaviorProperty, value);
-		}
-
-		/// <summary>Identifies the <see cref="OverrideDefaultWindowCommandsBrush"/> dependency property.</summary>
-		public static readonly DependencyProperty OverrideDefaultWindowCommandsBrushProperty
-			= DependencyProperty.Register(nameof(OverrideDefaultWindowCommandsBrush),
-										  typeof(Brush),
-										  typeof(ThemableWindow2));
-
-		/// <summary>
-		/// Allows easy handling of <see cref="WindowCommands"/> brush. Theme is also applied based on this brush.
-		/// </summary>
-		public Brush? OverrideDefaultWindowCommandsBrush
-		{
-			get => (Brush?)this.GetValue(OverrideDefaultWindowCommandsBrushProperty);
-			set => this.SetValue(OverrideDefaultWindowCommandsBrushProperty, value);
-		}
-
-		/// <summary>Identifies the <see cref="IsWindowDraggable"/> dependency property.</summary>
-		public static readonly DependencyProperty IsWindowDraggableProperty
-			= DependencyProperty.Register(nameof(IsWindowDraggable),
-										  typeof(bool),
-										  typeof(ThemableWindow2),
-										  new PropertyMetadata(BooleanBoxes.TrueBox));
-
-		/// <summary>
 		/// Gets or sets whether the whole window is draggable.
 		/// </summary>
 		public bool IsWindowDraggable
@@ -617,25 +388,44 @@ namespace ModernThemables.Controls
 			get => (bool)this.GetValue(IsWindowDraggableProperty);
 			set => this.SetValue(IsWindowDraggableProperty, BooleanBoxes.Box(value));
 		}
+		public static readonly DependencyProperty IsWindowDraggableProperty = DependencyProperty.Register(
+			nameof(IsWindowDraggable),
+			typeof(bool),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(BooleanBoxes.TrueBox));
 
-		private void UpdateIconVisibility()
+		/// <inheritdoc />
+		protected override IEnumerator LogicalChildren
 		{
-			var isVisible = (this.Icon is not null || this.IconTemplate is not null)
-							&& ((this.IconOverlayBehavior.HasFlag(OverlayBehavior.HiddenTitleBar) && !this.ShowTitleBar) || (this.ShowIconOnTitleBar && this.ShowTitleBar));
-			this.icon?.SetCurrentValue(VisibilityProperty, isVisible ? Visibility.Visible : Visibility.Collapsed);
+			get
+			{
+				// cheat, make a list with all logical content and return the enumerator
+				ArrayList children = new ArrayList();
+				if (this.Content != null)
+				{
+					children.Add(this.Content);
+				}
+
+				if (this.LeftWindowCommands != null)
+				{
+					children.Add(this.LeftWindowCommands);
+				}
+
+				if (this.RightWindowCommands != null)
+				{
+					children.Add(this.RightWindowCommands);
+				}
+
+				if (this.WindowButtonCommands != null)
+				{
+					children.Add(this.WindowButtonCommands);
+				}
+
+				return children.GetEnumerator();
+			}
 		}
 
-		private void UpdateTitleBarElementsVisibility()
-		{
-			this.UpdateIconVisibility();
-
-			var newVisibility = this.TitleBarHeight > 0 && this.ShowTitleBar ? Visibility.Visible : Visibility.Collapsed;
-
-			this.titleBar?.SetCurrentValue(VisibilityProperty, newVisibility);
-			this.titleBarBackground?.SetCurrentValue(VisibilityProperty, newVisibility);
-
-			this.SetWindowEvents();
-		}
+		#endregion
 
 		static ThemableWindow2()
 		{
@@ -659,6 +449,25 @@ namespace ModernThemables.Controls
 		public ThemableWindow2()
 		{
 			this.DataContextChanged += this.ThemableWindow2_DataContextChanged;
+		}
+
+		private void UpdateIconVisibility()
+		{
+			var isVisible = (this.Icon is not null || this.IconTemplate is not null)
+							&& (!this.ShowTitleBar || (this.ShowTitleBar));
+			this.icon?.SetCurrentValue(VisibilityProperty, isVisible ? Visibility.Visible : Visibility.Collapsed);
+		}
+
+		private void UpdateTitleBarElementsVisibility()
+		{
+			this.UpdateIconVisibility();
+
+			var newVisibility = this.TitleBarHeight > 0 && this.ShowTitleBar ? Visibility.Visible : Visibility.Collapsed;
+
+			this.titleBar?.SetCurrentValue(VisibilityProperty, newVisibility);
+			this.titleBarBackground?.SetCurrentValue(VisibilityProperty, newVisibility);
+
+			this.SetWindowEvents();
 		}
 
 		private void ThemableWindow2_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -747,6 +556,18 @@ namespace ModernThemables.Controls
 		{
 			base.OnApplyTemplate();
 
+			this.LeftWindowCommandsPresenter = this.GetTemplateChild(PART_LeftWindowCommands) as ContentPresenter;
+			this.RightWindowCommandsPresenter = this.GetTemplateChild(PART_RightWindowCommands) as ContentPresenter;
+			this.WindowButtonCommandsPresenter = this.GetTemplateChild(PART_WindowButtonCommands) as ContentPresenter;
+
+			this.LeftWindowCommands ??= new WindowCommands();
+			this.RightWindowCommands ??= new WindowCommands();
+			this.WindowButtonCommands ??= new WindowButtonCommands();
+
+			//this.LeftWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
+			//this.RightWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
+			this.WindowButtonCommands.SetValue(WindowButtonCommands.ParentWindowPropertyKey, this);
+
 			this.icon = this.GetTemplateChild(PART_Icon) as FrameworkElement;
 			this.titleBar = this.GetTemplateChild(PART_TitleBar) as UIElement;
 			this.titleBarBackground = this.GetTemplateChild(PART_WindowTitleBackground) as UIElement;
@@ -768,7 +589,10 @@ namespace ModernThemables.Controls
 			get
 			{
 				this.VerifyAccess();
-				var value = typeof(Window).GetProperty("CriticalHandle", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this, new object[0]) ?? IntPtr.Zero;
+				var value = typeof(Window)
+					.GetProperty("CriticalHandle", BindingFlags.NonPublic | BindingFlags.Instance)?
+					.GetValue(this, new object[0]) 
+						?? IntPtr.Zero;
 				return (IntPtr)value;
 			}
 		}
@@ -900,16 +724,10 @@ namespace ModernThemables.Controls
 				window.StateChanged += onWindowStateChanged;
 			}
 
-			// these lines are from DragMove
-			//NativeMethods.SendMessage(criticalHandle, WM.SYSCOMMAND, (IntPtr)SC.MOUSEMOVE, IntPtr.Zero);
-			//NativeMethods.SendMessage(criticalHandle, WM.LBUTTONUP, IntPtr.Zero, IntPtr.Zero);
-
 			var wpfPoint = window.PointToScreen(Mouse.GetPosition(window));
 			var x = (int)wpfPoint.X;
 			var y = (int)wpfPoint.Y;
 			PInvoke.SendMessage(new HWND(window.CriticalHandle), PInvoke.WM_NCLBUTTONDOWN, new WPARAM((nuint)HT.CAPTION), new IntPtr(x | (y << 16)));
-
-			//var what = DwmHelper.SetWindowAttributeValue(new HWND(window.CriticalHandle), DWMWINDOWATTRIBUTE.DWMWA_BORDER_COLOR, 3289650);
 		}
 
 		internal static void DoWindowTitleThumbChangeWindowStateOnMouseDoubleClick(ThemableWindow2 window, MouseButtonEventArgs mouseButtonEventArgs)

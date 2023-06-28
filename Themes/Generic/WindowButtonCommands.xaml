@@ -1,0 +1,90 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:controls="clr-namespace:ModernThemables.Controls"
+	xmlns:scalableicons="clr-namespace:ModernThemables.ScalableIcons">
+
+	<Style x:Key="TitleBarButton" TargetType="{x:Type controls:ExtendedButton}">
+		<Setter Property="Width" Value="46" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="Margin" Value="1,1,1,0" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+		<Setter Property="UseLayoutRounding" Value="True" />
+		<Setter Property="MouseOverColour">
+			<Setter.Value>
+				<SolidColorBrush Opacity="0.15" Color="White" />
+			</Setter.Value>
+		</Setter>
+		<Setter Property="MouseDownColour">
+			<Setter.Value>
+				<SolidColorBrush Opacity="0.3" Color="White" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<ControlTemplate x:Key="MahApps.Templates.WindowButtonCommands.Win10" TargetType="{x:Type controls:WindowButtonCommands}">
+		<StackPanel Orientation="Horizontal">
+			<controls:ExtendedButton x:Name="PART_ThemeSetButton" Style="{StaticResource TitleBarButton}">
+				<scalableicons:ExpandIcon Width="10" Height="10" />
+			</controls:ExtendedButton>
+			<Border
+				x:Name="PART_Splitter"
+				Width="1"
+				Margin="1,4,1,4"
+				Background="{DynamicResource ThemeTextBrush}"
+				Opacity="0.2" />
+			<controls:ExtendedButton
+				x:Name="PART_Min"
+				AutomationProperties.AutomationId="Minimize"
+				AutomationProperties.Name="Minimize"
+				Command="{x:Static SystemCommands.MinimizeWindowCommand}"
+				Style="{StaticResource TitleBarButton}"
+				ToolTip="{Binding Minimize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
+				<scalableicons:MinimiseIcon Width="10" Height="10" />
+			</controls:ExtendedButton>
+			<controls:ExtendedButton
+				x:Name="PART_Max"
+				AutomationProperties.AutomationId="MaximizeRestore"
+				AutomationProperties.Name="Maximize"
+				Command="{x:Static SystemCommands.MaximizeWindowCommand}"
+				Style="{StaticResource TitleBarButton}"
+				ToolTip="{Binding Maximize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
+				<scalableicons:MaximiseIcon Width="10" Height="10" />
+			</controls:ExtendedButton>
+			<controls:ExtendedButton
+				x:Name="PART_Close"
+				AutomationProperties.AutomationId="Close"
+				AutomationProperties.Name="Close"
+				Command="{x:Static SystemCommands.CloseWindowCommand}"
+				MouseDownColour="DarkRed"
+				MouseOverColour="#e81123"
+				Style="{StaticResource TitleBarButton}"
+				ToolTip="{Binding Close, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
+				<scalableicons:CloseIcon Width="10" Height="10" />
+			</controls:ExtendedButton>
+		</StackPanel>
+		<ControlTemplate.Triggers>
+			<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ThemableWindow2}}, Path=WindowState}" Value="Maximized">
+				<Setter TargetName="PART_Max" Property="AutomationProperties.Name" Value="Restore" />
+				<Setter TargetName="PART_Max" Property="Command" Value="{x:Static SystemCommands.RestoreWindowCommand}" />
+				<Setter TargetName="PART_Max" Property="ToolTip" Value="{Binding Restore, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+				<Setter TargetName="PART_Max" Property="Content">
+					<Setter.Value>
+						<scalableicons:RestoreIcon Width="10" Height="10" />
+					</Setter.Value>
+				</Setter>
+			</DataTrigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<Style TargetType="{x:Type controls:WindowButtonCommands}">
+		<Setter Property="Background" Value="{x:Null}" />
+		<Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="Template" Value="{StaticResource MahApps.Templates.WindowButtonCommands.Win10}" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+	</Style>
+
+</ResourceDictionary>

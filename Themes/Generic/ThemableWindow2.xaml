@@ -22,25 +22,6 @@
 		</Setter>
 	</Style>
 
-	<Style x:Key="TitleBarButton" TargetType="{x:Type controls:ExtendedButton}">
-		<Setter Property="Width" Value="40" />
-		<Setter Property="Background" Value="Transparent" />
-		<Setter Property="Margin" Value="1,1,1,0" />
-		<Setter Property="BorderThickness" Value="0" />
-		<Setter Property="Focusable" Value="False" />
-		<Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
-		<Setter Property="MouseOverColour">
-			<Setter.Value>
-				<SolidColorBrush Opacity="0.3" Color="White" />
-			</Setter.Value>
-		</Setter>
-		<Setter Property="MouseDownColour">
-			<Setter.Value>
-				<SolidColorBrush Opacity="0.3" Color="Black" />
-			</Setter.Value>
-		</Setter>
-	</Style>
-
 	<ControlTemplate x:Key="ThemableWindow2" TargetType="{x:Type controls:ThemableWindow2}">
 		<Border
 			x:Name="PART_Border"
@@ -65,14 +46,12 @@
 							<ColumnDefinition Width="Auto" />
 						</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto" />
+							<RowDefinition Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
 							<RowDefinition Height="*" />
 						</Grid.RowDefinitions>
 
 						<Rectangle
 							x:Name="PART_WindowTitleBackground"
-							Grid.Row="0"
-							Grid.Column="0"
 							Grid.ColumnSpan="3"
 							Fill="{TemplateBinding WindowTitleBrush}"
 							Focusable="False"
@@ -81,8 +60,6 @@
 						<!--  icon  -->
 						<ContentControl
 							x:Name="PART_Icon"
-							Grid.Row="0"
-							Grid.Column="0"
 							Width="20"
 							Height="20"
 							Margin="8,0,0,0"
@@ -93,98 +70,49 @@
 							Content="{TemplateBinding Icon}"
 							ContentTemplate="{TemplateBinding IconTemplate}"
 							Focusable="False"
-							Visibility="{TemplateBinding ShowIconOnTitleBar,
+							Visibility="{TemplateBinding ShowIcon,
 							                             Converter={StaticResource VisibleIfTrueConverter}}" />
 
 						<mah:MetroThumb
 							x:Name="PART_WindowTitleThumb"
-							Grid.Row="0"
-							Grid.Column="0"
 							Grid.ColumnSpan="3"
 							Style="{StaticResource WindowTitle}"
 							UseLayoutRounding="True" />
 
-						<DockPanel
-							Grid.Row="0"
-							Grid.Column="1"
-							VerticalAlignment="Top"
-							Focusable="False">
+						<!--  the title bar  -->
+						<DockPanel Grid.Column="1" Focusable="False">
+							<!--  the left window commands  -->
+							<mah:ContentPresenterEx
+								x:Name="PART_LeftWindowCommands"
+								Content="{Binding LeftWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+								DockPanel.Dock="Left"
+								Focusable="False" />
+							<!--  the right window commands  -->
+							<mah:ContentPresenterEx
+								x:Name="PART_RightWindowCommands"
+								Content="{Binding RightWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+								DockPanel.Dock="Right"
+								Focusable="False" />
 							<!--  the title bar  -->
 							<mah:MetroThumbContentControl
 								x:Name="PART_TitleBar"
-								Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-								Margin="0,1,0,-1"
+								Margin="5,1,0,-1"
 								HorizontalAlignment="{TemplateBinding TitleAlignment}"
 								HorizontalContentAlignment="Stretch"
 								VerticalContentAlignment="Stretch"
 								Content="{TemplateBinding Title}"
 								ContentTemplate="{TemplateBinding TitleTemplate}"
-								Focusable="False" />
+								Focusable="False"
+								FontSize="12" />
 						</DockPanel>
 
 						<!--  the window button commands  -->
-						<Grid
+						<mah:ContentPresenterEx
 							x:Name="PART_WindowButtonCommands"
-							Grid.Row="0"
-							Grid.RowSpan="2"
 							Grid.Column="2"
-							Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-							Margin="-1"
-							VerticalAlignment="Top"
 							Panel.ZIndex="1"
-							Focusable="False">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
-							<controls:ExtendedButton
-								x:Name="PART_CloseButton"
-								Grid.Column="4"
-								MouseDownColour="DarkRed"
-								MouseOverColour="#e81123"
-								Style="{StaticResource TitleBarButton}">
-								<scalableicons:CloseIcon
-									Width="10"
-									Height="10"
-									Foreground="{DynamicResource ThemeTextBrush}" />
-							</controls:ExtendedButton>
-							<controls:ExtendedButton
-								x:Name="PART_ChangeStateButton"
-								Grid.Column="3"
-								Style="{StaticResource TitleBarButton}">
-								<Grid Width="10" Height="10">
-									<scalableicons:MaximiseIcon Foreground="{DynamicResource ThemeTextBrush}" Tag="MaximiseBorder" />
-									<scalableicons:RestoreIcon
-										Foreground="{DynamicResource ThemeTextBrush}"
-										Tag="RestoreDownGrid"
-										Visibility="Collapsed" />
-								</Grid>
-							</controls:ExtendedButton>
-							<controls:ExtendedButton
-								x:Name="PART_MinimiseButton"
-								Grid.Column="2"
-								Style="{StaticResource TitleBarButton}">
-								<scalableicons:MinimiseIcon
-									Width="10"
-									Height="10"
-									Foreground="{DynamicResource ThemeTextBrush}" />
-							</controls:ExtendedButton>
-							<Border
-								x:Name="PART_Splitter"
-								Grid.Column="1"
-								Width="1"
-								Margin="1,4,1,4"
-								Background="{DynamicResource ThemeDisabledTextBrush}" />
-							<controls:ExtendedButton x:Name="PART_ThemeSetButton" Style="{StaticResource TitleBarButton}">
-								<scalableicons:ExpandIcon
-									Width="10"
-									Height="10"
-									Foreground="{DynamicResource ThemeTextBrush}" />
-							</controls:ExtendedButton>
-						</Grid>
+							Content="{Binding WindowButtonCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+							Focusable="False" />
 
 						<!--  the main window content  -->
 						<ContentPresenter

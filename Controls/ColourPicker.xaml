@@ -92,7 +92,6 @@
 				VerticalAlignment="Center"
 				Maximum="255"
 				Minimum="0"
-				Style="{StaticResource RoundedSlider}"
 				ValueChanged="Slider_ValueChanged"
 				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=R}" />
 			<TextBox
@@ -117,7 +116,6 @@
 				VerticalAlignment="Center"
 				Maximum="255"
 				Minimum="0"
-				Style="{StaticResource RoundedSlider}"
 				ValueChanged="Slider_ValueChanged"
 				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbTextConverter}, ConverterParameter=G}" />
 			<TextBox
@@ -144,7 +142,6 @@
 				VerticalAlignment="Center"
 				Maximum="255"
 				Minimum="0"
-				Style="{StaticResource RoundedSlider}"
 				ValueChanged="Slider_ValueChanged"
 				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=B}" />
 			<TextBox
