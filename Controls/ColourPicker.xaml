@@ -41,8 +41,8 @@
 			Height="200"
 			VerticalAlignment="Top"
 			MouseDown="ColourSelectionBorder_MouseDown"
+			MouseLeave="ColourSelectionBorder_MouseLeave"
 			MouseMove="Border_MouseMove"
-			MouseLeave="ColourSelectionBorder_MouseLeave"	
 			PreviewMouseDown="Border_PreviewMouseDown"
 			PreviewMouseUp="Border_PreviewMouseUp">
 			<Border.Background>

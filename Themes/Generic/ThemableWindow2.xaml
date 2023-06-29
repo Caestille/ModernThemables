@@ -164,7 +164,7 @@
 										BlurBackground="{Binding ElementName=PART_Content}"
 										BlurOpacity="0.5"
 										Focusable="False"
-										OffsetY="36">
+										RedrawTrigger="{Binding ElementName=PART_SettingsBorder, Path=Margin}">
 										<controls:ThemingControl
 											x:Name="PART_ThemingMenu"
 											Width="Auto"
