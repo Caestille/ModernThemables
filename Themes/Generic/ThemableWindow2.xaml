@@ -156,10 +156,6 @@
 										Color="Black" />
 								</Border.Effect>
 								<Grid>
-									<Border
-										x:Name="PART_SettingsBorder2"
-										Background="{DynamicResource MenuBrush}"
-										CornerRadius="5" />
 									<controls:BlurHost
 										BlurBackground="{Binding ElementName=PART_Content}"
 										BlurOpacity="0.5"
@@ -172,9 +168,6 @@
 											Margin="0,0,40,0"
 											HorizontalAlignment="Center"
 											VerticalAlignment="Bottom" />
-										<controls:BlurHost.OpacityMask>
-											<VisualBrush Visual="{Binding ElementName=PART_SettingsBorder2}" />
-										</controls:BlurHost.OpacityMask>
 									</controls:BlurHost>
 									<controls:ExtendedButton
 										x:Name="PART_SettingsCloseButton"
