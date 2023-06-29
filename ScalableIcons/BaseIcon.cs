@@ -38,12 +38,12 @@ namespace ModernThemables.ScalableIcons
         public BaseIcon()
         {
             this.Loaded += BaseIcon_Loaded;
-        }
+			Interaction.GetBehaviors(this).Add(new ButtonIconColourSyncBehaviour());
+		}
 
         private void BaseIcon_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= BaseIcon_Loaded;
-            Interaction.GetBehaviors(this).Add(new ButtonIconColourSyncBehaviour());
         }
     }
 }
