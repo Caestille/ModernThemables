@@ -28,7 +28,7 @@ namespace ModernThemables.Services
 		/// <inheritdoc />
 		public async Task ShowCustomDialogue(object? dataContext=null, Size? dialogueSize = null)
 		{
-			ThemableWindow2 window = new ThemableWindow2();
+			var window = new ThemableWindow2();
 			window.FontSize = 13;
 			window.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Fonts/#Inter");
 			window.UseLayoutRounding = true;
@@ -63,7 +63,7 @@ namespace ModernThemables.Services
 		/// <inheritdoc />
 		public async Task ShowBorderlessCustomDialogue(object? dataContext = null, Size? dialogueSize = null)
 		{
-			ThemableWindow2 window = new ThemableWindow2();
+			var window = new Window();
 			window.WindowStyle = WindowStyle.None;
 			window.AllowsTransparency = true;
 			window.Background = new SolidColorBrush(Colors.Transparent);
