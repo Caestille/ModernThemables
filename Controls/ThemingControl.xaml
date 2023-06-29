@@ -63,7 +63,6 @@
 				Grid.Row="1"
 				Width="15"
 				Height="15"
-				Background="{DynamicResource MenuBrush}"
 				Foreground="{DynamicResource StatusTextBrush}"
 				Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfTrueConverter}}" />
 		</Grid>
