@@ -28,52 +28,14 @@ namespace ModernThemables.Services
 		/// <inheritdoc />
 		public async Task ShowCustomDialogue(object? dataContext=null, Size? dialogueSize = null)
 		{
-			Window window = new Window();
-			window.AllowsTransparency = false;
+			ThemableWindow2 window = new ThemableWindow2();
 			window.FontSize = 13;
 			window.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Fonts/#Inter");
 			window.UseLayoutRounding = true;
 			window.SnapsToDevicePixels = true;
 			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 			window.Owner = Application.Current.MainWindow;
-			window.HorizontalContentAlignment = HorizontalAlignment.Center;
-			window.VerticalContentAlignment = VerticalAlignment.Center;
-			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
-			{
-				DataType = dataContext.GetType(),
-				VisualTree = new FrameworkElementFactory(registeredViews[dataContext.GetType()]),
-			});
-			//window.Content = new MainWindowControl() { VisibleViewModel = (ObservableObject)dataContext, IsToolWindow = true };
-			if (dialogueSize == null)
-			{
-				window.SizeToContent = SizeToContent.WidthAndHeight;
-			}
-			else
-			{
-				window.Width = dialogueSize.Value.Width;
-				window.Height = dialogueSize.Value.Height;
-			}
-			WindowChrome.SetWindowChrome(window, new WindowChrome() { ResizeBorderThickness = new Thickness(5), CaptionHeight = 24 });
-			window.WindowStyle = WindowStyle.ToolWindow;
-			RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
-			RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
-
-			window.ShowDialog();
-		}
-
-		/// <inheritdoc />
-		public async Task ShowBorderlessCustomDialogue(object? dataContext = null, Size? dialogueSize = null)
-		{
-			Window window = new Window();
-			window.WindowStyle = WindowStyle.None;
-			window.AllowsTransparency = true;
-			window.Background = new SolidColorBrush(Colors.Transparent);
-			window.FontSize = 13;
-			window.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Fonts/#Inter");
-			window.UseLayoutRounding = true;
-			window.SnapsToDevicePixels = true;
-			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-			window.Owner = Application.Current.MainWindow;
+			window.Icon = window.Owner.Icon;
 			window.HorizontalContentAlignment = HorizontalAlignment.Center;
 			window.VerticalContentAlignment = VerticalAlignment.Center;
 			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
@@ -91,7 +53,44 @@ namespace ModernThemables.Services
 				window.Width = dialogueSize.Value.Width;
 				window.Height = dialogueSize.Value.Height;
 			}
-			//WindowChrome.SetWindowChrome(window, new WindowChrome() { ResizeBorderThickness = new Thickness(5), CaptionHeight = 24 });
+			window.WindowStyle = WindowStyle.ToolWindow;
+			RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
+			RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
+
+			window.ShowDialog();
+		}
+
+		/// <inheritdoc />
+		public async Task ShowBorderlessCustomDialogue(object? dataContext = null, Size? dialogueSize = null)
+		{
+			ThemableWindow2 window = new ThemableWindow2();
+			window.WindowStyle = WindowStyle.None;
+			window.AllowsTransparency = true;
+			window.Background = new SolidColorBrush(Colors.Transparent);
+			window.FontSize = 13;
+			window.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Fonts/#Inter");
+			window.UseLayoutRounding = true;
+			window.SnapsToDevicePixels = true;
+			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+			window.Owner = Application.Current.MainWindow;
+			window.Icon = window.Owner.Icon;
+			window.HorizontalContentAlignment = HorizontalAlignment.Center;
+			window.VerticalContentAlignment = VerticalAlignment.Center;
+			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
+			{
+				DataType = dataContext.GetType(),
+				VisualTree = new FrameworkElementFactory(registeredViews[dataContext.GetType()]),
+			});
+			window.Content =  new ContentControl() { Content = (ObservableObject)dataContext };
+			if (dialogueSize == null)
+			{
+				window.SizeToContent = SizeToContent.WidthAndHeight;
+			}
+			else
+			{
+				window.Width = dialogueSize.Value.Width;
+				window.Height = dialogueSize.Value.Height;
+			}
 			RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
 			RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
 
@@ -118,6 +117,7 @@ namespace ModernThemables.Services
 
 			dialogue.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 			dialogue.Owner = Application.Current.MainWindow;
+			dialogue.WindowStyle = WindowStyle.ToolWindow;
 
 			if (dialogue.ShowDialog() == true)
 			{
