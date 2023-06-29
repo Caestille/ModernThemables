@@ -1,6 +1,7 @@
 ﻿using CoreUtilities.HelperClasses.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -48,15 +49,6 @@ namespace ModernThemables.Controls
 			new KeyValuePair<Color, double>(Colors.White, 1)
 		};
 
-		[DllImport("user32.dll", SetLastError = true)]
-		public static extern IntPtr GetDesktopWindow();
-		[DllImport("user32.dll", SetLastError = true)]
-		public static extern IntPtr GetWindowDC(IntPtr window);
-		[DllImport("gdi32.dll", SetLastError = true)]
-		public static extern uint GetPixel(IntPtr dc, int x, int y);
-		[DllImport("user32.dll", SetLastError = true)]
-		public static extern int ReleaseDC(IntPtr window, IntPtr dc);
-
 		public ColourPicker()
 		{
 			InitializeComponent();
@@ -72,21 +64,21 @@ namespace ModernThemables.Controls
 
 		private void Border_MouseMove(object sender, MouseEventArgs e)
 		{
+			if (!ColourSelectionBorder.IsMouseDirectlyOver) return;
 			if (!isMouseDown) return;
 
 			var borderCursor = e.GetPosition(ColourSelectionBorder);
 			AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
 
 			var cursor = this.PointToScreen(e.GetPosition(this));
-			this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 			var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
-			Colour = c;
+			Colour = c ?? Colour;
 			if (colourChangedCallback != null) colourChangedCallback(Colour);
 		}
 
-		public Color GetColorAt(int x, int y)
+		public Color? GetColorAt(int x, int y)
 		{
-			if (x < 1 || x > ColourSelectionBorder.ActualWidth - 1 || y < 1 || y > ColourSelectionBorder.ActualHeight - 1) return Colour;
+			if (x < 0 || x > ColourSelectionBorder.ActualWidth - 0 || y < 0 || y > ColourSelectionBorder.ActualHeight - 0) return null;
 
 			var horizFrac = x / ColourSelectionBorder.ActualWidth;
 			var vertFrac = (float)(((y / ColourSelectionBorder.ActualHeight) - 0.5) * 2);
@@ -105,16 +97,52 @@ namespace ModernThemables.Controls
 
 		public Point GetPointAtColour(Color colour)
 		{
-			var brightness = colour.Brightness();
-			var y = -(brightness * ColourSelectionBorder.ActualHeight - ColourSelectionBorder.ActualHeight);
-			for (int x = 0; x < ColourSelectionBorder.ActualWidth; x ++)
+			int width = (int)ColourSelectionBorder.ActualWidth;
+			int height = (int)ColourSelectionBorder.ActualHeight;
+			var xStep = width / 50;
+			var yStep = height / 50;
+			int xPos = 0;
+			int yPos = 0;
+			for (int i = 0; i < 50; i++)
 			{
-				if (GetColorAt(x, (int)y).ColoursAreClose(colour, 20))
+				var doBreak = false;
+				for (int j = 0; j < 50; j++)
 				{
-					return new Point(x, y);
+					xPos = xStep * i;
+					yPos = yStep * j;
+					var sampled = GetColorAt(xPos, yPos);
+					if (sampled.HasValue && sampled.Value.ColoursAreClose(colour, 50))
+					{
+						doBreak = true;
+						break;
+					}
+				}
+				if (doBreak)
+				{
+					break;
 				}
 			}
-			return new Point(0, y);
+
+			var initialPoint = new Point(xPos, yPos);
+
+			width = xStep * 2;
+			height = yStep * 2;
+			xPos -= xStep;
+			yPos -= yStep;
+
+			for (int i = xPos; i <= xPos + width; i++)
+			{
+				for (int j = yPos; j <= yPos + height; j++)
+				{
+					var sampled = GetColorAt(i, j);
+					if (sampled.HasValue && sampled.Value.ColoursAreClose(colour, 50))
+					{
+						return new Point(i, j);
+					}
+				}
+			}
+
+			return initialPoint;
 		}
 
 		private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -141,8 +169,13 @@ namespace ModernThemables.Controls
 			var borderCursor = e.GetPosition(ColourSelectionBorder);
 			AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
 			var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
-			Colour = c;
+			Colour = c ?? Colour;
 			if (colourChangedCallback != null) colourChangedCallback(Colour);
+		}
+
+		private void ColourSelectionBorder_MouseLeave(object sender, MouseEventArgs e)
+		{
+			if (isMouseDown) isMouseDown = false;
 		}
 
 		private void AdjustSelectedColourCursor(int x, int y)

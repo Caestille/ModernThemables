@@ -1,4 +1,4 @@
-﻿<Window
+﻿<local:ThemableWindow2
 	x:Class="ModernThemables.Controls.ColourPickerDialogue"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,7 +7,6 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	Title="Pick a colour"
 	AllowsTransparency="False"
-	Background="Black"
 	RenderOptions.BitmapScalingMode="NearestNeighbor"
 	RenderOptions.ClearTypeHint="Enabled"
 	ShowInTaskbar="False"
@@ -15,14 +14,9 @@
 	SnapsToDevicePixels="True"
 	UseLayoutRounding="True"
 	WindowStartupLocation="CenterOwner"
-	WindowStyle="None"
 	mc:Ignorable="d">
-	<WindowChrome.WindowChrome>
-		<WindowChrome CaptionHeight="24" ResizeBorderThickness="5" />
-	</WindowChrome.WindowChrome>
 	<Grid>
-		<local:ThemableWindow IsToolWindow="True" />
-		<local:ColourPicker x:Name="ColourPickerControl" Margin="10,40,10,50" />
+		<local:ColourPicker x:Name="ColourPickerControl" Margin="10,10,10,50" />
 		<Border
 			Height="40"
 			Margin="1"
@@ -59,4 +53,4 @@
 			MouseDownColour="{DynamicResource ControlClickablePartMouseDownBrush}"
 			MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}" />
 	</Grid>
-</Window>
+</local:ThemableWindow2>
