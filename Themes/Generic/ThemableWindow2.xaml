@@ -118,17 +118,115 @@
 						<ContentPresenter
 							x:Name="PART_Content"
 							Grid.Row="1"
-							Grid.Column="0"
 							Grid.ColumnSpan="3"
 							FocusVisualStyle="{x:Null}"
 							UseLayoutRounding="False" />
 
+						<controls:ExtendedButton
+							x:Name="PART_SettingsCloseRegion"
+							Grid.Row="1"
+							Grid.ColumnSpan="3"
+							Background="Black"
+							BorderThickness="0"
+							Focusable="False"
+							IsHitTestVisible="False"
+							MouseDownColour="Black"
+							MouseOverColour="Black"
+							Opacity="0" />
+
+						<Grid
+							Grid.Row="1"
+							Grid.ColumnSpan="3"
+							ClipToBounds="True">
+							<Border
+								x:Name="PART_SettingsBorder"
+								Margin="5,-150,5,5"
+								HorizontalAlignment="Right"
+								VerticalAlignment="Top"
+								Background="{DynamicResource MenuBrush}"
+								BorderBrush="{DynamicResource MenuBorderBrush}"
+								BorderThickness="1"
+								CornerRadius="5"
+								Focusable="False">
+								<Border.Effect>
+									<DropShadowEffect
+										x:Name="SettingsDropShadow"
+										BlurRadius="30"
+										ShadowDepth="0"
+										Color="Black" />
+								</Border.Effect>
+								<Grid>
+									<Border
+										x:Name="PART_SettingsBorder2"
+										Background="{DynamicResource MenuBrush}"
+										CornerRadius="5" />
+									<controls:BlurHost
+										BlurBackground="{Binding ElementName=PART_Content}"
+										BlurOpacity="0.5"
+										Focusable="False"
+										OffsetY="36">
+										<controls:ThemingControl
+											x:Name="PART_ThemingMenu"
+											Width="Auto"
+											Height="Auto"
+											Margin="0,0,40,0"
+											HorizontalAlignment="Center"
+											VerticalAlignment="Bottom" />
+										<controls:BlurHost.OpacityMask>
+											<VisualBrush Visual="{Binding ElementName=PART_SettingsBorder2}" />
+										</controls:BlurHost.OpacityMask>
+									</controls:BlurHost>
+									<controls:ExtendedButton
+										x:Name="PART_SettingsCloseButton"
+										Width="40"
+										Height="30"
+										HorizontalAlignment="Right"
+										VerticalAlignment="Top"
+										Background="Transparent"
+										BorderThickness="0"
+										CornerRadius="0,5,0,5"
+										MouseDownColour="{DynamicResource ControlClickablePartMouseDownBrush}"
+										MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}">
+										<scalableicons:CloseIcon
+											Width="10"
+											Height="10"
+											Foreground="{DynamicResource TextBrush}" />
+									</controls:ExtendedButton>
+								</Grid>
+							</Border>
+						</Grid>
 					</Grid>
 				</Grid>
 			</AdornerDecorator>
 		</Border>
 
 		<ControlTemplate.Triggers>
+			<Trigger Property="ShowThemingMenu" Value="True">
+				<Setter TargetName="PART_SettingsCloseRegion" Property="IsHitTestVisible" Value="True" />
+				<Setter TargetName="PART_SettingsCloseRegion" Property="Opacity" Value="0.5" />
+				<Trigger.EnterActions>
+					<BeginStoryboard>
+						<Storyboard>
+							<ThicknessAnimation
+								Storyboard.TargetName="PART_SettingsBorder"
+								Storyboard.TargetProperty="Margin"
+								To="5"
+								Duration="0:0:0.1" />
+						</Storyboard>
+					</BeginStoryboard>
+				</Trigger.EnterActions>
+				<Trigger.ExitActions>
+					<BeginStoryboard>
+						<Storyboard>
+							<ThicknessAnimation
+								Storyboard.TargetName="PART_SettingsBorder"
+								Storyboard.TargetProperty="Margin"
+								To="5,-150,5,5"
+								Duration="0:0:0.1" />
+						</Storyboard>
+					</BeginStoryboard>
+				</Trigger.ExitActions>
+			</Trigger>
 			<Trigger Property="ShowTitleBar" Value="False">
 				<Setter TargetName="PART_WindowTitleThumb" Property="Grid.RowSpan" Value="2" />
 			</Trigger>
@@ -151,12 +249,6 @@
 				</MultiTrigger.Conditions>
 				<Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding Path=BorderBrush, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
 			</MultiTrigger>
-			<MultiTrigger>
-				<MultiTrigger.Conditions>
-					<Condition Property="ResizeMode" Value="CanResizeWithGrip" />
-					<Condition Property="WindowState" Value="Normal" />
-				</MultiTrigger.Conditions>
-			</MultiTrigger>
 		</ControlTemplate.Triggers>
 
 	</ControlTemplate>
@@ -165,6 +257,7 @@
 		<Setter Property="SnapsToDevicePixels" Value="True" />
 		<Setter Property="TitleBarHeight" Value="31" />
 		<Setter Property="GlowDepth" Value="1" />
+		<Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}" />
 		<Setter Property="GlowColor" Value="{DynamicResource ThemeMouseOverColour}" />
 		<Setter Property="NonActiveGlowColor" Value="{DynamicResource DisabledControlClickablePartColour}" />
 		<Setter Property="WindowTitleBrush" Value="{DynamicResource ThemeBrush}" />

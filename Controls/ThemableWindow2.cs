@@ -30,6 +30,9 @@ namespace ModernThemables.Controls
 	[TemplatePart(Name = PART_LeftWindowCommands, Type = typeof(ContentPresenter))]
 	[TemplatePart(Name = PART_RightWindowCommands, Type = typeof(ContentPresenter))]
 	[TemplatePart(Name = PART_WindowButtonCommands, Type = typeof(ContentPresenter))]
+	[TemplatePart(Name = PART_SettingsCloseButton, Type = typeof(Button))]
+	[TemplatePart(Name = PART_SettingsCloseRegion, Type = typeof(Button))]
+	[TemplatePart(Name = PART_ThemingMenu, Type = typeof(ThemingControl))]
 	public class ThemableWindow2 : WindowChromeWindow
 	{
 		private const string PART_Icon = "PART_Icon";
@@ -40,6 +43,9 @@ namespace ModernThemables.Controls
 		private const string PART_LeftWindowCommands = "PART_LeftWindowCommands";
 		private const string PART_RightWindowCommands = "PART_RightWindowCommands";
 		private const string PART_WindowButtonCommands = "PART_WindowButtonCommands";
+		private const string PART_SettingsCloseButton = "PART_SettingsCloseButton";
+		private const string PART_SettingsCloseRegion = "PART_SettingsCloseRegion";
+		private const string PART_ThemingMenu = "PART_ThemingMenu";
 
 		private FrameworkElement? icon;
 		private Thumb? windowTitleThumb;
@@ -48,10 +54,25 @@ namespace ModernThemables.Controls
 		private ContentPresenter? LeftWindowCommandsPresenter;
 		private ContentPresenter? RightWindowCommandsPresenter;
 		private ContentPresenter? WindowButtonCommandsPresenter;
-
-		private Binding cachedGlowBinding; 
+		private Button? SettingsCloseButton;
+		private Button? SettingsCloseRegion;
+		private ThemingControl? ThemingMenu;
 
 		#region Properties
+
+		/// <summary>
+		/// Get or sets whether the TitleBar icon is visible or not.
+		/// </summary>
+		public bool ShowThemingMenu
+		{
+			get => (bool)this.GetValue(ShowThemingMenuProperty);
+			set => this.SetValue(ShowThemingMenuProperty, BooleanBoxes.Box(value));
+		}
+		public static readonly DependencyProperty ShowThemingMenuProperty = DependencyProperty.Register(
+			nameof(ShowThemingMenu),
+			typeof(bool),
+			typeof(ThemableWindow2),
+			new PropertyMetadata(BooleanBoxes.FalseBox));
 
 		/// <summary>
 		/// Get or sets whether the TitleBar icon is visible or not.
@@ -562,6 +583,9 @@ namespace ModernThemables.Controls
 			this.LeftWindowCommandsPresenter = this.GetTemplateChild(PART_LeftWindowCommands) as ContentPresenter;
 			this.RightWindowCommandsPresenter = this.GetTemplateChild(PART_RightWindowCommands) as ContentPresenter;
 			this.WindowButtonCommandsPresenter = this.GetTemplateChild(PART_WindowButtonCommands) as ContentPresenter;
+			this.SettingsCloseButton = this.GetTemplateChild(PART_SettingsCloseButton) as Button;
+			this.SettingsCloseRegion = this.GetTemplateChild(PART_SettingsCloseRegion) as Button;
+			this.ThemingMenu = this.GetTemplateChild(PART_ThemingMenu) as ThemingControl;
 
 			this.LeftWindowCommands ??= new WindowCommands();
 			this.RightWindowCommands ??= new WindowCommands();
@@ -570,16 +594,6 @@ namespace ModernThemables.Controls
 			//this.LeftWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
 			//this.RightWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
 			this.WindowButtonCommands.SetValue(WindowButtonCommands.ParentWindowPropertyKey, this);
-
-			//this.WindowButtonCommands.MaximisingWindow += (sender, e) =>
-			//{
-   //             var bindingExpression = BindingOperations.GetBindingExpression(this, GlowColorProperty);
-   //             this.GlowColor = null;
-			//};
-			//this.WindowButtonCommands.MaximisedWindow += (sender, e) =>
-			//{
-			//	this.SetBinding(ThemableWindow2.GlowColorProperty, cachedGlowBinding);
-			//};
 
 			this.icon = this.GetTemplateChild(PART_Icon) as FrameworkElement;
 			this.titleBar = this.GetTemplateChild(PART_TitleBar) as UIElement;
@@ -633,6 +647,28 @@ namespace ModernThemables.Controls
 				this.icon.PreviewMouseLeftButtonUp -= this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
 			}
 
+			if (this.WindowButtonCommands != null)
+			{
+				this.WindowButtonCommands.ToggleThemeingMenu -= ToggleShowThemingMenu;
+				this.WindowButtonCommands.MaximisingWindow -= OnMaximise;
+				this.WindowButtonCommands.MaximisedWindow -= OnMaximised;
+			}
+
+			if (SettingsCloseButton != null)
+			{
+				SettingsCloseButton.Click -= CloseThemingMenu;
+			}
+
+			if (SettingsCloseRegion != null)
+			{
+				SettingsCloseRegion.Click -= CloseThemingMenu;
+			}
+
+			if (ThemingMenu != null)
+			{
+				ThemingMenu.InternalRequestClose -= ThemingMenu_InternalRequestClose;
+			}
+
 			this.SizeChanged -= this.ThemableWindow2_SizeChanged;
 		}
 
@@ -662,6 +698,28 @@ namespace ModernThemables.Controls
 				this.icon.PreviewMouseLeftButtonUp += this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
 			}
 
+			if (this.WindowButtonCommands != null)
+			{
+				this.WindowButtonCommands.ToggleThemeingMenu += ToggleShowThemingMenu;
+				this.WindowButtonCommands.MaximisingWindow += OnMaximise;
+				this.WindowButtonCommands.MaximisedWindow += OnMaximised;
+			}
+
+			if (SettingsCloseButton != null)
+			{
+				SettingsCloseButton.Click += CloseThemingMenu;
+			}
+
+			if (SettingsCloseRegion != null)
+			{
+				SettingsCloseRegion.Click += CloseThemingMenu;
+			}
+
+			if (ThemingMenu != null)
+			{
+				ThemingMenu.InternalRequestClose += ThemingMenu_InternalRequestClose;
+			}
+
 			// handle size if we have a Grid for the title (e.g. clean window have a centered title)
 			if (this.titleBar != null && this.TitleAlignment == HorizontalAlignment.Center)
 			{
@@ -687,6 +745,39 @@ namespace ModernThemables.Controls
 		private void WindowTitleThumbSystemMenuOnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
 		{
 			DoWindowTitleThumbSystemMenuOnMouseRightButtonUp(this, e);
+		}
+
+		private void ToggleShowThemingMenu(object sender, WindowEventHandlerArgs e)
+		{
+			ShowThemingMenu = !ShowThemingMenu;
+			if (ShowThemingMenu && ThemingMenu != null)
+			{
+				ThemingMenu.FocusOnOpen();
+			}
+		}
+
+		private void OnMaximise(object sender, WindowEventHandlerArgs e)
+		{
+			this.GlowColor = null;
+		}
+
+		private void OnMaximised(object sender, WindowEventHandlerArgs e)
+		{
+			SetResourceReference(GlowColorProperty, "ThemeMouseOverColour");
+		}
+
+		private void CloseThemingMenu(object sender, RoutedEventArgs e)
+		{
+			ShowThemingMenu = false;
+			if (WindowButtonCommands != null)
+			{
+				WindowButtonCommands.IsThemingMenuVisible = false;
+			}
+		}
+
+		private void ThemingMenu_InternalRequestClose(object? sender, EventArgs e)
+		{
+			CloseThemingMenu(sender, null);
 		}
 
 		internal static void DoWindowTitleThumbOnPreviewMouseLeftButtonUp(ThemableWindow2 window, MouseButtonEventArgs mouseButtonEventArgs)

@@ -26,8 +26,18 @@
 
 	<ControlTemplate x:Key="MahApps.Templates.WindowButtonCommands.Win10" TargetType="{x:Type controls:WindowButtonCommands}">
 		<StackPanel Orientation="Horizontal">
-			<controls:ExtendedButton x:Name="PART_ThemeSetButton" Style="{StaticResource TitleBarButton}">
-				<scalableicons:ExpandIcon Width="10" Height="10" />
+			<controls:ExtendedButton
+				x:Name="PART_ThemeSetButton"
+				Style="{StaticResource TitleBarButton}"
+				ToolTip="Set theme">
+				<scalableicons:ExpandIcon
+					Width="10"
+					Height="10"
+					RenderTransformOrigin="0.5,0.5">
+					<scalableicons:ExpandIcon.RenderTransform>
+						<RotateTransform x:Name="RotateTransformBlah" Angle="0" />
+					</scalableicons:ExpandIcon.RenderTransform>
+				</scalableicons:ExpandIcon>
 			</controls:ExtendedButton>
 			<Border
 				x:Name="PART_Splitter"
@@ -66,6 +76,32 @@
 			</controls:ExtendedButton>
 		</StackPanel>
 		<ControlTemplate.Triggers>
+			<Trigger Property="IsThemingMenuVisible" Value="True">
+				<Trigger.EnterActions>
+					<BeginStoryboard>
+						<Storyboard>
+							<DoubleAnimation Storyboard.TargetName="RotateTransformBlah"
+								 Storyboard.TargetProperty="Angle"
+								 To="180" Duration="0:0:0.1"/>
+						</Storyboard>
+					</BeginStoryboard>
+				</Trigger.EnterActions>
+				<Trigger.ExitActions>
+					<BeginStoryboard>
+						<Storyboard>
+							<DoubleAnimation Storyboard.TargetName="RotateTransformBlah"
+								 Storyboard.TargetProperty="Angle"
+								 To="0" Duration="0:0:0.1"/>
+						</Storyboard>
+					</BeginStoryboard>
+				</Trigger.ExitActions>
+			</Trigger>
+			<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ThemableWindow2}}, Path=WindowStyle}" Value="ToolWindow">
+				<Setter TargetName="PART_ThemeSetButton" Property="Visibility" Value="Collapsed" />
+				<Setter TargetName="PART_Max" Property="Visibility" Value="Collapsed" />
+				<Setter TargetName="PART_Min" Property="Visibility" Value="Collapsed" />
+				<Setter TargetName="PART_Splitter" Property="Visibility" Value="Collapsed" />
+			</DataTrigger>
 			<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ThemableWindow2}}, Path=WindowState}" Value="Maximized">
 				<Setter TargetName="PART_Max" Property="AutomationProperties.Name" Value="Restore" />
 				<Setter TargetName="PART_Max" Property="Command" Value="{x:Static SystemCommands.RestoreWindowCommand}" />

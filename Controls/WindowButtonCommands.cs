@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using ControlzEx.Theming;
+using MahApps.Metro.ValueBoxes;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -15,146 +16,239 @@ using Windows.Win32;
 
 namespace ModernThemables.Controls
 {
-    [TemplatePart(Name = "PART_Min", Type = typeof(Button))]
-    [TemplatePart(Name = "PART_Max", Type = typeof(Button))]
-    [TemplatePart(Name = "PART_Close", Type = typeof(Button))]
-    public class WindowButtonCommands : ContentControl
-    {
-        public event WindowEventHandler? ClosingWindow;
-        public event WindowEventHandler? MaximisingWindow;
-        public event WindowEventHandler? MinimisingWindow;
-        public event WindowEventHandler? RestoringWindow;
+	[TemplatePart(Name = "PART_Min", Type = typeof(Button))]
+	[TemplatePart(Name = "PART_Max", Type = typeof(Button))]
+	[TemplatePart(Name = "PART_Close", Type = typeof(Button))]
+	[TemplatePart(Name = "PART_ThemeSetButton", Type = typeof(Button))]
+	public class WindowButtonCommands : ContentControl
+	{
+		public event WindowEventHandler? ClosingWindow;
+		public event WindowEventHandler? MaximisingWindow;
+		public event WindowEventHandler? MinimisingWindow;
+		public event WindowEventHandler? RestoringWindow;
 
-        public event WindowEventHandler? MaximisedWindow;
-        public event WindowEventHandler? MinimisedWindow;
-        public event WindowEventHandler? RestoredWindow;
+		public event WindowEventHandler? MaximisedWindow;
+		public event WindowEventHandler? MinimisedWindow;
+		public event WindowEventHandler? RestoredWindow;
 
-        public delegate void WindowEventHandler(object sender, WindowEventHandlerArgs args);
+		public event WindowEventHandler? ToggleThemeingMenu;
 
-        /// <summary>Identifies the <see cref="Minimize"/> dependency property.</summary>
-        public static readonly DependencyProperty MinimizeProperty
-            = DependencyProperty.Register(nameof(Minimize),
-                                          typeof(string),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
+		public delegate void WindowEventHandler(object sender, WindowEventHandlerArgs args);
 
-        /// <summary>
-        /// Gets or sets the minimize button tooltip.
-        /// </summary>
-        public string? Minimize
-        {
-            get => (string?)this.GetValue(MinimizeProperty);
-            set => this.SetValue(MinimizeProperty, value);
-        }
+		/// <summary>Identifies the <see cref="Minimize"/> dependency property.</summary>
+		public static readonly DependencyProperty MinimizeProperty
+			= DependencyProperty.Register(nameof(Minimize),
+										  typeof(string),
+										  typeof(WindowButtonCommands),
+										  new PropertyMetadata(null));
 
-        /// <summary>Identifies the <see cref="Maximize"/> dependency property.</summary>
-        public static readonly DependencyProperty MaximizeProperty
-            = DependencyProperty.Register(nameof(Maximize),
-                                          typeof(string),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
+		/// <summary>
+		/// Gets or sets the minimize button tooltip.
+		/// </summary>
+		public string? Minimize
+		{
+			get => (string?)this.GetValue(MinimizeProperty);
+			set => this.SetValue(MinimizeProperty, value);
+		}
 
-        /// <summary>
-        /// Gets or sets the maximize button tooltip.
-        /// </summary>
-        public string? Maximize
-        {
-            get => (string?)this.GetValue(MaximizeProperty);
-            set => this.SetValue(MaximizeProperty, value);
-        }
+		/// <summary>Identifies the <see cref="Maximize"/> dependency property.</summary>
+		public static readonly DependencyProperty MaximizeProperty
+			= DependencyProperty.Register(nameof(Maximize),
+										  typeof(string),
+										  typeof(WindowButtonCommands),
+										  new PropertyMetadata(null));
 
-        /// <summary>Identifies the <see cref="Close"/> dependency property.</summary>
-        public static readonly DependencyProperty CloseProperty
-            = DependencyProperty.Register(nameof(Close),
-                                          typeof(string),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
+		/// <summary>
+		/// Gets or sets the maximize button tooltip.
+		/// </summary>
+		public string? Maximize
+		{
+			get => (string?)this.GetValue(MaximizeProperty);
+			set => this.SetValue(MaximizeProperty, value);
+		}
 
-        /// <summary>
-        /// Gets or sets the close button tooltip.
-        /// </summary>
-        public string? Close
-        {
-            get => (string?)this.GetValue(CloseProperty);
-            set => this.SetValue(CloseProperty, value);
-        }
+		/// <summary>Identifies the <see cref="Close"/> dependency property.</summary>
+		public static readonly DependencyProperty CloseProperty
+			= DependencyProperty.Register(nameof(Close),
+										  typeof(string),
+										  typeof(WindowButtonCommands),
+										  new PropertyMetadata(null));
 
-        /// <summary>Identifies the <see cref="Restore"/> dependency property.</summary>
-        public static readonly DependencyProperty RestoreProperty
-            = DependencyProperty.Register(nameof(Restore),
-                                          typeof(string),
-                                          typeof(WindowButtonCommands),
-                                          new PropertyMetadata(null));
+		/// <summary>
+		/// Gets or sets the close button tooltip.
+		/// </summary>
+		public string? Close
+		{
+			get => (string?)this.GetValue(CloseProperty);
+			set => this.SetValue(CloseProperty, value);
+		}
 
-        /// <summary>
-        /// Gets or sets the restore button tooltip.
-        /// </summary>
-        public string? Restore
-        {
-            get => (string?)this.GetValue(RestoreProperty);
-            set => this.SetValue(RestoreProperty, value);
-        }
+		/// <summary>Identifies the <see cref="Restore"/> dependency property.</summary>
+		public static readonly DependencyProperty RestoreProperty
+			= DependencyProperty.Register(nameof(Restore),
+										  typeof(string),
+										  typeof(WindowButtonCommands),
+										  new PropertyMetadata(null));
 
-        /// <summary>Identifies the <see cref="ParentWindow"/> dependency property.</summary>
-        internal static readonly DependencyPropertyKey ParentWindowPropertyKey =
-            DependencyProperty.RegisterReadOnly(nameof(ParentWindow),
-                                                typeof(Window),
-                                                typeof(WindowButtonCommands),
-                                                new PropertyMetadata(null));
+		/// <summary>
+		/// Gets or sets the restore button tooltip.
+		/// </summary>
+		public string? Restore
+		{
+			get => (string?)this.GetValue(RestoreProperty);
+			set => this.SetValue(RestoreProperty, value);
+		}
 
-        /// <summary>Identifies the <see cref="ParentWindow"/> dependency property.</summary>
-        public static readonly DependencyProperty ParentWindowProperty = ParentWindowPropertyKey.DependencyProperty;
+		/// <summary>Identifies the <see cref="ParentWindow"/> dependency property.</summary>
+		internal static readonly DependencyPropertyKey ParentWindowPropertyKey =
+			DependencyProperty.RegisterReadOnly(nameof(ParentWindow),
+												typeof(Window),
+												typeof(WindowButtonCommands),
+												new PropertyMetadata(null));
 
-        /// <summary>
-        /// Gets the window.
-        /// </summary>
-        public Window? ParentWindow
-        {
-            get => (Window?)this.GetValue(ParentWindowProperty);
-            protected set => this.SetValue(ParentWindowPropertyKey, value);
-        }
+		/// <summary>Identifies the <see cref="ParentWindow"/> dependency property.</summary>
+		public static readonly DependencyProperty ParentWindowProperty = ParentWindowPropertyKey.DependencyProperty;
 
-        static WindowButtonCommands()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowButtonCommands), new FrameworkPropertyMetadata(typeof(WindowButtonCommands)));
-        }
+		
+		public bool IsThemingMenuVisible
+		{
+			get => (bool)this.GetValue(IsThemingMenuVisibleProperty);
+			set => this.SetValue(IsThemingMenuVisibleProperty, value);
+		}
 
-        public WindowButtonCommands()
-        {
-            this.CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand, this.MinimizeWindow));
-            this.CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand, this.MaximizeWindow));
-            this.CommandBindings.Add(new CommandBinding(SystemCommands.RestoreWindowCommand, this.RestoreWindow));
-            this.CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, this.CloseWindow));
+		/// <summary>Identifies the <see cref="Maximize"/> dependency property.</summary>
+		public static readonly DependencyProperty IsThemingMenuVisibleProperty
+			= DependencyProperty.Register(nameof(IsThemingMenuVisible),
+										  typeof(bool),
+										  typeof(WindowButtonCommands),
+										  new PropertyMetadata(BooleanBoxes.FalseBox));
 
-            this.Dispatcher.BeginInvoke(() =>
-                {
-                    if (this.ParentWindow is null)
-                    {
-                        var window = TryFindParent<Window>(this);
-                        this.SetValue(ParentWindowPropertyKey, window);
-                    }
+		/// <summary>
+		/// Gets the window.
+		/// </summary>
+		public Window? ParentWindow
+		{
+			get => (Window?)this.GetValue(ParentWindowProperty);
+			protected set => this.SetValue(ParentWindowPropertyKey, value);
+		}
 
-                    if (string.IsNullOrWhiteSpace(this.Minimize))
-                    {
-                        this.SetCurrentValue(MinimizeProperty, GetCaption(900));
-                    }
+		static WindowButtonCommands()
+		{
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowButtonCommands), new FrameworkPropertyMetadata(typeof(WindowButtonCommands)));
+		}
 
-                    if (string.IsNullOrWhiteSpace(this.Maximize))
-                    {
-                        this.SetCurrentValue(MaximizeProperty, GetCaption(901));
-                    }
+		public WindowButtonCommands()
+		{
+			this.CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand, this.MinimizeWindow));
+			this.CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand, this.MaximizeWindow));
+			this.CommandBindings.Add(new CommandBinding(SystemCommands.RestoreWindowCommand, this.RestoreWindow));
+			this.CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, this.CloseWindow));
 
-                    if (string.IsNullOrWhiteSpace(this.Close))
-                    {
-                        this.SetCurrentValue(CloseProperty, GetCaption(905));
-                    }
+			this.Dispatcher.BeginInvoke(() =>
+				{
+					if (this.ParentWindow is null)
+					{
+						var window = TryFindParent<Window>(this);
+						this.SetValue(ParentWindowPropertyKey, window);
+					}
 
-                    if (string.IsNullOrWhiteSpace(this.Restore))
-                    {
-                        this.SetCurrentValue(RestoreProperty, GetCaption(903));
-                    }
-                },
-            DispatcherPriority.Loaded);
+					if (string.IsNullOrWhiteSpace(this.Minimize))
+					{
+						this.SetCurrentValue(MinimizeProperty, GetCaption(900));
+					}
+
+					if (string.IsNullOrWhiteSpace(this.Maximize))
+					{
+						this.SetCurrentValue(MaximizeProperty, GetCaption(901));
+					}
+
+					if (string.IsNullOrWhiteSpace(this.Close))
+					{
+						this.SetCurrentValue(CloseProperty, GetCaption(905));
+					}
+
+					if (string.IsNullOrWhiteSpace(this.Restore))
+					{
+						this.SetCurrentValue(RestoreProperty, GetCaption(903));
+					}
+				},
+			DispatcherPriority.Loaded);
+		}
+
+		public override void OnApplyTemplate()
+		{
+			(this.GetTemplateChild("PART_ThemeSetButton") as Button).Click += (s, e) =>
+			{
+				this.IsThemingMenuVisible = !this.IsThemingMenuVisible;
+				this.ToggleThemeingMenu.Invoke(this, new WindowEventHandlerArgs());
+			};
+		}
+
+		private void MinimizeWindow(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (this.ParentWindow != null)
+			{
+				var args = new WindowEventHandlerArgs();
+				this.MinimisingWindow?.Invoke(this, args);
+
+				if (args.Cancelled)
+				{
+					return;
+				}
+
+				SystemCommands.MinimizeWindow(this.ParentWindow);
+				this.MinimisedWindow?.Invoke(this, new WindowEventHandlerArgs());
+			}
+		}
+
+		private void MaximizeWindow(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (this.ParentWindow != null)
+			{
+				var args = new WindowEventHandlerArgs();
+				this.MaximisingWindow?.Invoke(this, args);
+
+				if (args.Cancelled)
+				{
+					return;
+				}
+
+				SystemCommands.MaximizeWindow(this.ParentWindow);
+				this.MaximisedWindow?.Invoke(this, new WindowEventHandlerArgs());
+			}
+		}
+
+		private void RestoreWindow(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (this.ParentWindow != null)
+			{
+				var args = new WindowEventHandlerArgs();
+				this.RestoringWindow?.Invoke(this, args);
+
+				if (args.Cancelled)
+				{
+					return;
+				}
+
+				SystemCommands.RestoreWindow(this.ParentWindow);
+				this.RestoredWindow?.Invoke(this, new WindowEventHandlerArgs());
+			}
+		}
+
+		private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (this.ParentWindow != null)
+			{
+				var args = new WindowEventHandlerArgs();
+				this.ClosingWindow?.Invoke(this, args);
+
+				if (args.Cancelled)
+				{
+					return;
+				}
+
+				SystemCommands.CloseWindow(this.ParentWindow);
+			}
 		}
 
 		public static T? TryFindParent<T>(DependencyObject child)
@@ -237,72 +331,5 @@ namespace ModernThemables.Controls
 #pragma warning restore CA1307 // Specify StringComparison for clarity
 			}
 		}
-
-		private void MinimizeWindow(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (this.ParentWindow != null)
-            {
-                var args = new WindowEventHandlerArgs();
-                this.MinimisingWindow?.Invoke(this, args);
-
-                if (args.Cancelled)
-                {
-                    return;
-                }
-
-                SystemCommands.MinimizeWindow(this.ParentWindow);
-                this.MinimisedWindow?.Invoke(this, new WindowEventHandlerArgs());
-            }
-        }
-
-        private void MaximizeWindow(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (this.ParentWindow != null)
-            {
-                var args = new WindowEventHandlerArgs();
-                this.MaximisingWindow?.Invoke(this, args);
-
-                if (args.Cancelled)
-                {
-                    return;
-                }
-
-                SystemCommands.MaximizeWindow(this.ParentWindow);
-                this.MaximisedWindow?.Invoke(this, new WindowEventHandlerArgs());
-            }
-        }
-
-        private void RestoreWindow(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (this.ParentWindow != null)
-            {
-                var args = new WindowEventHandlerArgs();
-                this.RestoringWindow?.Invoke(this, args);
-
-                if (args.Cancelled)
-                {
-                    return;
-                }
-
-                SystemCommands.RestoreWindow(this.ParentWindow);
-                this.RestoredWindow?.Invoke(this, new WindowEventHandlerArgs());
-            }
-        }
-
-        private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (this.ParentWindow != null)
-            {
-                var args = new WindowEventHandlerArgs();
-                this.ClosingWindow?.Invoke(this, args);
-
-                if (args.Cancelled)
-                {
-                    return;
-                }
-
-                SystemCommands.CloseWindow(this.ParentWindow);
-            }
-        }
-    }
+	}
 }
