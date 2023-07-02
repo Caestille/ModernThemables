@@ -1,12 +1,11 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
-    public class ExtendedToggleButton : ToggleButton
+	public class ExtendedToggleButton : ToggleButton
     {
         readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
         public Brush CurrentForeground

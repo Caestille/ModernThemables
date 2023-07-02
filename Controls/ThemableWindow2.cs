@@ -15,7 +15,6 @@ using MahApps.Metro.Automation.Peers;
 using MahApps.Metro.ValueBoxes;
 using MahApps.Metro.Controls;
 using System.Collections;
-using System.Windows.Data;
 
 namespace ModernThemables.Controls
 {

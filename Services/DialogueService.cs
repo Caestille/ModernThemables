@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Shell;
 using ModernThemables.Controls;
 using CoreUtilities.Interfaces.Dialogues;
 using System.Windows.Controls;

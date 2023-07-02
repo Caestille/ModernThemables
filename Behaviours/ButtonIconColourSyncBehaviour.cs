@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xaml.Behaviors;
 using ModernThemables.Controls;
-using ModernThemables.ScalableIcons;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
