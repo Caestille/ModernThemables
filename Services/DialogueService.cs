@@ -29,12 +29,12 @@ namespace ModernThemables.Services
 		public async Task ShowCustomDialogue(object? dataContext=null, Size? dialogueSize = null)
 		{
 			var window = new ThemableWindow2();
-			window.FontSize = 13;
-			window.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Fonts/#Inter");
 			window.UseLayoutRounding = true;
 			window.SnapsToDevicePixels = true;
 			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 			window.Owner = Application.Current.MainWindow;
+			window.FontFamily = window.Owner.FontFamily;
+			window.FontSize = window.Owner.FontSize;
 			window.Icon = window.Owner.Icon;
 			window.HorizontalContentAlignment = HorizontalAlignment.Center;
 			window.VerticalContentAlignment = VerticalAlignment.Center;
@@ -67,12 +67,12 @@ namespace ModernThemables.Services
 			window.WindowStyle = WindowStyle.None;
 			window.AllowsTransparency = true;
 			window.Background = new SolidColorBrush(Colors.Transparent);
-			window.FontSize = 13;
-			window.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Fonts/#Inter");
 			window.UseLayoutRounding = true;
 			window.SnapsToDevicePixels = true;
 			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 			window.Owner = Application.Current.MainWindow;
+			window.FontFamily = window.Owner.FontFamily;
+			window.FontSize = window.Owner.FontSize;
 			window.Icon = window.Owner.Icon;
 			window.HorizontalContentAlignment = HorizontalAlignment.Center;
 			window.VerticalContentAlignment = VerticalAlignment.Center;
@@ -81,7 +81,7 @@ namespace ModernThemables.Services
 				DataType = dataContext.GetType(),
 				VisualTree = new FrameworkElementFactory(registeredViews[dataContext.GetType()]),
 			});
-			window.Content =  new ContentControl() { Content = (ObservableObject)dataContext };
+			window.Content = new ContentControl() { Content = (ObservableObject)dataContext };
 			if (dialogueSize == null)
 			{
 				window.SizeToContent = SizeToContent.WidthAndHeight;

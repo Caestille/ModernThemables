@@ -64,7 +64,6 @@ namespace ModernThemables.Controls
 
 		private void Border_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (!ColourSelectionBorder.IsMouseDirectlyOver) return;
 			if (!isMouseDown) return;
 
 			var borderCursor = e.GetPosition(ColourSelectionBorder);
@@ -78,7 +77,8 @@ namespace ModernThemables.Controls
 
 		public Color? GetColorAt(int x, int y)
 		{
-			if (x < 0 || x > ColourSelectionBorder.ActualWidth - 0 || y < 0 || y > ColourSelectionBorder.ActualHeight - 0) return null;
+			x = (int)Math.Min(Math.Max(x, 0), ColourSelectionBorder.ActualWidth);
+			y = (int)Math.Min(Math.Max(y, 0), ColourSelectionBorder.ActualHeight);
 
 			var horizFrac = x / ColourSelectionBorder.ActualWidth;
 			var vertFrac = (float)(((y / ColourSelectionBorder.ActualHeight) - 0.5) * 2);
@@ -175,7 +175,7 @@ namespace ModernThemables.Controls
 
 		private void ColourSelectionBorder_MouseLeave(object sender, MouseEventArgs e)
 		{
-			if (isMouseDown) isMouseDown = false;
+			//if (isMouseDown) isMouseDown = false;
 		}
 
 		private void AdjustSelectedColourCursor(int x, int y)
