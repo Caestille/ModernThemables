@@ -221,6 +221,12 @@ namespace ModernThemables.Controls
 
 		private bool TryFindVisualRootContainer(DependencyObject child, out FrameworkElement rootContainerElement)
 		{
+			if (child == null)
+			{
+				rootContainerElement = null;
+				return false;
+			}
+
 			if ((child is ContentControl && child is not BlurHost) || child is Window)
 			{
 				rootContainerElement = child as FrameworkElement;
