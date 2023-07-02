@@ -1,0 +1,12 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
+
+		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Charting/Themes/ZoomHost.xaml" />
+
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

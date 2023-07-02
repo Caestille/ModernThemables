@@ -18,6 +18,7 @@ using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Models.Brushes;
 using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Services;
+using System.Diagnostics;
 
 namespace ModernThemables.Charting.Controls
 {
