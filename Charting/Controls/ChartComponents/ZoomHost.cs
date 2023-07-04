@@ -10,12 +10,57 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 	public class ZoomHost : ContentControl
 	{
 		private double currentZoomLevel = 1;
-		private double currentOffset = 0;
 
 		private double xMin = 0;
 		private double xMax = 0;
 
 		private MouseCoordinator currentCoordinator;
+
+		public event EventHandler ZoomChanged;
+
+		public double PanOffset
+		{
+			get => (double)GetValue(PanOffsetProperty);
+			private set => SetValue(PanOffsetProperty, value);
+		}
+		public static readonly DependencyProperty PanOffsetProperty = DependencyProperty.Register(
+			"PanOffset",
+			typeof(double),
+			typeof(ZoomHost),
+			new PropertyMetadata(0d));
+
+		public double Min
+		{
+			get => (double)GetValue(MinProperty);
+			private set => SetValue(MinProperty, value);
+		}
+		public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
+			"MinProperty",
+			typeof(double),
+			typeof(ZoomHost),
+			new PropertyMetadata(0d));
+
+		public double Max
+		{
+			get => (double)GetValue(MaxProperty);
+			private set => SetValue(MaxProperty, value);
+		}
+		public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
+			"MaxProperty",
+			typeof(double),
+			typeof(ZoomHost),
+			new PropertyMetadata(1d));
+
+		public bool IsZoomed
+		{
+			get => (bool)GetValue(IsZoomedProperty);
+			set => SetValue(IsZoomedProperty, value);
+		}
+		public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
+			"IsZoomed",
+			typeof(bool),
+			typeof(ZoomHost),
+			new PropertyMetadata(false));
 
 		static ZoomHost()
 		{
@@ -25,6 +70,17 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		public ZoomHost()
 		{
 			Loaded += OnLoaded;
+		}
+
+		public void ResetZoom()
+		{
+			currentZoomLevel = 1;
+			PanOffset = 0;
+			xMin = 0;
+			xMax = currentCoordinator.ActualWidth;
+			Margin = new Thickness(0);
+			IsZoomed = false;
+			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
@@ -53,32 +109,30 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			currentZoomLevel /= zoomStep;
 			if (Math.Round(currentZoomLevel, 1) == 1)
 			{
-				currentZoomLevel = 1;
-				currentOffset = 0;
-				xMin = 0;
-				xMax = currentCoordinator.ActualWidth;
-				Margin = new Thickness(0);
+				ResetZoom();
 			}
 			else
 			{
-				var zoomCentre = e.GetPosition(currentCoordinator).X / currentCoordinator.ActualWidth;
+				var zoomCentre = (e.GetPosition(currentCoordinator).X + PanOffset) / currentCoordinator.ActualWidth;
 
 				var currXRange = xMax - xMin;
 				var newXRange = currXRange * zoomStep;
 				var xDiff = currXRange - newXRange;
+
 				xMin = xMin + xDiff * zoomCentre;
 				xMax = xMax - xDiff * (1 - zoomCentre);
 
-				var fracLeft = xMin / currentCoordinator.ActualWidth;
-				var fracRight = (currentCoordinator.ActualWidth - xMax) / currentCoordinator.ActualWidth;
+				Min = xMin / currentCoordinator.ActualWidth;
+				Max = (currentCoordinator.ActualWidth - xMax) / currentCoordinator.ActualWidth;
 
-				var leftDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * fracLeft;
-				var rightDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * fracRight;
+				var leftDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * Min;
+				var rightDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * Max;
 
-				Margin = new Thickness(-leftDiff, 0, -rightDiff, 0);
+				Margin = new Thickness(-leftDiff - PanOffset, 0, -rightDiff + PanOffset, 0);
 			}
 
-			//IsZoomed = SeriesItemsControl.Margin.Left != 0 || SeriesItemsControl.Margin.Right != 0;
+			IsZoomed = currentZoomLevel != 1 || PanOffset != 0;
+			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void Coordinator_MouseMove(
@@ -91,9 +145,12 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		{
 			if (e.isUserPanning)
 			{
-				var prevOffset = currentOffset;
-				currentOffset = currentOffset + e.lastMousePoint.X - e.args.GetPosition(currentCoordinator).X;
-				Margin = new Thickness(Margin.Left + prevOffset - currentOffset, 0, Margin.Right - prevOffset + currentOffset, 0);
+				var prevOffset = PanOffset;
+				PanOffset = PanOffset + e.lastMousePoint.X - e.args.GetPosition(currentCoordinator).X;
+				Margin = new Thickness(Margin.Left + prevOffset - PanOffset, 0, Margin.Right - prevOffset + PanOffset, 0);
+
+				IsZoomed = currentZoomLevel != 1 || PanOffset != 0;
+				ZoomChanged?.Invoke(this, EventArgs.Empty);
 			}
 		}
 	}

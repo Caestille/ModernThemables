@@ -270,17 +270,6 @@ namespace ModernThemables.Charting.Controls
 			typeof(CartesianChart),
 			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
-		private ZoomState CurrentZoomState
-		{
-			get => (ZoomState)GetValue(CurrentZoomStateProperty);
-			set => SetValue(CurrentZoomStateProperty, value);
-		}
-		public static readonly DependencyProperty CurrentZoomStateProperty = DependencyProperty.Register(
-			"CurrentZoomState",
-			typeof(ZoomState),
-			typeof(CartesianChart),
-			new UIPropertyMetadata(new ZoomState(0, 0, 0, 0, 0, yBuffer), OnSetZoomState));
-
 		private Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
 		{
 			get => (Func<Point, IEnumerable<TooltipViewModel>>)GetValue(TooltipGetterFuncProperty);

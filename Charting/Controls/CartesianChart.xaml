@@ -3,11 +3,9 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:chartcomponents="clr-namespace:ModernThemables.Charting.Controls.ChartComponents"
-	xmlns:controls="clr-namespace:ModernThemables.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	x:Name="root"
-	FontSize="{Binding ElementName=root, Path=FontSize}"
 	mc:Ignorable="d">
 	<UserControl.Resources>
 		<ItemsPanelTemplate x:Key="WrapTemplate" x:Name="WrapTemplate">
@@ -61,68 +59,49 @@
 				<Grid
 					Width="{Binding ElementName=Grid, Path=ActualWidth}"
 					Height="{Binding ElementName=Grid, Path=ActualHeight}"
-					ClipToBounds="False">
-					<chartcomponents:ZoomHost HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-						<Border
-							HorizontalAlignment="Stretch"
-							VerticalAlignment="Stretch"
-							BorderThickness="2,0,1,0"
-							BorderBrush="Red"/>
-					</chartcomponents:ZoomHost>
-					<ItemsControl
-						x:Name="SeriesItemsControl"
+					ClipToBounds="True">
+					<chartcomponents:ZoomHost
+						x:Name="Zoom"
 						HorizontalAlignment="Stretch"
 						VerticalAlignment="Stretch"
-						ItemsSource="{Binding InternalSeries, ElementName=root}">
-						<ItemsControl.Margin>
-							<MultiBinding x:Name="SeriesMultiBinding" Converter="{StaticResource ChartZoomConverter}">
-								<Binding ElementName="root" Path="CurrentZoomState" />
-								<Binding ElementName="root" Path="Series" />
-								<Binding ElementName="Grid" />
-							</MultiBinding>
-						</ItemsControl.Margin>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
-									<Grid.Margin>
-										<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-											<Binding Path="." />
-											<Binding ElementName="root" Path="InternalSeries" />
-											<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-											<Binding Path="ResizeTrigger" />
-										</MultiBinding>
-									</Grid.Margin>
-									<Grid>
+						IsZoomed="{Binding ElementName=root, Path=IsZoomed, Mode=OneWayToSource}">
+						<ItemsControl
+							x:Name="SeriesItemsControl"
+							HorizontalAlignment="Stretch"
+							VerticalAlignment="Stretch"
+							ItemsSource="{Binding InternalSeries, ElementName=root}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
 										<Grid.Margin>
-											<MultiBinding Converter="{StaticResource SeriesHeightMarginConverter}">
+											<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
 												<Binding Path="." />
 												<Binding ElementName="root" Path="InternalSeries" />
-												<Binding ElementName="Grid" Path="ActualWidth" />
-												<Binding ElementName="SeriesItemsControl" Path="ActualWidth" />
-												<Binding ElementName="Grid" Path="ActualHeight" />
 												<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
 												<Binding Path="ResizeTrigger" />
 											</MultiBinding>
 										</Grid.Margin>
-										<Path
-											Data="{Binding PathFillData, UpdateSourceTrigger=PropertyChanged}"
-											Fill="{Binding Fill.CoreBrush}"
-											IsHitTestVisible="False"
-											Stretch="Fill"
-											StrokeLineJoin="Bevel"
-											StrokeThickness="1.5" />
-										<Path
-											Data="{Binding PathStrokeData, UpdateSourceTrigger=PropertyChanged}"
-											IsHitTestVisible="False"
-											Stretch="Fill"
-											Stroke="{Binding Stroke.CoreBrush}"
-											StrokeLineJoin="Bevel"
-											StrokeThickness="1.5" />
+										<Grid>
+											<Path
+												Data="{Binding PathFillData, UpdateSourceTrigger=PropertyChanged}"
+												Fill="{Binding Fill.CoreBrush}"
+												IsHitTestVisible="False"
+												Stretch="Fill"
+												StrokeLineJoin="Bevel"
+												StrokeThickness="1.5" />
+											<Path
+												Data="{Binding PathStrokeData, UpdateSourceTrigger=PropertyChanged}"
+												IsHitTestVisible="False"
+												Stretch="Fill"
+												Stroke="{Binding Stroke.CoreBrush}"
+												StrokeLineJoin="Bevel"
+												StrokeThickness="1.5" />
+										</Grid>
 									</Grid>
-								</Grid>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</chartcomponents:ZoomHost>
 				</Grid>
 				<chartcomponents:TooltipControl
 					x:Name="TooltipControl"

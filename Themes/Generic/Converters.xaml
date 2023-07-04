@@ -11,8 +11,6 @@
 	<converters:RoundedGeometryGroupConverter x:Key="RoundedGeometryGroupConverter" />
 	<converters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />
 	<converters:MultiBindingDoubleToBorderThicknessConverter x:Key="MultiBindingDoubleToBorderThicknessConverter" />
-	<chartConverters:ChartZoomConverter x:Key="ChartZoomConverter" />
-	<chartConverters:SeriesHeightMarginConverter x:Key="SeriesHeightMarginConverter" />
 	<chartConverters:SeriesOverlapMarginConverter x:Key="SeriesOverlapMarginConverter" />
 	<chartConverters:PieCentreRadiusConverter x:Key="PieCentreRadiusConverter" />
 	<chartConverters:PieLabelMarginConverter x:Key="PieLabelMarginConverter" />
