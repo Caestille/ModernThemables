@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System;
+using System.Diagnostics;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
@@ -56,6 +57,11 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		{
 			lastArgs = e;
 
+			if (e.RightButton != MouseButtonState.Pressed)
+			{
+				MouseCaptureGrid.ReleaseMouseCapture();
+			}
+
 			if (isRunning || (updateLimit != null && DateTime.Now - timeLastUpdated < updateLimit)) return;
 
 			isRunning = true;
@@ -98,6 +104,11 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		private void MouseCaptureGrid_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			e.Handled = false;
+		}
+
+		private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
+		{
+			
 		}
 	}
 }
