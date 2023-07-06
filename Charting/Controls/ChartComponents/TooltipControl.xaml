@@ -128,16 +128,14 @@
 				VerticalAlignment="Stretch"
 				ItemsSource="{Binding TooltipPoints, ElementName=root}"
 				Visibility="{Binding ElementName=root, Path=ShowPointIndicators, Converter={StaticResource VisibleIfTrueConverter}}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<Canvas />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
-							<Grid.Margin>
-								<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-									<Binding Path="." />
-									<Binding ElementName="root" Path="TooltipPoints" />
-									<Binding ElementName="Grid" Path="ActualHeight" />
-								</MultiBinding>
-							</Grid.Margin>
 							<Border
 								Width="{Binding ElementName=Grid, Path=ActualWidth}"
 								Height="{Binding LocationY}"
@@ -166,16 +164,14 @@
 				VerticalAlignment="Stretch"
 				ItemsSource="{Binding TooltipPoints, ElementName=root}"
 				Visibility="{Binding ElementName=root, Path=ShowPointIndicators, Converter={StaticResource VisibleIfTrueConverter}}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<Canvas />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Grid Height="{Binding ElementName=Grid, Path=ActualHeight}">
-							<Grid.Margin>
-								<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-									<Binding Path="." />
-									<Binding ElementName="root" Path="TooltipPoints" />
-									<Binding ElementName="Grid" Path="ActualHeight" />
-								</MultiBinding>
-							</Grid.Margin>
 							<Ellipse
 								Width="30"
 								Height="30"
@@ -289,24 +285,14 @@
 				ItemsSource="{Binding TooltipPoints, ElementName=root}"
 				Opacity="{Binding ElementName=root, Path=TooltipOpacity}"
 				Visibility="{Binding ElementName=root, Path=IsTooltipByCursor, Converter={StaticResource VisibleIfFalseConverter}, ConverterParameter=Hidden}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<Canvas />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Grid Height="{Binding ElementName=Grid, Path=ActualHeight, ConverterParameter=100, Converter={StaticResource ValueAdderConverter}}">
-							<Grid.Margin>
-								<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-									<Binding IsAsync="True" Path="." />
-									<Binding
-										ElementName="root"
-										IsAsync="True"
-										Path="TooltipPoints" />
-									<Binding
-										Converter="{StaticResource ValueAdderConverter}"
-										ConverterParameter="100"
-										ElementName="Grid"
-										IsAsync="True"
-										Path="ActualHeight" />
-								</MultiBinding>
-							</Grid.Margin>
 							<Grid
 								x:Name="PointTooltipGrid"
 								HorizontalAlignment="Left"

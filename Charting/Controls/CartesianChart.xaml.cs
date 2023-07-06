@@ -42,6 +42,11 @@ namespace ModernThemables.Charting.Controls
 		private double plotAreaHeight => TooltipControl.ActualHeight;
 		private double plotAreaWidth => TooltipControl.ActualWidth;
 
+		private double dataXMin => SafeMinMax(true, (point) => point.XValue);
+		private double dataXMax => SafeMinMax(false, (point) => point.XValue);
+		public double dataYMin => SafeMinMax(true, (point) => point.YValue);
+		public double dataYMax => SafeMinMax(false, (point) => point.YValue);
+
 		public CartesianChart()
 		{
 			InitializeComponent();
@@ -65,7 +70,7 @@ namespace ModernThemables.Charting.Controls
 			}));
 			renderThread.Start();
 
-			TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((point =>
+			TooltipControl.TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((point =>
 			{
 				var pointsUnderMouse = GetPointsUnderMouse(point);
 
@@ -106,6 +111,19 @@ namespace ModernThemables.Charting.Controls
 
 				return tooltips;
 			}));
+			Zoom.GetDataHeightPixelsInBounds = new Func<(double, double)>(() =>
+			{
+				var allPoints = InternalSeries.SelectMany(x => x.Data);
+				var min = allPoints.Min(x => x.X);
+				var max = allPoints.Max(x => x.X);
+				var range = max - min;
+				var boundedXMax = max - Zoom.RightFraction * range + Zoom.PanOffsetFraction * range;
+				var boundedXMin = min + Zoom.LeftFraction * range + Zoom.PanOffsetFraction * range;
+				var pointsInRange = allPoints.Where(x => x.X > boundedXMin && x.X < boundedXMax);
+				var boundedYMax = pointsInRange.Min(x => x.Y);
+				var boundedYMin = pointsInRange.Max(x => x.Y);
+				return (boundedYMin, boundedYMax);
+			});
 
 			resizeTrigger = new KeepAliveTriggerService(() => { QueueRenderChart(null, null, true); }, 100);
 		}
@@ -176,6 +194,9 @@ namespace ModernThemables.Charting.Controls
 						series.Name,
 						series.Identifier,
 						points,
+						plotAreaWidth,
+						plotAreaHeight,
+						YPaddingFrac,
 						invalidateAll
 							? matchingSeries != null
 								? matchingSeries.Stroke
@@ -190,29 +211,27 @@ namespace ModernThemables.Charting.Controls
 					var seriesYMin = series.Values.Min(z => z.YValue);
 					var seriesYMax = series.Values.Max(z => z.YValue);
 
+					var xMax = dataXMax;
+					var xMin = dataXMin;
+
 					series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
-				//foreach (var series in collection)
-				//{
-				//	var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
+				foreach (var series in collection)
+				{
+					var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
 
-				//	if (matchingSeries == null) continue;
+					if (matchingSeries == null) continue;
 
-				//	var points = await GetPointsForSeries(
-				//		xMin, xRange, yMinExpanded, yMaxExpanded - yMinExpanded, matchingSeries);
-				//	series.UpdatePoints(points);
-				//}
+					var points = await GetPointsForSeries(matchingSeries);
+					series.UpdatePoints(points);
+				}
 
 				InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection);
 
-				foreach (var series in InternalSeries)
-				{
-					series.ResizeTrigger = !series.ResizeTrigger;
-				}
-
-				//this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
+				_ = SetXAxisLabels();
+				_ = SetYAxisLabels();
 
 				renderInProgress = false;
 			});
@@ -224,17 +243,21 @@ namespace ModernThemables.Charting.Controls
 		{
 			if (!hasData) return;
 
+			var range = dataXMax - dataXMin;
+			var xMax = dataXMax - Zoom.RightFraction * range + Zoom.PanOffsetFraction * range;
+			var xMin = dataXMin + Zoom.LeftFraction * range + Zoom.PanOffsetFraction * range;
+
 			var first = Series.First().Values.First();
 			var xRange = xMax - xMin;
 			var xAxisItemCount = (int)Math.Floor(plotAreaWidth / 60);
-			var labels = await GetXSteps(xAxisItemCount);
+			var labels = await GetXSteps(xAxisItemCount, xMin, xMax);
 			var labels2 = labels.Select(xValue => new AxisLabel(
 				xValue,
 				(xValue - xMin) / xRange * plotAreaWidth,
 				value => XAxisFormatter == null ? value.ToString() : XAxisFormatter(first.XValueToImplementation(value)),
 				value => XAxisCursorLabelFormatter(first.XValueToImplementation(value))));
 			XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
-			if (isSingleXPoint)
+			if (xRange == 0)
 			{
 				XAxisLabels = new ObservableCollection<AxisLabel>()
 				{
@@ -251,10 +274,14 @@ namespace ModernThemables.Charting.Controls
 		{
 			if (!hasData) return;
 
+			var range = dataYMax - dataYMin;
+			var yMax = dataYMax - Zoom.TopFraction * range;
+			var yMin = dataYMin + Zoom.BottomFraction * range;
+
 			var first = Series.First().Values.First();
 			var yRange = yMax - yMin;
 			var yAxisItemsCount = (int)Math.Max(1, Math.Floor(plotAreaHeight / 50));
-			var labels = (await GetYSteps(yAxisItemsCount)).ToList();
+			var labels = (await GetYSteps(yAxisItemsCount, yMax, yMin)).ToList();
 			var labels2 = labels.Select(yValue => new AxisLabel(
 				yValue,
 				(yValue - yMin) / yRange * plotAreaHeight,
@@ -263,7 +290,7 @@ namespace ModernThemables.Charting.Controls
 			YAxisLabels = new ObservableCollection<AxisLabel>(labels2.Reverse());
 		}
 
-		private async Task<List<double>> GetXSteps(int xAxisItemsCount)
+		private async Task<List<double>> GetXSteps(int xAxisItemsCount, double xMin, double xMax)
 		{
 			List<double> xVals = new();
 
@@ -289,7 +316,7 @@ namespace ModernThemables.Charting.Controls
 			return xVals.Where(x => xVals.IndexOf(x) % fracOver == 0).ToList();
 		}
 
-		private async Task<List<double>> GetYSteps(int yAxisItemsCount)
+		private async Task<List<double>> GetYSteps(int yAxisItemsCount, double yMax, double yMin)
 		{
 			List<double> yVals = new();
 
@@ -317,6 +344,11 @@ namespace ModernThemables.Charting.Controls
 		{
 			if (series == null) return new List<InternalChartEntity>();
 
+			var xMin = dataXMin;
+			var xRange = dataXMax - xMin;
+			var yMin = dataYMin;
+			var yRange = dataYMax - yMin;
+
 			return await Task.Run(() =>
 			{
 				List<InternalChartEntity> points = new();
@@ -328,6 +360,58 @@ namespace ModernThemables.Charting.Controls
 				}
 				return points;
 			});
+		}
+
+		private List<(InternalChartEntity point, InternalPathSeriesViewModel series)> GetPointsUnderMouse(Point point)
+		{
+			var xMax = dataXMax;
+			var xMin = dataXMin;
+			var xRange = xMax - xMin;
+
+			var translatedMouseLoc = TooltipControl.TranslatePoint(point, Zoom);
+			var pointsUnderMouse = new List<(InternalChartEntity point, InternalPathSeriesViewModel series)>();
+			foreach (var series in InternalSeries)
+			{
+				var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
+					Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)), 1),
+					Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.Y)) - InternalSeries.Min(x => x.Data.Min(y => y.Y)), 1),
+					translatedMouseLoc.X,
+					translatedMouseLoc.Y,
+					Zoom.ActualWidth,
+					Zoom.ActualHeight,
+					-Zoom.Margin.Left,
+					-Zoom.Margin.Top,
+					YPaddingFrac);
+
+				if (hoveredChartPoint == null
+					|| !series.IsTranslatedMouseInBounds(
+							InternalSeries.Max(
+								x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)),
+							translatedMouseLoc.X,
+							SeriesItemsControl.ActualWidth)) continue;
+
+				if (xRange == 0) hoveredChartPoint.X += (plotAreaWidth / 2);
+
+				pointsUnderMouse.Add((hoveredChartPoint, series));
+			}
+
+			return pointsUnderMouse;
+		}
+
+		private double SafeMinMax(bool isMin, Func<IChartEntity, double> valueGetter)
+		{
+			if (isMin)
+			{
+				return Series != null && Series.Where(x => x.Values.Any()).Any()
+					? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => valueGetter(y)))
+					: 0;
+			}
+			else
+			{
+				return Series != null && Series.Where(x => x.Values.Any()).Any()
+					? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => valueGetter(y)))
+					: 0;
+			}
 		}
 
 		#endregion
@@ -349,7 +433,8 @@ namespace ModernThemables.Charting.Controls
 
 		private void Zoom_ZoomChanged(object? sender, EventArgs e)
 		{
-			
+			_ = SetXAxisLabels();
+			_ = SetYAxisLabels();
 		}
 
 		private void Coordinator_PointRangeSelected(object? sender, (Point lowerValue, Point upperValue) e)
@@ -376,38 +461,6 @@ namespace ModernThemables.Charting.Controls
 						== pointsUnderMouse.Min(x => Math.Abs(x.YValue - e.Y)));
 
 			PointClicked?.Invoke(this, nearestPoint);
-		}
-
-		private List<(InternalChartEntity point, InternalPathSeriesViewModel series)> GetPointsUnderMouse(Point point)
-		{
-			var translatedMouseLoc = TooltipControl.TranslatePoint(point, Zoom);
-			var pointsUnderMouse = new List<(InternalChartEntity point, InternalPathSeriesViewModel series)>();
-			foreach (var series in InternalSeries)
-			{
-				var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
-					Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)), 1),
-					Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.Y)) - InternalSeries.Min(x => x.Data.Min(y => y.Y)), 1),
-					translatedMouseLoc.X,
-					translatedMouseLoc.Y,
-					Zoom.ActualWidth,
-					Zoom.ActualHeight,
-					-Zoom.Margin.Left,
-					-Zoom.Margin.Top,
-					yBuffer);
-
-				if (hoveredChartPoint == null
-					|| !series.IsTranslatedMouseInBounds(
-							InternalSeries.Max(
-								x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)),
-							translatedMouseLoc.X,
-							SeriesItemsControl.ActualWidth)) continue;
-
-				if (isSingleXPoint) hoveredChartPoint.X += (plotAreaWidth / 2);
-
-				pointsUnderMouse.Add((hoveredChartPoint, series));
-			}
-
-			return pointsUnderMouse;
 		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)

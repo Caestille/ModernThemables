@@ -62,6 +62,7 @@
 					ClipToBounds="True">
 					<chartcomponents:ZoomHost
 						x:Name="Zoom"
+						YPaddingFrac="{Binding ElementName=root, Path=YPaddingFrac}"
 						HorizontalAlignment="Stretch"
 						VerticalAlignment="Stretch"
 						IsZoomed="{Binding ElementName=root, Path=IsZoomed, Mode=OneWayToSource}">
@@ -70,17 +71,14 @@
 							HorizontalAlignment="Stretch"
 							VerticalAlignment="Stretch"
 							ItemsSource="{Binding InternalSeries, ElementName=root}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<Grid />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
 									<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
-										<Grid.Margin>
-											<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-												<Binding Path="." />
-												<Binding ElementName="root" Path="InternalSeries" />
-												<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-												<Binding Path="ResizeTrigger" />
-											</MultiBinding>
-										</Grid.Margin>
 										<Grid>
 											<Path
 												Data="{Binding PathFillData, UpdateSourceTrigger=PropertyChanged}"
@@ -105,7 +103,6 @@
 				</Grid>
 				<chartcomponents:TooltipControl
 					x:Name="TooltipControl"
-					TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
 					TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
 					TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
 				<chartcomponents:MouseCoordinator x:Name="Coordinator" MouseMoveThrottleMs="16" />

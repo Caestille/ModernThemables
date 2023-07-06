@@ -12,37 +12,33 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
     /// A view model for an internal representation of a series used by the <see cref="CartesianChart"/>.
     /// </summary>
     internal class InternalPathSeriesViewModel : ObservableObject
-    {
-        /// <summary>
-        /// The data making up the rendered points in pixels scale.
-        /// </summary>
-        public IEnumerable<InternalChartEntity> Data;
+	{
+		private double yBuffer;
+		private double chartWidth;
+		private double chartHeight;
+		private string internalPathStrokeData;
+        private string internalPathFillData;
 
-        private string pathStrokeData;
+		/// <summary>
+		/// The data making up the rendered points in pixels scale.
+		/// </summary>
+		public IEnumerable<InternalChartEntity> Data;
+
         /// <summary>
         /// The string used the render the series line using a <see cref="Path"/>.
         /// </summary>
-        public string PathStrokeData
-        {
-            get => pathStrokeData;
-            set => SetProperty(ref pathStrokeData, value);
-        }
+        public string PathStrokeData => $"M0 0 {internalPathStrokeData} M{chartWidth} {chartHeight}";
 
-        private string pathFillData;
         /// <summary>
         /// The string used the render the series fill using a <see cref="Path"/>. Due to how paths render a fill, this
         /// may not be identical to the <see cref="PathStrokeData"/>.
         /// </summary>
-        public string PathFillData
-        {
-            get => pathFillData;
-            set => SetProperty(ref pathFillData, value);
-        }
+        public string PathFillData => $"M0 0 {internalPathFillData} M{chartWidth} {chartHeight}";
 
-        /// <summary>
-        /// The <see cref="IChartBrush"/> the path stroke uses to colour itself.
-        /// </summary>
-        public IChartBrush? Stroke { get; }
+		/// <summary>
+		/// The <see cref="IChartBrush"/> the path stroke uses to colour itself.
+		/// </summary>
+		public IChartBrush? Stroke { get; }
 
         /// <summary>
         /// The <see cref="IChartBrush"/> the path fill uses to colour itself.
@@ -59,17 +55,6 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
         /// </summary>
         public string Name { get; }
 
-        private bool resizeTrigger;
-        /// <summary>
-        /// A <see cref="bool"/> property used to for the series to resize itself when desired by triggering a
-        /// converter.
-        /// </summary>
-        public bool ResizeTrigger
-        {
-            get => resizeTrigger;
-            set => SetProperty(ref resizeTrigger, value);
-        }
-
         /// <summary>
         /// Initialises a new <see cref="InternalPathSeriesViewModel"/>.
         /// </summary>
@@ -85,7 +70,10 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
             string name,
             Guid guid,
             IEnumerable<InternalChartEntity> data,
-            IChartBrush? stroke,
+            double chartWidth,
+            double chartHeight,
+            double yBuffer,
+			IChartBrush? stroke,
             IChartBrush? fill)
         {
             Name = name;
@@ -93,21 +81,14 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
             Data = data;
             Stroke = stroke;
             Fill = fill;
+            this.chartWidth = chartWidth;
+            this.chartHeight = chartHeight;
+            this.yBuffer = yBuffer;
 
             if (!data.Any()) return;
 
-            PathStrokeData = ConvertDataToPath(data);
-
-            var dataMin = Data.Min(x => x.BackingPoint.YValue);
-            var dataMax = Data.Max(x => x.BackingPoint.YValue);
-            var range = dataMax - dataMin;
-            var zero = Math.Min(Math.Max(0d, dataMin), dataMax);
-            var ratio = (double)(1 - (zero - dataMin) / range);
-            var min = Data.Min(x => x.Y);
-            var max = Data.Max(x => x.Y);
-            var zeroPoint = min + ratio * (max - min);
-            PathFillData =
-                $"M{Data.First().X} {zeroPoint} {PathStrokeData.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
+            internalPathStrokeData = ConvertDataToPath(data);
+            internalPathFillData = ConvertPathForFill(internalPathStrokeData);
         }
 
         /// <summary>
@@ -191,17 +172,28 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 
         private string ConvertDataToPath(IEnumerable<InternalChartEntity> data)
         {
+            var range = data.Max(x => x.Y) - data.Min(x => x.Y);
             var sb = new StringBuilder();
-            bool setM = true;
+            var pointType = "M";
             foreach (var point in data)
             {
-                var pointType = setM ? "M" : "L";
-                setM = false;
                 sb.Append($" {pointType}{point.X} {point.Y}");
-            }
-            var ret = sb.ToString();
-            //ret += $" L{data.Last().X} {data.First().Y}";
-            return ret;
+                pointType = "L";
+			}
+			return sb.ToString().Trim();
         }
-    }
+
+        private string ConvertPathForFill(string strokePath)
+        {
+			var dataMin = Data.Min(x => x.BackingPoint.YValue);
+			var dataMax = Data.Max(x => x.BackingPoint.YValue);
+			var dataRange = dataMax - dataMin;
+			var zero = Math.Min(Math.Max(0d, dataMin), dataMax);
+			var ratio = (double)(1 - (zero - dataMin) / dataRange);
+			var min = Data.Min(x => x.Y);
+			var max = Data.Max(x => x.Y);
+			var zeroPoint = min + ratio * (max - min);
+			return $"M{Data.First().X} {zeroPoint} {strokePath.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
+		}
+	}
 }

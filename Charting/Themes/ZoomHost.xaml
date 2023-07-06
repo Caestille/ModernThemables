@@ -7,9 +7,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type chartcomponents:ZoomHost}">
-					<Grid>
-						<ContentPresenter />
-					</Grid>
+					<ContentPresenter />
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

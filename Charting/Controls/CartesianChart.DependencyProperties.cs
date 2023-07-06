@@ -200,27 +200,16 @@ namespace ModernThemables.Charting.Controls
 			typeof(CartesianChart),
 			new PropertyMetadata(1d));
 
-		//public double Min
-		//{
-		//	get => (double)GetValue(MinProperty);
-		//	set => SetValue(MinProperty, value);
-		//}
-		//public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
-		//	"Min",
-		//	typeof(double),
-		//	typeof(CartesianChart),
-		//	new UIPropertyMetadata(-1d, OnSetMinMax));
-
-		//public double Max
-		//{
-		//	get => (double)GetValue(MaxProperty);
-		//	set => SetValue(MaxProperty, value);
-		//}
-		//public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
-		//	"Max",
-		//	typeof(double),
-		//	typeof(CartesianChart),
-		//	new UIPropertyMetadata(-1d, OnSetMinMax));
+		public double YPaddingFrac
+		{
+			get => (double)GetValue(YPaddingFracProperty);
+			set => SetValue(YPaddingFracProperty, value);
+		}
+		public static readonly DependencyProperty YPaddingFracProperty = DependencyProperty.Register(
+			"YPaddingFrac",
+			typeof(double),
+			typeof(CartesianChart),
+			new PropertyMetadata(0.1d));
 
 		public Func<IEnumerable<IChartEntity>, IChartEntity, object> TooltipContentGetter
 		{
@@ -269,18 +258,6 @@ namespace ModernThemables.Charting.Controls
 			typeof(ObservableCollection<AxisLabel>),
 			typeof(CartesianChart),
 			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
-
-		private Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
-		{
-			get => (Func<Point, IEnumerable<TooltipViewModel>>)GetValue(TooltipGetterFuncProperty);
-			set => SetValue(TooltipGetterFuncProperty, value);
-		}
-		public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
-			"TooltipGetterFunc",
-			typeof(Func<Point, IEnumerable<TooltipViewModel>>),
-			typeof(CartesianChart),
-			new PropertyMetadata(null));
-
 		#endregion
 	}
 }

@@ -16,51 +16,97 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private MouseCoordinator currentCoordinator;
 
+		private System.Windows.Input.MouseWheelEventArgs lastArgs;
+
 		public event EventHandler ZoomChanged;
 
-		public double PanOffset
+		public double PanOffsetFraction
 		{
-			get => (double)GetValue(PanOffsetProperty);
-			private set => SetValue(PanOffsetProperty, value);
+			get => (double)GetValue(PanOffsetFractionProperty);
+			private set => SetValue(PanOffsetFractionProperty, value);
 		}
-		public static readonly DependencyProperty PanOffsetProperty = DependencyProperty.Register(
-			"PanOffset",
+		public static readonly DependencyProperty PanOffsetFractionProperty = DependencyProperty.Register(
+			nameof(PanOffsetFraction),
 			typeof(double),
 			typeof(ZoomHost),
 			new PropertyMetadata(0d));
 
-		public double Min
+		public double LeftFraction
 		{
-			get => (double)GetValue(MinProperty);
-			private set => SetValue(MinProperty, value);
+			get => (double)GetValue(LeftFractionProperty);
+			private set => SetValue(LeftFractionProperty, value);
 		}
-		public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
-			"MinProperty",
+		public static readonly DependencyProperty LeftFractionProperty = DependencyProperty.Register(
+			nameof(LeftFraction),
 			typeof(double),
 			typeof(ZoomHost),
 			new PropertyMetadata(0d));
 
-		public double Max
+		public double RightFraction
 		{
-			get => (double)GetValue(MaxProperty);
-			private set => SetValue(MaxProperty, value);
+			get => (double)GetValue(RightFractionProperty);
+			private set => SetValue(RightFractionProperty, value);
 		}
-		public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
-			"MaxProperty",
+		public static readonly DependencyProperty RightFractionProperty = DependencyProperty.Register(
+			nameof(RightFraction),
 			typeof(double),
 			typeof(ZoomHost),
-			new PropertyMetadata(1d));
+			new PropertyMetadata(0d));
+
+		public double BottomFraction
+		{
+			get => (double)GetValue(BottomFractionProperty);
+			private set => SetValue(BottomFractionProperty, value);
+		}
+		public static readonly DependencyProperty BottomFractionProperty = DependencyProperty.Register(
+			nameof(BottomFraction),
+			typeof(double),
+			typeof(ZoomHost),
+			new PropertyMetadata(0d));
+
+		public double TopFraction
+		{
+			get => (double)GetValue(TopFractionProperty);
+			private set => SetValue(TopFractionProperty, value);
+		}
+		public static readonly DependencyProperty TopFractionProperty = DependencyProperty.Register(
+			nameof(TopFraction),
+			typeof(double),
+			typeof(ZoomHost),
+			new PropertyMetadata(0d));
 
 		public bool IsZoomed
 		{
 			get => (bool)GetValue(IsZoomedProperty);
-			set => SetValue(IsZoomedProperty, value);
+			private set => SetValue(IsZoomedProperty, value);
 		}
 		public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
-			"IsZoomed",
+			nameof(IsZoomed),
 			typeof(bool),
 			typeof(ZoomHost),
 			new PropertyMetadata(false));
+
+		public Func<(double minFrac, double maxFrac)> GetDataHeightPixelsInBounds
+		{
+			get => (Func<(double minFrac, double maxFrac)>)GetValue(GetDataHeightPixelsInBoundsProperty);
+			set => SetValue(GetDataHeightPixelsInBoundsProperty, value);
+		}
+		public static readonly DependencyProperty GetDataHeightPixelsInBoundsProperty = DependencyProperty.Register(
+			nameof(GetDataHeightPixelsInBounds),
+			typeof(Func<(double minFrac, double maxFrac)>),
+			typeof(ZoomHost),
+			new PropertyMetadata(null));
+
+		public double YPaddingFrac
+		{
+			get => (double)GetValue(YPaddingFracProperty);
+			set => SetValue(YPaddingFracProperty, value);
+		}
+		public static readonly DependencyProperty YPaddingFracProperty = DependencyProperty.Register(
+			"YPaddingFrac",
+			typeof(double),
+			typeof(ZoomHost),
+			new UIPropertyMetadata(0d, (s, e) => { (s as ZoomHost).Coordinator_MouseWheel(s, (s as ZoomHost).lastArgs); }));
 
 		static ZoomHost()
 		{
@@ -75,11 +121,17 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		public void ResetZoom()
 		{
 			currentZoomLevel = 1;
-			PanOffset = 0;
+			PanOffsetFraction = 0;
 			xMin = 0;
 			xMax = currentCoordinator.ActualWidth;
-			Margin = new Thickness(0);
+			LeftFraction = 0;
+			RightFraction = 0;
 			IsZoomed = false;
+
+			var diffs = GetTopBottomDiff(true);
+
+			Margin = new Thickness(0, -diffs.top, 0, -diffs.bottom);
+
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}
 
@@ -96,10 +148,14 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			{
 				throw new InvalidOperationException("Please add a MouseCoordinator to your chart");
 			}
+
+			ResetZoom();
 		}
 
 		private void Coordinator_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 		{
+			lastArgs = e;
+
 			if (xMax == 0)
 			{
 				xMax = ActualWidth;
@@ -113,7 +169,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			}
 			else
 			{
-				var zoomCentre = (e.GetPosition(currentCoordinator).X + PanOffset) / currentCoordinator.ActualWidth;
+				var panOffset = PanOffsetFraction * currentCoordinator.ActualWidth;
+				var zoomCentre = (e.GetPosition(currentCoordinator).X + panOffset) / currentCoordinator.ActualWidth;
 
 				var currXRange = xMax - xMin;
 				var newXRange = currXRange * zoomStep;
@@ -122,17 +179,36 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 				xMin = xMin + xDiff * zoomCentre;
 				xMax = xMax - xDiff * (1 - zoomCentre);
 
-				Min = xMin / currentCoordinator.ActualWidth;
-				Max = (currentCoordinator.ActualWidth - xMax) / currentCoordinator.ActualWidth;
+				LeftFraction = xMin / currentCoordinator.ActualWidth;
+				RightFraction = (currentCoordinator.ActualWidth - xMax) / currentCoordinator.ActualWidth;
 
-				var leftDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * Min;
-				var rightDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * Max;
+				var leftDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * LeftFraction;
+				var rightDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * RightFraction;
 
-				Margin = new Thickness(-leftDiff - PanOffset, 0, -rightDiff + PanOffset, 0);
+				var diffs = GetTopBottomDiff();
+
+				Margin = new Thickness(-leftDiff - panOffset, -diffs.top, -rightDiff + panOffset, -diffs.bottom);
 			}
 
-			IsZoomed = currentZoomLevel != 1 || PanOffset != 0;
+			IsZoomed = currentZoomLevel != 1 || PanOffsetFraction != 0;
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
+		}
+
+		private (double top, double bottom) GetTopBottomDiff(bool isReset = false)
+		{
+			var dataHeightPx = GetDataHeightPixelsInBounds != null && !isReset
+					? GetDataHeightPixelsInBounds() : (currentCoordinator.ActualHeight, 0);
+			var dataRange = dataHeightPx.Item2 - dataHeightPx.Item1;
+			var buffer = dataRange * YPaddingFrac;
+			BottomFraction = 1 - (dataHeightPx.Item1 - buffer) / currentCoordinator.ActualHeight;
+			TopFraction = (dataHeightPx.Item2 + buffer) / currentCoordinator.ActualHeight;
+
+			var newHeight = currentCoordinator.ActualHeight / (1 - (TopFraction + BottomFraction));
+
+			var topDiff = newHeight * TopFraction;
+			var bottomDiff = newHeight * BottomFraction;
+
+			return (topDiff, bottomDiff);
 		}
 
 		private void Coordinator_MouseMove(
@@ -145,11 +221,15 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		{
 			if (e.isUserPanning)
 			{
-				var prevOffset = PanOffset;
-				PanOffset = PanOffset + e.lastMousePoint.X - e.args.GetPosition(currentCoordinator).X;
-				Margin = new Thickness(Margin.Left + prevOffset - PanOffset, 0, Margin.Right - prevOffset + PanOffset, 0);
+				var prevOffset = PanOffsetFraction * currentCoordinator.ActualWidth;
+				PanOffsetFraction = PanOffsetFraction + (e.lastMousePoint.X - e.args.GetPosition(currentCoordinator).X) / currentCoordinator.ActualWidth;
+				var panOffset = PanOffsetFraction * currentCoordinator.ActualWidth;
 
-				IsZoomed = currentZoomLevel != 1 || PanOffset != 0;
+				var diffs = GetTopBottomDiff();
+
+				Margin = new Thickness(Margin.Left + prevOffset - panOffset, -diffs.top, Margin.Right - prevOffset + panOffset, -diffs.bottom);
+
+				IsZoomed = currentZoomLevel != 1 || PanOffsetFraction != 0;
 				ZoomChanged?.Invoke(this, EventArgs.Empty);
 			}
 		}

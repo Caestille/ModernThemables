@@ -77,7 +77,7 @@
 					RenderTransformOrigin="0.5,0.5">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
-							<Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+							<Grid />
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>

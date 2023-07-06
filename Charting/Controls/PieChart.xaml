@@ -45,20 +45,17 @@
 										<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
 									</MultiBinding>
 								</ItemsControl.Margin>
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<Grid />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
 										<Grid
 											Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}"
 											HorizontalAlignment="Left"
 											ClipToBounds="False">
-											<Grid.Margin>
-												<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-													<Binding Path="." />
-													<Binding ElementName="root" Path="InternalSeries" />
-													<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-													<Binding Path="ResizeTrigger" />
-												</MultiBinding>
-											</Grid.Margin>
 											<piechart:PieArc
 												ClipToBounds="False"
 												Fill="{Binding Fill.CoreBrush}"
@@ -139,17 +136,14 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<ItemsControl ItemsSource="{Binding Wedges}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<Grid />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
 									<Grid Height="{Binding ElementName=SeriesItemsControl, Path=ActualHeight}">
-										<Grid.Margin>
-											<MultiBinding Converter="{StaticResource SeriesOverlapMarginConverter}">
-												<Binding Path="." />
-												<Binding ElementName="root" Path="InternalSeries" />
-												<Binding ElementName="SeriesItemsControl" Path="ActualHeight" />
-												<Binding Path="ResizeTrigger" />
-											</MultiBinding>
-										</Grid.Margin>
 										<TextBlock
 											Width="Auto"
 											Height="Auto"
