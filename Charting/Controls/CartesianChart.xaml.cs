@@ -373,10 +373,13 @@ namespace ModernThemables.Charting.Controls
 			var pointsUnderMouse = new List<(InternalChartEntity point, InternalPathSeriesViewModel series)>();
 			foreach (var series in InternalSeries)
 			{
+				var data = InternalSeries.SelectMany(x => x.Data);
+				var xZoom = Zoom.ActualWidth / Math.Max(data.Max(y => y.X) - data.Min(y => y.X), 1);
+				var yZoom = Zoom.ActualHeight / Math.Max(data.Max(y => y.Y) - data.Min(y => y.Y), 1);
 				var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
 					translatedMouseLoc,
-					Zoom.ActualWidth / Math.Max(InternalSeries.SelectMany(x => x.Data).Max(y => y.X) - InternalSeries.SelectMany(x => x.Data).Min(y => y.X), 1),
-					Zoom.ActualHeight / Math.Max(InternalSeries.SelectMany(x => x.Data).Max(y => y.Y) - InternalSeries.SelectMany(x => x.Data).Min(y => y.Y), 1),
+					xZoom,
+					yZoom,
 					-Zoom.Margin.Left,
 					-Zoom.Margin.Top);
 
