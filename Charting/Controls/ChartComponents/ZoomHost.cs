@@ -1,7 +1,5 @@
-﻿using ModernThemables.Charting.Controls.ChartComponents;
-using ModernThemables.Charting.Services;
+﻿using ModernThemables.Charting.Services;
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,7 +13,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		private double xMax = 0;
 
 		private MouseCoordinator currentCoordinator;
-
 		private System.Windows.Input.MouseWheelEventArgs lastArgs;
 
 		public event EventHandler ZoomChanged;
@@ -78,7 +75,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		public bool IsZoomed
 		{
 			get => (bool)GetValue(IsZoomedProperty);
-			private set => SetValue(IsZoomedProperty, value);
+			set => SetValue(IsZoomedProperty, value);
 		}
 		public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
 			nameof(IsZoomed),
@@ -154,6 +151,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 		{
+			if (e == null) return;
+
 			lastArgs = e;
 
 			if (xMax == 0)

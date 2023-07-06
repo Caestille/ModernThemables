@@ -373,15 +373,11 @@ namespace ModernThemables.Charting.Controls
 			foreach (var series in InternalSeries)
 			{
 				var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
-					Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.X)) - InternalSeries.Min(x => x.Data.Min(y => y.X)), 1),
-					Math.Max(InternalSeries.Max(x => x.Data.Max(y => y.Y)) - InternalSeries.Min(x => x.Data.Min(y => y.Y)), 1),
-					translatedMouseLoc.X,
-					translatedMouseLoc.Y,
-					Zoom.ActualWidth,
-					Zoom.ActualHeight,
+					translatedMouseLoc,
+					Zoom.ActualWidth / Math.Max(InternalSeries.SelectMany(x => x.Data).Max(y => y.X) - InternalSeries.SelectMany(x => x.Data).Min(y => y.X), 1),
+					Zoom.ActualHeight / Math.Max(InternalSeries.SelectMany(x => x.Data).Max(y => y.Y) - InternalSeries.SelectMany(x => x.Data).Min(y => y.Y), 1),
 					-Zoom.Margin.Left,
-					-Zoom.Margin.Top,
-					YPaddingFrac);
+					-Zoom.Margin.Top);
 
 				if (hoveredChartPoint == null
 					|| !series.IsTranslatedMouseInBounds(
@@ -403,13 +399,13 @@ namespace ModernThemables.Charting.Controls
 			if (isMin)
 			{
 				return Series != null && Series.Where(x => x.Values.Any()).Any()
-					? Series.Where(x => x.Values.Any()).Min(x => x.Values.Min(y => valueGetter(y)))
+					? Series.Where(x => x.Values.Any()).SelectMany(x => x.Values).Min(y => valueGetter(y))
 					: 0;
 			}
 			else
 			{
 				return Series != null && Series.Where(x => x.Values.Any()).Any()
-					? Series.Where(x => x.Values.Any()).Max(x => x.Values.Max(y => valueGetter(y)))
+					? Series.Where(x => x.Values.Any()).SelectMany(x => x.Values).Max(y => valueGetter(y))
 					: 0;
 			}
 		}

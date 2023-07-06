@@ -1,6 +1,5 @@
 ﻿using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
-using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.ViewModels.CartesianChart;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Windows;
 
 namespace ModernThemables.Charting.Controls
 {
-    public partial class CartesianChart // .DependencyProperties
+	public partial class CartesianChart // .DependencyProperties
 	{
 		#region Public properties
 

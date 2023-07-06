@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System;
-using System.Diagnostics;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {

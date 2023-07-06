@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Shapes;
 
 namespace ModernThemables.Charting.ViewModels.CartesianChart
@@ -111,21 +112,14 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
         /// </param>
         /// <returns></returns>
         public InternalChartEntity? GetChartPointUnderTranslatedMouse(
-            double dataWidth,
-            double dataHeight,
-            double mouseX,
-            double mouseY,
-            double zoomWidth,
-            double zoomHeight,
+            Point cursor,
+            double xZoom,
+            double yZoom,
             double xLeftOffset,
-            double yTopOffset,
-            double yBuffer)
+            double yTopOffset)
         {
-            var xZoom = zoomWidth / dataWidth;
-            var yZoom = zoomHeight / dataHeight;
-
-            var translatedX = mouseX / xZoom;
-            var translatedY = (mouseY + yBuffer * dataHeight * yZoom) / yZoom;
+            var translatedX = cursor.X / xZoom;
+            var translatedY = cursor.Y / yZoom;
 
             var nearestPoint = Data.FirstOrDefault(
                 x => Math.Abs(x.X - translatedX) == Data.Min(x => Math.Abs(x.X - translatedX)));
@@ -138,7 +132,7 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
                 : hoveredChartPoints.First();
 
             var x = hoveredChartPoint.X * xZoom - xLeftOffset;
-            var y = hoveredChartPoint.Y * yZoom - yTopOffset - yBuffer * dataHeight * yZoom;
+            var y = hoveredChartPoint.Y * yZoom - yTopOffset;
             return new InternalChartEntity(x, y, hoveredChartPoint.BackingPoint);
         }
 
