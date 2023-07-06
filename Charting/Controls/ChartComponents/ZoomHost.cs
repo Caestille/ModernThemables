@@ -28,6 +28,28 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(ZoomHost),
 			new PropertyMetadata(0d));
 
+		public double XZoom
+		{
+			get => (double)GetValue(XZoomProperty);
+			private set => SetValue(XZoomProperty, value);
+		}
+		public static readonly DependencyProperty XZoomProperty = DependencyProperty.Register(
+			nameof(XZoom),
+			typeof(double),
+			typeof(ZoomHost),
+			new PropertyMetadata(1d));
+
+		public double YZoom
+		{
+			get => (double)GetValue(YZoomProperty);
+			private set => SetValue(YZoomProperty, value);
+		}
+		public static readonly DependencyProperty YZoomProperty = DependencyProperty.Register(
+			nameof(YZoom),
+			typeof(double),
+			typeof(ZoomHost),
+			new PropertyMetadata(1d));
+
 		public double LeftFraction
 		{
 			get => (double)GetValue(LeftFractionProperty);
@@ -189,6 +211,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 				Margin = new Thickness(-leftDiff - panOffset, -diffs.top, -rightDiff + panOffset, -diffs.bottom);
 			}
 
+			XZoom = 1 / (1 - RightFraction - LeftFraction);
+
 			IsZoomed = currentZoomLevel != 1 || PanOffsetFraction != 0;
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}
@@ -206,6 +230,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 			var topDiff = newHeight * TopFraction;
 			var bottomDiff = newHeight * BottomFraction;
+
+			YZoom = 1 / (1 - BottomFraction - TopFraction);
 
 			return (topDiff, bottomDiff);
 		}

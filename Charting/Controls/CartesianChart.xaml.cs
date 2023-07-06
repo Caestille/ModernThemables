@@ -168,6 +168,10 @@ namespace ModernThemables.Charting.Controls
 			Application.Current.Dispatcher.Invoke(async () =>
 			{
 				renderInProgress = true;
+
+				await SetXAxisLabels();
+				await SetYAxisLabels();
+
 				var collection = InternalSeries.Clone().ToList();
 
 				if (invalidateAll)
@@ -229,9 +233,6 @@ namespace ModernThemables.Charting.Controls
 				}
 
 				InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection);
-
-				_ = SetXAxisLabels();
-				_ = SetYAxisLabels();
 
 				renderInProgress = false;
 			});
@@ -374,8 +375,8 @@ namespace ModernThemables.Charting.Controls
 			{
 				var hoveredChartPoint = series.GetChartPointUnderTranslatedMouse(
 					translatedMouseLoc,
-					Zoom.ActualWidth / Math.Max(InternalSeries.SelectMany(x => x.Data).Max(y => y.X) - InternalSeries.SelectMany(x => x.Data).Min(y => y.X), 1),
-					Zoom.ActualHeight / Math.Max(InternalSeries.SelectMany(x => x.Data).Max(y => y.Y) - InternalSeries.SelectMany(x => x.Data).Min(y => y.Y), 1),
+					Zoom.XZoom,
+					Zoom.YZoom,
 					-Zoom.Margin.Left,
 					-Zoom.Margin.Top);
 
