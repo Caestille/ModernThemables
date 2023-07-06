@@ -20,7 +20,20 @@ namespace ModernThemables.Charting.Models.PieChart
                 0.0,
                 FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        public double PushOut
+		public bool IsIndeterminate
+		{
+			get { return (bool)GetValue(IsIndeterminateProperty); }
+			set { SetValue(IsIndeterminateProperty, value); }
+		}
+		public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
+			"IsIndeterminate",
+			typeof(bool),
+			typeof(PieArc),
+			new FrameworkPropertyMetadata(
+				true,
+				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+		public double PushOut
         {
             get { return (double)GetValue(PushOutProperty); }
             set { SetValue(PushOutProperty, value); }
@@ -94,7 +107,8 @@ namespace ModernThemables.Charting.Models.PieChart
             "Percentage",
             typeof(double),
             typeof(PieArc),
-            new FrameworkPropertyMetadata(0.0));
+            new FrameworkPropertyMetadata(0.0,
+				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public double PieceValue
         {

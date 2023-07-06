@@ -62,10 +62,10 @@
 					ClipToBounds="True">
 					<chartcomponents:ZoomHost
 						x:Name="Zoom"
-						YPaddingFrac="{Binding ElementName=root, Path=YPaddingFrac}"
 						HorizontalAlignment="Stretch"
 						VerticalAlignment="Stretch"
-						IsZoomed="{Binding ElementName=root, Path=IsZoomed, Mode=OneWayToSource}">
+						IsZoomed="{Binding ElementName=root, Path=IsZoomed, Mode=OneWayToSource}"
+						YPaddingFrac="{Binding ElementName=root, Path=YPaddingFrac}">
 						<ItemsControl
 							x:Name="SeriesItemsControl"
 							HorizontalAlignment="Stretch"
