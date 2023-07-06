@@ -17,6 +17,7 @@ using ModernThemables.Charting.Models.Brushes;
 using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Services;
 using ModernThemables.Charting.Controls.ChartComponents;
+using System.Windows.Threading;
 
 namespace ModernThemables.Charting.Controls
 {
@@ -170,7 +171,8 @@ namespace ModernThemables.Charting.Controls
 				renderInProgress = true;
 
 				await SetXAxisLabels();
-				await SetYAxisLabels();
+
+				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
 
 				var collection = InternalSeries.Clone().ToList();
 
@@ -211,6 +213,8 @@ namespace ModernThemables.Charting.Controls
 							: series.Fill));
 
 					if (!series.Values.Any()) continue;
+
+					await SetYAxisLabels();
 
 					var seriesYMin = series.Values.Min(z => z.YValue);
 					var seriesYMax = series.Values.Max(z => z.YValue);

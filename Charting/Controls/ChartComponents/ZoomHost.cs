@@ -146,6 +146,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			LeftFraction = 0;
 			RightFraction = 0;
 			IsZoomed = false;
+			XZoom = 1;
 
 			var diffs = GetTopBottomDiff(true);
 
@@ -208,10 +209,10 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 				var diffs = GetTopBottomDiff();
 
+				XZoom = 1 / (1 - RightFraction - LeftFraction);
+
 				Margin = new Thickness(-leftDiff - panOffset, -diffs.top, -rightDiff + panOffset, -diffs.bottom);
 			}
-
-			XZoom = 1 / (1 - RightFraction - LeftFraction);
 
 			IsZoomed = currentZoomLevel != 1 || PanOffsetFraction != 0;
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
