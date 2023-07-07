@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xaml.Behaviors;
 using ModernThemables.Controls;
+using ModernThemables.ScalableIcons;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,39 +27,35 @@ namespace ModernThemables.Behaviours
 				currentObject = VisualTreeHelper.GetParent(currentObject as DependencyObject);
 			}
 
-			if (parent != null)
+			if (!AssociatedObject.IsLoaded)
 			{
-				if (parent.IsLoaded && AssociatedObject.IsLoaded)
-				{
-					SetBindings();
-				}
-				else
-				{
-					if (!parent.IsLoaded)
-					{
-						parent.Loaded += ButtonIconColourSyncBehaviour_Loaded;
-					}
-					if (!AssociatedObject.IsLoaded)
-					{
-						AssociatedObject.Loaded += AssociatedObject_Loaded;
-					}
-				}
+				AssociatedObject.Loaded += AssociatedObject_Loaded;
+			}
+
+			if (parent != null && parent.IsLoaded && AssociatedObject.IsLoaded)
+			{
+				SetBindings();
 			}
 		}
 
 		private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
 		{
 			AssociatedObject.Loaded -= AssociatedObject_Loaded;
-			if (parent.IsLoaded && AssociatedObject.IsLoaded)
-			{
-				SetBindings();
-			}
-		}
 
-		private void ButtonIconColourSyncBehaviour_Loaded(object sender, RoutedEventArgs e)
-		{
-			parent.Loaded -= ButtonIconColourSyncBehaviour_Loaded;
-			if (parent.IsLoaded && AssociatedObject.IsLoaded)
+			int limit = 10;
+			int current = 0;
+			object currentObject = AssociatedObject;
+			while (parent == null && current < limit && currentObject != null)
+			{
+				current++;
+				if (currentObject is ExtendedButton || currentObject is ExtendedToggleButton)
+				{
+					parent = currentObject as Control;
+				}
+				currentObject = VisualTreeHelper.GetParent(currentObject as DependencyObject);
+			}
+
+			if (parent != null && parent.IsLoaded && AssociatedObject.IsLoaded)
 			{
 				SetBindings();
 			}

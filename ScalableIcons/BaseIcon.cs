@@ -44,6 +44,6 @@ namespace ModernThemables.ScalableIcons
         private void BaseIcon_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= BaseIcon_Loaded;
-        }
+		}
     }
 }
