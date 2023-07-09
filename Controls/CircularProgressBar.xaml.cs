@@ -29,6 +29,19 @@ namespace ModernThemables.Controls
 			typeof(CircularProgressBar),
 			new PropertyMetadata(0d, OnSetStrokeFraction));
 
+		public bool RoundedEnd
+		{
+			get { return (bool)GetValue(RoundedEndProperty); }
+			set { SetValue(RoundedEndProperty, value); }
+		}
+		public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
+			"RoundedEnd",
+			typeof(bool),
+			typeof(CircularProgressBar),
+			new FrameworkPropertyMetadata(
+				true,
+				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
 		public bool IsIndeterminate
 		{
 			get => (bool)GetValue(IsIndeterminateProperty);

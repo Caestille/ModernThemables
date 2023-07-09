@@ -12,11 +12,18 @@
 			x:Name="Arc"
 			Width="20"
 			Height="20"
+			RoundedEnd="{Binding ElementName=root, Path=RoundedEnd}"
 			CentreX="10"
 			CentreY="10"
 			Fill="{Binding ElementName=root, Path=Foreground}"
 			IsIndeterminate="{Binding ElementName=root, Path=IsIndeterminate}"
 			Radius="10">
+			<controls:ProgressArc.Visibility>
+				<MultiBinding Converter="{StaticResource MultiBoolOrToVisibilityConverter}">
+					<Binding Path="Percentage" ElementName="root" Converter="{StaticResource IsGreaterThanZeroConverter}" />
+					<Binding Path="IsIndeterminate" ElementName="root" />
+				</MultiBinding>
+			</controls:ProgressArc.Visibility>
 			<controls:ProgressArc.Style>
 				<Style>
 					<Style.Triggers>
@@ -29,7 +36,7 @@
 											RepeatBehavior="Forever"
 											Storyboard.TargetProperty="Percentage"
 											From="10"
-											To="90"
+											To="85"
 											Duration="0:0:0.8">
 											<DoubleAnimation.EasingFunction>
 												<PowerEase EasingMode="EaseInOut" Power="1.4" />
