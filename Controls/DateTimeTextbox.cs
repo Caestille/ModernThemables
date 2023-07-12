@@ -95,7 +95,7 @@ namespace ModernThemables.Controls
 		private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			var _this = sender as DatetimeTextBox;
-			if (_this != null)
+			if (_this != null && _this.textbox != null)
 			{
 				_this.blockRecalculateOnce = true;
 				_this.textbox.Text = _this.DateTime.HasValue ? _this.DateTime.Value.ToString(_this.Format) : "";
