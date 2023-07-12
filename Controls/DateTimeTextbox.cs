@@ -218,7 +218,9 @@ namespace ModernThemables.Controls
 
 		private void TextKeyDown(object sender, KeyEventArgs e)
 		{
-			string text = textbox.Text == string.Empty ? "/// ::" : textbox.Text;
+			string text = textbox.Text == string.Empty
+				? string.Join("", Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'))
+				: textbox.Text;
 			int selectStart = textbox.SelectionStart;
 			bool setStart = false;
 
