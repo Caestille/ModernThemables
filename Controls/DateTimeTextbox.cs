@@ -92,7 +92,19 @@ namespace ModernThemables.Controls
 			typeof(DatetimeTextBox),
 			new FrameworkPropertyMetadata("dd/MM/yyyy HH:mm:ss", OnSetFormat));
 
-		private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        public Brush WarningBrush
+        {
+            get => (Brush)GetValue(WarningBrushProperty);
+            set => SetValue(WarningBrushProperty, value);
+        }
+
+        public static readonly DependencyProperty WarningBrushProperty = DependencyProperty.Register(
+            "WarningBrush",
+            typeof(Brush),
+            typeof(DatetimeTextBox),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Red)));
+
+        private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			var _this = sender as DatetimeTextBox;
 			if (_this != null && _this.textbox != null)
@@ -125,6 +137,10 @@ namespace ModernThemables.Controls
 						_this.textbox.Focusable = true;
 					}
 					_this.blockUpdate = false;
+				}
+				else if (e.NewValue == null)
+				{
+					_this.textbox.Text = "";
 				}
 			}
 		}
@@ -356,7 +372,7 @@ namespace ModernThemables.Controls
 					cachedBindings[textBoxName] = binding;
 				}
 				cachedBrushes[textBoxName] = textBox.Foreground;
-				textBox.Foreground = new SolidColorBrush(Colors.Red);
+				textBox.Foreground = WarningBrush;
 				validCache[textBoxName] = valid;
 			}
 			else if (valid && (!validCache.ContainsKey(textBoxName) || validCache[textBoxName] != valid))
