@@ -40,9 +40,9 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>    <ProjectReference Include="..\..\CoreUtilities\CoreUtilities.csproj" />
-    <ProjectReference Include="..\..\ModernThemables.Icons\ModernThemables.Icons.csproj" />
-
+  <ItemGroup>
+    <ProjectReference Include="..\..\CoreUtilities\CoreUtilities.csproj" />
+    <ProjectReference Include="..\ModernThemables.Icons\ModernThemables.Icons.csproj" />
   </ItemGroup>
 
   <ItemGroup>
