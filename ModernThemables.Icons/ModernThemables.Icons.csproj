@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Joseph Ward</Authors>
+    <Company>Caestille</Company>
+    <PackageProjectUrl>https://github.com/Caestille/Win10Themables</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Caestille/Win10Themables</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+</Project>

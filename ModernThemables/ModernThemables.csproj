@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>Themable dark/light/colour base window control. Get started by adding control to root of window, and setting window borders to none, and allow transparency</Description>
+    <Authors>Joseph Ward</Authors>
+    <Company>Caestille</Company>
+    <PackageProjectUrl>https://github.com/Caestille/Win10Themables</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Caestille/Win10Themables</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Themes\Material\**" />
+    <Compile Remove="Themes\Windows10\**" />
+    <EmbeddedResource Remove="Themes\Material\**" />
+    <EmbeddedResource Remove="Themes\Windows10\**" />
+    <None Remove="Themes\Material\**" />
+    <None Remove="Themes\Windows10\**" />
+    <Page Remove="Themes\Material\**" />
+    <Page Remove="Themes\Windows10\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="AppGuid.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ControlzEx" Version="6.0.0" />
+    <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0457" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.63-beta">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>    <ProjectReference Include="..\..\CoreUtilities\CoreUtilities.csproj" />
+    <ProjectReference Include="..\..\ModernThemables.Icons\ModernThemables.Icons.csproj" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="SolutionItems\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
