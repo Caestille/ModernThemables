@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Markup;
 
-namespace ModernThemables.Icons.Icons
+namespace ModernThemables.Icons
 {
     [MarkupExtensionReturnType(typeof(Icon))]
     public class IconExtension : BaseIconExtension
