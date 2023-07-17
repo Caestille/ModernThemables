@@ -5,7 +5,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables.Icons;component/Themes/Icons.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables.Icons;component/Themes/AnimatedMenuOpenCloseIcon.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables.Icons;component/Themes/AnimatedMenuIcon.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style BasedOn="{StaticResource Icons}" TargetType="{x:Type icons:Icon}" />

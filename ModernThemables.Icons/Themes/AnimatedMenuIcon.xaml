@@ -7,10 +7,10 @@
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="{x:Type icons:AnimatedMenuOpenCloseIcon}">
+    <Style TargetType="{x:Type icons:AnimatedMenuIcon}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type icons:AnimatedMenuOpenCloseIcon}">
+                <ControlTemplate TargetType="{x:Type icons:AnimatedMenuIcon}">
                     <Grid>
                         <Border
                             Height="2"
@@ -23,7 +23,7 @@
                             <Border.Style>
                                 <Style>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:AnimatedMenuOpenCloseIcon}}, Path=(icons:AnimatedMenuOpenCloseIcon.IsOpen)}" Value="True">
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:AnimatedMenuIcon}}, Path=(icons:AnimatedMenuIcon.IsOpen)}" Value="True">
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
@@ -62,7 +62,7 @@
                             <Border.Style>
                                 <Style>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:AnimatedMenuOpenCloseIcon}}, Path=(icons:AnimatedMenuOpenCloseIcon.IsOpen)}" Value="True">
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:AnimatedMenuIcon}}, Path=(icons:AnimatedMenuIcon.IsOpen)}" Value="True">
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
@@ -101,7 +101,7 @@
                             <Border.Style>
                                 <Style>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:AnimatedMenuOpenCloseIcon}}, Path=(icons:AnimatedMenuOpenCloseIcon.IsOpen)}" Value="True">
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:AnimatedMenuIcon}}, Path=(icons:AnimatedMenuIcon.IsOpen)}" Value="True">
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
@@ -142,7 +142,7 @@
                             <Border.Style>
                                 <Style>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:AnimatedMenuOpenCloseIcon}}, Path=(icons:AnimatedMenuOpenCloseIcon.IsOpen)}" Value="True">
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type icons:AnimatedMenuIcon}}, Path=(icons:AnimatedMenuIcon.IsOpen)}" Value="True">
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>

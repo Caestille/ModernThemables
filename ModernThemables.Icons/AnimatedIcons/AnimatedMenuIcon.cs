@@ -3,17 +3,17 @@ using System.Windows.Controls;
 
 namespace ModernThemables.Icons.AnimatedIcons
 {
-    public class AnimatedMenuOpenCloseIcon : Control
+    public class AnimatedMenuIcon : Control
     {
-        static AnimatedMenuOpenCloseIcon()
+        static AnimatedMenuIcon()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AnimatedMenuOpenCloseIcon), new FrameworkPropertyMetadata(typeof(AnimatedMenuOpenCloseIcon)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(AnimatedMenuIcon), new FrameworkPropertyMetadata(typeof(AnimatedMenuIcon)));
         }
 
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
             nameof(IsOpen),
             typeof(bool),
-            typeof(AnimatedMenuOpenCloseIcon),
+            typeof(AnimatedMenuIcon),
             new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public bool IsOpen
