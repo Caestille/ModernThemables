@@ -22,7 +22,7 @@
                         <RotateTransform x:Name="RotationTransform" Angle="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RotationAngle, Mode=OneWay}" />
                     </TransformGroup>
                 </Grid.RenderTransform>
-                <Viewbox Margin="{TemplateBinding Padding}">
+                <Viewbox Margin="{TemplateBinding Padding}" Stretch="Fill">
                     <Path
                         Data="{Binding Data, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, Converter={converters:NullToUnsetValueConverter}}"
                         Fill="{TemplateBinding Foreground}"
@@ -39,8 +39,6 @@
     </ControlTemplate>
 
     <Style x:Key="Icons" TargetType="{x:Type icons:Icon}">
-        <Setter Property="Height" Value="16" />
-        <Setter Property="Width" Value="16" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="FlowDirection" Value="LeftToRight" />
         <Setter Property="HorizontalAlignment" Value="Left" />
