@@ -27,6 +27,20 @@ namespace ModernThemables.Icons
             protected set { SetValue(DataPropertyKey, value); }
         }
 
+        private static readonly DependencyPropertyKey IsFlippedPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(IsFlipped), typeof(bool), typeof(BaseIcon), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty IsFlippedProperty = IsFlippedPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets the IsFlipped property for the current icon kind.
+        /// </summary>
+        public bool IsFlipped
+        {
+            get { return (bool)GetValue(IsFlippedProperty); }
+            protected set { SetValue(IsFlippedPropertyKey, value); }
+        }
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();

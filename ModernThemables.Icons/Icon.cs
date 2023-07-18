@@ -7,17 +7,17 @@ namespace ModernThemables.Icons
         /// <summary>
         /// Gets or sets the icon to display.
         /// </summary>
-        public IconEnum Kind
+        public IconType Kind
         {
-            get => (IconEnum)GetValue(KindProperty);
+            get => (IconType)GetValue(KindProperty);
             set => SetValue(KindProperty, value);
         }
 
         public static readonly DependencyProperty KindProperty = DependencyProperty.Register(
             nameof(Kind),
-            typeof(IconEnum),
+            typeof(IconType),
             typeof(Icon),
-            new PropertyMetadata(default(IconEnum), KindPropertyChangedCallback));
+            new PropertyMetadata(default(IconType), KindPropertyChangedCallback));
 
         static Icon()
         {
@@ -32,13 +32,15 @@ namespace ModernThemables.Icons
         {
             if (Kind != default)
             {
-                string data = null;
+                (string, bool) data = (null, false);
                 IconDataFactory.DataIndex.Value?.TryGetValue(Kind, out data);
-                Data = data;
+                Data = data.Item1;
+                IsFlipped = data.Item2;
             }
             else
             {
                 Data = null;
+                IsFlipped = false;
             }
         }
 

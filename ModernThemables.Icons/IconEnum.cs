@@ -3,7 +3,7 @@
     /// <summary>
     /// List of available icons for use with <see cref="Icon" />.
     /// </summary>
-    public enum IconEnum
+    public enum IconType
     {
         None,
         Bin,

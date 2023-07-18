@@ -29,7 +29,7 @@
                             </Grid.ColumnDefinitions>
                             <scalableicons:Icon
                                 Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                                Margin="2"
+                                Margin="3"
                                 HorizontalAlignment="Left"
                                 Foreground="{DynamicResource StatusTextBrush}"
                                 Kind="MagnifyingGlass" />

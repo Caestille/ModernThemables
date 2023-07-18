@@ -30,19 +30,32 @@
                         Stretch="Uniform"
                         UseLayoutRounding="False">
                         <Path.LayoutTransform>
-                            <ScaleTransform ScaleY="-1" />
+                            <ScaleTransform x:Name="FlipTransform" />
                         </Path.LayoutTransform>
                     </Path>
                 </Viewbox>
             </Grid>
         </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsFlipped" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetName="FlipTransform"
+                                Storyboard.TargetProperty="ScaleY"
+                                To="-1"
+                                Duration="0:0:0.01" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style x:Key="Icons" TargetType="{x:Type icons:Icon}">
         <Setter Property="Padding" Value="0" />
         <Setter Property="FlowDirection" Value="LeftToRight" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="SnapsToDevicePixels" Value="False" />
         <Setter Property="UseLayoutRounding" Value="False" />

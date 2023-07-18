@@ -10,17 +10,17 @@ namespace ModernThemables.Icons
         {
         }
 
-        public IconExtension(IconEnum kind)
+        public IconExtension(IconType kind)
         {
             Kind = kind;
         }
 
         [ConstructorArgument("kind")]
-        public IconEnum Kind { get; set; }
+        public IconType Kind { get; set; }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return this.GetPackIcon<Icon, IconEnum>(Kind);
+            return this.GetPackIcon<Icon, IconType>(Kind);
         }
     }
 }
