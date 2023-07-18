@@ -27,18 +27,18 @@ namespace ModernThemables.Icons
             protected set { SetValue(DataPropertyKey, value); }
         }
 
-        private static readonly DependencyPropertyKey IsFlippedPropertyKey
-            = DependencyProperty.RegisterReadOnly(nameof(IsFlipped), typeof(bool), typeof(BaseIcon), new PropertyMetadata(false));
+        private static readonly DependencyPropertyKey YScalePropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(YScale), typeof(int), typeof(BaseIcon), new PropertyMetadata(1));
 
-        public static readonly DependencyProperty IsFlippedProperty = IsFlippedPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty YScaleProperty = YScalePropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Gets the IsFlipped property for the current icon kind.
+        /// Gets the YScale property for the current icon kind.
         /// </summary>
-        public bool IsFlipped
+        public int YScale
         {
-            get { return (bool)GetValue(IsFlippedProperty); }
-            protected set { SetValue(IsFlippedPropertyKey, value); }
+            get { return (int)GetValue(YScaleProperty); }
+            protected set { SetValue(YScalePropertyKey, value); }
         }
 
         public override void OnApplyTemplate()

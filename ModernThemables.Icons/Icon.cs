@@ -35,12 +35,12 @@ namespace ModernThemables.Icons
                 (string, bool) data = (null, false);
                 IconDataFactory.DataIndex.Value?.TryGetValue(Kind, out data);
                 Data = data.Item1;
-                IsFlipped = data.Item2;
+                YScale = data.Item2 ? -1 : 1;
             }
             else
             {
                 Data = null;
-                IsFlipped = false;
+                YScale = 1;
             }
         }
 
