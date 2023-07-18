@@ -15,17 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Themes\Material\**" />
-    <Compile Remove="Themes\Windows10\**" />
-    <EmbeddedResource Remove="Themes\Material\**" />
-    <EmbeddedResource Remove="Themes\Windows10\**" />
-    <None Remove="Themes\Material\**" />
-    <None Remove="Themes\Windows10\**" />
-    <Page Remove="Themes\Material\**" />
-    <Page Remove="Themes\Windows10\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="AppGuid.txt" />
   </ItemGroup>
 
