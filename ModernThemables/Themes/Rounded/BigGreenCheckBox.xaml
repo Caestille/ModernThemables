@@ -36,7 +36,7 @@
                                         x:Name="GlyphPanelPath"
                                         VerticalAlignment="Top"
                                         Data="M0,2 L0,4.8 L2.5,7.4 L7.1,2.8 L7.1,0 L2.5,4.6 z"
-                                        Fill="{DynamicResource ThemeTextBrush}"
+                                        Fill="White"
                                         FlowDirection="LeftToRight" />
                                 </Viewbox>
                             </Grid>
@@ -55,7 +55,8 @@
                             <Setter TargetName="GlyphPanel" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="highlightCircle" Property="Background" Value="LimeGreen" />
+                            <Setter TargetName="highlightCircle" Property="Background" Value="#55a362" />
+                            <Setter TargetName="highlightCircle" Property="BorderThickness" Value="0" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="highlightCircle" Property="Background" Value="Gray" />
