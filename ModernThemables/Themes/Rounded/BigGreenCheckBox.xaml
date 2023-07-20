@@ -36,7 +36,7 @@
                                         x:Name="GlyphPanelPath"
                                         VerticalAlignment="Top"
                                         Data="M0,2 L0,4.8 L2.5,7.4 L7.1,2.8 L7.1,0 L2.5,4.6 z"
-                                        Fill="White"
+                                        Fill="{DynamicResource InvertedTextBrush}"
                                         FlowDirection="LeftToRight" />
                                 </Viewbox>
                             </Grid>
