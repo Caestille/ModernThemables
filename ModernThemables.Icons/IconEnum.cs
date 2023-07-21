@@ -10,13 +10,13 @@
         Building,
         Calculator,
         Calendar,
+        ClipboardList,
         Close,
         Collapse,
         Download,
         Expand,
         Gear,
         Graph,
-        List,
         MagnifyingGlass,
         Maximise,
         Menu,
@@ -33,5 +33,7 @@
         Sun,
         Tag,
         Tick,
+        ViewVertical,
+        ViewHorizontal,
     }
 }
