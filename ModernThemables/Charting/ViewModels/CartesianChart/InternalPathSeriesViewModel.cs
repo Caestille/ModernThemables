@@ -14,12 +14,6 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
     /// </summary>
     internal class InternalPathSeriesViewModel : ObservableObject
 	{
-		private double yBuffer;
-		private double chartWidth;
-		private double chartHeight;
-		private string internalPathStrokeData;
-        private string internalPathFillData;
-
 		/// <summary>
 		/// The data making up the rendered points in pixels scale.
 		/// </summary>
@@ -28,13 +22,13 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
         /// <summary>
         /// The string used the render the series line using a <see cref="Path"/>.
         /// </summary>
-        public string PathStrokeData => $"M0 0 {internalPathStrokeData} M{chartWidth} {chartHeight}";
+        public string PathStrokeData { get; }
 
-        /// <summary>
-        /// The string used the render the series fill using a <see cref="Path"/>. Due to how paths render a fill, this
-        /// may not be identical to the <see cref="PathStrokeData"/>.
-        /// </summary>
-        public string PathFillData => $"M0 0 {internalPathFillData} M{chartWidth} {chartHeight}";
+		/// <summary>
+		/// The string used the render the series fill using a <see cref="Path"/>. Due to how paths render a fill, this
+		/// may not be identical to the <see cref="PathStrokeData"/>.
+		/// </summary>
+		public string PathFillData { get; }
 
 		/// <summary>
 		/// The <see cref="IChartBrush"/> the path stroke uses to colour itself.
@@ -56,24 +50,28 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
         /// </summary>
         public string Name { get; }
 
-        /// <summary>
-        /// Initialises a new <see cref="InternalPathSeriesViewModel"/>.
-        /// </summary>
-        /// <param name="name">The series name.</param>
-        /// <param name="guid">The unique identifier.</param>
-        /// <param name="data">The data this series represents.</param>
-        /// <param name="stroke">The <see cref="IChartBrush"/> path stroke.</param>
-        /// <param name="fill">The <see cref="IChartBrush"/> path fill.</param>
-        /// <param name="yBuffer">The distance by which the extremes in the yDirection will be reduced by to maintain
-        /// an empty border to the chart.</param>
-        /// <param name="tooltipFormatter">The Func used to format the tooltip string.</param>
-        public InternalPathSeriesViewModel(
+        private Thickness margin = new Thickness(0);
+        public Thickness Margin
+        {
+            get => margin;
+            set => SetProperty(ref margin, value);
+        }
+
+		/// <summary>
+		/// Initialises a new <see cref="InternalPathSeriesViewModel"/>.
+		/// </summary>
+		/// <param name="name">The series name.</param>
+		/// <param name="guid">The unique identifier.</param>
+		/// <param name="data">The data this series represents.</param>
+		/// <param name="stroke">The <see cref="IChartBrush"/> path stroke.</param>
+		/// <param name="fill">The <see cref="IChartBrush"/> path fill.</param>
+		/// <param name="yBuffer">The distance by which the extremes in the yDirection will be reduced by to maintain
+		/// an empty border to the chart.</param>
+		/// <param name="tooltipFormatter">The Func used to format the tooltip string.</param>
+		public InternalPathSeriesViewModel(
             string name,
             Guid guid,
             IEnumerable<InternalChartEntity> data,
-            double chartWidth,
-            double chartHeight,
-            double yBuffer,
 			IChartBrush? stroke,
             IChartBrush? fill)
         {
@@ -82,14 +80,16 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
             Data = data;
             Stroke = stroke;
             Fill = fill;
-            this.chartWidth = chartWidth;
-            this.chartHeight = chartHeight;
-            this.yBuffer = yBuffer;
 
             if (!data.Any()) return;
 
-            internalPathStrokeData = ConvertDataToPath(data);
-            internalPathFillData = ConvertPathForFill(internalPathStrokeData);
+            PathStrokeData = ConvertDataToPath(data);
+            PathFillData = ConvertPathForFill(PathStrokeData);
+        }
+
+        public void SetMargins(double topMargin, double bottomMargin)
+        {
+            Margin = new Thickness(0, topMargin, 0, bottomMargin);
         }
 
         /// <summary>

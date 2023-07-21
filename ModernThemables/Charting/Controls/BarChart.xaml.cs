@@ -153,8 +153,6 @@ namespace ModernThemables.Charting.Controls
 				var groupWidth = groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) - groupSep : 0;
 				var barWidth = groupWidth > 0 ? (groupWidth / barCount) - barSep : 0;
 
-				this.Dispatcher.Invoke(DispatcherPriority.Render, delegate () { });
-
 				var collection = await Task.Run(() =>
 				{
 					var ret = new List<InternalChartEntity>();

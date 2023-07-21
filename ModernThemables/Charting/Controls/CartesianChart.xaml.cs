@@ -195,9 +195,6 @@ namespace ModernThemables.Charting.Controls
 						series.Name,
 						series.Identifier,
 						points,
-						plotAreaWidth,
-						plotAreaHeight,
-						YPaddingFrac,
 						invalidateAll
 							? matchingSeries != null
 								? matchingSeries.Stroke
@@ -222,17 +219,26 @@ namespace ModernThemables.Charting.Controls
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
+				var yMax = dataYMax;
+				var yMin = dataYMin;
+				var yRange = yMax - yMin;
 				foreach (var series in collection)
 				{
 					var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
-
 					if (matchingSeries == null) continue;
+					series.UpdatePoints(await GetPointsForSeries(matchingSeries));
 
-					var points = await GetPointsForSeries(matchingSeries);
-					series.UpdatePoints(points);
+					var seriesYMax = matchingSeries.Values.Max(x => x.YValue);
+					var seriesYMin = matchingSeries.Values.Min(x => x.YValue);
+					var topMargin = ((yMax - seriesYMax) / yRange) * plotAreaHeight * 1 / 1.2;
+					var bottomMargin = ((seriesYMin - yMin) / yRange) * plotAreaHeight * 1 / 1.2; ;
+
+					series.SetMargins(topMargin, bottomMargin);
 				}
 
 				InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection);
+
+				Zoom.InvalidateArrange();
 
 				renderInProgress = false;
 			});

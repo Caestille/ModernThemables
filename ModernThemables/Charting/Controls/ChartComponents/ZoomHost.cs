@@ -155,6 +155,11 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}
 
+		public void InvalidateArrange()
+		{
+			Coordinator_MouseWheel(this, lastArgs);
+		}
+
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
 			Loaded -= OnLoaded;
@@ -174,8 +179,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 		{
-			if (e == null) return;
-
+			if (currentCoordinator == null) return;
 			lastArgs = e;
 
 			if (xMax == 0)
@@ -183,7 +187,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 				xMax = ActualWidth;
 			}
 
-			var zoomStep = e.Delta > 0 ? 0.9d : 1d / 0.9d;
+			var zoomStep = e == null ? 1d : e.Delta > 0 ? 0.9d : 1d / 0.9d;
 			currentZoomLevel /= zoomStep;
 			if (Math.Round(currentZoomLevel, 1) == 1)
 			{
@@ -192,7 +196,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			else
 			{
 				var panOffset = PanOffsetFraction * currentCoordinator.ActualWidth;
-				var zoomCentre = (e.GetPosition(currentCoordinator).X + panOffset) / currentCoordinator.ActualWidth;
+				var zoomCentre = e == null ? 0.5 : (e.GetPosition(currentCoordinator).X + panOffset) / currentCoordinator.ActualWidth;
 
 				var currXRange = xMax - xMin;
 				var newXRange = currXRange * zoomStep;
