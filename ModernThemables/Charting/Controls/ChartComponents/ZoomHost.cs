@@ -157,7 +157,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public void InvalidateArrange()
 		{
-			DoZoom(0, 0, PanOffsetFraction * currentCoordinator.ActualWidth);
+			DoZoom(1, 0.5, PanOffsetFraction * currentCoordinator.ActualWidth);
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
@@ -182,11 +182,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			if (currentCoordinator == null) return;
 			lastArgs = e;
 
-			if (xMax == 0)
-			{
-				xMax = ActualWidth;
-			}
-
 			var zoomStep = e == null ? 1d : e.Delta > 0 ? 0.9d : 1d / 0.9d;
 			var panOffset = PanOffsetFraction * currentCoordinator.ActualWidth;
 			var zoomCentre = e == null ? 0.5 : (e.GetPosition(currentCoordinator).X + panOffset) / currentCoordinator.ActualWidth;
@@ -196,6 +191,11 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void DoZoom(double zoomStep, double zoomCentre, double panOffset)
 		{
+			if (xMax == 0)
+			{
+				xMax = ActualWidth;
+			}
+
 			currentZoomLevel /= zoomStep;
 			if (Math.Round(currentZoomLevel, 1) == 1)
 			{
