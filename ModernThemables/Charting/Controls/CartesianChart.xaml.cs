@@ -183,6 +183,8 @@ namespace ModernThemables.Charting.Controls
 					}
 				}
 
+				var xMax = dataXMax;
+				var xMin = dataXMin;
 				foreach (var series in invalidateAll
 					? Series ?? new ObservableCollection<ISeries>()
 					: addedSeries ?? new List<ISeries>())
@@ -212,13 +214,12 @@ namespace ModernThemables.Charting.Controls
 					var seriesYMin = series.Values.Min(z => z.YValue);
 					var seriesYMax = series.Values.Max(z => z.YValue);
 
-					var xMax = dataXMax;
-					var xMin = dataXMin;
 
 					series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
+				var xRange = xMax - xMin;
 				var yMax = dataYMax;
 				var yMin = dataYMin;
 				var yRange = yMax - yMin;
@@ -230,10 +231,15 @@ namespace ModernThemables.Charting.Controls
 
 					var seriesYMax = matchingSeries.Values.Max(x => x.YValue);
 					var seriesYMin = matchingSeries.Values.Min(x => x.YValue);
-					var topMargin = ((yMax - seriesYMax) / yRange) * plotAreaHeight * 1 / 1.2;
-					var bottomMargin = ((seriesYMin - yMin) / yRange) * plotAreaHeight * 1 / 1.2; ;
+					var seriesXMax = matchingSeries.Values.Max(x => x.XValue);
+					var seriesXMin = matchingSeries.Values.Min(x => x.XValue);
 
-					series.SetMargins(topMargin, bottomMargin);
+					var topMargin = ((yMax - seriesYMax) / yRange) * plotAreaHeight;
+					var bottomMargin = ((seriesYMin - yMin) / yRange) * plotAreaHeight;
+					var rightMargin = ((xMax - seriesXMax) / xRange) * plotAreaWidth;
+					var leftMargin = ((seriesXMin - xMin) / xRange) * plotAreaWidth;
+
+					series.SetMargins(topMargin, bottomMargin, leftMargin, rightMargin);
 				}
 
 				InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection);

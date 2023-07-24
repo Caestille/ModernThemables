@@ -78,23 +78,21 @@
 							</ItemsControl.ItemsPanel>
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
-									<Grid Margin="{Binding Margin}">
-										<Grid>
-											<Path
-												Data="{Binding PathFillData, UpdateSourceTrigger=PropertyChanged}"
-												Fill="{Binding Fill.CoreBrush}"
-												IsHitTestVisible="False"
-												Stretch="Fill"
-												StrokeLineJoin="Bevel"
-												StrokeThickness="1.5" />
-											<Path
-												Data="{Binding PathStrokeData, UpdateSourceTrigger=PropertyChanged}"
-												IsHitTestVisible="False"
-												Stretch="Fill"
-												Stroke="{Binding Stroke.CoreBrush}"
-												StrokeLineJoin="Bevel"
-												StrokeThickness="1.5" />
-										</Grid>
+									<Grid>
+										<Path
+											Data="{Binding PathFillData, UpdateSourceTrigger=PropertyChanged}"
+											Fill="{Binding Fill.CoreBrush}"
+											IsHitTestVisible="False"
+											Stretch="Fill"
+											StrokeLineJoin="Bevel"
+											StrokeThickness="1.5" />
+										<Path
+											Data="{Binding PathStrokeData, UpdateSourceTrigger=PropertyChanged}"
+											IsHitTestVisible="False"
+											Stretch="Fill"
+											Stroke="{Binding Stroke.CoreBrush}"
+											StrokeLineJoin="Bevel"
+											StrokeThickness="1.5" />
 									</Grid>
 								</DataTemplate>
 							</ItemsControl.ItemTemplate>

@@ -9,53 +9,54 @@ using System.Windows.Shapes;
 
 namespace ModernThemables.Charting.ViewModels.CartesianChart
 {
-    /// <summary>
-    /// A view model for an internal representation of a series used by the <see cref="CartesianChart"/>.
-    /// </summary>
-    internal class InternalPathSeriesViewModel : ObservableObject
+	/// <summary>
+	/// A view model for an internal representation of a series used by the <see cref="CartesianChart"/>.
+	/// </summary>
+	internal class InternalPathSeriesViewModel : ObservableObject
 	{
+		private string pathStrokeData;
+		private string pathFillData;
+
+		private double topMargin;
+		private double bottomMargin;
+		private double leftMargin;
+		private double rightMargin;
+
 		/// <summary>
 		/// The data making up the rendered points in pixels scale.
 		/// </summary>
 		public IEnumerable<InternalChartEntity> Data;
 
-        /// <summary>
-        /// The string used the render the series line using a <see cref="Path"/>.
-        /// </summary>
-        public string PathStrokeData { get; }
+		/// <summary>
+		/// The string used the render the series line using a <see cref="Path"/>.
+		/// </summary>
+		public string PathStrokeData => $"M{Data.Min(x => x.X) - leftMargin},{Data.Min(x => x.Y) - topMargin} {pathStrokeData} M{Data.Max(x => x.X) + rightMargin},{Data.Max(x => x.Y) + bottomMargin}";
 
 		/// <summary>
 		/// The string used the render the series fill using a <see cref="Path"/>. Due to how paths render a fill, this
 		/// may not be identical to the <see cref="PathStrokeData"/>.
 		/// </summary>
-		public string PathFillData { get; }
+		public string PathFillData => $"M{Data.Min(x => x.X) - leftMargin} {Data.Min(x => x.Y) - topMargin}Z {pathFillData}Z M{Data.Max(x => x.X) + rightMargin} {Data.Max(x => x.Y) + bottomMargin}Z";
 
 		/// <summary>
 		/// The <see cref="IChartBrush"/> the path stroke uses to colour itself.
 		/// </summary>
 		public IChartBrush? Stroke { get; }
 
-        /// <summary>
-        /// The <see cref="IChartBrush"/> the path fill uses to colour itself.
-        /// </summary>
-        public IChartBrush? Fill { get; }
+		/// <summary>
+		/// The <see cref="IChartBrush"/> the path fill uses to colour itself.
+		/// </summary>
+		public IChartBrush? Fill { get; }
 
-        /// <summary>
-        /// A unique identifier, used to relate to a <see cref="ISeries.Identifier"/>.
-        /// </summary>
-        public Guid Identifier { get; }
+		/// <summary>
+		/// A unique identifier, used to relate to a <see cref="ISeries.Identifier"/>.
+		/// </summary>
+		public Guid Identifier { get; }
 
-        /// <summary>
-        /// The series name for the legend.
-        /// </summary>
-        public string Name { get; }
-
-        private Thickness margin = new Thickness(0);
-        public Thickness Margin
-        {
-            get => margin;
-            set => SetProperty(ref margin, value);
-        }
+		/// <summary>
+		/// The series name for the legend.
+		/// </summary>
+		public string Name { get; }
 
 		/// <summary>
 		/// Initialises a new <see cref="InternalPathSeriesViewModel"/>.
@@ -69,116 +70,120 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 		/// an empty border to the chart.</param>
 		/// <param name="tooltipFormatter">The Func used to format the tooltip string.</param>
 		public InternalPathSeriesViewModel(
-            string name,
-            Guid guid,
-            IEnumerable<InternalChartEntity> data,
+			string name,
+			Guid guid,
+			IEnumerable<InternalChartEntity> data,
 			IChartBrush? stroke,
-            IChartBrush? fill)
-        {
-            Name = name;
-            Identifier = guid;
-            Data = data;
-            Stroke = stroke;
-            Fill = fill;
+			IChartBrush? fill)
+		{
+			Name = name;
+			Identifier = guid;
+			Data = data;
+			Stroke = stroke;
+			Fill = fill;
 
-            if (!data.Any()) return;
+			if (!data.Any()) return;
 
-            PathStrokeData = ConvertDataToPath(data);
-            PathFillData = ConvertPathForFill(PathStrokeData);
-        }
+			pathStrokeData = ConvertDataToPath(data);
+			pathFillData = ConvertPathForFill(PathStrokeData);
+		}
 
-        public void SetMargins(double topMargin, double bottomMargin)
-        {
-            Margin = new Thickness(0, topMargin, 0, bottomMargin);
-        }
+		public void SetMargins(double topMargin, double bottomMargin, double leftMargin, double rightMargin)
+		{
+			this.topMargin = topMargin;
+			this.bottomMargin = bottomMargin;
+			this.leftMargin = leftMargin;
+			this.rightMargin = rightMargin;
+			OnPropertyChanged(nameof(PathStrokeData));
+			OnPropertyChanged(nameof(PathFillData));
+		}
 
-        /// <summary>
-        /// Given a cursor coordinate scaled to match the scaled series (if required), returns a chart point reverse
-        /// scaled to the cursor scaling under the cursor.
-        /// </summary>
-        /// <param name="dataWidth">The width of the data in the data representation (i.e.: not pixels).</param>
-        /// <param name="dataHeight">The height of the data in the data representation</param>
-        /// <param name="mouseX">The scaled cursor X coordinate.</param>
-        /// <param name="mouseY">The scaled cursor Y coordinate.</param>
-        /// <param name="zoomWidth">The current height of the container for these points. As the points here are not
-        /// scaled by point, but instead the container stretched, this is used to determine the zoom level in X.
-        /// </param>
-        /// <param name="zoomHeight">The current width of the container for these points. As the points here are not
-        /// scaled by point, but instead the container stretched, this is used to determine the zoom level in Y.
-        /// </param>
-        /// <param name="xLeftOffset">The offset in pixels in the X direction for panning/zooming.</param>
-        /// <param name="yTopOffset">The offset in pixels in the Y direction for panning/zooming.</param>
-        /// <param name="yBuffer">The fractional distance by which the y direction is scaled to create a margin.
-        /// </param>
-        /// <returns></returns>
-        public InternalChartEntity? GetChartPointUnderTranslatedMouse(
-            Point cursor,
-            double xZoom,
-            double yZoom,
-            double xLeftOffset,
-            double yTopOffset)
-        {
-            var translatedX = cursor.X / xZoom;
-            var translatedY = cursor.Y / yZoom;
+		/// <summary>
+		/// Given a cursor coordinate scaled to match the scaled series (if required), returns a chart point reverse
+		/// scaled to the cursor scaling under the cursor.
+		/// </summary>
+		/// <param name="dataWidth">The width of the data in the data representation (i.e.: not pixels).</param>
+		/// <param name="dataHeight">The height of the data in the data representation</param>
+		/// <param name="mouseX">The scaled cursor X coordinate.</param>
+		/// <param name="mouseY">The scaled cursor Y coordinate.</param>
+		/// <param name="zoomWidth">The current height of the container for these points. As the points here are not
+		/// scaled by point, but instead the container stretched, this is used to determine the zoom level in X.
+		/// </param>
+		/// <param name="zoomHeight">The current width of the container for these points. As the points here are not
+		/// scaled by point, but instead the container stretched, this is used to determine the zoom level in Y.
+		/// </param>
+		/// <param name="xLeftOffset">The offset in pixels in the X direction for panning/zooming.</param>
+		/// <param name="yTopOffset">The offset in pixels in the Y direction for panning/zooming.</param>
+		/// <param name="yBuffer">The fractional distance by which the y direction is scaled to create a margin.
+		/// </param>
+		/// <returns></returns>
+		public InternalChartEntity? GetChartPointUnderTranslatedMouse(
+			Point cursor,
+			double xZoom,
+			double yZoom,
+			double xLeftOffset,
+			double yTopOffset)
+		{
+			var translatedX = cursor.X / xZoom;
+			var translatedY = cursor.Y / yZoom;
 
-            var nearestPoint = Data.FirstOrDefault(
-                x => Math.Abs(x.X - translatedX) == Data.Min(x => Math.Abs(x.X - translatedX)));
-            if (nearestPoint == null) return null;
+			var nearestPoint = Data.FirstOrDefault(
+				x => Math.Abs(x.X - translatedX) == Data.Min(x => Math.Abs(x.X - translatedX)));
+			if (nearestPoint == null) return null;
 
-            var hoveredChartPoints = Data.Where(x => x.X == nearestPoint.X);
-            var hoveredChartPoint = hoveredChartPoints.Count() > 1
-                ? hoveredChartPoints.First(
-                    x => Math.Abs(x.Y - translatedY) == hoveredChartPoints.Min(x => Math.Abs(x.Y - translatedY)))
-                : hoveredChartPoints.First();
+			var hoveredChartPoints = Data.Where(x => x.X == nearestPoint.X);
+			var hoveredChartPoint = hoveredChartPoints.Count() > 1
+				? hoveredChartPoints.First(
+					x => Math.Abs(x.Y - translatedY) == hoveredChartPoints.Min(x => Math.Abs(x.Y - translatedY)))
+				: hoveredChartPoints.First();
 
-            var x = hoveredChartPoint.X * xZoom - xLeftOffset;
-            var y = hoveredChartPoint.Y * yZoom - yTopOffset;
-            return new InternalChartEntity(x, y, hoveredChartPoint.BackingPoint);
-        }
+			var x = hoveredChartPoint.X * xZoom - xLeftOffset;
+			var y = hoveredChartPoint.Y * yZoom - yTopOffset;
+			return new InternalChartEntity(x, y, hoveredChartPoint.BackingPoint);
+		}
 
-        /// <summary>
-        /// Updates the internal points for tooltip finding purposes without updating anything else, since the path
-        /// itself scales to fit its container, it is never re-rendered to match these points.
-        /// </summary>
-        /// <param name="data">The new data.</param>
-        public void UpdatePoints(IEnumerable<InternalChartEntity> data)
-        {
-            Data = data;
-        }
+		/// <summary>
+		/// Updates the internal points for tooltip finding purposes without updating anything else, since the path
+		/// itself scales to fit its container, it is never re-rendered to match these points.
+		/// </summary>
+		/// <param name="data">The new data.</param>
+		public void UpdatePoints(IEnumerable<InternalChartEntity> data)
+		{
+			Data = data;
+		}
 
-        /// <summary>
-        /// Indicates whether mouse coordinates scaled to match the scaled series, are inside the bounds of the series
-        /// (only in the X direction).
-        /// </summary>
-        /// <param name="dataWidth">The width of the data in the data coordinate (i.e.: not pixels).</param>
-        /// <param name="mouseX">The cursor X coordinate in pixels.</param>
-        /// <param name="zoomWidth">The width of the series container in pixels (due to zoom).</param>
-        /// <returns>A <see cref="bool"/> indicating whether the cursor X coordinate is within the bounds of the 
-        /// (potentially scaled) series.</returns>
-        public bool IsTranslatedMouseInBounds(double dataWidth, double mouseX, double zoomWidth)
-        {
-            var xZoom = zoomWidth / dataWidth;
-            var translatedX = mouseX / xZoom;
+		/// <summary>
+		/// Indicates whether mouse coordinates scaled to match the scaled series, are inside the bounds of the series
+		/// (only in the X direction).
+		/// </summary>
+		/// <param name="dataWidth">The width of the data in the data coordinate (i.e.: not pixels).</param>
+		/// <param name="mouseX">The cursor X coordinate in pixels.</param>
+		/// <param name="zoomWidth">The width of the series container in pixels (due to zoom).</param>
+		/// <returns>A <see cref="bool"/> indicating whether the cursor X coordinate is within the bounds of the 
+		/// (potentially scaled) series.</returns>
+		public bool IsTranslatedMouseInBounds(double dataWidth, double mouseX, double zoomWidth)
+		{
+			var xZoom = zoomWidth / dataWidth;
+			var translatedX = mouseX / xZoom;
 
-            return translatedX <= Data.Max(x => x.X)
-                && translatedX >= Data.Min(x => x.X);
-        }
+			return translatedX <= Data.Max(x => x.X)
+				&& translatedX >= Data.Min(x => x.X);
+		}
 
-        private string ConvertDataToPath(IEnumerable<InternalChartEntity> data)
-        {
-            var range = data.Max(x => x.Y) - data.Min(x => x.Y);
-            var sb = new StringBuilder();
-            var pointType = "M";
-            foreach (var point in data)
-            {
-                sb.Append($" {pointType}{point.X} {point.Y}");
-                pointType = "L";
+		private string ConvertDataToPath(IEnumerable<InternalChartEntity> data)
+		{
+			var sb = new StringBuilder();
+			var pointType = "M";
+			foreach (var point in data)
+			{
+				sb.Append($" {pointType}{point.X} {point.Y}");
+				pointType = "L";
 			}
 			return sb.ToString().Trim();
-        }
+		}
 
-        private string ConvertPathForFill(string strokePath)
-        {
+		private string ConvertPathForFill(string strokePath)
+		{
 			var dataMin = Data.Min(x => x.BackingPoint.YValue);
 			var dataMax = Data.Max(x => x.BackingPoint.YValue);
 			var dataRange = dataMax - dataMin;
