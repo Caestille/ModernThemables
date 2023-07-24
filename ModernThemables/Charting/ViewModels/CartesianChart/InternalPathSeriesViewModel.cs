@@ -36,7 +36,7 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 		/// The string used the render the series fill using a <see cref="Path"/>. Due to how paths render a fill, this
 		/// may not be identical to the <see cref="PathStrokeData"/>.
 		/// </summary>
-		public string PathFillData => $"M{Data.Min(x => x.X) - leftMargin} {Data.Min(x => x.Y) - topMargin}Z {pathFillData}Z M{Data.Max(x => x.X) + rightMargin} {Data.Max(x => x.Y) + bottomMargin}Z";
+		public string PathFillData => $"M{Data.Min(x => x.X) - leftMargin},{Data.Min(x => x.Y) - topMargin} {pathFillData} M{Data.Max(x => x.X) + rightMargin},{Data.Max(x => x.Y) + bottomMargin}";
 
 		/// <summary>
 		/// The <see cref="IChartBrush"/> the path stroke uses to colour itself.
@@ -85,7 +85,7 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 			if (!data.Any()) return;
 
 			pathStrokeData = ConvertDataToPath(data);
-			pathFillData = ConvertPathForFill(PathStrokeData);
+			pathFillData = ConvertPathForFill(pathStrokeData);
 		}
 
 		public void SetMargins(double topMargin, double bottomMargin, double leftMargin, double rightMargin)
