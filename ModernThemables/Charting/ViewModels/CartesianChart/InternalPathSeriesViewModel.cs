@@ -16,6 +16,8 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 	{
 		private string pathStrokeData;
 		private string pathFillData;
+		private Point topLeft;
+		private Point bottomRight;
 
 		private double topMargin;
 		private double bottomMargin;
@@ -30,13 +32,13 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 		/// <summary>
 		/// The string used the render the series line using a <see cref="Path"/>.
 		/// </summary>
-		public string PathStrokeData => $"M{Data.Min(x => x.X) - leftMargin},{Data.Min(x => x.Y) - topMargin} {pathStrokeData} M{Data.Max(x => x.X) + rightMargin},{Data.Max(x => x.Y) + bottomMargin}";
+		public string PathStrokeData => $"M{topLeft.X - leftMargin},{topLeft.Y - topMargin} {pathStrokeData} M{bottomRight.X + rightMargin},{bottomRight.Y + bottomMargin}";
 
 		/// <summary>
 		/// The string used the render the series fill using a <see cref="Path"/>. Due to how paths render a fill, this
 		/// may not be identical to the <see cref="PathStrokeData"/>.
 		/// </summary>
-		public string PathFillData => $"M{Data.Min(x => x.X) - leftMargin},{Data.Min(x => x.Y) - topMargin} {pathFillData} M{Data.Max(x => x.X) + rightMargin},{Data.Max(x => x.Y) + bottomMargin}";
+		public string PathFillData => $"M{topLeft.X - leftMargin},{topLeft.Y - topMargin} {pathFillData} M{bottomRight.X + rightMargin},{bottomRight.Y + bottomMargin}";
 
 		/// <summary>
 		/// The <see cref="IChartBrush"/> the path stroke uses to colour itself.
@@ -90,10 +92,10 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 
 		public void SetMargins(double topMargin, double bottomMargin, double leftMargin, double rightMargin)
 		{
-			this.topMargin = topMargin;
-			this.bottomMargin = bottomMargin;
-			this.leftMargin = leftMargin;
-			this.rightMargin = rightMargin;
+			this.topMargin = topMargin * (bottomRight.Y - topLeft.Y);
+			this.bottomMargin = bottomMargin * (bottomRight.Y - topLeft.Y);
+			this.leftMargin = leftMargin * (bottomRight.X - topLeft.X);
+			this.rightMargin = rightMargin * (bottomRight.X - topLeft.X);
 			OnPropertyChanged(nameof(PathStrokeData));
 			OnPropertyChanged(nameof(PathFillData));
 		}
@@ -172,6 +174,9 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 
 		private string ConvertDataToPath(IEnumerable<InternalChartEntity> data)
 		{
+			topLeft = new Point(data.Min(x => x.X), data.Min(x => x.Y));
+			bottomRight = new Point(data.Max(x => x.X), data.Max(x => x.Y));
+
 			var sb = new StringBuilder();
 			var pointType = "M";
 			foreach (var point in data)

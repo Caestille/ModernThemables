@@ -230,15 +230,17 @@ namespace ModernThemables.Charting.Controls
 					if (matchingSeries == null) continue;
 					series.UpdatePoints(await GetPointsForSeries(matchingSeries));
 
+					if (!matchingSeries.Values.Any()) continue;
+
 					var seriesYMax = matchingSeries.Values.Max(x => x.YValue);
 					var seriesYMin = matchingSeries.Values.Min(x => x.YValue);
 					var seriesXMax = matchingSeries.Values.Max(x => x.XValue);
 					var seriesXMin = matchingSeries.Values.Min(x => x.XValue);
 
-					var topMargin = ((yMax - seriesYMax) / yRange) * plotAreaHeight;
-					var bottomMargin = ((seriesYMin - yMin) / yRange) * plotAreaHeight;
-					var rightMargin = ((xMax - seriesXMax) / xRange) * plotAreaWidth;
-					var leftMargin = ((seriesXMin - xMin) / xRange) * plotAreaWidth;
+					var topMargin = ((yMax - seriesYMax) / yRange);
+					var bottomMargin = ((seriesYMin - yMin) / yRange);
+					var rightMargin = ((xMax - seriesXMax) / xRange);
+					var leftMargin = ((seriesXMin - xMin) / xRange);
 
 					series.SetMargins(topMargin, bottomMargin, leftMargin, rightMargin);
 				}
