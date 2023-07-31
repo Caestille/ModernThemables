@@ -1,5 +1,6 @@
 ﻿using ModernThemables.Charting.Services;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -27,28 +28,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(double),
 			typeof(ZoomHost),
 			new PropertyMetadata(0d));
-
-		public double XZoom
-		{
-			get => (double)GetValue(XZoomProperty);
-			private set => SetValue(XZoomProperty, value);
-		}
-		public static readonly DependencyProperty XZoomProperty = DependencyProperty.Register(
-			nameof(XZoom),
-			typeof(double),
-			typeof(ZoomHost),
-			new PropertyMetadata(1d));
-
-		public double YZoom
-		{
-			get => (double)GetValue(YZoomProperty);
-			private set => SetValue(YZoomProperty, value);
-		}
-		public static readonly DependencyProperty YZoomProperty = DependencyProperty.Register(
-			nameof(YZoom),
-			typeof(double),
-			typeof(ZoomHost),
-			new PropertyMetadata(1d));
 
 		public double LeftFraction
 		{
@@ -146,7 +125,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			LeftFraction = 0;
 			RightFraction = 0;
 			IsZoomed = false;
-			XZoom = 1;
 
 			var diffs = GetTopBottomDiff(true);
 
@@ -155,9 +133,10 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}
 
-		public void InvalidateArrange()
+		public new void InvalidateArrange()
 		{
 			DoZoom(1, 0.5, PanOffsetFraction * currentCoordinator.ActualWidth);
+			base.InvalidateArrange();
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
@@ -218,8 +197,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 				var diffs = GetTopBottomDiff();
 
-				XZoom = 1 / (1 - RightFraction - LeftFraction);
-
 				Margin = new Thickness(-leftDiff - panOffset, -diffs.top, -rightDiff + panOffset, -diffs.bottom);
 			}
 
@@ -240,8 +217,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 			var topDiff = newHeight * TopFraction;
 			var bottomDiff = newHeight * BottomFraction;
-
-			YZoom = 1 / (1 - BottomFraction - TopFraction);
 
 			return (topDiff, bottomDiff);
 		}

@@ -118,11 +118,12 @@ namespace ModernThemables.Charting.Controls
 				var min = allPoints.Min(x => x.X);
 				var max = allPoints.Max(x => x.X);
 				var range = max - min;
-				var boundedXMax = max - Zoom.RightFraction * range + Zoom.PanOffsetFraction * range;
-				var boundedXMin = min + Zoom.LeftFraction * range + Zoom.PanOffsetFraction * range;
+				var boundedXMax = max - Zoom.RightFraction * range + Zoom.PanOffsetFraction * range * Coordinator.ActualWidth / Zoom.ActualWidth;
+				var boundedXMin = min + Zoom.LeftFraction * range + Zoom.PanOffsetFraction * range * Coordinator.ActualWidth / Zoom.ActualWidth;
+				Debug.WriteLine($"{boundedXMin} | {boundedXMax}");
 				var pointsInRange = allPoints.Where(x => x.X > boundedXMin && x.X < boundedXMax);
-				var boundedYMax = pointsInRange.Min(x => x.Y);
-				var boundedYMin = pointsInRange.Max(x => x.Y);
+				var boundedYMax = pointsInRange.Any() ? pointsInRange.Min(x => x.Y) : allPoints.Min(x => x.Y);
+				var boundedYMin = pointsInRange.Any() ? pointsInRange.Max(x => x.Y) : allPoints.Max(x => x.Y);
 				return (boundedYMin, boundedYMax);
 			});
 
@@ -257,8 +258,8 @@ namespace ModernThemables.Charting.Controls
 			if (!hasData) return;
 
 			var range = dataXMax - dataXMin;
-			var xMax = dataXMax - Zoom.RightFraction * range + Zoom.PanOffsetFraction * range;
-			var xMin = dataXMin + Zoom.LeftFraction * range + Zoom.PanOffsetFraction * range;
+			var xMax = dataXMax - Zoom.RightFraction * range + Zoom.PanOffsetFraction * range * Coordinator.ActualWidth / Zoom.ActualWidth;
+			var xMin = dataXMin + Zoom.LeftFraction * range + Zoom.PanOffsetFraction * range * Coordinator.ActualWidth / Zoom.ActualWidth;
 
 			var first = Series.First().Values.First();
 			var xRange = xMax - xMin;
