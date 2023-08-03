@@ -120,7 +120,6 @@ namespace ModernThemables.Charting.Controls
 				var range = max - min;
 				var boundedXMax = max - Zoom.RightFraction * range + Zoom.PanOffsetFraction * range * Coordinator.ActualWidth / Zoom.ActualWidth;
 				var boundedXMin = min + Zoom.LeftFraction * range + Zoom.PanOffsetFraction * range * Coordinator.ActualWidth / Zoom.ActualWidth;
-				Debug.WriteLine($"{boundedXMin} | {boundedXMax}");
 				var pointsInRange = allPoints.Where(x => x.X > boundedXMin && x.X < boundedXMax);
 				var boundedYMax = pointsInRange.Any() ? pointsInRange.Min(x => x.Y) : allPoints.Min(x => x.Y);
 				var boundedYMin = pointsInRange.Any() ? pointsInRange.Max(x => x.Y) : allPoints.Max(x => x.Y);
@@ -220,10 +219,8 @@ namespace ModernThemables.Charting.Controls
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
-				var xRange = xMax - xMin;
 				var yMax = dataYMax;
 				var yMin = dataYMin;
-				var yRange = yMax - yMin;
 				foreach (var series in collection)
 				{
 					var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
@@ -234,13 +231,15 @@ namespace ModernThemables.Charting.Controls
 
 					var seriesYMax = matchingSeries.Values.Max(x => x.YValue);
 					var seriesYMin = matchingSeries.Values.Min(x => x.YValue);
+					var seriesYRange = seriesYMax - seriesYMin;
 					var seriesXMax = matchingSeries.Values.Max(x => x.XValue);
 					var seriesXMin = matchingSeries.Values.Min(x => x.XValue);
+					var seriesXRange = seriesXMax - seriesXMin;
 
-					var topMargin = ((yMax - seriesYMax) / yRange);
-					var bottomMargin = ((seriesYMin - yMin) / yRange);
-					var rightMargin = ((xMax - seriesXMax) / xRange);
-					var leftMargin = ((seriesXMin - xMin) / xRange);
+					var topMargin = ((yMax - seriesYMax) / seriesYRange);
+					var bottomMargin = ((seriesYMin - yMin) / seriesYRange);
+					var rightMargin = ((xMax - seriesXMax) / seriesXRange);
+					var leftMargin = ((seriesXMin - xMin) / seriesXRange);
 
 					series.SetMargins(topMargin, bottomMargin, leftMargin, rightMargin);
 				}
