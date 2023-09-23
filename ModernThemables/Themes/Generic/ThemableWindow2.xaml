@@ -160,7 +160,7 @@
 										BlurBackground="{Binding ElementName=PART_Content}"
 										BlurOpacity="0.5"
 										Focusable="False"
-										RedrawTrigger="{Binding ElementName=PART_SettingsBorder, Path=Margin}">
+										RedrawTrigger="{Binding ElementName=PART_SettingsBorder, Path=Margin, IsAsync=True}">
 										<controls:ThemingControl
 											x:Name="PART_ThemingMenu"
 											Width="Auto"
@@ -204,8 +204,14 @@
 							<ThicknessAnimation
 								Storyboard.TargetName="PART_SettingsBorder"
 								Storyboard.TargetProperty="Margin"
-								To="5"
+								To="5,4,5,5"
 								Duration="0:0:0.1" />
+							<ThicknessAnimation
+								BeginTime="0:0:0.1"
+								Storyboard.TargetName="PART_SettingsBorder"
+								Storyboard.TargetProperty="Margin"
+								To="5"
+								Duration="0:0:0.01" />
 						</Storyboard>
 					</BeginStoryboard>
 				</Trigger.EnterActions>
