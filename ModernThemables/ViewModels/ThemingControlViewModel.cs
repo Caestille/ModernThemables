@@ -146,7 +146,6 @@ namespace ModernThemables.ViewModels
 		/// </summary>
 		public ThemingControlViewModel()
         {
-
             this.registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
 			this.dialogueService = new DialogueService();
 
@@ -368,17 +367,17 @@ namespace ModernThemables.ViewModels
 		{
 			if (isSyncingWithOs)
 				SyncThemeWithOs(true);
-
-			if (Application.Current != null)
-			{
-				Application.Current.Dispatcher.Invoke(() =>
-				{
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+				if (Application.Current.MainWindow != null)
+				{				
 					registryService.SetSetting(LocationXSettingName, Application.Current.MainWindow.Left.ToString());
 					registryService.SetSetting(LocationYSettingName, Application.Current.MainWindow.Top.ToString());
 					registryService.SetSetting(SizeXSettingName, Application.Current.MainWindow.Width.ToString());
 					registryService.SetSetting(SizeYSettingName, Application.Current.MainWindow.Height.ToString());
-				});
-			}
+				
+				}
+            });
         }
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
