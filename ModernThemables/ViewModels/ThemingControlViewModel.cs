@@ -31,6 +31,10 @@ namespace ModernThemables.ViewModels
 		private const string OsSyncSettingName = "ThemeOsSync";
 		private const string ThemeSettingName = "Theme";
 		private const string MonoThemeSettingName = "MonochromaticTheme";
+		private const string LocationXSettingName = "LocationX";
+		private const string LocationYSettingName = "LocationY";
+		private const string SizeXSettingName = "SizeX";
+		private const string SizeYSettingName = "SizeY";
 
 		private bool? wasDarkBeforeSync;
 		private bool? wasMonoBeforeSync;
@@ -141,8 +145,9 @@ namespace ModernThemables.ViewModels
 		/// Initialises a new <see cref="ThemingControlViewModel"/>.
 		/// </summary>
 		public ThemingControlViewModel()
-		{
-			this.registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
+        {
+
+            this.registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
 			this.dialogueService = new DialogueService();
 
 			registryService.TryGetSetting(ColourModeSettingName, lightModeKey, out string? mode);
@@ -159,10 +164,31 @@ namespace ModernThemables.ViewModels
 			registryService.TryGetSetting(MonoThemeSettingName, false, out bool mono);
 			IsMonoTheme = mono;
 
-			osThemePollTimer.Elapsed += OsThemePollTimer_Elapsed;
-			osThemePollTimer.AutoReset = true;
+			if (registryService.TryGetSetting(LocationXSettingName, 0, out double left))
+			{
+				Application.Current.MainWindow.Left = left;
+			}
 
-			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+            if (registryService.TryGetSetting(LocationYSettingName, 0, out double top))
+            {
+                Application.Current.MainWindow.Top = top;
+            }
+
+            if (registryService.TryGetSetting(SizeXSettingName, 0, out double width))
+            {
+                Application.Current.MainWindow.Width = width;
+            }
+
+            if (registryService.TryGetSetting(SizeYSettingName, 0, out double height))
+            {
+                Application.Current.MainWindow.Height = height;
+            }
+
+            osThemePollTimer.Elapsed += OsThemePollTimer_Elapsed;
+			osThemePollTimer.AutoReset = true;
+            osThemePollTimer.Start();
+
+            Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
 
 		public void Dispose()
@@ -247,7 +273,6 @@ namespace ModernThemables.ViewModels
 						wasDarkBeforeSync = isDarkMode;
 						wasMonoBeforeSync = isMonoTheme;
 						themeBeforeSync = ThemeColour;
-						osThemePollTimer.Start();
 					}
 					var shouldBeDark = ShouldSystemUseDarkMode();
 					if (shouldBeDark != isDarkMode)
@@ -265,8 +290,6 @@ namespace ModernThemables.ViewModels
 						IsMonoTheme = wasMonoBeforeSync.Value;
 					if (themeBeforeSync != null)
 						SetThemeColour(themeBeforeSync.Value);
-					if (osThemePollTimer.Enabled)
-						osThemePollTimer.Stop();
 				}
 			});
 		}
@@ -345,7 +368,18 @@ namespace ModernThemables.ViewModels
 		{
 			if (isSyncingWithOs)
 				SyncThemeWithOs(true);
-		}
+
+			if (Application.Current != null)
+			{
+				Application.Current.Dispatcher.Invoke(() =>
+				{
+					registryService.SetSetting(LocationXSettingName, Application.Current.MainWindow.Left.ToString());
+					registryService.SetSetting(LocationYSettingName, Application.Current.MainWindow.Top.ToString());
+					registryService.SetSetting(SizeXSettingName, Application.Current.MainWindow.Width.ToString());
+					registryService.SetSetting(SizeYSettingName, Application.Current.MainWindow.Height.ToString());
+				});
+			}
+        }
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
