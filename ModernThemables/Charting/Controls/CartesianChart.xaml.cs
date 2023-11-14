@@ -39,7 +39,7 @@ namespace ModernThemables.Charting.Controls
 
 		private SeriesWatcherService seriesWatcher;
 
-		private bool hasData => Series != null && Series.Any(x => x.Values.Any());
+		private bool hasData => Series != null && Series.Any(x => x.Values?.Any() ?? false);
 		private double plotAreaHeight => TooltipControl.ActualHeight;
 		private double plotAreaWidth => TooltipControl.ActualWidth;
 
@@ -189,6 +189,8 @@ namespace ModernThemables.Charting.Controls
 					? Series ?? new ObservableCollection<ISeries>()
 					: addedSeries ?? new List<ISeries>())
 				{
+					if (series.Values == null || !series.Values.Any()) continue;
+
 					var points = await GetPointsForSeries(series);
 
 					var matchingSeries = InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
@@ -416,14 +418,14 @@ namespace ModernThemables.Charting.Controls
 		{
 			if (isMin)
 			{
-				return Series != null && Series.Where(x => x.Values.Any()).Any()
+				return Series != null && Series.Where(x => x.Values?.Any() ?? false).Any()
 					? Series.Where(x => x.Values.Any()).SelectMany(x => x.Values).Min(y => valueGetter(y))
 					: 0;
 			}
 			else
 			{
-				return Series != null && Series.Where(x => x.Values.Any()).Any()
-					? Series.Where(x => x.Values.Any()).SelectMany(x => x.Values).Max(y => valueGetter(y))
+				return Series != null && Series.Where(x => x.Values?.Any() ?? false).Any()
+					? Series.Where(x => x.Values?.Any() ?? false).SelectMany(x => x.Values).Max(y => valueGetter(y))
 					: 0;
 			}
 		}
