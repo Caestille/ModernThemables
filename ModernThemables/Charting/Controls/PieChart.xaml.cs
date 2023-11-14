@@ -175,7 +175,7 @@ namespace ModernThemables.Charting.Controls
 
 				var newSeries = new List<InternalPieSeriesViewModel>();
 
-				foreach (var series in Series)
+				foreach (var series in Series.Where(x => x.Values != null && x.Values.Any()))
 				{
 					var wedges = await GetWedgesForSeries(series);
 

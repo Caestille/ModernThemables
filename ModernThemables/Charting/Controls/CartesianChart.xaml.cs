@@ -177,7 +177,7 @@ namespace ModernThemables.Charting.Controls
 				}
 				else
 				{
-					foreach (var series in (removedSeries ?? new List<ISeries>()))
+					foreach (var series in (removedSeries ?? new List<ISeries>()).Where(x => collection.Any(y => y.Identifier == x.Identifier)))
 					{
 						collection.Remove(collection.First(x => x.Identifier == series.Identifier));
 					}
