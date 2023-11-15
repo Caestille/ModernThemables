@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://github.com/Caestille/Win10Themables</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Caestille/Win10Themables</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
 </Project>
