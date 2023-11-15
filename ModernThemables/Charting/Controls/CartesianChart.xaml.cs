@@ -17,14 +17,13 @@ using ModernThemables.Charting.Models.Brushes;
 using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Services;
 using ModernThemables.Charting.Controls.ChartComponents;
-using System.Windows.Threading;
 
 namespace ModernThemables.Charting.Controls
 {
-	/// <summary>
-	/// Interaction logic for CartesianChart.xaml
-	/// </summary>
-	public partial class CartesianChart : UserControl
+    /// <summary>
+    /// Interaction logic for CartesianChart.xaml
+    /// </summary>
+    public partial class CartesianChart : UserControl
 	{
 		public event EventHandler<IChartEntity>? PointClicked;
 		public event EventHandler<Tuple<IChartEntity, IChartEntity>>? PointRangeSelected;
