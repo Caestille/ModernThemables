@@ -61,17 +61,7 @@ namespace ModernThemables.Controls
 		{
 			base.OnApplyTemplate();
 
-			if (textBox != null)
-			{
-				//textBox.TextChanged -= TextChanged;
-				textBox.PreviewKeyDown -= KeyDown;
-			}
 			textBox = this.Template.FindName(PART_textBox, this) as TextBox;
-			if (textBox != null)
-			{
-				//textBox.TextChanged += TextChanged;
-				textBox.PreviewKeyDown += KeyDown;
-			}
 
 			textBlock = this.Template.FindName(PART_textBlock, this) as TextBlock;
 
@@ -92,14 +82,5 @@ namespace ModernThemables.Controls
 		}
 
 		#endregion Override
-
-		#region Events Handlers
-
-		private void KeyDown(object sender, KeyEventArgs e)
-		{
-			
-		}
-
-		#endregion Events Handlers
 	}
 }

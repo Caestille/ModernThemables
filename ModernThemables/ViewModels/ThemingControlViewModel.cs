@@ -41,10 +41,10 @@ namespace ModernThemables.ViewModels
 		private Color? themeBeforeSync;
 		private Color? themeBeforeMono;
 
-		private IRegistryService registryService;
-		private IDialogueService dialogueService;
+		private readonly IRegistryService registryService;
+		private readonly IDialogueService dialogueService;
 
-		private Timer osThemePollTimer = new Timer(1000);
+		private readonly Timer osThemePollTimer = new Timer(1000);
 
 		public ICommand ChangeColourCommand => new RelayCommand(ChangeColour);
 

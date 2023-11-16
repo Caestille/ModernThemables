@@ -25,17 +25,17 @@ namespace ModernThemables.Charting.Controls
 	/// </summary>
 	public partial class PieChart : UserControl
 	{
-		private KeepAliveTriggerService resizeTrigger;
+		private readonly KeepAliveTriggerService resizeTrigger;
 
-		private SeriesWatcherService seriesWatcher;
+		private readonly SeriesWatcherService seriesWatcher;
 
 		private IEnumerable<InternalPieWedgeViewModel> allWedges
 			=> this.InternalSeries.Aggregate(new List<InternalPieWedgeViewModel>(), (list, series) => { list.AddRange(series.Wedges); return list; });
 
-		private BlockingCollection<Action> renderQueue;
+		private readonly BlockingCollection<Action> renderQueue;
 		private bool renderInProgress;
 
-		private Thread renderThread;
+		private readonly Thread renderThread;
 		private bool runRenderThread = true;
 
 		public PieChart()
@@ -204,35 +204,37 @@ namespace ModernThemables.Charting.Controls
 
 		private async Task<List<InternalPieWedgeViewModel>> GetWedgesForSeries(ISeries? series)
 		{
-			var convertedSeries = new List<InternalPieWedgeViewModel>();
+			return await Task.Run(() => { 
+				var convertedSeries = new List<InternalPieWedgeViewModel>();
 
-			if (series == null) return convertedSeries;
+				if (series == null) return convertedSeries;
 
-			var sum = series.Values.Sum(x => x.XValue);
-			var angleSum = 0d;
+				var sum = series.Values.Sum(x => x.XValue);
+				var angleSum = 0d;
 
-			foreach (var wedge in series.Values)
-			{
-				InternalPieWedgeViewModel? matchingWedge = null;
+				foreach (var wedge in series.Values)
+				{
+					InternalPieWedgeViewModel? matchingWedge = null;
 
-				convertedSeries.Add(new InternalPieWedgeViewModel(
-					wedge.Name,
-					wedge.Identifier,
-					wedge.XValue / sum * 100,
-					wedge.XValue,
-					angleSum / sum * 360,
-					matchingWedge != null
-						? matchingWedge.Stroke
-						: wedge.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
-					matchingWedge != null
-						? matchingWedge.Fill
-						: wedge.Fill ?? new SolidBrush(ColorExtensions.RandomColour(50))));
+					convertedSeries.Add(new InternalPieWedgeViewModel(
+						wedge.Name,
+						wedge.Identifier,
+						wedge.XValue / sum * 100,
+						wedge.XValue,
+						angleSum / sum * 360,
+						matchingWedge != null
+							? matchingWedge.Stroke
+							: wedge.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
+						matchingWedge != null
+							? matchingWedge.Fill
+							: wedge.Fill ?? new SolidBrush(ColorExtensions.RandomColour(50))));
 
-				angleSum += wedge.XValue;
-			}
+					angleSum += wedge.XValue;
+				}
 
-			return convertedSeries;
-		}
+				return convertedSeries;
+            });
+        }
 
 		#endregion
 

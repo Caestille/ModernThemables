@@ -1,25 +1,25 @@
 <ResourceDictionary
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
 
-	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
 
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/BlurHost.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/DatetimeTextBox.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ExtendedButton.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ExtendedToggleButton.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltip.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltipHorizontal.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/RangeSlider.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/SearchBox.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ThemableWindow2.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/WindowButtonCommands.xaml" />
-	</ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/BlurHost.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/DatetimeTextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ExtendedButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ExtendedToggleButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltip.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltipHorizontal.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/RangeSlider.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/SearchBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ThemableWindow2.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/WindowButtonCommands.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
-	<helperclasses:BindingProxy x:Key="proxy" Data="{Binding}" />
+    <helperclasses:BindingProxy x:Key="proxy" Data="{Binding}" />
 </ResourceDictionary>

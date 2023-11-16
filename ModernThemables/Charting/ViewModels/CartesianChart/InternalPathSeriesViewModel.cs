@@ -14,8 +14,8 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 	/// </summary>
 	internal class InternalPathSeriesViewModel : ObservableObject
 	{
-		private string pathStrokeData;
-		private string pathFillData;
+		private readonly string pathStrokeData;
+		private readonly string pathFillData;
 		private Point topLeft;
 		private Point bottomRight;
 

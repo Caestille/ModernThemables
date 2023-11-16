@@ -47,7 +47,7 @@ namespace ModernThemables.Converters
 				}
 			}
 
-			return null;
+			return Binding.DoNothing;
 		}
 
 		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

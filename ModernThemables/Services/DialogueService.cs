@@ -16,7 +16,7 @@ namespace ModernThemables.Services
 	/// </summary>
 	public class DialogueService : IDialogueService
 	{
-		private Dictionary<Type, Type> registeredViews = new();
+		private readonly Dictionary<Type, Type> registeredViews = new();
 
 		/// <inheritdoc />
 		public void RegisterViewForViewModel(Type viewType, Type vmType)
@@ -25,7 +25,7 @@ namespace ModernThemables.Services
 		}
 
 		/// <inheritdoc />
-		public async Task ShowCustomDialogue(object? dataContext=null, Size? dialogueSize = null)
+		public void ShowCustomDialogue(object? dataContext=null, Size? dialogueSize = null)
 		{
 			var window = new ThemableWindow2();
 			window.UseLayoutRounding = true;
@@ -60,7 +60,7 @@ namespace ModernThemables.Services
 		}
 
 		/// <inheritdoc />
-		public async Task ShowBorderlessCustomDialogue(object? dataContext = null, Size? dialogueSize = null)
+		public void ShowBorderlessCustomDialogue(object? dataContext = null, Size? dialogueSize = null)
 		{
 			var window = new Window();
 			window.WindowStyle = WindowStyle.None;

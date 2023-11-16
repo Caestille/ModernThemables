@@ -15,7 +15,6 @@ namespace ModernThemables.Controls
         #region Members
 
         private const String PART_MidRange = "PART_MidRange";
-        private const String PART_Range = "PART_Range";
         private const String PART_HigherSlider = "PART_HigherSlider";
         private const String PART_LowerSlider = "PART_LowerSlider";
         private const String PART_Track = "PART_Track";
@@ -25,7 +24,6 @@ namespace ModernThemables.Controls
         private Slider _higherSlider;
         private Track _lowerTrack;
         private Track _higherTrack;
-        private double? _deferredUpdateValue;
 
         #endregion Members
 

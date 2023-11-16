@@ -11,10 +11,10 @@ using ModernThemables.Charting.Services;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
-    /// <summary>
-    /// Interaction logic for TooltipControl.xaml
-    /// </summary>
-    public partial class TooltipControl : UserControl
+	/// <summary>
+	/// Interaction logic for TooltipControl.xaml
+	/// </summary>
+	public partial class TooltipControl : UserControl
 	{
 		private bool tooltipLeft;
 		private bool tooltipTop;
@@ -263,7 +263,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			}
 		}
 
-		private static async void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not TooltipControl _this) return;
 
@@ -357,7 +357,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			#endregion
 
 			#region Selected range
-			if (AllowSelection && e.isUserDragging)
+			if (AllowSelection && e.isUserDragging && e.lowerSelection != null)
 			{
 				IsUserSelectingRange = true;
 				var negative = mouseLoc.X < e.lowerSelection.Value.X;

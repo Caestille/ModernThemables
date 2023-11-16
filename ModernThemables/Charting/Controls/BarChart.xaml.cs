@@ -26,15 +26,15 @@ namespace ModernThemables.Charting.Controls
 		private double plotAreaHeight => TooltipControl.ActualHeight;
 		private double plotAreaWidth => TooltipControl.ActualWidth;
 
-		private KeepAliveTriggerService resizeTrigger;
+		private readonly KeepAliveTriggerService resizeTrigger;
 
 		private bool isSingleXPoint;
 
-		private BlockingCollection<Action> renderQueue;
+		private readonly BlockingCollection<Action> renderQueue;
 		private bool renderInProgress;
 		private bool runRenderThread = true;
 
-		private SeriesWatcherService seriesWatcher;
+		private readonly SeriesWatcherService seriesWatcher;
 
 		private bool hasData => Series != null && Series.Any(x => x.Values.Any());
 

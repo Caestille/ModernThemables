@@ -33,39 +33,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(LegendControl),
 			new PropertyMetadata(null));
 
-		public Brush Background
-		{
-			get => (Brush)GetValue(BackgroundProperty);
-			set => SetValue(BackgroundProperty, value);
-		}
-		public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-			"Background",
-			typeof(Brush),
-			typeof(LegendControl),
-			new PropertyMetadata(null));
-
-		public Brush BorderBrush
-		{
-			get => (Brush)GetValue(BorderBrushProperty);
-			set => SetValue(BorderBrushProperty, value);
-		}
-		public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-			"BorderBrush",
-			typeof(Brush),
-			typeof(LegendControl),
-			new PropertyMetadata(null));
-
-		public Thickness BorderThickness
-		{
-			get => (Thickness)GetValue(BorderThicknessProperty);
-			set => SetValue(BorderThicknessProperty, value);
-		}
-		public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-			"BorderThickness",
-			typeof(Thickness),
-			typeof(LegendControl),
-			new PropertyMetadata(null));
-
 		public CornerRadius CornerRadius
 		{
 			get => (CornerRadius)GetValue(CornerRadiusProperty);
@@ -104,7 +71,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			InitializeComponent();
 		}
 
-		private static async void OnSetLegendOrientation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnSetLegendOrientation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not LegendControl _this) return;
 

@@ -59,7 +59,7 @@ namespace ModernThemables.Controls
 			InitializeComponent();
 		}
 
-		private static async void OnSetPercentage(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnSetPercentage(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not CircularProgressBar _this) return;
 
@@ -70,7 +70,7 @@ namespace ModernThemables.Controls
 			}
 		}
 
-		private static async void OnSetStrokeFraction(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnSetStrokeFraction(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not CircularProgressBar _this) return;
 

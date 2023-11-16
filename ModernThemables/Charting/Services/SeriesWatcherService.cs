@@ -10,9 +10,9 @@ namespace ModernThemables.Charting.Services
 {
 	public class SeriesWatcherService
 	{
-		private Action<IList<ISeries>, IList<ISeries>, bool> onSeriesUpdated;
+		private readonly Action<IList<ISeries>, IList<ISeries>, bool> onSeriesUpdated;
 		private bool hasSetSeries;
-		private List<ISeries> subscribedSeries = new();
+		private readonly List<ISeries> subscribedSeries = new();
 
 		public SeriesWatcherService(Action<IList<ISeries>, IList<ISeries>, bool> onSeriesUpdated)
 		{
@@ -52,7 +52,7 @@ namespace ModernThemables.Charting.Services
 			}
 		}
 
-		private async void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+		private void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
@@ -87,7 +87,7 @@ namespace ModernThemables.Charting.Services
 			onSeriesUpdated(newItems, oldItems, false);
 		}
 
-		private async void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+		private void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			if (sender is ISeries series)
 			{

@@ -28,7 +28,7 @@ namespace ModernThemables.Controls
 			new UIPropertyMetadata(Colors.Black));
 
 		private bool isMouseDown;
-		private static List<KeyValuePair<Color, double>> horizontalColourStops = new List<KeyValuePair<Color, double>>()
+		private static readonly List<KeyValuePair<Color, double>> horizontalColourStops = new List<KeyValuePair<Color, double>>()
 		{
 			new KeyValuePair<Color, double>(Colors.Red, 0),
 			new KeyValuePair<Color, double>(Colors.Magenta, 1d/7),
@@ -39,7 +39,7 @@ namespace ModernThemables.Controls
 			new KeyValuePair<Color, double>(Colors.Orange, 6d/7),
 			new KeyValuePair<Color, double>(Colors.Red, 1)
 		};
-		private static List<KeyValuePair<Color, double>> verticalColourStops = new List<KeyValuePair<Color, double>>()
+		private static readonly List<KeyValuePair<Color, double>> verticalColourStops = new List<KeyValuePair<Color, double>>()
 		{
 			new KeyValuePair<Color, double>(Colors.Black, 0),
 			new KeyValuePair<Color, double>(Colors.Transparent, 1/2),

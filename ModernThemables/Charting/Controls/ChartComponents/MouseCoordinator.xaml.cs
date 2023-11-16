@@ -12,7 +12,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 	{
 		public event EventHandler<Point>? PointClicked;
 		public event EventHandler<(Point lowerValue, Point upperValue)>? PointRangeSelected;
-		public event EventHandler<(bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args)>? MouseMove;
+		public new event EventHandler<(bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args)>? MouseMove;
 
 		private MouseButton? mouseDown;
 

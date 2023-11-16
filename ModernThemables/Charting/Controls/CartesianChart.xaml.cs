@@ -28,15 +28,15 @@ namespace ModernThemables.Charting.Controls
 		public event EventHandler<IChartEntity>? PointClicked;
 		public event EventHandler<Tuple<IChartEntity, IChartEntity>>? PointRangeSelected;
 
-		private KeepAliveTriggerService resizeTrigger;
+		private readonly KeepAliveTriggerService resizeTrigger;
 
-		private BlockingCollection<Action> renderQueue;
+		private readonly BlockingCollection<Action> renderQueue;
 		private bool renderInProgress;
 
-		private Thread renderThread;
+		private readonly Thread renderThread;
 		private bool runRenderThread = true;
 
-		private SeriesWatcherService seriesWatcher;
+		private readonly SeriesWatcherService seriesWatcher;
 
 		private bool hasData => Series != null && Series.Any(x => x.Values?.Any() ?? false);
 		private double plotAreaHeight => TooltipControl.ActualHeight;

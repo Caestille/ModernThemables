@@ -52,9 +52,6 @@ namespace ModernThemables.Charting.Models.CartesianChart
         }
 
         /// <inheritdoc />
-        public event EventHandler<bool> FocusedChanged;
-
-        /// <inheritdoc />
         public object XValueToImplementation()
         {
             return new DateTime(TimeSpan.FromDays(XValue).Ticks);

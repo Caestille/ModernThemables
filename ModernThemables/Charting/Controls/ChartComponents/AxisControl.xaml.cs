@@ -15,8 +15,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
     /// </summary>
     public partial class AxisControl : UserControl
 	{
-		private bool allowIndicators = false;
-
 		public Orientation Orientation
 		{
 			get => (Orientation)GetValue(OrientationProperty);
@@ -60,13 +58,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(bool),
 			typeof(AxisControl),
 			new UIPropertyMetadata(true));
-
-		private double LabelHeight
-		{
-			get => (double)GetValue(LabelHeightProperty);
-			set => SetValue(LabelHeightProperty, value);
-		}
-		public static readonly DependencyProperty LabelHeightProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty LabelHeightProperty = DependencyProperty.Register(
 			"LabelHeight",
 			typeof(double),
 			typeof(AxisControl),
@@ -104,13 +96,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(double),
 			typeof(AxisControl),
 			new UIPropertyMetadata(0d));
-
-		private HorizontalAlignment LabelAlignment
-		{
-			get => (HorizontalAlignment)GetValue(LabelAlignmentProperty);
-			set => SetValue(LabelAlignmentProperty, value);
-		}
-		public static readonly DependencyProperty LabelAlignmentProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty LabelAlignmentProperty = DependencyProperty.Register(
 			"LabelAlignment",
 			typeof(HorizontalAlignment),
 			typeof(AxisControl),
@@ -203,7 +189,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			OnSetLabelRotation(this, new DependencyPropertyChangedEventArgs());
 		}
 
-		private static async void OnSetAxisOrientation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnSetAxisOrientation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not AxisControl _this) return;
 
@@ -220,7 +206,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			OnSetLabelRotation(sender, e);
 		}
 
-		private static async void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not AxisControl _this) return;
 
@@ -229,11 +215,9 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			_this.Coordinator.MouseEnter += _this.Coordinator_MouseEnter;
 		}
 
-		private static async void OnSetLabelRotation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnSetLabelRotation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is not AxisControl _this || _this.Labels == null || !_this.Labels.Any()) return;
-
-			_this.allowIndicators = _this.Labels.All(x => x.Value != null);
 
 			var sizes = _this.Labels.Select(
 				x => StringWidthGetterConverter.MeasureString(
@@ -280,7 +264,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args) e)
 		{
-			if (!allowIndicators || !ShowIndicators) return;
+			if (!ShowIndicators) return;
 
 			var mouseLoc = e.args.GetPosition(Coordinator);
 			var axisLength = Orientation == Orientation.Horizontal ? Grid.ActualWidth : Grid.ActualHeight;
@@ -313,7 +297,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_MouseEnter(object sender, MouseEventArgs e)
 		{
-			if (ShowIndicators && allowIndicators && ValueDisplay.Visibility == Visibility.Collapsed) ValueDisplay.Visibility = Visibility.Visible;
+			if (ShowIndicators && ValueDisplay.Visibility == Visibility.Collapsed) ValueDisplay.Visibility = Visibility.Visible;
 		}
 	}
 }

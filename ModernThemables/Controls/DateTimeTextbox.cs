@@ -26,17 +26,17 @@ namespace ModernThemables.Controls
 
 		private bool blockUpdate;
 
-		private Dictionary<string, Brush> cachedBrushes = new();
-		private Dictionary<string, Binding> cachedBindings = new();
-		private Dictionary<string, bool> validCache = new();
+		private readonly Dictionary<string, Brush> cachedBrushes = new();
+		private readonly Dictionary<string, Binding> cachedBindings = new();
+		private readonly Dictionary<string, bool> validCache = new();
 
-		private KeepAliveTriggerService trigger;
+		private readonly KeepAliveTriggerService trigger;
 
 		private bool isKeyboardUpdate = false;
 
 		private bool blockRecalculateOnce;
 
-		private List<string> skipCharacters = new() { "", " ", ":", "/" };
+		private readonly List<string> skipCharacters = new() { "", " ", ":", "/" };
 
 		private DateTime? lastValue;
 
