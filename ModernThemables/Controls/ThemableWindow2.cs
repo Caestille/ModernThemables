@@ -765,7 +765,7 @@ namespace ModernThemables.Controls
 			SetResourceReference(GlowColorProperty, "ThemeMouseOverColour");
 		}
 
-		private void CloseThemingMenu(object sender, RoutedEventArgs e)
+		private void CloseThemingMenu(object? sender, RoutedEventArgs? e)
 		{
 			ShowThemingMenu = false;
 			if (WindowButtonCommands != null)

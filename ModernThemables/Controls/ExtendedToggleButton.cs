@@ -7,7 +7,7 @@ namespace ModernThemables.Controls
 {
 	public class ExtendedToggleButton : ToggleButton
     {
-        readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
+        readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
         public Brush CurrentForeground
         {
             get => (Brush)GetValue(CurrentForegroundProperty);
@@ -110,7 +110,7 @@ namespace ModernThemables.Controls
         {
             this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
             this.Loaded -= ExtendedButton_Loaded;
-            ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+            ExtendedButton_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
 
         private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -165,6 +165,8 @@ namespace ModernThemables.Controls
 
         protected override void OnMouseLeave(MouseEventArgs e)
         {
+            IsChecked = IsChecked ?? false;
+
             if (IsEnabled && !IsChecked.Value)
             {
                 CurrentBackground = Background;
@@ -202,7 +204,7 @@ namespace ModernThemables.Controls
         {
             if (sender is not ExtendedToggleButton button) return;
 
-            button.ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+            button.ExtendedButton_IsEnabledChanged(button, new DependencyPropertyChangedEventArgs());
         }
     }
 }

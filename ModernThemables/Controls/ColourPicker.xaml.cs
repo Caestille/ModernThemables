@@ -14,7 +14,7 @@ namespace ModernThemables.Controls
 	/// </summary>
 	public partial class ColourPicker : UserControl
 	{
-		public Action<Color> colourChangedCallback;
+		public Action<Color>? colourChangedCallback;
 
 		public Color Colour
 		{

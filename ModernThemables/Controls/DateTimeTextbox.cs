@@ -22,7 +22,7 @@ namespace ModernThemables.Controls
 
 		private bool dateValid;
 
-		private TextBox textbox;
+		private TextBox? textbox;
 
 		private bool blockUpdate;
 
@@ -92,19 +92,19 @@ namespace ModernThemables.Controls
 			typeof(DatetimeTextBox),
 			new FrameworkPropertyMetadata("dd/MM/yyyy HH:mm:ss", OnSetFormat));
 
-        public Brush WarningBrush
-        {
-            get => (Brush)GetValue(WarningBrushProperty);
-            set => SetValue(WarningBrushProperty, value);
-        }
+		public Brush WarningBrush
+		{
+			get => (Brush)GetValue(WarningBrushProperty);
+			set => SetValue(WarningBrushProperty, value);
+		}
 
-        public static readonly DependencyProperty WarningBrushProperty = DependencyProperty.Register(
-            "WarningBrush",
-            typeof(Brush),
-            typeof(DatetimeTextBox),
-            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Red)));
+		public static readonly DependencyProperty WarningBrushProperty = DependencyProperty.Register(
+			"WarningBrush",
+			typeof(Brush),
+			typeof(DatetimeTextBox),
+			new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Red)));
 
-        private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			var _this = sender as DatetimeTextBox;
 			if (_this != null && _this.textbox != null)
@@ -138,7 +138,7 @@ namespace ModernThemables.Controls
 					}
 					_this.blockUpdate = false;
 				}
-				else if (e.NewValue == null && e.OldValue == null)
+				else if (e.NewValue == null && e.OldValue == null && _this.textbox != null)
 				{
 					_this.textbox.Text = "";
 				}
@@ -158,11 +158,18 @@ namespace ModernThemables.Controls
 				textbox.TextChanged -= TextChanged;
 				textbox.PreviewKeyDown -= TextKeyDown;
 			}
-			textbox = this.Template.FindName(PART_textbox, this) as TextBox;
+			if (this.Template.FindName(PART_textbox, this) is TextBox tb)
+			{ 
+				textbox = tb;
+			}
 			if (textbox != null)
 			{
 				textbox.TextChanged += TextChanged;
 				textbox.PreviewKeyDown += TextKeyDown;
+			}
+			else
+			{
+				throw new InvalidOperationException("Template missing required UI element");
 			}
 
 			if (textbox != null)
@@ -200,6 +207,8 @@ namespace ModernThemables.Controls
 
 		private void TextChanged(object sender, TextChangedEventArgs e)
 		{
+			if (textbox == null) return;
+
 			if (blockRecalculateOnce)
 			{
 				blockRecalculateOnce = false;
@@ -234,6 +243,8 @@ namespace ModernThemables.Controls
 
 		private void TextKeyDown(object sender, KeyEventArgs e)
 		{
+			if (textbox == null) return;
+
 			string text = textbox.Text == string.Empty
 				? string.Join("", Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'))
 				: textbox.Text;
@@ -319,12 +330,14 @@ namespace ModernThemables.Controls
 
 		private string GetPreviousCharacter(int currentPos)
 		{
+			if (textbox == null) return "";
 			var prev = textbox.Text.ToCharArray()[Math.Max(0, currentPos - 1)].ToString();
 			return prev;
 		}
 
 		private string GetNextCharacter(int currentPos)
 		{
+			if (textbox == null) return "";
 			var next = textbox.Text.ToCharArray()[Math.Min(textbox.Text.Length - 1, currentPos)].ToString();
 			return next;
 		}
@@ -338,7 +351,7 @@ namespace ModernThemables.Controls
 
 		private void CalculateDate(bool keyboardUpdate = true)
 		{
-			if (blockUpdate) return;
+			if (blockUpdate || textbox == null) return;
 
 			isKeyboardUpdate = keyboardUpdate;
 
@@ -354,9 +367,9 @@ namespace ModernThemables.Controls
 					}
 					DateTime = newVal;
 					var args = new RoutedPropertyChangedEventArgs<DateTime?>(lastValue, newVal, DateChangedEvent) { Source = this };
-                    this.RaiseEvent(args);
+					this.RaiseEvent(args);
 				}
-            });
+			});
 
 			isKeyboardUpdate = false;
 		}

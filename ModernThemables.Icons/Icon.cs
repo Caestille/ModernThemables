@@ -34,7 +34,7 @@ namespace ModernThemables.Icons
             {
                 (string, bool) data = (null, false);
                 IconDataFactory.DataIndex.Value?.TryGetValue(Kind, out data);
-                Data = data.Item1;
+                Data = data.Item1!;
                 YScale = data.Item2 ? -1 : 1;
             }
             else

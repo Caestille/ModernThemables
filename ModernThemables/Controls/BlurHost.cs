@@ -112,7 +112,7 @@ namespace ModernThemables.Controls
 			  typeof(BlurHost),
 			  new PropertyMetadata(new object(), Draw));
 
-		private Border PART_BlurDecorator { get; set; }
+		private Border? PART_BlurDecorator { get; set; }
 		private VisualBrush BlurDecoratorBrush { get; set; }
 
 		static BlurHost()
@@ -147,7 +147,7 @@ namespace ModernThemables.Controls
             Rect backgroundBounds = BlurBackground.TransformToVisual(backgroundContainer)
 				.TransformBounds(new Rect(this.BlurBackground.RenderSize));
 
-			var transform = backgroundContainer.TransformToVisual(blurHostContainer).Transform(new Point(0, 0));
+			var transform = backgroundContainer?.TransformToVisual(blurHostContainer).Transform(new Point(0, 0)) ?? new Point();
 
             var viewBox = new Rect(Math.Max(blurHostBounds.Left - transform.X, 0) + OffsetX, Math.Max(blurHostBounds.Top - transform.Y, 0) + OffsetY, blurHostBounds.Width, blurHostBounds.Height);
 
@@ -158,7 +158,7 @@ namespace ModernThemables.Controls
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
-			if (TryFindVisualRootContainer(this, out FrameworkElement rootContainer))
+			if (TryFindVisualRootContainer(this, out var rootContainer) && rootContainer != null)
 			{
 				rootContainer.SizeChanged += OnRootContainerElementResized;
 			}
@@ -172,42 +172,55 @@ namespace ModernThemables.Controls
 				return;
 
 			base.OnApplyTemplate();
-			this.PART_BlurDecorator = GetTemplateChild("PART_BlurDecorator") as Border;
-			this.PART_BlurDecorator.Effect = new BlurEffect()
+			if (GetTemplateChild("PART_BlurDecorator") is Border border)
 			{
-				Radius = BlurRadius,
-				KernelType = KernelType.Gaussian,
-				RenderingBias = RenderingBias.Performance
-			};
-			this.PART_BlurDecorator.Background = this.BlurDecoratorBrush;
+                this.PART_BlurDecorator = border;
+            }
+
+			if (this.PART_BlurDecorator != null)
+			{
+				this.PART_BlurDecorator.Effect = new BlurEffect()
+				{
+					Radius = BlurRadius,
+					KernelType = KernelType.Gaussian,
+					RenderingBias = RenderingBias.Performance
+				};
+				this.PART_BlurDecorator.Background = this.BlurDecoratorBrush;
+			}
+			else
+			{
+				throw new InvalidOperationException("Theme does not contain required UI elements");
+			}
+
 		}
 
 		private static void OnBlurBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var this_ = d as BlurHost;
-
-			if (!this_.BlurEnabled)
-				return;
-
-			Application.Current.Dispatcher.InvokeAsync(() => {
-				this_.BlurDecoratorBrush.Visual = e.NewValue as Visual;
-				if (this_.PART_BlurDecorator != null)
+			if (d is BlurHost this_ && this_.BlurEnabled)
+			{
+				Application.Current.Dispatcher.InvokeAsync(() =>
 				{
-					this_.PART_BlurDecorator.Effect = new BlurEffect()
+					this_.BlurDecoratorBrush.Visual = e.NewValue as Visual;
+					if (this_.PART_BlurDecorator != null)
 					{
-						Radius = this_.BlurRadius,
-						KernelType = KernelType.Gaussian,
-						RenderingBias = RenderingBias.Performance
-					};
-				}
-				this_.DrawBlurredElementBackground();
-			});
+						this_.PART_BlurDecorator.Effect = new BlurEffect()
+						{
+							Radius = this_.BlurRadius,
+							KernelType = KernelType.Gaussian,
+							RenderingBias = RenderingBias.Performance
+						};
+					}
+					this_.DrawBlurredElementBackground();
+				});
+			}
 		}
 
 		private static void Draw(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var this_ = d as BlurHost;
-			this_.DrawBlurredElementBackground();
+			if (d is BlurHost this_)
+			{
+				this_.DrawBlurredElementBackground();
+			}
 		}
 
 		private void OnRootContainerElementResized(object sender, SizeChangedEventArgs e)
@@ -219,7 +232,7 @@ namespace ModernThemables.Controls
 				DrawBlurredElementBackground();
 		}
 
-		private bool TryFindVisualRootContainer(DependencyObject child, out FrameworkElement rootContainerElement)
+		private bool TryFindVisualRootContainer(DependencyObject child, out FrameworkElement? rootContainerElement)
 		{
 			if (child == null)
 			{

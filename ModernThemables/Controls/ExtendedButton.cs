@@ -7,7 +7,7 @@ namespace ModernThemables.Controls
 {
 	public class ExtendedButton : Button
     {
-        readonly static SolidColorBrush DefaultMouseOverProperty = new BrushConverter().ConvertFromString("#FFBEE6FD") as SolidColorBrush;
+        readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
 
         public Brush CurrentForeground
         {
@@ -95,7 +95,7 @@ namespace ModernThemables.Controls
         {
             this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
             this.Loaded -= ExtendedButton_Loaded;
-            ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+            ExtendedButton_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
 
         private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -120,7 +120,7 @@ namespace ModernThemables.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+            ExtendedButton_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -167,7 +167,7 @@ namespace ModernThemables.Controls
         {
             if (sender is not ExtendedButton button) return;
 
-            button.ExtendedButton_IsEnabledChanged(null, new DependencyPropertyChangedEventArgs());
+            button.ExtendedButton_IsEnabledChanged(button, new DependencyPropertyChangedEventArgs());
         }
     }
 }

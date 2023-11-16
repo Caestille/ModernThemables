@@ -22,7 +22,7 @@ namespace ModernThemables.Charting.ViewModels
         /// An <see cref="object"/> which can be used to display custom content if a <see cref="DataTemplate"/> is set
         /// in the chart.
         /// </summary>
-        public object TemplatedContent { get; set; }
+        public object? TemplatedContent { get; set; }
 
         /// <summary>
         /// <see cref="DataTemplate"/> to inform how to render the <see cref="TemplatedContent"/>.

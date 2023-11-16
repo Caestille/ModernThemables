@@ -20,10 +20,10 @@ using ModernThemables.Charting.Controls.ChartComponents;
 
 namespace ModernThemables.Charting.Controls
 {
-    /// <summary>
-    /// Interaction logic for CartesianChart.xaml
-    /// </summary>
-    public partial class CartesianChart : UserControl
+	/// <summary>
+	/// Interaction logic for CartesianChart.xaml
+	/// </summary>
+	public partial class CartesianChart : UserControl
 	{
 		public event EventHandler<IChartEntity>? PointClicked;
 		public event EventHandler<Tuple<IChartEntity, IChartEntity>>? PointRangeSelected;
@@ -215,7 +215,6 @@ namespace ModernThemables.Charting.Controls
 					var seriesYMin = series.Values.Min(z => z.YValue);
 					var seriesYMax = series.Values.Max(z => z.YValue);
 
-
 					series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
@@ -224,6 +223,8 @@ namespace ModernThemables.Charting.Controls
 				var yMin = dataYMin;
 				foreach (var series in collection)
 				{
+					if (Series == null || !Series.Any()) break;
+
 					var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
 					if (matchingSeries == null) continue;
 					series.UpdatePoints(await GetPointsForSeries(matchingSeries));
@@ -465,7 +466,7 @@ namespace ModernThemables.Charting.Controls
 				.FirstOrDefault(x => Math.Abs(x.YValue - e.upperValue.Y)
 						== upperPoints.Min(x => Math.Abs(x.YValue - e.upperValue.Y)));
 
-			PointRangeSelected?.Invoke(this, new Tuple<IChartEntity, IChartEntity>(nearestLower, nearestUpper));
+			if (nearestLower != null && nearestUpper != null) PointRangeSelected?.Invoke(this, new Tuple<IChartEntity, IChartEntity>(nearestLower, nearestUpper));
 		}
 
 		private void Coordinator_PointClicked(object? sender, Point e)
@@ -475,7 +476,7 @@ namespace ModernThemables.Charting.Controls
 				.FirstOrDefault(x => Math.Abs(x.YValue - e.Y)
 						== pointsUnderMouse.Min(x => Math.Abs(x.YValue - e.Y)));
 
-			PointClicked?.Invoke(this, nearestPoint);
+			if (nearestPoint != null) PointClicked?.Invoke(this, nearestPoint);
 		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)

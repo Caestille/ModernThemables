@@ -1,23 +1,16 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace ModernThemables.Controls
 {
-	[TemplatePart(Name = PART_textBox, Type = typeof(TextBox))]
-	[TemplatePart(Name = PART_textBlock, Type = typeof(TextBlock))]
-
 	public class SearchBox : Control
 	{
 		#region Members
 
-		private const string PART_textBox = "PART_textBox";
-		private const string PART_textBlock = "PART_textBlock";
 		private const string PART_button = "PART_button";
 
-		private TextBox textBox;
-		private TextBlock textBlock;
-		private ExtendedButton button;
+		private ExtendedButton? button;
 
 		#endregion Members
 
@@ -26,10 +19,6 @@ namespace ModernThemables.Controls
 		static SearchBox()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(SearchBox), new FrameworkPropertyMetadata(typeof(SearchBox)));
-		}
-
-		public SearchBox()
-		{
 		}
 
 		#endregion Constructors
@@ -47,8 +36,8 @@ namespace ModernThemables.Controls
 
 		public double BackgroundOpacity
 		{
-			get { return (double)GetValue(BackgroundOpacityProperty); }
-			set { SetValue(BackgroundOpacityProperty, value); }
+			get => (double)GetValue(BackgroundOpacityProperty);
+			set => SetValue(BackgroundOpacityProperty, value);
 		}
 		public static readonly DependencyProperty BackgroundOpacityProperty = DependencyProperty.Register(
 		  "BackgroundOpacity", typeof(double), typeof(SearchBox), new PropertyMetadata(1d));
@@ -61,18 +50,23 @@ namespace ModernThemables.Controls
 		{
 			base.OnApplyTemplate();
 
-			textBox = this.Template.FindName(PART_textBox, this) as TextBox;
-
-			textBlock = this.Template.FindName(PART_textBlock, this) as TextBlock;
-
 			if (button != null)
 			{
 				button.Click -= Button_Click;
 			}
-			button = this.Template.FindName(PART_button, this) as ExtendedButton;
+
+			if (this.Template.FindName(PART_button, this) is ExtendedButton bt)
+			{
+				button = bt;
+			}
+
 			if (button != null)
 			{
 				button.Click += Button_Click;
+			}
+			else
+			{
+				throw new InvalidOperationException("Template missing rquired UI elements");
 			}
 		}
 
