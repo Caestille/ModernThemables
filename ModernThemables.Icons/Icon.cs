@@ -32,14 +32,14 @@ namespace ModernThemables.Icons
         {
             if (Kind != default)
             {
-                (string, bool) data = (null, false);
+                (string, bool) data = ("", false);
                 IconDataFactory.DataIndex.Value?.TryGetValue(Kind, out data);
                 Data = data.Item1!;
                 YScale = data.Item2 ? -1 : 1;
             }
             else
             {
-                Data = null;
+                Data = "";
                 YScale = 1;
             }
         }

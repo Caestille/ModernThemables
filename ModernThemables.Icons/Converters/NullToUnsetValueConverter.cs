@@ -6,7 +6,7 @@ namespace ModernThemables.Icons.Converters
 {
     public class NullToUnsetValueConverter : MarkupConverter
     {
-        private static NullToUnsetValueConverter _instance;
+        private static NullToUnsetValueConverter? _instance;
 
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit

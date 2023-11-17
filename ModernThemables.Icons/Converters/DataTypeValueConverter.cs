@@ -6,7 +6,7 @@ namespace ModernThemables.Icons.Converters
 {
     public class DataTypeValueConverter : MarkupConverter
     {
-        private static DataTypeValueConverter _instance;
+        private static DataTypeValueConverter? _instance;
 
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit
