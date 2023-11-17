@@ -10,10 +10,10 @@ using CoreUtilities.Converters;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
-    /// <summary>
-    /// Interaction logic for AxisControl.xaml
-    /// </summary>
-    public partial class AxisControl : UserControl
+	/// <summary>
+	/// Interaction logic for AxisControl.xaml
+	/// </summary>
+	public partial class AxisControl : UserControl
 	{
 		public Orientation Orientation
 		{
@@ -58,7 +58,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(bool),
 			typeof(AxisControl),
 			new UIPropertyMetadata(true));
-        public static readonly DependencyProperty LabelHeightProperty = DependencyProperty.Register(
+		public static readonly DependencyProperty LabelHeightProperty = DependencyProperty.Register(
 			"LabelHeight",
 			typeof(double),
 			typeof(AxisControl),
@@ -96,7 +96,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(double),
 			typeof(AxisControl),
 			new UIPropertyMetadata(0d));
-        public static readonly DependencyProperty LabelAlignmentProperty = DependencyProperty.Register(
+		public static readonly DependencyProperty LabelAlignmentProperty = DependencyProperty.Register(
 			"LabelAlignment",
 			typeof(HorizontalAlignment),
 			typeof(AxisControl),
@@ -275,16 +275,16 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			var minFrac = (labelMin?.Location ?? 0) / axisLength;
 			AxisLabel? labelMax = Labels.FirstOrDefault(x => x.Location == Labels.Max(y => y.Location));
 			var maxFrac = (labelMax?.Location ?? 0) / axisLength;
-			var fullRange = (labelMax.Value.Value - labelMin.Value.Value) / (maxFrac - minFrac);
+			var fullRange = (labelMax?.Value - labelMin?.Value) / (maxFrac - minFrac);
 
-			if (double.IsNaN(fullRange)) return;
+			if (fullRange != null && double.IsNaN(fullRange.Value)) return;
 
-			var min = labelMin.Value.Value - minFrac * fullRange;
-			var max = labelMax.Value.Value + (1 - maxFrac) * fullRange;
+			var min = labelMin?.Value - minFrac * fullRange;
+			var max = labelMax?.Value + (1 - maxFrac) * fullRange;
 
 			var value = min + axisFrac * (max - min);
 
-			ValueLabel.Text = (Labels.First().IndicatorFormatter ?? Labels.First().ValueFormatter)(value);
+			ValueLabel.Text = (Labels.First().IndicatorFormatter ?? Labels.First().ValueFormatter)(value ?? 0);
 			ValueDisplay.Margin = Orientation == Orientation.Horizontal
 				? new Thickness(axisFrac * Grid.ActualWidth - (ValueDisplay.ActualWidth / 2), 4, -100, -100)
 				: new Thickness(-5, (1 - axisFrac) * Grid.ActualHeight - 9, -100, 0);

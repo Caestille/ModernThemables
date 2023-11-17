@@ -88,7 +88,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 					PointClicked?.Invoke(this, mouseDownPoint.Value);
 					e.Handled = true;
 				}
-				else
+				else if (mouseDownPoint != null && mouseUpPoint != null)
 				{
 					PointRangeSelected?.Invoke(this, (mouseDownPoint.Value, mouseUpPoint.Value));
 					e.Handled = true;
