@@ -34,6 +34,7 @@
 								Foreground="{DynamicResource StatusTextBrush}"
 								Kind="MagnifyingGlass" />
 							<TextBox
+								x:Name="PART_textBox"
 								Grid.Column="1"
 								Width="Auto"
 								Height="Auto"
