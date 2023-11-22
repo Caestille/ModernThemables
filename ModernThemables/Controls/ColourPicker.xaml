@@ -1,171 +1,171 @@
 ﻿<UserControl
-	x:Class="ModernThemables.Controls.ColourPicker"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:local="clr-namespace:ModernThemables.Controls"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	x:Name="root"
-	mc:Ignorable="d">
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
-		<Border
-			Grid.RowSpan="10"
-			Width="200"
-			Height="200"
-			VerticalAlignment="Top">
-			<Border.Background>
-				<LinearGradientBrush StartPoint="0,0.5" EndPoint="1.142,0.5">
-					<GradientStop Offset="0" Color="Red" />
-					<GradientStop Offset="0.125" Color="Magenta" />
-					<GradientStop Offset="0.25" Color="Blue" />
-					<GradientStop Offset="0.375" Color="Turquoise" />
-					<GradientStop Offset="0.5" Color="#00ff00" />
-					<GradientStop Offset="0.625" Color="Yellow" />
-					<GradientStop Offset="0.7" Color="Orange" />
-					<GradientStop Offset="0.875" Color="Red" />
-				</LinearGradientBrush>
-			</Border.Background>
-		</Border>
-		<Border
-			x:Name="ColourSelectionBorder"
-			Grid.RowSpan="10"
-			Width="200"
-			Height="200"
-			VerticalAlignment="Top"
-			MouseDown="ColourSelectionBorder_MouseDown"
-			MouseLeave="ColourSelectionBorder_MouseLeave"
-			MouseMove="Border_MouseMove"
-			PreviewMouseDown="Border_PreviewMouseDown"
-			PreviewMouseUp="Border_PreviewMouseUp">
-			<Border.Background>
-				<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-					<GradientStop Offset="0" Color="White" />
-					<GradientStop Offset="0.45" Color="#00ffffff" />
-					<GradientStop Offset="0.55" Color="#00000000" />
-					<GradientStop Offset="1" Color="Black" />
-				</LinearGradientBrush>
-			</Border.Background>
-			<Border
-				x:Name="SelectedColourBorder"
-				Width="10"
-				Height="10"
-				HorizontalAlignment="Left"
-				VerticalAlignment="Top"
-				BorderBrush="White"
-				BorderThickness="1"
-				CornerRadius="8">
-				<Border
-					BorderBrush="Black"
-					BorderThickness="1"
-					CornerRadius="7" />
-			</Border>
-		</Border>
-		<Grid Grid.Column="1" Focusable="False">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="Auto" />
-			</Grid.ColumnDefinitions>
-			<Label
-				Grid.Row="0"
-				Grid.Column="1"
-				Content="R"
-				Foreground="{DynamicResource TextBrush}"
-				SnapsToDevicePixels="True" />
-			<Slider
-				Grid.Row="0"
-				Grid.Column="2"
-				Width="100"
-				VerticalAlignment="Center"
-				Maximum="255"
-				Minimum="0"
-				ValueChanged="Slider_ValueChanged"
-				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=R}" />
-			<TextBox
-				Grid.Row="0"
-				Grid.Column="3"
-				MinWidth="30"
-				VerticalContentAlignment="Center"
-				Background="Transparent"
-				BorderBrush="{DynamicResource StatusTextLightBrush}"
-				BorderThickness="0,0,0,1"
-				Foreground="{DynamicResource TextBrush}"
-				Text="{Binding Colour, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColourRgbTextConverter}, ConverterParameter=R}" />
-			<Label
-				Grid.Row="1"
-				Grid.Column="1"
-				Content="G"
-				Foreground="{DynamicResource TextBrush}" />
-			<Slider
-				Grid.Row="1"
-				Grid.Column="2"
-				Width="100"
-				VerticalAlignment="Center"
-				Maximum="255"
-				Minimum="0"
-				ValueChanged="Slider_ValueChanged"
-				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=G}" />
-			<TextBox
-				Grid.Row="1"
-				Grid.Column="3"
-				MinWidth="30"
-				VerticalContentAlignment="Center"
-				Background="Transparent"
-				BorderBrush="{DynamicResource StatusTextLightBrush}"
-				BorderThickness="0,0,0,1"
-				Foreground="{DynamicResource TextBrush}"
-				Text="{Binding Colour, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColourRgbTextConverter}, ConverterParameter=G}" />
-			<Label
-				Grid.Row="2"
-				Grid.Column="1"
-				Height="Auto"
-				Content="B"
-				Foreground="{DynamicResource TextBrush}"
-				SnapsToDevicePixels="True" />
-			<Slider
-				Grid.Row="2"
-				Grid.Column="2"
-				Width="100"
-				VerticalAlignment="Center"
-				Maximum="255"
-				Minimum="0"
-				ValueChanged="Slider_ValueChanged"
-				Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=B}" />
-			<TextBox
-				Grid.Row="2"
-				Grid.Column="3"
-				MinWidth="30"
-				VerticalContentAlignment="Center"
-				Background="Transparent"
-				BorderBrush="{DynamicResource StatusTextLightBrush}"
-				BorderThickness="0,0,0,1"
-				Foreground="{DynamicResource TextBrush}"
-				Text="{Binding Colour, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColourRgbTextConverter}, ConverterParameter=B}" />
-		</Grid>
-		<Border
-			Grid.Row="1"
-			Grid.Column="1"
-			Width="80"
-			Height="80"
-			Margin="10"
-			VerticalAlignment="Top"
-			Background="{Binding Colour, ElementName=root, Converter={StaticResource ColourToBrushConverter}}"
-			BorderBrush="{DynamicResource TextBrush}"
-			BorderThickness="1"
-			CornerRadius="5" />
-	</Grid>
+    x:Class="ModernThemables.Controls.ColourPicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ModernThemables.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="root"
+    mc:Ignorable="d">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border
+            Grid.RowSpan="10"
+            Width="200"
+            Height="200"
+            VerticalAlignment="Top">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1.142,0.5">
+                    <GradientStop Offset="0" Color="Red" />
+                    <GradientStop Offset="0.125" Color="Magenta" />
+                    <GradientStop Offset="0.25" Color="Blue" />
+                    <GradientStop Offset="0.375" Color="Turquoise" />
+                    <GradientStop Offset="0.5" Color="#00ff00" />
+                    <GradientStop Offset="0.625" Color="Yellow" />
+                    <GradientStop Offset="0.7" Color="Orange" />
+                    <GradientStop Offset="0.875" Color="Red" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <Border
+            x:Name="ColourSelectionBorder"
+            Grid.RowSpan="10"
+            Width="200"
+            Height="200"
+            VerticalAlignment="Top"
+            MouseDown="ColourSelectionBorder_MouseDown"
+            MouseLeave="ColourSelectionBorder_MouseLeave"
+            MouseMove="Border_MouseMove"
+            PreviewMouseDown="Border_PreviewMouseDown"
+            PreviewMouseUp="Border_PreviewMouseUp">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Offset="0" Color="White" />
+                    <GradientStop Offset="0.45" Color="#00ffffff" />
+                    <GradientStop Offset="0.55" Color="#00000000" />
+                    <GradientStop Offset="1" Color="Black" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border
+                x:Name="SelectedColourBorder"
+                Width="10"
+                Height="10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                BorderBrush="White"
+                BorderThickness="1"
+                CornerRadius="8">
+                <Border
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="7" />
+            </Border>
+        </Border>
+        <Grid Grid.Column="1" Focusable="False">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label
+                Grid.Row="0"
+                Grid.Column="1"
+                Content="R"
+                Foreground="{DynamicResource TextBrush}"
+                SnapsToDevicePixels="True" />
+            <Slider
+                Grid.Row="0"
+                Grid.Column="2"
+                Width="100"
+                VerticalAlignment="Center"
+                Maximum="255"
+                Minimum="0"
+                ValueChanged="Slider_ValueChanged"
+                Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=R}" />
+            <TextBox
+                Grid.Row="0"
+                Grid.Column="3"
+                MinWidth="30"
+                VerticalContentAlignment="Center"
+                Background="Transparent"
+                BorderBrush="{DynamicResource StatusTextLightBrush}"
+                BorderThickness="0,0,0,1"
+                Foreground="{DynamicResource TextBrush}"
+                Text="{Binding Colour, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColourRgbTextConverter}, ConverterParameter=R}" />
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                Content="G"
+                Foreground="{DynamicResource TextBrush}" />
+            <Slider
+                Grid.Row="1"
+                Grid.Column="2"
+                Width="100"
+                VerticalAlignment="Center"
+                Maximum="255"
+                Minimum="0"
+                ValueChanged="Slider_ValueChanged"
+                Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=G}" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="3"
+                MinWidth="30"
+                VerticalContentAlignment="Center"
+                Background="Transparent"
+                BorderBrush="{DynamicResource StatusTextLightBrush}"
+                BorderThickness="0,0,0,1"
+                Foreground="{DynamicResource TextBrush}"
+                Text="{Binding Colour, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColourRgbTextConverter}, ConverterParameter=G}" />
+            <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                Height="Auto"
+                Content="B"
+                Foreground="{DynamicResource TextBrush}"
+                SnapsToDevicePixels="True" />
+            <Slider
+                Grid.Row="2"
+                Grid.Column="2"
+                Width="100"
+                VerticalAlignment="Center"
+                Maximum="255"
+                Minimum="0"
+                ValueChanged="Slider_ValueChanged"
+                Value="{Binding Colour, ElementName=root, Mode=TwoWay, Converter={StaticResource ColourRgbConverter}, ConverterParameter=B}" />
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="3"
+                MinWidth="30"
+                VerticalContentAlignment="Center"
+                Background="Transparent"
+                BorderBrush="{DynamicResource StatusTextLightBrush}"
+                BorderThickness="0,0,0,1"
+                Foreground="{DynamicResource TextBrush}"
+                Text="{Binding Colour, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColourRgbTextConverter}, ConverterParameter=B}" />
+        </Grid>
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="80"
+            Height="80"
+            Margin="10"
+            VerticalAlignment="Top"
+            Background="{Binding Colour, ElementName=root, Converter={StaticResource ColourToBrushConverter}}"
+            BorderBrush="{DynamicResource TextBrush}"
+            BorderThickness="1"
+            CornerRadius="5" />
+    </Grid>
 </UserControl>

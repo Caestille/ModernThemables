@@ -1,74 +1,74 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
-	</ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
-	<Style x:Key="InfoTooltipHorizontal" TargetType="ToolTip">
-		<Setter Property="OverridesDefaultStyle" Value="true" />
-		<Setter Property="Placement" Value="Right" />
-		<Setter Property="HorizontalOffset" Value="3" />
-		<Setter Property="VerticalOffset">
-			<Setter.Value>
-				<MultiBinding Converter="{StaticResource CentreToolTipConverter}">
-					<Binding Path="PlacementTarget.ActualHeight" RelativeSource="{RelativeSource Self}" />
-					<Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
-				</MultiBinding>
-			</Setter.Value>
-		</Setter>
-		<Setter Property="HasDropShadow" Value="False" />
-		<Setter Property="FontSize" Value="12" />
-		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="ToolTip">
-					<Grid>
-						<Border
-							Margin="5,10,10,10"
-							Background="{DynamicResource MenuBrush}"
-							BorderBrush="{DynamicResource MenuBorderBrush}"
-							BorderThickness="1"
-							CornerRadius="10">
-							<ContentPresenter Margin="6" />
-							<Border.Effect>
-								<DropShadowEffect
-									BlurRadius="10"
-									Opacity="0.6"
-									ShadowDepth="0"
-									Color="{DynamicResource InvertedTextColour}" />
-							</Border.Effect>
-						</Border>
-						<Grid
-							Width="5"
-							HorizontalAlignment="Left"
-							VerticalAlignment="Center">
-							<Polygon
-								Fill="{DynamicResource MenuBrush}"
-								Points="0,5,5,0,5,10"
-								Stroke="{DynamicResource MenuBorderBrush}"
-								StrokeThickness="1">
-								<Polygon.Effect>
-									<DropShadowEffect
-										BlurRadius="10"
-										Opacity="0.6"
-										ShadowDepth="0"
-										Color="{DynamicResource InvertedTextColour}" />
-								</Polygon.Effect>
-							</Polygon>
-							<Border
-								Width="3"
-								Height="7"
-								Margin="0,0,-2,0"
-								HorizontalAlignment="Right"
-								VerticalAlignment="Center"
-								Background="{DynamicResource MenuBrush}" />
-						</Grid>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+    <Style x:Key="InfoTooltipHorizontal" TargetType="ToolTip">
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Placement" Value="Right" />
+        <Setter Property="HorizontalOffset" Value="3" />
+        <Setter Property="VerticalOffset">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource CentreToolTipConverter}">
+                    <Binding Path="PlacementTarget.ActualHeight" RelativeSource="{RelativeSource Self}" />
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HasDropShadow" Value="False" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Grid>
+                        <Border
+                            Margin="5,10,10,10"
+                            Background="{DynamicResource MenuBrush}"
+                            BorderBrush="{DynamicResource MenuBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                            <ContentPresenter Margin="6" />
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Opacity="0.6"
+                                    ShadowDepth="0"
+                                    Color="{DynamicResource InvertedTextColour}" />
+                            </Border.Effect>
+                        </Border>
+                        <Grid
+                            Width="5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                            <Polygon
+                                Fill="{DynamicResource MenuBrush}"
+                                Points="0,5,5,0,5,10"
+                                Stroke="{DynamicResource MenuBorderBrush}"
+                                StrokeThickness="1">
+                                <Polygon.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="10"
+                                        Opacity="0.6"
+                                        ShadowDepth="0"
+                                        Color="{DynamicResource InvertedTextColour}" />
+                                </Polygon.Effect>
+                            </Polygon>
+                            <Border
+                                Width="3"
+                                Height="7"
+                                Margin="0,0,-2,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Background="{DynamicResource MenuBrush}" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

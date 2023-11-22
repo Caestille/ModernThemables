@@ -1,15 +1,15 @@
 ﻿<ResourceDictionary
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:controls="clr-namespace:ModernThemables.Controls"
-	xmlns:converters="clr-namespace:ModernThemables.Converters"
-	xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:ModernThemables.Controls"
+    xmlns:converters="clr-namespace:ModernThemables.Converters"
+    xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
 
-	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="Generic.xaml" />
-	</ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Generic.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
-	<!--#region Controls-->
+    <!--#region Controls-->
 
-	<!--#endregion End Controls-->
+    <!--#endregion End Controls-->
 </ResourceDictionary>
