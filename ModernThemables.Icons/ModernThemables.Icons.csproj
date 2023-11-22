@@ -13,4 +13,12 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
+	<ItemGroup>
+		<EditorConfigFiles Remove="C:\Users\jward\OneDrive - Mercedes-Benz Grand Prix Ltd\Documents\Personal\CoreUtilities\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="C:\Users\jward\OneDrive - Mercedes-Benz Grand Prix Ltd\Documents\Personal\CoreUtilities\.editorconfig" />
+	</ItemGroup>
+
 </Project>

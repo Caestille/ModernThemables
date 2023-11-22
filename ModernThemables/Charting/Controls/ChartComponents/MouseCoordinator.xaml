@@ -1,21 +1,21 @@
 ﻿<UserControl
-    x:Class="ModernThemables.Charting.Controls.ChartComponents.MouseCoordinator"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:chartcomponents="clr-namespace:ModernThemables.Charting.Controls.ChartComponents"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="root"
-    HorizontalAlignment="Stretch"
-    VerticalAlignment="Stretch"
-    mc:Ignorable="d">
-    <Grid
-        x:Name="MouseCaptureGrid"
-        Background="{DynamicResource MainBackgroundBrush}"
-        MouseDown="MouseCaptureGrid_MouseDown"
-        MouseLeave="MouseCaptureGrid_MouseLeave"
-        MouseMove="MouseCaptureGrid_MouseMove"
-        Opacity="0.001"
-        PreviewMouseDown="MouseCaptureGrid_PreviewMouseDown"
-        PreviewMouseUp="MouseCaptureGrid_PreviewMouseUp" />
+	x:Class="ModernThemables.Charting.Controls.ChartComponents.MouseCoordinator"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:chartcomponents="clr-namespace:ModernThemables.Charting.Controls.ChartComponents"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	x:Name="root"
+	HorizontalAlignment="Stretch"
+	VerticalAlignment="Stretch"
+	mc:Ignorable="d">
+	<Grid
+		x:Name="MouseCaptureGrid"
+		Background="{DynamicResource MainBackgroundBrush}"
+		MouseDown="MouseCaptureGrid_MouseDown"
+		MouseLeave="MouseCaptureGrid_MouseLeave"
+		MouseMove="MouseCaptureGrid_MouseMove"
+		Opacity="0.001"
+		PreviewMouseDown="MouseCaptureGrid_PreviewMouseDown"
+		PreviewMouseUp="MouseCaptureGrid_PreviewMouseUp" />
 </UserControl>

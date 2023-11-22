@@ -1,126 +1,126 @@
 ﻿<UserControl
-    x:Class="ModernThemables.Charting.Controls.ChartComponents.AxisControl"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="root"
-    HorizontalAlignment="Stretch"
-    VerticalAlignment="Stretch"
-    mc:Ignorable="d">
-    <Grid x:Name="Grid">
-        <ItemsControl
-            x:Name="MainItemsControl"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            ClipToBounds="True"
-            ItemsSource="{Binding Labels, ElementName=root}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid
-                        Width="Auto"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="{Binding ElementName=root, Path=Alignment}">
-                        <Grid.Margin>
-                            <MultiBinding Converter="{StaticResource MultiBindingDoubleToBorderThicknessConverter}">
-                                <Binding Path="Location" />
-                                <Binding ElementName="root" Path="MarginString" />
-                            </MultiBinding>
-                        </Grid.Margin>
-                        <TextBlock
-                            x:Name="Text"
-                            Width="200"
-                            Height="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            FontWeight="Medium"
-                            Foreground="{Binding ElementName=root, Path=Foreground}"
-                            RenderTransformOrigin="0,0.5"
-                            Text="{Binding FormattedValue}"
-                            TextAlignment="Left">
-                            <TextBlock.Margin>
-                                <MultiBinding Converter="{StaticResource AxisLabelMarginConverter}">
-                                    <Binding Path="FormattedValue" />
-                                    <Binding ElementName="Text" Path="FontSize" />
-                                    <Binding ElementName="Text" Path="FontFamily" />
-                                    <Binding ElementName="Text" Path="FontStyle" />
-                                    <Binding ElementName="Text" Path="FontWeight" />
-                                    <Binding ElementName="Text" Path="FontStretch" />
-                                    <Binding ElementName="root" Path="LabelAlignment" />
-                                    <Binding ElementName="root" Path="Orientation" />
-                                </MultiBinding>
-                            </TextBlock.Margin>
-                            <TextBlock.RenderTransform>
-                                <RotateTransform Angle="{Binding ElementName=root, Path=LabelRotation}" />
-                            </TextBlock.RenderTransform>
-                        </TextBlock>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <ItemsControl
-            x:Name="DividerItemsControl"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            ItemsSource="{Binding Labels, ElementName=root}"
-            Visibility="{Binding ElementName=root, Path=ShowDividers, Converter={StaticResource VisibleIfTrueConverter}}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid
-                        Width="Auto"
-                        HorizontalAlignment="{Binding ElementName=root, Path=DividerAlignment}"
-                        VerticalAlignment="{Binding ElementName=root, Path=Alignment}">
-                        <Grid.Margin>
-                            <MultiBinding Converter="{StaticResource MultiBindingDoubleToBorderThicknessConverter}">
-                                <Binding Path="Location" />
-                                <Binding ElementName="root" Path="MarginString" />
-                            </MultiBinding>
-                        </Grid.Margin>
-                        <Border
-                            Width="{Binding ElementName=root, Path=DividerWidth}"
-                            Height="{Binding ElementName=root, Path=DividerHeight}"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            BorderBrush="{Binding ElementName=root, Path=BorderBrush}"
-                            BorderThickness="{Binding ElementName=root, Path=DividerBorderThickness}">
-                            <Border.Margin>
-                                <MultiBinding Converter="{StaticResource MultiBindingDoubleToBorderThicknessConverter}">
-                                    <Binding ElementName="root" Path="DividerOffset" />
-                                    <Binding ElementName="root" Path="MarginString" />
-                                </MultiBinding>
-                            </Border.Margin>
-                        </Border>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Border
-            x:Name="ValueDisplay"
-            Width="Auto"
-            Height="18"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Background="{DynamicResource StatusTextLightBrush}"
-            CornerRadius="5"
-            IsHitTestVisible="False"
-            Visibility="Collapsed">
-            <TextBlock
-                x:Name="ValueLabel"
-                Margin="2,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="11"
-                Foreground="{DynamicResource TextBrush}" />
-        </Border>
-    </Grid>
+	x:Class="ModernThemables.Charting.Controls.ChartComponents.AxisControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	x:Name="root"
+	HorizontalAlignment="Stretch"
+	VerticalAlignment="Stretch"
+	mc:Ignorable="d">
+	<Grid x:Name="Grid">
+		<ItemsControl
+			x:Name="MainItemsControl"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			ClipToBounds="True"
+			ItemsSource="{Binding Labels, ElementName=root}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Grid
+						Width="Auto"
+						HorizontalAlignment="Left"
+						VerticalAlignment="{Binding ElementName=root, Path=Alignment}">
+						<Grid.Margin>
+							<MultiBinding Converter="{StaticResource MultiBindingDoubleToBorderThicknessConverter}">
+								<Binding Path="Location" />
+								<Binding ElementName="root" Path="MarginString" />
+							</MultiBinding>
+						</Grid.Margin>
+						<TextBlock
+							x:Name="Text"
+							Width="200"
+							Height="12"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Bottom"
+							FontWeight="Medium"
+							Foreground="{Binding ElementName=root, Path=Foreground}"
+							RenderTransformOrigin="0,0.5"
+							Text="{Binding FormattedValue}"
+							TextAlignment="Left">
+							<TextBlock.Margin>
+								<MultiBinding Converter="{StaticResource AxisLabelMarginConverter}">
+									<Binding Path="FormattedValue" />
+									<Binding ElementName="Text" Path="FontSize" />
+									<Binding ElementName="Text" Path="FontFamily" />
+									<Binding ElementName="Text" Path="FontStyle" />
+									<Binding ElementName="Text" Path="FontWeight" />
+									<Binding ElementName="Text" Path="FontStretch" />
+									<Binding ElementName="root" Path="LabelAlignment" />
+									<Binding ElementName="root" Path="Orientation" />
+								</MultiBinding>
+							</TextBlock.Margin>
+							<TextBlock.RenderTransform>
+								<RotateTransform Angle="{Binding ElementName=root, Path=LabelRotation}" />
+							</TextBlock.RenderTransform>
+						</TextBlock>
+					</Grid>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		<ItemsControl
+			x:Name="DividerItemsControl"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			ItemsSource="{Binding Labels, ElementName=root}"
+			Visibility="{Binding ElementName=root, Path=ShowDividers, Converter={StaticResource VisibleIfTrueConverter}}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Grid
+						Width="Auto"
+						HorizontalAlignment="{Binding ElementName=root, Path=DividerAlignment}"
+						VerticalAlignment="{Binding ElementName=root, Path=Alignment}">
+						<Grid.Margin>
+							<MultiBinding Converter="{StaticResource MultiBindingDoubleToBorderThicknessConverter}">
+								<Binding Path="Location" />
+								<Binding ElementName="root" Path="MarginString" />
+							</MultiBinding>
+						</Grid.Margin>
+						<Border
+							Width="{Binding ElementName=root, Path=DividerWidth}"
+							Height="{Binding ElementName=root, Path=DividerHeight}"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Bottom"
+							BorderBrush="{Binding ElementName=root, Path=BorderBrush}"
+							BorderThickness="{Binding ElementName=root, Path=DividerBorderThickness}">
+							<Border.Margin>
+								<MultiBinding Converter="{StaticResource MultiBindingDoubleToBorderThicknessConverter}">
+									<Binding ElementName="root" Path="DividerOffset" />
+									<Binding ElementName="root" Path="MarginString" />
+								</MultiBinding>
+							</Border.Margin>
+						</Border>
+					</Grid>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		<Border
+			x:Name="ValueDisplay"
+			Width="Auto"
+			Height="18"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
+			Background="{DynamicResource StatusTextLightBrush}"
+			CornerRadius="5"
+			IsHitTestVisible="False"
+			Visibility="Collapsed">
+			<TextBlock
+				x:Name="ValueLabel"
+				Margin="2,0"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				FontSize="11"
+				Foreground="{DynamicResource TextBrush}" />
+		</Border>
+	</Grid>
 </UserControl>
