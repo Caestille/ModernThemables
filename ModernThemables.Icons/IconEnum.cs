@@ -30,6 +30,8 @@
         Plus,
         Restore,
         Save,
+		Star,
+		StarOutline,
         Sun,
         Tag,
         Tick,
