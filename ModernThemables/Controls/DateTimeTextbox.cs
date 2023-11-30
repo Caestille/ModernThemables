@@ -54,6 +54,12 @@ namespace ModernThemables.Controls
 			trigger = new KeepAliveTriggerService(() => { CalculateDate(false); }, 100);
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			this.GotKeyboardFocus += DatetimeTextBox_GotKeyboardFocus;
+			this.DataContextChanged += DatetimeTextBox_DataContextChanged;
+		}
+
+		private void DatetimeTextBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (DataContext is null) DateTime = null;
 		}
 
 		private void DatetimeTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -138,9 +144,9 @@ namespace ModernThemables.Controls
 					}
 					_this.blockUpdate = false;
 				}
-				else if (e.NewValue == null && e.OldValue == null && _this.textbox != null)
+				else if (e.NewValue == null && _this.textbox != null && !_this.isKeyboardUpdate)
 				{
-					_this.textbox.Text = "";
+					_this.textbox.Text = string.Join("", _this.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
 				}
 			}
 		}
@@ -166,6 +172,9 @@ namespace ModernThemables.Controls
 			{
 				textbox.TextChanged += TextChanged;
 				textbox.PreviewKeyDown += TextKeyDown;
+				textbox.Text = this.DateTime.HasValue 
+					? this.DateTime.Value.ToString(this.Format)
+					: string.Join("", Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
 			}
 			else
 			{
