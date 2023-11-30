@@ -46,16 +46,6 @@ namespace ModernThemables.Charting.ViewModels
             set => SetProperty(ref isMouseOver, value);
         }
 
-        private string displayValue;
-        /// <summary>
-        /// A value formatted for display
-        /// </summary>
-        public string DisplayValue
-        {
-            get => displayValue;
-            set => SetProperty(ref displayValue, value);
-        }
-
         /// <summary>
         /// Initialises a new <see cref="InternalChartEntity"/>.
         /// </summary>

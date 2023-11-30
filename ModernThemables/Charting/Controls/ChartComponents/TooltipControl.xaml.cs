@@ -247,7 +247,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 			this.Loaded += TooltipControl_Loaded;
 
-			NameScope.SetNameScope(ContextMenu, NameScope.GetNameScope(this));
+			NameScope.SetNameScope(CM, NameScope.GetNameScope(this));
 		}
 
 		private void TooltipControl_Loaded(object sender, RoutedEventArgs e)
@@ -278,7 +278,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		{
 			if (e.ChangedButton == MouseButton.Right && !isUserPanning)
 			{
-				ContextMenu.IsOpen = true;
+				CM.IsOpen = true;
 			}
 		}
 

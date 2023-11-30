@@ -24,7 +24,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private Point? lastMouseMovePoint;
 
-		private MouseEventArgs lastArgs;
+		private MouseEventArgs? lastArgs;
 
 		private bool isRunning;
 

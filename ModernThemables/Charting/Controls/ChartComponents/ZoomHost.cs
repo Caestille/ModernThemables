@@ -103,7 +103,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			"YPaddingFrac",
 			typeof(double),
 			typeof(ZoomHost),
-			new UIPropertyMetadata(0d, (s, e) => { (s as ZoomHost).Coordinator_MouseWheel(s, (s as ZoomHost).lastArgs); }));
+			new UIPropertyMetadata(0d, (s, e) => { (s as ZoomHost)!.Coordinator_MouseWheel(s, (s as ZoomHost)!.lastArgs); }));
 
 		static ZoomHost()
 		{
