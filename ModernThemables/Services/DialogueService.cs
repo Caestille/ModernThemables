@@ -24,7 +24,7 @@ namespace ModernThemables.Services
 		}
 
 		/// <inheritdoc />
-		public void ShowCustomDialogue(object? dataContext=null, Size? dialogueSize = null)
+		public void ShowCustomDialogue(object dataContext, Size? dialogueSize = null)
 		{
 			var window = new ThemableWindow2();
 			window.UseLayoutRounding = true;
@@ -59,7 +59,7 @@ namespace ModernThemables.Services
 		}
 
 		/// <inheritdoc />
-		public void ShowBorderlessCustomDialogue(object? dataContext = null, Size? dialogueSize = null)
+		public void ShowBorderlessCustomDialogue(object dataContext, Size? dialogueSize = null)
 		{
 			var window = new Window();
 			window.WindowStyle = WindowStyle.None;

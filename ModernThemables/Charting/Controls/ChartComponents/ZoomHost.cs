@@ -1,5 +1,6 @@
 ﻿using ModernThemables.Charting.Services;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,8 +13,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		private double xMin = 0;
 		private double xMax = 0;
 
-		private MouseCoordinator currentCoordinator;
-		private System.Windows.Input.MouseWheelEventArgs lastArgs;
+		private MouseCoordinator? currentCoordinator;
+		private System.Windows.Input.MouseWheelEventArgs? lastArgs;
 
 		public event EventHandler ZoomChanged;
 
@@ -117,6 +118,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public void ResetZoom()
 		{
+			if (currentCoordinator == null) return;
+
 			currentZoomLevel = 1;
 			PanOffsetFraction = 0;
 			xMin = 0;
@@ -134,6 +137,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public new void InvalidateArrange()
 		{
+			if (currentCoordinator == null) return;
+
 			DoZoom(1, 0.5, PanOffsetFraction * currentCoordinator.ActualWidth);
 			base.InvalidateArrange();
 		}
@@ -155,7 +160,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			ResetZoom();
 		}
 
-		private void Coordinator_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+		private void Coordinator_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs? e)
 		{
 			if (currentCoordinator == null) return;
 			lastArgs = e;

@@ -16,7 +16,7 @@ namespace ModernThemables.Charting.ViewModels
         /// <summary>
         /// The fill <see cref="Brush"/> the displayed tooltip point should be filled by.
         /// </summary>
-        public Brush Fill { get; }
+        public Brush? Fill { get; }
 
         /// <summary>
         /// An <see cref="object"/> which can be used to display custom content if a <see cref="DataTemplate"/> is set
@@ -27,7 +27,7 @@ namespace ModernThemables.Charting.ViewModels
         /// <summary>
         /// <see cref="DataTemplate"/> to inform how to render the <see cref="TemplatedContent"/>.
         /// </summary>
-        public DataTemplate TooltipTemplate { get; set; }
+        public DataTemplate? TooltipTemplate { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the tooltip is the nearest one.
@@ -69,7 +69,7 @@ namespace ModernThemables.Charting.ViewModels
 		/// <param name="secondaryValue">The <see cref="string"/> used to make up the tooltip display.</param>
 		public TooltipViewModel(
             InternalChartEntity point,
-            Brush fill,
+            Brush? fill,
             string primaryValue,
             string secondaryValue,
             string tertiaryValue)
@@ -85,7 +85,7 @@ namespace ModernThemables.Charting.ViewModels
 		public TooltipViewModel(
 			double locationX,
 			double locationY,
-			Brush fill,
+			Brush? fill,
 			string primaryValue,
 			string secondaryValue,
 			string tertiaryValue)

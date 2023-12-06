@@ -82,7 +82,7 @@ namespace ModernThemables.Charting.Controls
 						: matchingSeries.Name;
 					var formattedDate = tooltipBar.BackingPoint.Name;
 
-					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar.Fill.CoreBrush, formattedValue, formattedDate, category));
+					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar?.Fill?.CoreBrush, formattedValue, formattedDate, category));
 				}
 
 				return tooltipPoints;
