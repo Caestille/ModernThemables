@@ -104,7 +104,7 @@ namespace ModernThemables.Controls
 		{
 			base.OnTextChanged(e);
 
-			if (AutofillOptions == null || !AutofillOptions.Any() || SuggestionText.Any(Text.Contains))
+			if (AutofillOptions == null || !AutofillOptions.Any())
 			{
 				return;
 			}
