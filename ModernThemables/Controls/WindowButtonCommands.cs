@@ -176,11 +176,14 @@ namespace ModernThemables.Controls
 
 		public override void OnApplyTemplate()
 		{
-			(this.GetTemplateChild("PART_ThemeSetButton") as Button).Click += (s, e) =>
+			if (this.GetTemplateChild("PART_ThemeSetButton") is Button button)
 			{
-				this.IsThemingMenuVisible = !this.IsThemingMenuVisible;
-				this.ToggleThemeingMenu.Invoke(this, new WindowEventHandlerArgs());
-			};
+				button.Click += (s, e) =>
+				{
+					this.IsThemingMenuVisible = !this.IsThemingMenuVisible;
+					this.ToggleThemeingMenu?.Invoke(this, new WindowEventHandlerArgs());
+				};
+			}
 		}
 
 		private void MinimizeWindow(object sender, ExecutedRoutedEventArgs e)

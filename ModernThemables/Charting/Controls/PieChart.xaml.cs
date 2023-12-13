@@ -233,8 +233,8 @@ namespace ModernThemables.Charting.Controls
 				}
 
 				return convertedSeries;
-            });
-        }
+			});
+		}
 
 		#endregion
 
