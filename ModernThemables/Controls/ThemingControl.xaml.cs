@@ -6,7 +6,7 @@ namespace ModernThemables.Controls
 {
 	public partial class ThemingControl : UserControl
 	{
-		public event EventHandler InternalRequestClose;
+		public event EventHandler? InternalRequestClose;
 
 		public ThemingControl()
 		{

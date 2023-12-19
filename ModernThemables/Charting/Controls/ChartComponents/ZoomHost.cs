@@ -16,7 +16,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		private MouseCoordinator? currentCoordinator;
 		private System.Windows.Input.MouseWheelEventArgs? lastArgs;
 
-		public event EventHandler ZoomChanged;
+		public event EventHandler? ZoomChanged;
 
 		public double PanOffsetFraction
 		{
@@ -146,7 +146,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
 			Loaded -= OnLoaded;
-			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
+			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator) && coordinator != null)
 			{
 				currentCoordinator = coordinator;
 				coordinator.MouseWheel += Coordinator_MouseWheel;
@@ -174,6 +174,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void DoZoom(double zoomStep, double zoomCentre, double panOffset)
 		{
+			if (currentCoordinator == null) return;
 			if (xMax == 0)
 			{
 				xMax = ActualWidth;
@@ -210,6 +211,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private (double top, double bottom) GetTopBottomDiff(bool isReset = false)
 		{
+			if (currentCoordinator == null) return (0, 0);
 			var dataHeightPx = GetDataHeightPixelsInBounds != null && !isReset
 					? GetDataHeightPixelsInBounds() : (currentCoordinator.ActualHeight, 0);
 			var dataRange = dataHeightPx.Item2 - dataHeightPx.Item1;
@@ -233,6 +235,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			Point lastMousePoint,
 			System.Windows.Input.MouseEventArgs args) e)
 		{
+			if (currentCoordinator == null) return;
 			if (e.isUserPanning)
 			{
 				var prevOffset = PanOffsetFraction * currentCoordinator.ActualWidth;

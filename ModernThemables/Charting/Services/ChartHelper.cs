@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace ModernThemables.Charting.Services
 {
-    public static class ChartHelper
+	public static class ChartHelper
 	{
 		public static (int row, int column, Visibility visibility, Thickness margin, Orientation orientation) GetLegendProperties(LegendLocation legendLocation)
 		{
@@ -115,7 +115,7 @@ namespace ModernThemables.Charting.Services
 
 		public static bool FindMouseCoordinatorFromVisualTree(
 			DependencyObject root,
-			out MouseCoordinator coordinator,
+			out MouseCoordinator? coordinator,
 			bool foundParentChart = false,
 			int currentLevel = 0)
 		{

@@ -65,17 +65,10 @@ namespace ModernThemables.Charting.Controls
 			{
 				var tooltipPoints = new List<TooltipViewModel>();
 
-				var converter = new PieCentreRadiusConverter();
-				var centreX = (double)converter.Convert(
-					new object[] { SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight },
-					null, "CentreX", null);
-				var centreY = (double)converter.Convert(
-					new object[] { SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight },
-					null, "CentreY", null);
-				var radius = (double)converter.Convert(
-					new object[] { SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight },
-					null, "Radius", null); 
-				
+				var centreX = PieCentreRadiusConverter.ConvertLocally(SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreX);
+				var centreY = PieCentreRadiusConverter.ConvertLocally(SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreY);
+				var radius = PieCentreRadiusConverter.ConvertLocally(SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.Radius);
+
 				mouseLoc = new Point(mouseLoc.X -= SeriesItemsControl.ActualWidth / 2 - radius / 0.9, mouseLoc.Y);
 
 				var hypLength = Math.Sqrt(
@@ -122,7 +115,7 @@ namespace ModernThemables.Charting.Controls
 								y = y + centreY - 20;
 							}
 
-							var tooltip = new TooltipViewModel(x, y, wedge.Fill.CoreBrush, formattedValue, matchingWedge.Name, formattedPercent);
+							var tooltip = new TooltipViewModel(x, y, wedge?.Fill?.CoreBrush, formattedValue, matchingWedge.Name, formattedPercent);
 							tooltipPoints.Add(tooltip);
 						}
 						else if (wedge.IsMouseOver)

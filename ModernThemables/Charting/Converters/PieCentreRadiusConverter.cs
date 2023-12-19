@@ -10,33 +10,42 @@ namespace ModernThemables.Charting.Converters
     /// </summary>
     public class PieCentreRadiusConverter : IMultiValueConverter
     {
+		public enum PieConverterReturnType
+		{
+			CentreX,
+			CentreY,
+			Radius,
+		}
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values[0] is double width
                 && values[1] is double height
-                && parameter is string toReturn)
+                && parameter is string toReturn
+				&& Enum.TryParse<PieConverterReturnType>(toReturn, out var returnType))
             {
-                var centreX = Math.Min(width, height) / 2;
-                var centreY = centreX;
-                var radius = centreX * 0.9;
-
-                switch (toReturn)
-                {
-                    case "CentreX":
-                        return centreX;
-                    case "CentreY":
-                        return centreY;
-                    case "Radius":
-                        return radius;
-                    default:
-                        return 0;
-                }
+                return ConvertLocally(width, height, returnType);
             }
             else
             {
-                return 0;
+                return Binding.DoNothing;
             }
         }
+
+		public static double ConvertLocally(double width, double height, PieConverterReturnType toReturn)
+		{
+			switch (toReturn)
+			{
+				case PieConverterReturnType.CentreX:
+					return Math.Min(width, height) / 2;
+				case PieConverterReturnType.CentreY:
+					return Math.Min(width, height) / 2;
+				case PieConverterReturnType.Radius:
+					return (Math.Min(width, height) / 2) * 0.9;
+				default:
+					return 0;
+			}
+		}
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {

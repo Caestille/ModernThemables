@@ -67,7 +67,7 @@ namespace ModernThemables.Charting.ViewModels
         /// <param name="backingPoint">The actual, unscaled point this represents.</param>
         /// <param name="stroke">The <see cref="IChartBrush"/> entity stroke.</param>
         /// <param name="fill">The <see cref="IChartBrush"/> entity fill.</param>
-        public InternalChartEntity(double x, double y, IChartEntity backingPoint, IChartBrush stroke, IChartBrush fill)
+        public InternalChartEntity(double x, double y, IChartEntity backingPoint, IChartBrush? stroke, IChartBrush? fill)
         {
             X = x;
             Y = y;

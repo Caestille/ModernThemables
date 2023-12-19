@@ -10,11 +10,11 @@ namespace ModernThemables.Charting.Services
 {
 	public class SeriesWatcherService
 	{
-		private readonly Action<IList<ISeries>, IList<ISeries>, bool> onSeriesUpdated;
+		private readonly Action<IList<ISeries>?, IList<ISeries>?, bool> onSeriesUpdated;
 		private bool hasSetSeries;
 		private readonly List<ISeries> subscribedSeries = new();
 
-		public SeriesWatcherService(Action<IList<ISeries>, IList<ISeries>, bool> onSeriesUpdated)
+		public SeriesWatcherService(Action<IList<ISeries>?, IList<ISeries>?, bool> onSeriesUpdated)
 		{
 			this.onSeriesUpdated = onSeriesUpdated;
 		}

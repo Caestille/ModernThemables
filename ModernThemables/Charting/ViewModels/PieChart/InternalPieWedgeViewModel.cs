@@ -9,11 +9,11 @@ namespace ModernThemables.Charting.ViewModels.PieChart
     /// </summary>
     internal class InternalPieWedgeViewModel : ObservableObject
     {
-        private string name;
+        private string? name;
         /// <summary>
         /// The name of the pie wedge.
         /// </summary>
-        public string Name
+        public string? Name
         {
             get => name;
             set => SetProperty(ref name, value);
@@ -49,21 +49,21 @@ namespace ModernThemables.Charting.ViewModels.PieChart
             set => SetProperty(ref startAngle, value);
         }
 
-        private IChartBrush stroke;
+        private IChartBrush? stroke;
         /// <summary>
         /// The wedge stroke.
         /// </summary>
-        public IChartBrush Stroke
+        public IChartBrush? Stroke
         {
             get => stroke;
             set => SetProperty(ref stroke, value);
         }
 
-        private IChartBrush fill;
+        private IChartBrush? fill;
         /// <summary>
         /// The wedge fill.
         /// </summary>
-        public IChartBrush Fill
+        public IChartBrush? Fill
         {
             get => fill;
             set => SetProperty(ref fill, value);
@@ -109,7 +109,7 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// <param name="startAngle">The wedge start angle.</param>
         /// <param name="stroke">The wedge stroke.</param>
         /// <param name="fill">The wedge fill.</param>
-        public InternalPieWedgeViewModel(string name, Guid identifier, double percent, double value, double startAngle, IChartBrush stroke, IChartBrush fill)
+        public InternalPieWedgeViewModel(string name, Guid identifier, double percent, double value, double startAngle, IChartBrush? stroke, IChartBrush? fill)
         {
             Name = name;
             Identifier = identifier;

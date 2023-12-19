@@ -113,7 +113,7 @@ namespace ModernThemables.Controls
             ExtendedButton_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
 
-        private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void ExtendedButton_IsEnabledChanged(object? sender, DependencyPropertyChangedEventArgs e)
         {
             if (this.IsEnabled)
             {

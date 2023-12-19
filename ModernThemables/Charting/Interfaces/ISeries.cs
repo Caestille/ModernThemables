@@ -13,27 +13,27 @@ namespace ModernThemables.Charting.Interfaces
         /// <summary>
         /// Event fired when a property of the series changes.
         /// </summary>
-        event EventHandler<PropertyChangedEventArgs> PropertyChanged;
+        event EventHandler<PropertyChangedEventArgs>? PropertyChanged;
 
         /// <summary>
         /// Event fired when the series points change.
         /// </summary>
-        event EventHandler<NotifyCollectionChangedEventArgs> CollectionChanged;
+        event EventHandler<NotifyCollectionChangedEventArgs>? CollectionChanged;
 
         /// <summary>
         /// A <see cref="Func{T1, TResult}"/> Which given a point, returns a string which is the formatted value.
         /// </summary>
-        public Func<IChartEntity, string> ValueFormatter { get; set; }
+        public Func<IChartEntity, string>? ValueFormatter { get; set; }
 
         /// <summary>
         /// The series line stroke.
         /// </summary>
-        IChartBrush Stroke { get; set; }
+        IChartBrush? Stroke { get; set; }
 
         /// <summary>
         /// The series line fill.
         /// </summary>
-        IChartBrush Fill { get; set; }
+        IChartBrush? Fill { get; set; }
 
         /// <summary>
         /// The series values.
@@ -48,6 +48,6 @@ namespace ModernThemables.Charting.Interfaces
         /// <summary>
         /// The series name.
         /// </summary>
-        string Name { get; set; }
+        string? Name { get; set; }
     }
 }

@@ -75,14 +75,16 @@ namespace ModernThemables.Charting.Controls
 				if (tooltipBar != null)
 				{
 					var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == tooltipBar.Identifier));
-					var formattedValue = matchingSeries.ValueFormatter(tooltipBar.BackingPoint);
-					var matchingWedge = matchingSeries.Values.First(x => x.Identifier == tooltipBar.Identifier);
+					var formattedValue = matchingSeries.ValueFormatter != null
+						? matchingSeries.ValueFormatter(tooltipBar.BackingPoint)
+						: tooltipBar.BackingPoint.YValue.ToString();
+					var matchingBar = matchingSeries.Values.First(x => x.Identifier == tooltipBar.Identifier);
 					var category = matchingSeries.ValueFormatter != null
-						? matchingSeries.ValueFormatter(matchingWedge)
+						? matchingSeries.ValueFormatter(matchingBar)
 						: matchingSeries.Name;
 					var formattedDate = tooltipBar.BackingPoint.Name;
 
-					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar?.Fill?.CoreBrush, formattedValue, formattedDate, category));
+					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar?.Fill?.CoreBrush, formattedValue, formattedDate, category ?? string.Empty));
 				}
 
 				return tooltipPoints;
@@ -142,9 +144,9 @@ namespace ModernThemables.Charting.Controls
 
 				var groups = Series.SelectMany(x => x.Values.Select(y => x.Values.IndexOf(y))).Distinct();
 				var groupedBars = groups.Select(
-					x => source.Select(
-						y => x < y.Values.Count 
-							? new Tuple<IChartEntity, IChartBrush, IChartBrush>(y.Values[x], y.Fill, y.Stroke) 
+					group => source.Select(
+						series => group < series.Values.Count
+							? new Tuple<IChartEntity, IChartBrush?, IChartBrush?>(series.Values[group], series.Fill, series.Stroke) 
 							: null)
 					.Where(y => y != null));
 				var labels = groupedBars.Select(x => x.First()?.Item1?.Name ?? string.Empty);
@@ -156,7 +158,7 @@ namespace ModernThemables.Charting.Controls
 				var collection = await Task.Run(() =>
 				{
 					var ret = new List<InternalChartEntity>();
-					var maxHeight = groupedBars.Any() ? groupedBars.Max(x => x.Max(y => y.Item1.YValue)) : 0;
+					var maxHeight = groupedBars.Any() ? groupedBars.Max(x => x.Max(y => y!.Item1.YValue)) : 0;
 
 					var currentX = groupSep / 2;
 					foreach (var group in groupedBars.Select(x => x.ToList()))
@@ -166,6 +168,7 @@ namespace ModernThemables.Charting.Controls
 							if (i < group.Count())
 							{
 								var bar = group[i];
+								if (bar == null) continue;
 								ret.Add(new InternalChartEntity(
 									currentX, 
 									(bar.Item1.YValue / maxHeight) * plotAreaHeight * (1 - 0.1),

@@ -154,8 +154,11 @@ namespace ModernThemables.ViewModels
 
 			var tempSetting = $"{ThemeColour.A}-{ThemeColour.R}-{ThemeColour.G}-{ThemeColour.B}";
 			registryService.TryGetSetting(ThemeSettingName, tempSetting, out string? theme);
-			var accent = theme?.Split('-').Select(byte.Parse).ToList();
-			SetThemeColour(Color.FromArgb(accent[0], accent[1], accent[2], accent[3]));
+			if (!string.IsNullOrEmpty(theme))
+			{
+				var accent = theme.Split('-').Select(byte.Parse).ToList();
+				SetThemeColour(Color.FromArgb(accent[0], accent[1], accent[2], accent[3]));
+			}
 
 			registryService.TryGetSetting(OsSyncSettingName, false, out bool sync);
 			IsSyncingWithOs = sync;
@@ -277,9 +280,9 @@ namespace ModernThemables.ViewModels
 					if (shouldBeDark != isDarkMode)
 						IsDarkMode = shouldBeDark;
 
-					var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush).Color;
-					if (ThemeColour != colour)
-						SetThemeColour(colour);
+					var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush)?.Color;
+					if (colour.HasValue && ThemeColour != colour.Value)
+						SetThemeColour(colour.Value);
 				}
 				else
 				{

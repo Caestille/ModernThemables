@@ -14,8 +14,8 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 	/// </summary>
 	internal class InternalPathSeriesViewModel : ObservableObject
 	{
-		private readonly string pathStrokeData;
-		private readonly string pathFillData;
+		private readonly string? pathStrokeData;
+		private readonly string? pathFillData;
 		private Point topLeft;
 		private Point bottomRight;
 
@@ -68,9 +68,6 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 		/// <param name="data">The data this series represents.</param>
 		/// <param name="stroke">The <see cref="IChartBrush"/> path stroke.</param>
 		/// <param name="fill">The <see cref="IChartBrush"/> path fill.</param>
-		/// <param name="yBuffer">The distance by which the extremes in the yDirection will be reduced by to maintain
-		/// an empty border to the chart.</param>
-		/// <param name="tooltipFormatter">The Func used to format the tooltip string.</param>
 		public InternalPathSeriesViewModel(
 			string name,
 			Guid guid,
