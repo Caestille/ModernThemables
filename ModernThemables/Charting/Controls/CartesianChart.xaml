@@ -59,6 +59,7 @@
 				<Grid
 					Width="{Binding ElementName=Grid, Path=ActualWidth}"
 					Height="{Binding ElementName=Grid, Path=ActualHeight}"
+					Margin="0,1,0,0"
 					ClipToBounds="True">
 					<chartcomponents:ZoomHost
 						x:Name="Zoom"

@@ -45,7 +45,8 @@
 								Cursor="IBeam"
 								Foreground="{TemplateBinding Foreground}"
 								SnapsToDevicePixels="True"
-								Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+								Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+								TextAlignment="Left">
 								<TextBox.Background>
 									<SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
 								</TextBox.Background>

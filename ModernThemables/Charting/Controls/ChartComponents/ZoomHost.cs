@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
-    public class ZoomHost : ContentControl
+	public class ZoomHost : ContentControl
 	{
 		private double currentZoomLevel = 1;
 
