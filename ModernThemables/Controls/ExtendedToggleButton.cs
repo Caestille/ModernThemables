@@ -103,19 +103,19 @@ namespace ModernThemables.Controls
 
         public ExtendedToggleButton()
         {
-            this.Loaded += ExtendedButton_Loaded;
+            Loaded += ExtendedButton_Loaded;
         }
 
         private void ExtendedButton_Loaded(object sender, RoutedEventArgs e)
         {
-            this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
-            this.Loaded -= ExtendedButton_Loaded;
+            IsEnabledChanged += ExtendedButton_IsEnabledChanged;
+            Loaded -= ExtendedButton_Loaded;
             ExtendedButton_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
 
         private void ExtendedButton_IsEnabledChanged(object? sender, DependencyPropertyChangedEventArgs e)
         {
-            if (this.IsEnabled)
+            if (IsEnabled)
             {
                 CurrentBackground = Background;
                 CurrentForeground = Foreground;

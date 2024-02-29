@@ -50,7 +50,7 @@ namespace ModernThemables.Charting.Controls
 		public CartesianChart()
 		{
 			InitializeComponent();
-			this.Loaded += WpfChart_Loaded;
+			Loaded += WpfChart_Loaded;
 
 			seriesWatcher = new SeriesWatcherService(QueueRenderChart);
 
@@ -82,7 +82,7 @@ namespace ModernThemables.Charting.Controls
 						: Colors.Red),
 					"", "", "")
 					{
-						TooltipTemplate = this.TooltipTemplate,
+						TooltipTemplate = TooltipTemplate,
 						TemplatedContent = TooltipContentGetter != null
 							? TooltipContentGetter(x.series.Data.Select(x => x.BackingPoint), x.point.BackingPoint)
 							: null
@@ -439,7 +439,7 @@ namespace ModernThemables.Charting.Controls
 
 		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Loaded -= WpfChart_Loaded;
+			Loaded -= WpfChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
 			Coordinator.PointClicked += Coordinator_PointClicked;

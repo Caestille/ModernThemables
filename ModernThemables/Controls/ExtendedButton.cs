@@ -88,19 +88,19 @@ namespace ModernThemables.Controls
 
         public ExtendedButton()
         {
-            this.Loaded += ExtendedButton_Loaded;
+            Loaded += ExtendedButton_Loaded;
         }
 
         private void ExtendedButton_Loaded(object sender, RoutedEventArgs e)
         {
-            this.IsEnabledChanged += ExtendedButton_IsEnabledChanged;
-            this.Loaded -= ExtendedButton_Loaded;
+            IsEnabledChanged += ExtendedButton_IsEnabledChanged;
+            Loaded -= ExtendedButton_Loaded;
             ExtendedButton_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
 
         private void ExtendedButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (this.IsEnabled)
+            if (IsEnabled)
             {
                 CurrentBackground = Background;
                 CurrentForeground = Foreground;
@@ -125,7 +125,7 @@ namespace ModernThemables.Controls
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (this.IsEnabled)
+            if (IsEnabled)
             {
                 CurrentBackground = MouseDownColour;
                 CurrentForeground = Foreground;
@@ -135,7 +135,7 @@ namespace ModernThemables.Controls
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            if (this.IsEnabled)
+            if (IsEnabled)
             {
                 CurrentBackground = MouseOverColour;
                 CurrentForeground = Foreground;
@@ -145,7 +145,7 @@ namespace ModernThemables.Controls
 
         protected override void OnMouseEnter(MouseEventArgs e)
         {
-            if (this.IsEnabled)
+            if (IsEnabled)
             {
                 CurrentBackground = MouseOverColour;
                 CurrentForeground = Foreground;
@@ -155,7 +155,7 @@ namespace ModernThemables.Controls
 
         protected override void OnMouseLeave(MouseEventArgs e)
         {
-            if (this.IsEnabled)
+            if (IsEnabled)
             {
                 CurrentBackground = Background;
                 CurrentForeground = Foreground;

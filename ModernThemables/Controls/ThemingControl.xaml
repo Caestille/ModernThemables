@@ -11,9 +11,6 @@
 	Width="Auto"
 	Height="Auto"
 	mc:Ignorable="d">
-	<UserControl.DataContext>
-		<viewmodels:ThemingControlViewModel />
-	</UserControl.DataContext>
 	<Grid Margin="0" Focusable="False">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />

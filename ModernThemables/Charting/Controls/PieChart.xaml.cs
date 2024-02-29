@@ -30,7 +30,7 @@ namespace ModernThemables.Charting.Controls
 		private readonly SeriesWatcherService seriesWatcher;
 
 		private IEnumerable<InternalPieWedgeViewModel> allWedges
-			=> this.InternalSeries.Aggregate(new List<InternalPieWedgeViewModel>(), (list, series) => { list.AddRange(series.Wedges); return list; });
+			=> InternalSeries.Aggregate(new List<InternalPieWedgeViewModel>(), (list, series) => { list.AddRange(series.Wedges); return list; });
 
 		private readonly BlockingCollection<Action> renderQueue;
 		private bool renderInProgress;
@@ -41,7 +41,7 @@ namespace ModernThemables.Charting.Controls
 		public PieChart()
 		{
 			InitializeComponent();
-			this.Loaded += PieChart_Loaded;
+			Loaded += PieChart_Loaded;
 
 			seriesWatcher = new SeriesWatcherService(QueueRenderChart);
 
@@ -282,7 +282,7 @@ namespace ModernThemables.Charting.Controls
 
 		private void PieChart_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Loaded -= PieChart_Loaded;
+			Loaded -= PieChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
 			Coordinator.MouseLeave += MouseCaptureGrid_MouseLeave;

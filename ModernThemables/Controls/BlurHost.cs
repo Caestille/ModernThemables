@@ -124,10 +124,10 @@ namespace ModernThemables.Controls
 		{
 			Loaded += OnLoaded;
 
-			this.BlurDecoratorBrush = new VisualBrush()
+			BlurDecoratorBrush = new VisualBrush()
 			{
 				ViewboxUnits = BrushMappingMode.Absolute,
-				Opacity = this.BlurOpacity
+				Opacity = BlurOpacity
 			};
 		}
 
@@ -143,17 +143,17 @@ namespace ModernThemables.Controls
 			}
 
 			Rect blurHostBounds = TransformToVisual(blurHostContainer)
-				.TransformBounds(new Rect(this.RenderSize));
+				.TransformBounds(new Rect(RenderSize));
             Rect backgroundBounds = BlurBackground.TransformToVisual(backgroundContainer)
-				.TransformBounds(new Rect(this.BlurBackground.RenderSize));
+				.TransformBounds(new Rect(BlurBackground.RenderSize));
 
 			var transform = backgroundContainer?.TransformToVisual(blurHostContainer).Transform(new Point(0, 0)) ?? new Point();
 
             var viewBox = new Rect(Math.Max(blurHostBounds.Left - transform.X, 0) + OffsetX, Math.Max(blurHostBounds.Top - transform.Y, 0) + OffsetY, blurHostBounds.Width, blurHostBounds.Height);
 
-			this.BlurDecoratorBrush.Viewbox = viewBox;
+			BlurDecoratorBrush.Viewbox = viewBox;
 
-            this.BlurDecoratorBrush.Opacity = this.BlurOpacity;
+            BlurDecoratorBrush.Opacity = BlurOpacity;
         }
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
@@ -174,18 +174,18 @@ namespace ModernThemables.Controls
 			base.OnApplyTemplate();
 			if (GetTemplateChild("PART_BlurDecorator") is Border border)
 			{
-                this.PART_BlurDecorator = border;
+                PART_BlurDecorator = border;
             }
 
-			if (this.PART_BlurDecorator != null)
+			if (PART_BlurDecorator != null)
 			{
-				this.PART_BlurDecorator.Effect = new BlurEffect()
+				PART_BlurDecorator.Effect = new BlurEffect()
 				{
 					Radius = BlurRadius,
 					KernelType = KernelType.Gaussian,
 					RenderingBias = RenderingBias.Performance
 				};
-				this.PART_BlurDecorator.Background = this.BlurDecoratorBrush;
+				PART_BlurDecorator.Background = BlurDecoratorBrush;
 			}
 			else
 			{

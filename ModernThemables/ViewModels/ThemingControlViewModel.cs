@@ -19,7 +19,7 @@ namespace ModernThemables.ViewModels
 	/// <summary>
 	/// A view model for a theming control to interact with the theme status of an application with.
 	/// </summary>
-	public partial class ThemingControlViewModel : ObservableObject
+	public partial class ThemingControlViewModel : ObservableObject, IDisposable
 	{
 		[DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
 		public static extern bool ShouldSystemUseDarkMode();
@@ -146,8 +146,8 @@ namespace ModernThemables.ViewModels
 		/// </summary>
 		public ThemingControlViewModel()
         {
-            this.registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
-			this.dialogueService = new DialogueService();
+            registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
+			dialogueService = new DialogueService();
 
 			registryService.TryGetSetting(ColourModeSettingName, lightModeKey, out string? mode);
 			IsDarkMode = mode == darkModeKey;

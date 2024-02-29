@@ -49,14 +49,14 @@ namespace ModernThemables.Controls
 		public ColourPicker()
 		{
 			InitializeComponent();
-			this.Loaded += ColourPicker_Loaded;
+			Loaded += ColourPicker_Loaded;
 		}
 
 		private void ColourPicker_Loaded(object sender, RoutedEventArgs e)
 		{
 			var point = GetPointAtColour(Colour);
 			AdjustSelectedColourCursor((int)point.X, (int)point.Y);
-			this.Loaded -= ColourPicker_Loaded;
+			Loaded -= ColourPicker_Loaded;
 		}
 
 		private void Border_MouseMove(object sender, MouseEventArgs e)
@@ -66,7 +66,7 @@ namespace ModernThemables.Controls
 			var borderCursor = e.GetPosition(ColourSelectionBorder);
 			AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
 
-			var cursor = this.PointToScreen(e.GetPosition(this));
+			var cursor = PointToScreen(e.GetPosition(this));
 			var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
 			Colour = c ?? Colour;
 			if (colourChangedCallback != null) colourChangedCallback(Colour);

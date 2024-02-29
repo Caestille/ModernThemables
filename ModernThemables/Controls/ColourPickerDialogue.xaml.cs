@@ -26,10 +26,10 @@ namespace ModernThemables.Controls
 		public ColourPickerDialogue(Color inputColour, Action<Color>? colourChangedCallback)
 		{
 			InitializeComponent();
-			this.initialColour = inputColour;
+			initialColour = inputColour;
 			this.colourChangedCallback = colourChangedCallback;
 			this.ColourPickerControl.colourChangedCallback = colourChangedCallback;
-			this.Colour = inputColour;
+			Colour = inputColour;
 		}
 
 		private static void OnColourSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)

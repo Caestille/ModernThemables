@@ -245,14 +245,14 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		{
 			InitializeComponent();
 
-			this.Loaded += TooltipControl_Loaded;
+			Loaded += TooltipControl_Loaded;
 
 			NameScope.SetNameScope(CM, NameScope.GetNameScope(this));
 		}
 
 		private void TooltipControl_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Loaded -= TooltipControl_Loaded;
+			Loaded -= TooltipControl_Loaded;
 			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
 			{
 				Coordinator = coordinator;

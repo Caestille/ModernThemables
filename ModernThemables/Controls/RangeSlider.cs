@@ -34,7 +34,7 @@ namespace ModernThemables.Controls
 
 		public RangeSlider()
 		{
-			this.SizeChanged += this.RangeSlider_SizeChanged;
+			SizeChanged += RangeSlider_SizeChanged;
 		}
 
 		#endregion Constructors
@@ -130,11 +130,11 @@ namespace ModernThemables.Controls
 
 		protected virtual void OnHigherValueChanged(double oldValue, double newValue)
 		{
-			this.AdjustView();
+			AdjustView();
 
 			RoutedEventArgs args = new RoutedEventArgs();
 			args.RoutedEvent = HigherValueChangedEvent;
-			this.RaiseEvent(args);
+			RaiseEvent(args);
 		}
 
 		#endregion HigherValue
@@ -182,11 +182,11 @@ namespace ModernThemables.Controls
 
 		protected virtual void OnLowerValueChanged(double oldValue, double newValue)
 		{
-			this.AdjustView();
+			AdjustView();
 
 			RoutedEventArgs args = new RoutedEventArgs();
 			args.RoutedEvent = RangeSlider.LowerValueChangedEvent;
-			this.RaiseEvent(args);
+			RaiseEvent(args);
 		}
 
 		#endregion LowerValue
@@ -220,7 +220,7 @@ namespace ModernThemables.Controls
 
 		protected virtual void OnMaximumChanged(double oldValue, double newValue)
 		{
-			this.AdjustView();
+			AdjustView();
 		}
 
 		#endregion Maximum
@@ -255,7 +255,7 @@ namespace ModernThemables.Controls
 		protected virtual void OnMinimumChanged(double oldValue, double newValue)
 		{
 			// adjust the range width
-			this.AdjustView();
+			AdjustView();
 		}
 
 		#endregion Minimum
@@ -320,7 +320,7 @@ namespace ModernThemables.Controls
 			{
 				//_midRange.Click -= new RoutedEventHandler(this.HigherRange_Click);
 			}
-			_midRange = this.Template.FindName(PART_MidRange, this) as RepeatButton;
+			_midRange = Template.FindName(PART_MidRange, this) as RepeatButton;
 			if (_midRange != null)
 			{
 				//_midRange.Click += new RoutedEventHandler(this.HigherRange_Click);
@@ -328,26 +328,26 @@ namespace ModernThemables.Controls
 
 			if (_lowerSlider != null)
 			{
-				_lowerSlider.Loaded -= this.Slider_Loaded;
+				_lowerSlider.Loaded -= Slider_Loaded;
 				_lowerSlider.ValueChanged -= LowerSlider_ValueChanged;
 			}
-			_lowerSlider = this.Template.FindName(PART_LowerSlider, this) as Slider;
+			_lowerSlider = Template.FindName(PART_LowerSlider, this) as Slider;
 			if (_lowerSlider != null)
 			{
-				_lowerSlider.Loaded += this.Slider_Loaded;
+				_lowerSlider.Loaded += Slider_Loaded;
 				_lowerSlider.ValueChanged += LowerSlider_ValueChanged;
 				_lowerSlider.ApplyTemplate();
 			}
 
 			if (_higherSlider != null)
 			{
-				_higherSlider.Loaded -= this.Slider_Loaded;
+				_higherSlider.Loaded -= Slider_Loaded;
 				_higherSlider.ValueChanged -= HigherSlider_ValueChanged;
 			}
-			_higherSlider = this.Template.FindName(PART_HigherSlider, this) as Slider;
+			_higherSlider = Template.FindName(PART_HigherSlider, this) as Slider;
 			if (_higherSlider != null)
 			{
-				_higherSlider.Loaded += this.Slider_Loaded;
+				_higherSlider.Loaded += Slider_Loaded;
 				_higherSlider.ValueChanged += HigherSlider_ValueChanged;
 				_higherSlider.ApplyTemplate();
 			}
@@ -360,15 +360,15 @@ namespace ModernThemables.Controls
 		private void AdjustView(bool isHigherValueChanged = false)
 		{
 			//Coerce values to make them consistent.
-			var cv = this.GetCoercedValues();
+			var cv = GetCoercedValues();
 
-			double actualWidth = this.ActualWidth - 16;
+			double actualWidth = ActualWidth - 16;
 			double lowerSliderThumbWidth = 0d;
 			double higherSliderThumbWidth = 0d;
 
 			actualWidth -= (lowerSliderThumbWidth + higherSliderThumbWidth);
-			this.SetLowerSliderValues(cv.LowerValue, cv.Minimum, cv.Maximum);
-			this.SetHigherSliderValues(cv.HigherValue, cv.Minimum, cv.Maximum);
+			SetLowerSliderValues(cv.LowerValue, cv.Minimum, cv.Maximum);
+			SetHigherSliderValues(cv.HigherValue, cv.Minimum, cv.Maximum);
 
 			double entireRange = cv.Maximum - cv.Minimum;
 
@@ -376,12 +376,12 @@ namespace ModernThemables.Controls
 			{
 				var higherValue = cv.HigherValue;
 				var lowerValue = cv.LowerValue;
-				this.RangeWidth = (actualWidth * (higherValue - lowerValue)) / entireRange;
-				this.RangeMargin = new Thickness(((lowerValue - Minimum) / entireRange) * actualWidth, 0, 0, 0);
+				RangeWidth = (actualWidth * (higherValue - lowerValue)) / entireRange;
+				RangeMargin = new Thickness(((lowerValue - Minimum) / entireRange) * actualWidth, 0, 0, 0);
 			}
 			else
 			{
-				this.RangeWidth = 0d;
+				RangeWidth = 0d;
 			}
 		}
 
@@ -389,10 +389,10 @@ namespace ModernThemables.Controls
 		{
 			var buffer = (Maximum - Minimum) * 0.01;
 			CoercedValues cv = new CoercedValues();
-			cv.Minimum = Math.Min(this.Minimum, this.Maximum);
-			cv.Maximum = Math.Max(cv.Minimum, this.Maximum);
-			cv.LowerValue = Math.Max(cv.Minimum, Math.Min(cv.Maximum, this.LowerValue));
-			cv.HigherValue = Math.Max(cv.Minimum, Math.Min(cv.Maximum, this.HigherValue));
+			cv.Minimum = Math.Min(Minimum, Maximum);
+			cv.Maximum = Math.Max(cv.Minimum, Maximum);
+			cv.LowerValue = Math.Max(cv.Minimum, Math.Min(cv.Maximum, LowerValue));
+			cv.HigherValue = Math.Max(cv.Minimum, Math.Min(cv.Maximum, HigherValue));
 			cv.HigherValue = Math.Max(cv.LowerValue, cv.HigherValue);
 
 			return cv;
@@ -400,12 +400,12 @@ namespace ModernThemables.Controls
 
 		private void SetLowerSliderValues(double value, double? minimum, double? maximum)
 		{
-			this.SetSliderValues(_lowerSlider, this.LowerSlider_ValueChanged, value, minimum, maximum);
+			SetSliderValues(_lowerSlider, LowerSlider_ValueChanged, value, minimum, maximum);
 		}
 
 		private void SetHigherSliderValues(double value, double? minimum, double? maximum)
 		{
-			this.SetSliderValues(_higherSlider, this.HigherSlider_ValueChanged, value, minimum, maximum);
+			SetSliderValues(_higherSlider, HigherSlider_ValueChanged, value, minimum, maximum);
 		}
 
 		private void SetSliderValues(
@@ -435,20 +435,20 @@ namespace ModernThemables.Controls
 
 		private void UpdateHigherValue(double? value)
 		{
-			CoercedValues cv = this.GetCoercedValues();
+			CoercedValues cv = GetCoercedValues();
 			double newValue = Math.Max(cv.Minimum, Math.Min(cv.Maximum, value.HasValue ? value.Value : 0d));
 			newValue = Math.Max(newValue, cv.LowerValue);
-			this.SetHigherSliderValues(newValue, null, null);
-			this.HigherValue = newValue;
+			SetHigherSliderValues(newValue, null, null);
+			HigherValue = newValue;
 		}
 
 		private void UpdateLowerValue(double? value)
 		{
-			CoercedValues cv = this.GetCoercedValues();
+			CoercedValues cv = GetCoercedValues();
 			double newValue = Math.Max(cv.Minimum, Math.Min(cv.Maximum, value.HasValue ? value.Value : 0d));
 			newValue = Math.Min(newValue, cv.HigherValue);
-			this.SetLowerSliderValues(newValue, null, null);
-			this.LowerValue = newValue;
+			SetLowerSliderValues(newValue, null, null);
+			LowerValue = newValue;
 		}
 
 		#endregion
@@ -487,19 +487,19 @@ namespace ModernThemables.Controls
 
 		private void RangeSlider_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			this.AdjustView();
+			AdjustView();
 		}
 
 		private void Slider_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.AdjustView();
+			AdjustView();
 		}
 
 		private void LowerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
 			if ((_lowerSlider != null) && _lowerSlider.IsLoaded)
 			{
-				this.UpdateLowerValue(e.NewValue);
+				UpdateLowerValue(e.NewValue);
 			}
 		}
 
@@ -507,7 +507,7 @@ namespace ModernThemables.Controls
 		{
 			if ((_higherSlider != null) && _higherSlider.IsLoaded)
 			{
-				this.UpdateHigherValue(e.NewValue);
+				UpdateHigherValue(e.NewValue);
 			}
 		}
 

@@ -41,7 +41,7 @@ namespace ModernThemables.Charting.Controls
 		public BarChart()
 		{
 			InitializeComponent();
-			this.Loaded += WpfChart_Loaded;
+			Loaded += WpfChart_Loaded;
 
 			seriesWatcher = new SeriesWatcherService(QueueRenderChart);
 
@@ -135,7 +135,7 @@ namespace ModernThemables.Charting.Controls
 			Application.Current.Dispatcher.Invoke(async () =>
 			{
 				renderInProgress = true;
-				this.Dispatcher.Invoke(DispatcherPriority.Render, SetYAxisLabels);
+				Dispatcher.Invoke(DispatcherPriority.Render, SetYAxisLabels);
 
 				var barSep = BarSeparationPixels;
 				var groupSep = BarGroupSeparationPixels;
@@ -188,14 +188,14 @@ namespace ModernThemables.Charting.Controls
 				GroupWidth = Math.Floor(groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) : 0);
 				var radius = BarWidth * BarCornerRadiusFraction / 2;
 				BarCornerRadius = new CornerRadius(0, 0, radius, radius);
-				this.isSingleXPoint = collection.Count < 2;
+				isSingleXPoint = collection.Count < 2;
 
 				await Task.Delay(18);
-				this.Dispatcher.Invoke(DispatcherPriority.Render, () => { });
-				await this.Dispatcher.BeginInvoke(
+				Dispatcher.Invoke(DispatcherPriority.Render, () => { });
+				await Dispatcher.BeginInvoke(
 					DispatcherPriority.Render,
 					() => { InternalSeries = new ObservableCollection<InternalChartEntity>(collection); });
-				await this.Dispatcher.BeginInvoke(DispatcherPriority.Render, () => SetXAxisLabels(labels));
+				await Dispatcher.BeginInvoke(DispatcherPriority.Render, () => SetXAxisLabels(labels));
 
 				renderInProgress = false;
 			});
@@ -281,7 +281,7 @@ namespace ModernThemables.Charting.Controls
 
 		private void WpfChart_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Loaded -= WpfChart_Loaded;
+			Loaded -= WpfChart_Loaded;
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
 			Coordinator.MouseLeave += MouseCaptureGrid_MouseLeave;

@@ -53,8 +53,8 @@ namespace ModernThemables.Controls
 		{
 			trigger = new KeepAliveTriggerService(() => { CalculateDate(false); }, 100);
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
-			this.GotKeyboardFocus += DatetimeTextBox_GotKeyboardFocus;
-			this.DataContextChanged += DatetimeTextBox_DataContextChanged;
+			GotKeyboardFocus += DatetimeTextBox_GotKeyboardFocus;
+			DataContextChanged += DatetimeTextBox_DataContextChanged;
 		}
 
 		private void DatetimeTextBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -164,7 +164,7 @@ namespace ModernThemables.Controls
 				textbox.TextChanged -= TextChanged;
 				textbox.PreviewKeyDown -= TextKeyDown;
 			}
-			if (this.Template.FindName(PART_textbox, this) is TextBox tb)
+			if (Template.FindName(PART_textbox, this) is TextBox tb)
 			{ 
 				textbox = tb;
 			}
@@ -172,8 +172,8 @@ namespace ModernThemables.Controls
 			{
 				textbox.TextChanged += TextChanged;
 				textbox.PreviewKeyDown += TextKeyDown;
-				textbox.Text = this.DateTime.HasValue 
-					? this.DateTime.Value.ToString(this.Format)
+				textbox.Text = DateTime.HasValue 
+					? DateTime.Value.ToString(Format)
 					: string.Join("", Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
 			}
 			else
@@ -376,7 +376,7 @@ namespace ModernThemables.Controls
 					}
 					DateTime = newVal;
 					var args = new RoutedPropertyChangedEventArgs<DateTime?>(lastValue, newVal, DateChangedEvent) { Source = this };
-					this.RaiseEvent(args);
+					RaiseEvent(args);
 				}
 			});
 

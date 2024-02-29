@@ -55,7 +55,7 @@ namespace ModernThemables.Controls
 				button.Click -= Button_Click;
 			}
 
-			if (this.Template.FindName(PART_button, this) is ExtendedButton bt)
+			if (Template.FindName(PART_button, this) is ExtendedButton bt)
 			{
 				button = bt;
 			}
@@ -72,7 +72,7 @@ namespace ModernThemables.Controls
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			this.SearchText = string.Empty;
+			SearchText = string.Empty;
 		}
 
 		#endregion Override

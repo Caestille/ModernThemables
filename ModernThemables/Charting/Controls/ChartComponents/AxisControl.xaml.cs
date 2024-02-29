@@ -172,16 +172,16 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 		{
 			InitializeComponent();
 			MainItemsControl.SizeChanged += MainItemsControl_SizeChanged;
-			this.Loaded += AxisControl_Loaded;
+			Loaded += AxisControl_Loaded;
 		}
 
 		private void AxisControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
 			{
-				this.Coordinator = coordinator;
+				Coordinator = coordinator;
 			}
-			this.Loaded -= AxisControl_Loaded;
+			Loaded -= AxisControl_Loaded;
 		}
 
 		private void MainItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)

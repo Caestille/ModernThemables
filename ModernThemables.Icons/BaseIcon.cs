@@ -45,7 +45,7 @@ namespace ModernThemables.Icons
         {
             base.OnApplyTemplate();
 
-            this.UpdateData();
+            UpdateData();
         }
 
         internal abstract void UpdateData();
@@ -72,8 +72,8 @@ namespace ModernThemables.Icons
         /// <value>The rotation.</value>
         public double RotationAngle
         {
-            get { return (double)this.GetValue(RotationAngleProperty); }
-            set { this.SetValue(RotationAngleProperty, value); }
+            get { return (double)GetValue(RotationAngleProperty); }
+            set { SetValue(RotationAngleProperty, value); }
         }
     }
 }
