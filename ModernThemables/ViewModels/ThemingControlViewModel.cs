@@ -370,6 +370,7 @@ namespace ModernThemables.ViewModels
 		{
 			if (isSyncingWithOs)
 				SyncThemeWithOs(true);
+			if (Application.Current == null) return;
             Application.Current.Dispatcher.Invoke(() =>
             {
 				if (Application.Current.MainWindow != null)
