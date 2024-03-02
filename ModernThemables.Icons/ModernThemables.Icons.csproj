@@ -4,21 +4,11 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Authors>Joseph Ward</Authors>
-    <Company>Caestille</Company>
-    <PackageProjectUrl>https://github.com/Caestille/Win10Themables</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Caestille/Win10Themables</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
 	<ItemGroup>
-		<EditorConfigFiles Remove="C:\Users\jward\OneDrive - Mercedes-Benz Grand Prix Ltd\Documents\Personal\CoreUtilities\.editorconfig" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="C:\Users\jward\OneDrive - Mercedes-Benz Grand Prix Ltd\Documents\Personal\CoreUtilities\.editorconfig" />
+		<None Include="..\CoreUtilities\CoreUtilities\.editorconfig" />
 	</ItemGroup>
 
 </Project>
