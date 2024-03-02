@@ -17,6 +17,7 @@ using ModernThemables.Charting.Models.Brushes;
 using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Services;
 using ModernThemables.Charting.Controls.ChartComponents;
+using System.Diagnostics;
 
 namespace ModernThemables.Charting.Controls
 {
@@ -190,7 +191,7 @@ namespace ModernThemables.Charting.Controls
 				{
 					if (series.Values == null || !series.Values.Any()) continue;
 
-					var points = await GetPointsForSeries(series);
+					var points = GetPointsForSeries(series);
 
 					var matchingSeries = InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
 
@@ -227,7 +228,7 @@ namespace ModernThemables.Charting.Controls
 
 					var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
 					if (matchingSeries == null) continue;
-					series.UpdatePoints(await GetPointsForSeries(matchingSeries));
+					series.UpdatePoints(GetPointsForSeries(matchingSeries));
 
 					if (!matchingSeries.Values.Any()) continue;
 
@@ -357,7 +358,7 @@ namespace ModernThemables.Charting.Controls
 			return yVals;
 		}
 
-		private async Task<List<InternalChartEntity>> GetPointsForSeries(ISeries? series)
+		private List<InternalChartEntity> GetPointsForSeries(ISeries? series)
 		{
 			if (series == null) return new List<InternalChartEntity>();
 
@@ -365,18 +366,15 @@ namespace ModernThemables.Charting.Controls
 			var xRange = dataXMax - xMin;
 			var yMin = dataYMin;
 			var yRange = dataYMax - yMin;
-
-			return await Task.Run(() =>
+			
+			List<InternalChartEntity> points = new();
+			foreach (var point in series.Values)
 			{
-				List<InternalChartEntity> points = new();
-				foreach (var point in series.Values)
-				{
-					double x = (double)(point.XValue - xMin) / (double)xRange * (double)plotAreaWidth;
-					double y = plotAreaHeight - (point.YValue - yMin) / yRange * plotAreaHeight;
-					points.Add(new InternalChartEntity(x, y, point));
-				}
-				return points;
-			});
+				double x = (double)(point.XValue - xMin) / (double)xRange * (double)plotAreaWidth;
+				double y = plotAreaHeight - (point.YValue - yMin) / yRange * plotAreaHeight;
+				points.Add(new InternalChartEntity(x, y, point));
+			}
+			return points;
 		}
 
 		private List<(InternalChartEntity point, InternalPathSeriesViewModel series)> GetPointsUnderMouse(Point point)

@@ -53,6 +53,11 @@ namespace ModernThemables.Charting.Services
 		{
 			var yVals = new List<double>();
 
+			if (min == max)
+			{
+				return new List<double>() { min };
+			}
+
 			var yRange = max - min;
 			var idealStep = yRange / (double)itemCount;
 			double valMin = double.MaxValue;
