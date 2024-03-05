@@ -305,6 +305,10 @@ namespace ModernThemables.Controls
 						var updated = Regex.Replace(toDelete, "[0-9]", "");
 						text = $"{text.Substring(0, textbox.SelectionStart)}{updated}{text.Substring(textbox.SelectionStart + textbox.SelectionLength, text.Length - textbox.SelectionStart - textbox.SelectionLength)}";
 						selectStart = textbox.SelectionStart;
+						while (skipCharacters.Contains(GetNextCharacter(selectStart)))
+						{
+							selectStart++;
+						}
 						setStart = true;
 						textbox.SelectionLength = 0;
 						e.Handled = true;
@@ -334,7 +338,6 @@ namespace ModernThemables.Controls
 
 			textbox.Text = text;
 			if (setStart) textbox.SelectionStart = selectStart;
-
 		}
 
 		private string GetPreviousCharacter(int currentPos)
