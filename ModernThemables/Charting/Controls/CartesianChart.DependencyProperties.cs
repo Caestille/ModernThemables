@@ -257,6 +257,17 @@ namespace ModernThemables.Charting.Controls
 			typeof(ObservableCollection<AxisLabel>),
 			typeof(CartesianChart),
 			new PropertyMetadata(new ObservableCollection<AxisLabel>()));
+
+		private double FrameRate
+		{
+			get => (double)GetValue(FrameRateProperty);
+			set => SetValue(FrameRateProperty, value);
+		}
+		public static readonly DependencyProperty FrameRateProperty = DependencyProperty.Register(
+			"FrameRate",
+			typeof(double),
+			typeof(CartesianChart),
+			new PropertyMetadata(0d));
 		#endregion
 	}
 }

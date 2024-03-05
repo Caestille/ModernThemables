@@ -168,26 +168,20 @@ namespace ModernThemables.Charting.Controls
 		{
 			Application.Current.Dispatcher.Invoke(async () =>
 			{
+				var sw = Stopwatch.StartNew();
 				renderInProgress = true;
-				var collection = InternalSeries.Clone().ToList();
-
-				if (invalidateAll)
-				{
-					collection.Clear();
-				}
-				else
-				{
-					foreach (var series in (removedSeries ?? new List<ISeries>()).Where(x => collection.Any(y => y.Identifier == x.Identifier)))
-					{
-						collection.Remove(collection.First(x => x.Identifier == series.Identifier));
-					}
-				}
+				var collection = new List<InternalPathSeriesViewModel>();
+				//else
+				//{
+				//	foreach (var series in (removedSeries ?? new List<ISeries>()).Where(x => collection.Any(y => y.Identifier == x.Identifier)))
+				//	{
+				//		collection.Remove(collection.First(x => x.Identifier == series.Identifier));
+				//	}
+				//}
 
 				var xMax = dataXMax;
 				var xMin = dataXMin;
-				foreach (var series in invalidateAll
-					? Series ?? new ObservableCollection<ISeries>()
-					: addedSeries ?? new List<ISeries>())
+				foreach (var series in Series ?? new ObservableCollection<ISeries>())
 				{
 					if (series.Values == null || !series.Values.Any()) continue;
 
@@ -208,11 +202,6 @@ namespace ModernThemables.Charting.Controls
 							? matchingSeries != null ? matchingSeries.Fill : series.Fill
 							: series.Fill));
 
-					if (!series.Values.Any()) continue;
-
-					await SetXAxisLabels();
-					await SetYAxisLabels();
-
 					var seriesYMin = series.Values.Min(z => z.YValue);
 					var seriesYMax = series.Values.Max(z => z.YValue);
 
@@ -220,40 +209,48 @@ namespace ModernThemables.Charting.Controls
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
-				var yMax = dataYMax;
-				var yMin = dataYMin;
-				foreach (var series in collection)
-				{
-					if (Series == null || !Series.Any()) break;
+				await SetXAxisLabels();
+				await SetYAxisLabels();
 
-					var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
-					if (matchingSeries == null) continue;
-					series.UpdatePoints(GetPointsForSeries(matchingSeries));
+				//var yMax = dataYMax;
+				//var yMin = dataYMin;
+				//foreach (var series in collection)
+				//{
+				//	if (Series == null || !Series.Any()) break;
 
-					if (!matchingSeries.Values.Any()) continue;
+				//	var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
+				//	if (matchingSeries == null) continue;
+				//	series.UpdatePoints(GetPointsForSeries(matchingSeries));
 
-					var seriesYMax = matchingSeries.Values.Max(x => x.YValue);
-					var seriesYMin = matchingSeries.Values.Min(x => x.YValue);
-					var seriesYRange = seriesYMax - seriesYMin;
-					var seriesXMax = matchingSeries.Values.Max(x => x.XValue);
-					var seriesXMin = matchingSeries.Values.Min(x => x.XValue);
-					var seriesXRange = seriesXMax - seriesXMin;
+				//	if (!matchingSeries.Values.Any()) continue;
 
-					var topMargin = ((yMax - seriesYMax) / seriesYRange);
-					var bottomMargin = ((seriesYMin - yMin) / seriesYRange);
-					var rightMargin = ((xMax - seriesXMax) / seriesXRange);
-					var leftMargin = ((seriesXMin - xMin) / seriesXRange);
+				//	var seriesYMax = matchingSeries.Values.Max(x => x.YValue);
+				//	var seriesYMin = matchingSeries.Values.Min(x => x.YValue);
+				//	var seriesYRange = seriesYMax - seriesYMin;
+				//	var seriesXMax = matchingSeries.Values.Max(x => x.XValue);
+				//	var seriesXMin = matchingSeries.Values.Min(x => x.XValue);
+				//	var seriesXRange = seriesXMax - seriesXMin;
 
-					series.SetMargins(topMargin, bottomMargin, leftMargin, rightMargin);
-				}
+				//	var topMargin = ((yMax - seriesYMax) / seriesYRange);
+				//	var bottomMargin = ((seriesYMin - yMin) / seriesYRange);
+				//	var rightMargin = ((xMax - seriesXMax) / seriesXRange);
+				//	var leftMargin = ((seriesXMin - xMin) / seriesXRange);
+
+				//	series.SetMargins(topMargin, bottomMargin, leftMargin, rightMargin);
+				//}
 
 				InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection);
 
 				Zoom.InvalidateArrange();
 
 				renderInProgress = false;
+				sw.Stop();
+				FrameRate = (FrameRate * (count - 1) + (double)sw.ElapsedMilliseconds) / count;
+				count++;
 			});
 		}
+
+		int count = 1;
 
 		#region Calculations
 
