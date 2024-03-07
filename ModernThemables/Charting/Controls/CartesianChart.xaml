@@ -105,7 +105,6 @@
 					TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
 					TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
 				<chartcomponents:MouseCoordinator x:Name="Coordinator" MouseMoveThrottleMs="16" />
-				<Label Content="{Binding ElementName=root, Path=FrameRate}" Background="Red" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="50" FontSize="20" Grid.Row="1" Grid.Column="1" />
 			</Grid>
 			<chartcomponents:AxisControl
 				Margin="0,0,-1,0"

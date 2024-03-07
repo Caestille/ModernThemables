@@ -170,18 +170,25 @@ namespace ModernThemables.Charting.Controls
 			{
 				var sw = Stopwatch.StartNew();
 				renderInProgress = true;
-				var collection = new List<InternalPathSeriesViewModel>();
-				//else
-				//{
-				//	foreach (var series in (removedSeries ?? new List<ISeries>()).Where(x => collection.Any(y => y.Identifier == x.Identifier)))
-				//	{
-				//		collection.Remove(collection.First(x => x.Identifier == series.Identifier));
-				//	}
-				//}
+				var collection = InternalSeries.Clone().Select(x => (x, false)).ToList();
+
+				if (invalidateAll)
+				{
+					collection.Clear();
+				}
+				else
+				{
+					foreach (var series in (removedSeries ?? new List<ISeries>()).Where(x => collection.Any(y => y.Item1.Identifier == x.Identifier)))
+					{
+						collection.Remove(collection.First(x => x.Item1.Identifier == series.Identifier));
+					}
+				}
 
 				var xMax = dataXMax;
 				var xMin = dataXMin;
-				foreach (var series in Series ?? new ObservableCollection<ISeries>())
+				foreach (var series in invalidateAll
+					? Series ?? new ObservableCollection<ISeries>()
+					: addedSeries ?? new List<ISeries>())
 				{
 					if (series.Values == null || !series.Values.Any()) continue;
 
@@ -189,7 +196,7 @@ namespace ModernThemables.Charting.Controls
 
 					var matchingSeries = InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
 
-					collection.Add(new InternalPathSeriesViewModel(
+					collection.Add((new InternalPathSeriesViewModel(
 						series.Name,
 						series.Identifier,
 						points,
@@ -200,7 +207,9 @@ namespace ModernThemables.Charting.Controls
 							: series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
 						invalidateAll
 							? matchingSeries != null ? matchingSeries.Fill : series.Fill
-							: series.Fill));
+							: series.Fill), true));
+
+					if (!series.Values.Any()) continue;
 
 					var seriesYMin = series.Values.Min(z => z.YValue);
 					var seriesYMax = series.Values.Max(z => z.YValue);
@@ -209,48 +218,44 @@ namespace ModernThemables.Charting.Controls
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 				}
 
-				await SetXAxisLabels();
-				await SetYAxisLabels();
+				var yMax = dataYMax;
+				var yMin = dataYMin;
+				foreach (var series in collection.Where(x => !x.Item2).Select(x => x.Item1))
+				{
+					if (Series == null || !Series.Any()) break;
 
-				//var yMax = dataYMax;
-				//var yMin = dataYMin;
-				//foreach (var series in collection)
-				//{
-				//	if (Series == null || !Series.Any()) break;
+					var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
+					if (matchingSeries == null) continue;
+					series.UpdatePoints(GetPointsForSeries(matchingSeries));
 
-				//	var matchingSeries = Series.FirstOrDefault(x => x.Identifier == series.Identifier);
-				//	if (matchingSeries == null) continue;
-				//	series.UpdatePoints(GetPointsForSeries(matchingSeries));
+					if (!matchingSeries.Values.Any()) continue;
 
-				//	if (!matchingSeries.Values.Any()) continue;
+					var seriesYMax = matchingSeries.Values.Max(x => x.YValue);
+					var seriesYMin = matchingSeries.Values.Min(x => x.YValue);
+					var seriesYRange = seriesYMax - seriesYMin;
+					var seriesXMax = matchingSeries.Values.Max(x => x.XValue);
+					var seriesXMin = matchingSeries.Values.Min(x => x.XValue);
+					var seriesXRange = seriesXMax - seriesXMin;
 
-				//	var seriesYMax = matchingSeries.Values.Max(x => x.YValue);
-				//	var seriesYMin = matchingSeries.Values.Min(x => x.YValue);
-				//	var seriesYRange = seriesYMax - seriesYMin;
-				//	var seriesXMax = matchingSeries.Values.Max(x => x.XValue);
-				//	var seriesXMin = matchingSeries.Values.Min(x => x.XValue);
-				//	var seriesXRange = seriesXMax - seriesXMin;
+					var topMargin = ((yMax - seriesYMax) / seriesYRange);
+					var bottomMargin = ((seriesYMin - yMin) / seriesYRange);
+					var rightMargin = ((xMax - seriesXMax) / seriesXRange);
+					var leftMargin = ((seriesXMin - xMin) / seriesXRange);
 
-				//	var topMargin = ((yMax - seriesYMax) / seriesYRange);
-				//	var bottomMargin = ((seriesYMin - yMin) / seriesYRange);
-				//	var rightMargin = ((xMax - seriesXMax) / seriesXRange);
-				//	var leftMargin = ((seriesXMin - xMin) / seriesXRange);
+					series.SetMargins(topMargin, bottomMargin, leftMargin, rightMargin);
+				}
 
-				//	series.SetMargins(topMargin, bottomMargin, leftMargin, rightMargin);
-				//}
+				_ = SetXAxisLabels();
+				_ = SetYAxisLabels();
 
-				InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection);
+				InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection.Select(x => x.Item1));
 
 				Zoom.InvalidateArrange();
 
 				renderInProgress = false;
 				sw.Stop();
-				FrameRate = (FrameRate * (count - 1) + (double)sw.ElapsedMilliseconds) / count;
-				count++;
 			});
 		}
-
-		int count = 1;
 
 		#region Calculations
 
