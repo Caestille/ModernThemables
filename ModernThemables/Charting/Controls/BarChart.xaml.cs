@@ -26,7 +26,7 @@ namespace ModernThemables.Charting.Controls
 		private double plotAreaHeight => TooltipControl.ActualHeight;
 		private double plotAreaWidth => TooltipControl.ActualWidth;
 
-		private readonly KeepAliveTriggerService resizeTrigger;
+		private readonly RefreshTrigger resizeTrigger;
 
 		private bool isSingleXPoint;
 
@@ -90,7 +90,7 @@ namespace ModernThemables.Charting.Controls
 				return tooltipPoints;
 			});
 
-			resizeTrigger = new KeepAliveTriggerService(() => { QueueRenderChart(null, null, true); }, 100);
+			resizeTrigger = new RefreshTrigger(() => { QueueRenderChart(null, null, true); }, 100);
 		}
 
 		private static void TriggerReRender(DependencyObject sender, DependencyPropertyChangedEventArgs e)

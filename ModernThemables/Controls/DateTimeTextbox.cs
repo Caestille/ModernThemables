@@ -30,7 +30,7 @@ namespace ModernThemables.Controls
 		private readonly Dictionary<string, Binding> cachedBindings = new();
 		private readonly Dictionary<string, bool> validCache = new();
 
-		private readonly KeepAliveTriggerService trigger;
+		private readonly RefreshTrigger trigger;
 
 		private bool isKeyboardUpdate = false;
 
@@ -51,7 +51,7 @@ namespace ModernThemables.Controls
 
 		public DatetimeTextBox()
 		{
-			trigger = new KeepAliveTriggerService(() => { CalculateDate(false); }, 100);
+			trigger = new RefreshTrigger(() => { CalculateDate(false); }, 100);
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			GotKeyboardFocus += DatetimeTextBox_GotKeyboardFocus;
 			DataContextChanged += DatetimeTextBox_DataContextChanged;

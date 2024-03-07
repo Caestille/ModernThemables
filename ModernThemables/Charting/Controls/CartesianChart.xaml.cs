@@ -29,7 +29,7 @@ namespace ModernThemables.Charting.Controls
 		public event EventHandler<IChartEntity>? PointClicked;
 		public event EventHandler<Tuple<IChartEntity, IChartEntity>>? PointRangeSelected;
 
-		private readonly KeepAliveTriggerService resizeTrigger;
+		private readonly RefreshTrigger resizeTrigger;
 
 		private readonly BlockingCollection<Action> renderQueue;
 		private bool renderInProgress;
@@ -126,7 +126,7 @@ namespace ModernThemables.Charting.Controls
 				return (boundedYMin, boundedYMax);
 			});
 
-			resizeTrigger = new KeepAliveTriggerService(() => { QueueRenderChart(null, null, true); }, 100);
+			resizeTrigger = new RefreshTrigger(() => { QueueRenderChart(null, null, true); }, 100);
 		}
 
 		public void ResetZoom()

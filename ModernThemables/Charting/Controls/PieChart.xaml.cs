@@ -25,7 +25,7 @@ namespace ModernThemables.Charting.Controls
 	/// </summary>
 	public partial class PieChart : UserControl
 	{
-		private readonly KeepAliveTriggerService resizeTrigger;
+		private readonly RefreshTrigger resizeTrigger;
 
 		private readonly SeriesWatcherService seriesWatcher;
 
@@ -128,7 +128,7 @@ namespace ModernThemables.Charting.Controls
 				return tooltipPoints;
 			});
 
-			resizeTrigger = new KeepAliveTriggerService(() => QueueRenderChart(null, null, true), 100);
+			resizeTrigger = new RefreshTrigger(() => QueueRenderChart(null, null, true), 100);
 		}
 
 		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
