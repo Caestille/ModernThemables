@@ -47,6 +47,8 @@ namespace ModernThemables.Controls
 		private const string PART_SettingsCloseRegion = "PART_SettingsCloseRegion";
 		private const string PART_ThemingMenu = "PART_ThemingMenu";
 
+        private ThemingControlViewModel themeVm = new ThemingControlViewModel();
+
 		private FrameworkElement? icon;
 		private Thumb? windowTitleThumb;
 		private UIElement? titleBar;
@@ -73,11 +75,21 @@ namespace ModernThemables.Controls
 			typeof(bool),
 			typeof(ThemableWindow2),
 			new PropertyMetadata(BooleanBoxes.FalseBox));
+        public bool IsTransparentHeader
+        {
+            get => (bool)GetValue(IsTransparentHeaderProperty);
+            set => SetValue(IsTransparentHeaderProperty, BooleanBoxes.Box(value));
+        }
+        public static readonly DependencyProperty IsTransparentHeaderProperty = DependencyProperty.Register(
+            nameof(IsTransparentHeader),
+            typeof(bool),
+            typeof(ThemableWindow2),
+            new PropertyMetadata(BooleanBoxes.FalseBox));
 
-		/// <summary>
-		/// Get or sets whether the TitleBar icon is visible or not.
-		/// </summary>
-		public bool ShowIcon
+        /// <summary>
+        /// Get or sets whether the TitleBar icon is visible or not.
+        /// </summary>
+        public bool ShowIcon
 		{
 			get => (bool)GetValue(ShowIconProperty);
 			set => SetValue(ShowIconProperty, BooleanBoxes.Box(value));
@@ -271,10 +283,24 @@ namespace ModernThemables.Controls
 			typeof(ThemableWindow2),
 			new PropertyMetadata(null));
 
-		/// <summary>
-		/// Gets or sets the brush used for the background of the TitleBar.
-		/// </summary>
-		public Brush WindowTitleBrush
+        /// <summary>
+        /// Gets or sets the <see cref="DataTemplate"/> for the <see cref="Window.Title"/> in transparent mode.
+        /// </summary>
+        public DataTemplate? TransparentTitleTemplate
+        {
+            get => (DataTemplate?)GetValue(TransparentTitleTemplateProperty);
+            set => SetValue(TransparentTitleTemplateProperty, value);
+        }
+        public static readonly DependencyProperty TransparentTitleTemplateProperty = DependencyProperty.Register(
+            nameof(TransparentTitleTemplate),
+            typeof(DataTemplate),
+            typeof(ThemableWindow2),
+            new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the brush used for the background of the TitleBar.
+        /// </summary>
+        public Brush WindowTitleBrush
 		{
 			get => (Brush)GetValue(WindowTitleBrushProperty);
 			set => SetValue(WindowTitleBrushProperty, value);
@@ -372,7 +398,7 @@ namespace ModernThemables.Controls
 			typeof(ThemableWindow2),
 			new PropertyMetadata(null, OnRightWindowCommandsPropertyChanged));
 
-		private static void OnRightWindowCommandsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnRightWindowCommandsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (e.NewValue is WindowCommands windowCommands)
 			{
@@ -465,14 +491,35 @@ namespace ModernThemables.Controls
 							(o as ThemableWindow2)?.UpdateIconVisibility();
 						}
 					}));
-		}
+
+        }
 
 		/// <summary>
 		/// Initializes a new instance of the MahApps.Metro.Controls.ThemableWindow2 class.
 		/// </summary>
 		public ThemableWindow2()
-		{
-			DataContextChanged += ThemableWindow2_DataContextChanged;
+        {
+            themeVm.TransparentHeaderChanged += (sender, e) =>
+            {
+                Application.Current.Dispatcher.Invoke(() => {
+                    IsTransparentHeader = e;
+                    titleBarBackground.Visibility = e ? Visibility.Hidden : Visibility.Visible;
+                    WindowButtonCommands.Foreground = e
+                        ? Application.Current.Resources["TextBrush"] as SolidColorBrush
+                        : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
+                });
+
+            };
+            themeVm.IsDarkChanged += (sender, e) =>
+            {
+                Application.Current.Dispatcher.Invoke(() => { 
+                    WindowButtonCommands.Foreground = themeVm.IsTransparentHeader
+                        ? Application.Current.Resources["TextBrush"] as SolidColorBrush
+                        : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
+                });
+
+            };
+            DataContextChanged += ThemableWindow2_DataContextChanged;
 		}
 
 		private void UpdateIconVisibility()
@@ -489,9 +536,20 @@ namespace ModernThemables.Controls
 			var newVisibility = TitleBarHeight > 0 && ShowTitleBar ? Visibility.Visible : Visibility.Collapsed;
 
 			titleBar?.SetCurrentValue(VisibilityProperty, newVisibility);
-			titleBarBackground?.SetCurrentValue(VisibilityProperty, newVisibility);
+            if (titleBarBackground != null)
+            {
+                titleBarBackground.SetCurrentValue(VisibilityProperty, newVisibility);
+                titleBarBackground.Visibility = themeVm.IsTransparentHeader ? Visibility.Hidden : Visibility.Visible;
+            }
+            IsTransparentHeader = themeVm.IsTransparentHeader;
+            if (WindowButtonCommands != null)
+            {
+                WindowButtonCommands.Foreground = themeVm.IsTransparentHeader
+                    ? Application.Current.Resources["TextBrush"] as SolidColorBrush
+                    : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
+            }
 
-			SetWindowEvents();
+            SetWindowEvents();
 		}
 
 		private void ThemableWindow2_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -586,7 +644,7 @@ namespace ModernThemables.Controls
 			SettingsCloseButton = GetTemplateChild(PART_SettingsCloseButton) as Button;
 			SettingsCloseRegion = GetTemplateChild(PART_SettingsCloseRegion) as Button;
 			ThemingMenu = GetTemplateChild(PART_ThemingMenu) as ThemingControl;
-			ThemingMenu.DataContext = new ThemingControlViewModel();
+			ThemingMenu.DataContext = themeVm;
 
 			LeftWindowCommands ??= new WindowCommands();
 			RightWindowCommands ??= new WindowCommands();
@@ -599,7 +657,7 @@ namespace ModernThemables.Controls
 			icon = GetTemplateChild(PART_Icon) as FrameworkElement;
 			titleBar = GetTemplateChild(PART_TitleBar) as UIElement;
 			titleBarBackground = GetTemplateChild(PART_WindowTitleBackground) as UIElement;
-			windowTitleThumb = GetTemplateChild(PART_WindowTitleThumb) as Thumb;
+            windowTitleThumb = GetTemplateChild(PART_WindowTitleThumb) as Thumb;
 
 			UpdateTitleBarElementsVisibility();
 		}

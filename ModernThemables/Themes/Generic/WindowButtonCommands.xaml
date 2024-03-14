@@ -30,7 +30,8 @@
 				x:Name="PART_ThemeSetButton"
 				Style="{StaticResource TitleBarButton}"
 				ToolTip="Set theme">
-				<scalableicons:Icon
+                <scalableicons:Icon
+                    Foreground="{TemplateBinding Foreground}"
 					Width="11"
 					Height="6"
 					Kind="Expand"
@@ -53,7 +54,8 @@
 				Command="{x:Static SystemCommands.MinimizeWindowCommand}"
 				Style="{StaticResource TitleBarButton}"
 				ToolTip="{Binding Minimize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
-				<scalableicons:Icon
+                <scalableicons:Icon
+                    Foreground="{TemplateBinding Foreground}"
 					Width="10"
 					Height="1"
 					Margin="0,0,0,10"
@@ -67,7 +69,8 @@
 				Command="{x:Static SystemCommands.MaximizeWindowCommand}"
 				Style="{StaticResource TitleBarButton}"
 				ToolTip="{Binding Maximize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
-				<scalableicons:Icon
+                <scalableicons:Icon
+                    Foreground="{TemplateBinding Foreground}"
 					Width="10"
 					Height="10"
 					Kind="Maximise" />
@@ -82,6 +85,7 @@
 				Style="{StaticResource TitleBarButton}"
 				ToolTip="{Binding Close, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
 				<scalableicons:Icon
+                    Foreground="{TemplateBinding Foreground}"
 					Width="10"
 					Height="10"
 					Kind="Close" />

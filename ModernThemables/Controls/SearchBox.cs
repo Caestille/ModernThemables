@@ -1,50 +1,53 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ModernThemables.Controls
 {
 	public class SearchBox : Control
 	{
-		#region Members
-
 		private const string PART_button = "PART_button";
 
 		private ExtendedButton? button;
 
-		#endregion Members
-
-		#region Constructors
+		public event EventHandler<string>? SearchTextChanged;
 
 		static SearchBox()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(SearchBox), new FrameworkPropertyMetadata(typeof(SearchBox)));
 		}
 
-		#endregion Constructors
-
 		#region Properties
-
-		public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register("SearchText", typeof(string), typeof(SearchBox),
-		   new FrameworkPropertyMetadata(null));
 
 		public string SearchText
 		{
 			get => (string)GetValue(SearchTextProperty);
 			set => SetValue(SearchTextProperty, value);
-		}
+        }
 
-		public double BackgroundOpacity
+        public static readonly DependencyProperty SearchTextProperty =
+            DependencyProperty.Register(
+                nameof(SearchText),
+                typeof(string),
+                typeof(SearchBox),
+                new FrameworkPropertyMetadata(null, OnSearchTextChanged));
+
+        public double BackgroundOpacity
 		{
 			get => (double)GetValue(BackgroundOpacityProperty);
 			set => SetValue(BackgroundOpacityProperty, value);
 		}
-		public static readonly DependencyProperty BackgroundOpacityProperty = DependencyProperty.Register(
-		  "BackgroundOpacity", typeof(double), typeof(SearchBox), new PropertyMetadata(1d));
+
+		public static readonly DependencyProperty BackgroundOpacityProperty =
+            DependencyProperty.Register(
+		        nameof(BackgroundOpacity),
+                typeof(double),
+                typeof(SearchBox),
+                new PropertyMetadata(1d));
 
 		#endregion Properties
-
-		#region Override
 
 		public override void OnApplyTemplate()
 		{
@@ -75,6 +78,12 @@ namespace ModernThemables.Controls
 			SearchText = string.Empty;
 		}
 
-		#endregion Override
-	}
+        private static void OnSearchTextChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is SearchBox this_)
+            {
+                this_.SearchTextChanged?.Invoke(this_, (string)e.NewValue);
+            }
+        }
+    }
 }

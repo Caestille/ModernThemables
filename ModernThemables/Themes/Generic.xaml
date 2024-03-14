@@ -14,6 +14,7 @@
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ExtendedToggleButton.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltip.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltipHorizontal.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Menu.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/RangeSlider.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/SearchBox.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ThemableWindow2.xaml" />

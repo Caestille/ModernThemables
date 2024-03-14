@@ -1,7 +1,12 @@
-﻿using ModernThemables.Charting.Controls;
+﻿using CoreUtilities.HelperClasses;
+using CoreUtilities.HelperClasses.Extensions;
+using ModernThemables.Charting.Controls;
 using ModernThemables.Charting.Interfaces;
+using ModernThemables.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,8 +14,6 @@ namespace ModernThemables.Controls
 {
 	public class Menu : Control
 	{
-		#region Members
-
 		private const string PART_OpenButton = "PART_OpenButton";
 		private const string PART_PinButton = "PART_PinButton";
 		private const string PART_SearchBox = "PART_SearchBox";
@@ -19,16 +22,10 @@ namespace ModernThemables.Controls
 		private ExtendedButton? pinButton;
 		private SearchBox? searchBox;
 
-		#endregion Members
-
-		#region Constructors
-
 		static Menu()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(Menu), new FrameworkPropertyMetadata(typeof(Menu)));
 		}
-
-		#endregion Constructors
 
 		#region Properties
 
@@ -43,38 +40,38 @@ namespace ModernThemables.Controls
 			typeof(Menu),
 			new PropertyMetadata(null));
 
-		public DataTemplate SearchTemplate
+		public DataTemplate SearchItemTemplate
 		{
-			get => (DataTemplate)GetValue(SearchTemplateProperty);
-			set => SetValue(SearchTemplateProperty, value);
+			get => (DataTemplate)GetValue(SearchItemTemplateProperty);
+			set => SetValue(SearchItemTemplateProperty, value);
 		}
-		public static readonly DependencyProperty SearchTemplateProperty = DependencyProperty.Register(
-			nameof(SearchTemplate),
+		public static readonly DependencyProperty SearchItemTemplateProperty = DependencyProperty.Register(
+			nameof(SearchItemTemplate),
 			typeof(DataTemplate),
 			typeof(Menu),
 			new PropertyMetadata(null));
 
-		public ObservableCollection<object> Items
+		public ObservableCollection<GenericViewModelBase> Items
 		{
-			get => (ObservableCollection<object>)GetValue(ItemsProperty);
+			get => (ObservableCollection<GenericViewModelBase>)GetValue(ItemsProperty);
 			set => SetValue(ItemsProperty, value);
 		}
 		public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
 			nameof(Items),
-			typeof(ObservableCollection<object>),
+			typeof(ObservableCollection<GenericViewModelBase>),
 			typeof(Menu),
-			new FrameworkPropertyMetadata(new ObservableCollection<object>()));
+			new FrameworkPropertyMetadata(new ObservableCollection<GenericViewModelBase>()));
 
-		public ObservableCollection<object> FilteredItems
+		public ObservableCollection<GenericViewModelBase> FilteredItems
 		{
-			get => (ObservableCollection<object>)GetValue(FilteredItemsProperty);
+			get => (ObservableCollection<GenericViewModelBase>)GetValue(FilteredItemsProperty);
 			set => SetValue(FilteredItemsProperty, value);
 		}
 		public static readonly DependencyProperty FilteredItemsProperty = DependencyProperty.Register(
 			nameof(FilteredItems),
-			typeof(ObservableCollection<object>),
+			typeof(ObservableCollection<GenericViewModelBase>),
 			typeof(Menu),
-			new FrameworkPropertyMetadata(new ObservableCollection<object>()));
+			new FrameworkPropertyMetadata(new ObservableCollection<GenericViewModelBase>()));
 
 		public bool IsMenuOpen
 		{
@@ -85,7 +82,7 @@ namespace ModernThemables.Controls
 			nameof(IsMenuOpen),
 			typeof(bool),
 			typeof(Menu),
-			new FrameworkPropertyMetadata(false));
+			new FrameworkPropertyMetadata(false, OnSetIsMenuOpen));
 
 		public bool IsMenuPinned
 		{
@@ -98,25 +95,91 @@ namespace ModernThemables.Controls
 			typeof(Menu),
 			new FrameworkPropertyMetadata(false));
 
-		#endregion Properties
+        public string SearchText
+        {
+            get => (string)GetValue(SearchTextProperty);
+            set => SetValue(SearchTextProperty, value);
+        }
+        public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
+            nameof(SearchText),
+            typeof(string),
+            typeof(Menu),
+            new FrameworkPropertyMetadata(string.Empty));
 
-		#region Override
+        public FrameworkElement BlurBackground
+        {
+            get => (FrameworkElement)GetValue(BlurBackgroundProperty);
+            set => SetValue(BlurBackgroundProperty, value);
+        }
 
-		public override void OnApplyTemplate()
+        public static readonly DependencyProperty BlurBackgroundProperty =
+            DependencyProperty.Register(
+              nameof(BlurBackground),
+              typeof(FrameworkElement),
+              typeof(Menu),
+              new PropertyMetadata(default(FrameworkElement)));
+
+        public RangeObservableCollection<GenericViewModelBase> AllViewModels
+        {
+            get
+            {
+                var result = new RangeObservableCollection<GenericViewModelBase>(Items);
+                Items.ToList().ForEach(x => x.GetChildren(ref result, true));
+                return result;
+            }
+        }
+
+        #endregion Properties
+
+        public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
 
-			if (openButton != null) { openButton.Click -= OpenButton_Click; }
-			if (Template.FindName(PART_OpenButton, this) is ExtendedButton bt) { openButton = bt; }
-			if (openButton != null) { openButton.Click += OpenButton_Click; }
-			else { throw new InvalidOperationException("Template missing required UI elements"); }
+			if (openButton != null) openButton.Click -= OpenButton_Click;
+			if (Template.FindName(PART_OpenButton, this) is ExtendedButton open) openButton = open;
+			if (openButton != null) openButton.Click += OpenButton_Click;
+
+			if (pinButton != null) pinButton.Click -= PinButton_Click;
+			if (Template.FindName(PART_PinButton, this) is ExtendedButton pin) pinButton = pin;
+			if (pinButton != null) pinButton.Click += PinButton_Click; ;
+
+			if (searchBox != null) searchBox.SearchTextChanged -= SearchBox_SearchTextChanged;
+			if (Template.FindName(PART_SearchBox, this) is SearchBox search) searchBox = search;
+			if (searchBox != null) searchBox.SearchTextChanged += SearchBox_SearchTextChanged;
 		}
 
-		private void OpenButton_Click(object sender, RoutedEventArgs e)
+		private async void OpenButton_Click(object sender, RoutedEventArgs e)
 		{
-			throw new NotImplementedException();
+			IsMenuOpen = !IsMenuOpen;
+        }
+
+		private void PinButton_Click(object sender, RoutedEventArgs e)
+		{
+			IsMenuPinned = !IsMenuPinned;
 		}
 
-		#endregion Override
-	}
+		private void SearchBox_SearchTextChanged(object? sender, string e)
+		{
+            SearchText = e;
+			FilteredItems = AllViewModels
+                .Where(x => x.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+				.ToObservableCollection();
+        }
+
+        private static void OnSetIsMenuOpen(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is Menu this_)
+            {
+                if (!this_.IsMenuOpen && this_.searchBox != null)
+                {
+                    this_.searchBox.SearchText = "";
+                }
+
+                foreach (var vm in this_.AllViewModels)
+                {
+                    vm.IsMenuItemExpanded = this_.IsMenuOpen;
+                }
+            }
+        }
+    }
 }

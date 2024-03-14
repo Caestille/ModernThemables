@@ -30,23 +30,21 @@ namespace ModernThemables.ViewModels
 		private const string ColourModeSettingName = "ColourMode";
 		private const string OsSyncSettingName = "ThemeOsSync";
 		private const string ThemeSettingName = "Theme";
-		private const string MonoThemeSettingName = "MonochromaticTheme";
-		private const string LocationXSettingName = "LocationX";
-		private const string LocationYSettingName = "LocationY";
-		private const string SizeXSettingName = "SizeX";
-		private const string SizeYSettingName = "SizeY";
+        private const string TransparentHeaderSettingName = "TransparentHeader";
 
-		private bool? wasDarkBeforeSync;
-		private bool? wasMonoBeforeSync;
+        private bool? wasDarkBeforeSync;
 		private Color? themeBeforeSync;
-		private Color? themeBeforeMono;
 
 		private readonly IRegistryService registryService;
 		private readonly IDialogueService dialogueService;
 
 		private readonly Timer osThemePollTimer = new Timer(1000);
 
-		public ICommand ChangeColourCommand => new RelayCommand(ChangeColour);
+        public event EventHandler<bool>? TransparentHeaderChanged;
+        public event EventHandler<bool>? IsDarkChanged;
+        public event EventHandler<bool>? SyncWithOsChanged;
+
+        public ICommand ChangeColourCommand => new RelayCommand(ChangeColour);
 
 		private void ChangeColour()
 		{
@@ -59,33 +57,7 @@ namespace ModernThemables.ViewModels
 		public Color ThemeColourProperty
 		{
 			get => ThemeColour;
-			set
-			{
-				if (IsMonoTheme)
-				{
-					var changedValue = "R";
-					if (ThemeColour.G != value.G) changedValue = "G";
-					if (ThemeColour.B != value.B) changedValue = "B";
-					switch (changedValue)
-					{
-						case "R":
-							value.G = value.R;
-							value.B = value.R;
-							break;
-						case "G":
-							value.R = value.G;
-							value.B = value.G;
-							break;
-						case "B":
-							value.R = value.B;
-							value.G = value.B;
-							break;
-					}
-					ThemeColour = value;
-					OnPropertyChanged(nameof(ThemeColourProperty));
-				}
-				SetThemeColour(value);
-			}
+			set => SetThemeColour(value);
 		}
 
 		private bool isSyncingWithOs;
@@ -99,8 +71,8 @@ namespace ModernThemables.ViewModels
 			{
 				SetProperty(ref isSyncingWithOs, value);
 				SyncThemeWithOs(value);
-				if (value) IsMonoTheme = false;
-			}
+                SyncWithOsChanged?.Invoke(this, value);
+            }
 		}
 
 		private bool isDarkMode;
@@ -114,37 +86,29 @@ namespace ModernThemables.ViewModels
 			{
 				SetProperty(ref isDarkMode, value);
 				SetThemeAndBrightnessMode();
-			}
-		}
+                IsDarkChanged?.Invoke(this, value);
+            }
+        }
 
-		private bool isMonoTheme;
-		/// <summary>
-		/// Gets or sets whether the theme is enforced to be monochromatic. When true, each component of the colour is
-		/// alighed automatically to the changed component by the user.
-		/// </summary>
-		public bool IsMonoTheme
-		{
-			get => isMonoTheme;
-			set
-			{
-				SetProperty(ref isMonoTheme, value);
-				registryService.SetSetting(MonoThemeSettingName, value.ToString());
-				if (!value)
-				{
-					if (themeBeforeMono.HasValue) SetThemeColour(themeBeforeMono.Value);
-					return;
-				}
-				themeBeforeMono = ThemeColour;
-				var mean = (ThemeColour.R + ThemeColour.G + ThemeColour.B) / 3;
-				ThemeColour = MonoColour((byte)mean);
-				SetThemeColour(ThemeColour);
-			}
-		}
+        private bool isTransparentHeader;
+        /// <summary>
+        /// Gets or sets whether the theme is being synchronised with the OS.
+        /// </summary>
+        public bool IsTransparentHeader
+        {
+            get => isTransparentHeader;
+            set
+            {
+                SetProperty(ref isTransparentHeader, value);
+                TransparentHeaderChanged?.Invoke(this, value);
+                registryService.SetSetting(TransparentHeaderSettingName, value.ToString());
+            }
+        }
 
-		/// <summary>
-		/// Initialises a new <see cref="ThemingControlViewModel"/>.
-		/// </summary>
-		public ThemingControlViewModel()
+        /// <summary>
+        /// Initialises a new <see cref="ThemingControlViewModel"/>.
+        /// </summary>
+        public ThemingControlViewModel()
         {
             registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
 			dialogueService = new DialogueService();
@@ -158,33 +122,16 @@ namespace ModernThemables.ViewModels
 			{
 				var accent = theme.Split('-').Select(byte.Parse).ToList();
 				SetThemeColour(Color.FromArgb(accent[0], accent[1], accent[2], accent[3]));
-			}
+            }
 
-			registryService.TryGetSetting(OsSyncSettingName, false, out bool sync);
+            registryService.TryGetSetting(TransparentHeaderSettingName, "false", out string? transparent);
+            if (!string.IsNullOrEmpty(transparent))
+            {
+                IsTransparentHeader = bool.Parse(transparent);
+            }
+
+            registryService.TryGetSetting(OsSyncSettingName, false, out bool sync);
 			IsSyncingWithOs = sync;
-
-			registryService.TryGetSetting(MonoThemeSettingName, false, out bool mono);
-			IsMonoTheme = mono;
-
-			if (registryService.TryGetSetting(LocationXSettingName, 0, out double left))
-			{
-				Application.Current.MainWindow.Left = left;
-			}
-
-            if (registryService.TryGetSetting(LocationYSettingName, 0, out double top))
-            {
-                Application.Current.MainWindow.Top = top;
-            }
-
-            if (registryService.TryGetSetting(SizeXSettingName, 0, out double width))
-            {
-                Application.Current.MainWindow.Width = width;
-            }
-
-            if (registryService.TryGetSetting(SizeYSettingName, 0, out double height))
-            {
-                Application.Current.MainWindow.Height = height;
-            }
 
             osThemePollTimer.Elapsed += OsThemePollTimer_Elapsed;
 			osThemePollTimer.AutoReset = true;
@@ -273,7 +220,6 @@ namespace ModernThemables.ViewModels
 					if (!osThemePollTimer.Enabled)
 					{
 						wasDarkBeforeSync = isDarkMode;
-						wasMonoBeforeSync = isMonoTheme;
 						themeBeforeSync = ThemeColour;
 					}
 					var shouldBeDark = ShouldSystemUseDarkMode();
@@ -288,8 +234,6 @@ namespace ModernThemables.ViewModels
 				{
 					if (wasDarkBeforeSync != null)
 						IsDarkMode = wasDarkBeforeSync.Value;
-					if (wasMonoBeforeSync != null)
-						IsMonoTheme = wasMonoBeforeSync.Value;
 					if (themeBeforeSync != null)
 						SetThemeColour(themeBeforeSync.Value);
 				}
@@ -371,17 +315,6 @@ namespace ModernThemables.ViewModels
 			if (isSyncingWithOs)
 				SyncThemeWithOs(true);
 			if (Application.Current == null) return;
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-				if (Application.Current.MainWindow != null)
-				{				
-					registryService.SetSetting(LocationXSettingName, Application.Current.MainWindow.Left.ToString());
-					registryService.SetSetting(LocationYSettingName, Application.Current.MainWindow.Top.ToString());
-					registryService.SetSetting(SizeXSettingName, Application.Current.MainWindow.Width.ToString());
-					registryService.SetSetting(SizeYSettingName, Application.Current.MainWindow.Height.ToString());
-				
-				}
-            });
         }
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)

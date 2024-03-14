@@ -14,16 +14,21 @@
 	<Grid Margin="0" Focusable="False">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition />
 			<ColumnDefinition Width="Auto" />
-		</Grid.ColumnDefinitions>
-		<CheckBox
+        </Grid.ColumnDefinitions>
+        <Label
+			Content="Sync with Windows"
+			Foreground="{DynamicResource TextBrush}"
+			SnapsToDevicePixels="True" />
+        <CheckBox
 			x:Name="SyncCheckbox"
 			Grid.Row="0"
 			Grid.Column="1"
@@ -33,7 +38,13 @@
 			HorizontalAlignment="Right"
 			IsChecked="{Binding IsSyncingWithOs, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
 			Style="{StaticResource ToggleCheckbox}" />
-		<CheckBox
+        <Label
+			Grid.Row="1"
+			Grid.Column="0"
+			Content="Brightness Mode"
+			Foreground="{DynamicResource TextBrush}"
+			SnapsToDevicePixels="True" />
+        <CheckBox
 			Grid.Row="1"
 			Grid.Column="1"
 			Width="30"
@@ -43,7 +54,7 @@
 			IsChecked="{Binding IsDarkMode}"
 			IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
 			Style="{StaticResource ToggleCheckbox}" />
-		<Grid
+        <Grid
 			Grid.Row="1"
 			Grid.Column="2"
 			Width="30"
@@ -64,24 +75,28 @@
 				Foreground="{DynamicResource StatusTextBrush}"
 				Kind="Moon"
 				Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfTrueConverter}}" />
-		</Grid>
-		<Label
-			Content="Sync with Windows"
-			Foreground="{DynamicResource TextBrush}"
-			SnapsToDevicePixels="True" />
-		<Label
-			Grid.Row="1"
-			Grid.Column="0"
-			Content="Brightness Mode"
-			Foreground="{DynamicResource TextBrush}"
-			SnapsToDevicePixels="True" />
+        </Grid>
 		<Label
 			Grid.Row="2"
+			Content="Transparent Title Bar"
+			Foreground="{DynamicResource TextBrush}"
+			SnapsToDevicePixels="True" />
+        <CheckBox
+			Grid.Row="2"
+			Grid.Column="1"
+			Width="30"
+			Height="15"
+			Margin="2,0"
+			HorizontalAlignment="Right"
+			IsChecked="{Binding IsTransparentHeader}"
+			Style="{StaticResource ToggleCheckbox}" />
+        <Label
+			Grid.Row="3"
 			Content="Theme Colour"
 			Foreground="{DynamicResource TextBrush}"
 			SnapsToDevicePixels="True" />
-		<Border
-			Grid.Row="2"
+        <Border
+			Grid.Row="3"
 			Grid.Column="1"
 			Grid.ColumnSpan="2"
 			Width="40"

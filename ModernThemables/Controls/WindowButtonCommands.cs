@@ -122,10 +122,22 @@ namespace ModernThemables.Controls
 										  typeof(WindowButtonCommands),
 										  new PropertyMetadata(BooleanBoxes.FalseBox));
 
-		/// <summary>
-		/// Gets the window.
-		/// </summary>
-		public Window? ParentWindow
+        public Brush Foreground
+        {
+            get => (Brush)GetValue(ForegroundProperty);
+            set => SetValue(ForegroundProperty, value);
+        }
+
+        public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
+            nameof(Foreground),
+            typeof(Brush),
+            typeof(WindowButtonCommands),
+            new PropertyMetadata(new SolidColorBrush(Colors.White)));
+
+        /// <summary>
+        /// Gets the window.
+        /// </summary>
+        public Window? ParentWindow
 		{
 			get => (Window?)GetValue(ParentWindowProperty);
 			protected set => SetValue(ParentWindowPropertyKey, value);
