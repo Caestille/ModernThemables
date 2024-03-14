@@ -3,7 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:controls="clr-namespace:ModernThemables.Controls"
 	xmlns:controlzEx="urn:controlzex"
-	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:ex="http://metro.mahapps.com/winfx/xaml/controls"
 	xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
 	<ResourceDictionary.MergedDictionaries>
@@ -73,7 +73,7 @@
 							Visibility="{TemplateBinding ShowIcon,
 							                             Converter={StaticResource VisibleIfTrueConverter}}" />
 
-						<mah:MetroThumb
+						<ex:MetroThumb
 							x:Name="PART_WindowTitleThumb"
 							Grid.ColumnSpan="3"
 							Style="{StaticResource WindowTitle}"
@@ -82,19 +82,19 @@
 						<!--  the title bar  -->
 						<DockPanel Grid.Column="1" Focusable="False">
 							<!--  the left window commands  -->
-							<mah:ContentPresenterEx
+							<ex:ContentPresenterEx
 								x:Name="PART_LeftWindowCommands"
 								Content="{Binding LeftWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
 								DockPanel.Dock="Left"
 								Focusable="False" />
 							<!--  the right window commands  -->
-							<mah:ContentPresenterEx
+							<ex:ContentPresenterEx
 								x:Name="PART_RightWindowCommands"
 								Content="{Binding RightWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
 								DockPanel.Dock="Right"
 								Focusable="False" />
                             <!--  the title bar  -->
-                            <mah:MetroThumbContentControl
+                            <ex:MetroThumbContentControl
 								x:Name="PART_TitleBar"
 								Margin="5,1,0,-1"
 								HorizontalAlignment="{TemplateBinding TitleAlignment}"
@@ -103,22 +103,22 @@
 								Content="{TemplateBinding Title}"
 								Focusable="False"
 								FontSize="12">
-                                <mah:MetroThumbContentControl.Style>
+                                <ex:MetroThumbContentControl.Style>
                                     <Style>
-                                        <Setter Property="mah:MetroThumbContentControl.ContentTemplate" Value="{Binding TitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Setter Property="ex:MetroThumbContentControl.ContentTemplate" Value="{Binding TitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsTransparentHeader, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                                                <Setter Property="mah:MetroThumbContentControl.ContentTemplate" Value="{Binding TransparentTitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                <Setter Property="ex:MetroThumbContentControl.ContentTemplate" Value="{Binding TransparentTitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </mah:MetroThumbContentControl.Style>
-                            </mah:MetroThumbContentControl>
+                                </ex:MetroThumbContentControl.Style>
+                            </ex:MetroThumbContentControl>
 
                         </DockPanel>
 
 						<!--  the window button commands  -->
-						<mah:ContentPresenterEx
+						<ex:ContentPresenterEx
 							x:Name="PART_WindowButtonCommands"
 							Grid.Column="2"
 							Panel.ZIndex="1"
@@ -242,9 +242,8 @@
 				<Setter TargetName="PART_WindowTitleThumb" Property="Grid.RowSpan" Value="2" />
 			</Trigger>
 			<!--  handle active/inactive state  -->
-			<Trigger Property="IsActive" Value="False">
-				<!--<Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding Path=NonActiveGlowColor, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static mahConverters:ColorToSolidColorBrushConverter.DefaultInstance}}" />-->
-				<Setter TargetName="PART_WindowTitleBackground" Property="Fill" Value="{Binding Path=NonActiveWindowTitleBrush, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+            <Trigger Property="IsActive" Value="False">
+                <Setter TargetName="PART_WindowTitleBackground" Property="Fill" Value="{Binding Path=NonActiveWindowTitleBrush, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
 			</Trigger>
 			<MultiTrigger>
 				<MultiTrigger.Conditions>
@@ -327,7 +326,7 @@
 				<Setter Property="IconTemplate">
 					<Setter.Value>
 						<DataTemplate>
-							<mah:MultiFrameImage
+							<ex:MultiFrameImage
 								Width="{TemplateBinding Width}"
 								Height="{TemplateBinding Height}"
 								MultiFrameImageMode="{Binding IconScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}"

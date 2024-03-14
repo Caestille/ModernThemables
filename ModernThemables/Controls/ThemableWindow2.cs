@@ -12,7 +12,6 @@ using Windows.Win32.Foundation;
 using ControlzEx;
 using ControlzEx.Native;
 using MahApps.Metro.Automation.Peers;
-using MahApps.Metro.ValueBoxes;
 using MahApps.Metro.Controls;
 using System.Collections;
 using ModernThemables.ViewModels;
@@ -53,9 +52,6 @@ namespace ModernThemables.Controls
 		private Thumb? windowTitleThumb;
 		private UIElement? titleBar;
 		private UIElement? titleBarBackground;
-		private ContentPresenter? LeftWindowCommandsPresenter;
-		private ContentPresenter? RightWindowCommandsPresenter;
-		private ContentPresenter? WindowButtonCommandsPresenter;
 		private Button? SettingsCloseButton;
 		private Button? SettingsCloseRegion;
 		private ThemingControl? ThemingMenu;
@@ -68,23 +64,23 @@ namespace ModernThemables.Controls
 		public bool ShowThemingMenu
 		{
 			get => (bool)GetValue(ShowThemingMenuProperty);
-			set => SetValue(ShowThemingMenuProperty, BooleanBoxes.Box(value));
+			set => SetValue(ShowThemingMenuProperty, value);
 		}
 		public static readonly DependencyProperty ShowThemingMenuProperty = DependencyProperty.Register(
 			nameof(ShowThemingMenu),
 			typeof(bool),
 			typeof(ThemableWindow2),
-			new PropertyMetadata(BooleanBoxes.FalseBox));
+			new PropertyMetadata(false));
         public bool IsTransparentHeader
         {
             get => (bool)GetValue(IsTransparentHeaderProperty);
-            set => SetValue(IsTransparentHeaderProperty, BooleanBoxes.Box(value));
+            set => SetValue(IsTransparentHeaderProperty, value);
         }
         public static readonly DependencyProperty IsTransparentHeaderProperty = DependencyProperty.Register(
             nameof(IsTransparentHeader),
             typeof(bool),
             typeof(ThemableWindow2),
-            new PropertyMetadata(BooleanBoxes.FalseBox));
+            new PropertyMetadata(false));
 
         /// <summary>
         /// Get or sets whether the TitleBar icon is visible or not.
@@ -92,13 +88,13 @@ namespace ModernThemables.Controls
         public bool ShowIcon
 		{
 			get => (bool)GetValue(ShowIconProperty);
-			set => SetValue(ShowIconProperty, BooleanBoxes.Box(value));
+			set => SetValue(ShowIconProperty, value);
 		}
 		public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
 			nameof(ShowIcon),
 			typeof(bool),
 			typeof(ThemableWindow2),
-			new PropertyMetadata(BooleanBoxes.TrueBox, OnShowIconPropertyChangedCallback));
+			new PropertyMetadata(true, OnShowIconPropertyChangedCallback));
 
 		private static void OnShowIconPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -157,13 +153,13 @@ namespace ModernThemables.Controls
 		public bool ShowTitleBar
 		{
 			get => (bool)GetValue(ShowTitleBarProperty);
-			set => SetValue(ShowTitleBarProperty, BooleanBoxes.Box(value));
+			set => SetValue(ShowTitleBarProperty, value);
 		}
 		public static readonly DependencyProperty ShowTitleBarProperty = DependencyProperty.Register(
 			nameof(ShowTitleBar),
 			typeof(bool),
 			typeof(ThemableWindow2),
-			new PropertyMetadata(BooleanBoxes.TrueBox, OnShowTitleBarPropertyChangedCallback));
+			new PropertyMetadata(true, OnShowTitleBarPropertyChangedCallback));
 
 		/// <summary>
 		/// Gets or sets a value that indicates whether the system menu should popup with left mouse click on the window icon.
@@ -171,13 +167,13 @@ namespace ModernThemables.Controls
 		public bool ShowSystemMenu
 		{
 			get => (bool)GetValue(ShowSystemMenuProperty);
-			set => SetValue(ShowSystemMenuProperty, BooleanBoxes.Box(value));
+			set => SetValue(ShowSystemMenuProperty, value);
 		}
 		public static readonly DependencyProperty ShowSystemMenuProperty = DependencyProperty.Register(
 			nameof(ShowSystemMenu),
 			typeof(bool),
 			typeof(ThemableWindow2),
-			new PropertyMetadata(BooleanBoxes.TrueBox));
+			new PropertyMetadata(true));
 
 		/// <summary>
 		/// Gets or sets a value that indicates whether the system menu should popup with right mouse click if the mouse position is on title bar or on the entire window if it has no TitleBar (and no TitleBar height).
@@ -185,13 +181,13 @@ namespace ModernThemables.Controls
 		public bool ShowSystemMenuOnRightClick
 		{
 			get => (bool)GetValue(ShowSystemMenuOnRightClickProperty);
-			set => SetValue(ShowSystemMenuOnRightClickProperty, BooleanBoxes.Box(value));
+			set => SetValue(ShowSystemMenuOnRightClickProperty, value);
 		}
 		public static readonly DependencyProperty ShowSystemMenuOnRightClickProperty = DependencyProperty.Register(
 			nameof(ShowSystemMenuOnRightClick),
 			typeof(bool),
 			typeof(ThemableWindow2),
-			new PropertyMetadata(BooleanBoxes.TrueBox));
+			new PropertyMetadata(true));
 
 		/// <summary>
 		/// Gets or sets the TitleBar's height.
@@ -436,13 +432,13 @@ namespace ModernThemables.Controls
 		public bool IsWindowDraggable
 		{
 			get => (bool)GetValue(IsWindowDraggableProperty);
-			set => SetValue(IsWindowDraggableProperty, BooleanBoxes.Box(value));
+			set => SetValue(IsWindowDraggableProperty, value);
 		}
 		public static readonly DependencyProperty IsWindowDraggableProperty = DependencyProperty.Register(
 			nameof(IsWindowDraggable),
 			typeof(bool),
 			typeof(ThemableWindow2),
-			new PropertyMetadata(BooleanBoxes.TrueBox));
+			new PropertyMetadata(true));
 
 		/// <inheritdoc />
 		protected override IEnumerator LogicalChildren
@@ -495,7 +491,7 @@ namespace ModernThemables.Controls
         }
 
 		/// <summary>
-		/// Initializes a new instance of the MahApps.Metro.Controls.ThemableWindow2 class.
+		/// Initializes a new instance of the ThemableWindow2 class.
 		/// </summary>
 		public ThemableWindow2()
         {
@@ -638,9 +634,6 @@ namespace ModernThemables.Controls
 		{
 			base.OnApplyTemplate();
 
-			LeftWindowCommandsPresenter = GetTemplateChild(PART_LeftWindowCommands) as ContentPresenter;
-			RightWindowCommandsPresenter = GetTemplateChild(PART_RightWindowCommands) as ContentPresenter;
-			WindowButtonCommandsPresenter = GetTemplateChild(PART_WindowButtonCommands) as ContentPresenter;
 			SettingsCloseButton = GetTemplateChild(PART_SettingsCloseButton) as Button;
 			SettingsCloseRegion = GetTemplateChild(PART_SettingsCloseRegion) as Button;
 			ThemingMenu = GetTemplateChild(PART_ThemingMenu) as ThemingControl;

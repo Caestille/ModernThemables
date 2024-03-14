@@ -24,7 +24,7 @@
 		</Setter>
 	</Style>
 
-	<ControlTemplate x:Key="MahApps.Templates.WindowButtonCommands.Win10" TargetType="{x:Type controls:WindowButtonCommands}">
+    <ControlTemplate x:Key="WindowButtonCommands" TargetType="{x:Type controls:WindowButtonCommands}">
 		<StackPanel Orientation="Horizontal">
 			<controls:ExtendedButton
 				x:Name="PART_ThemeSetButton"
@@ -139,10 +139,9 @@
 	</ControlTemplate>
 
 	<Style TargetType="{x:Type controls:WindowButtonCommands}">
-		<Setter Property="Background" Value="{x:Null}" />
-		<Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-		<Setter Property="IsTabStop" Value="False" />
-		<Setter Property="Template" Value="{StaticResource MahApps.Templates.WindowButtonCommands.Win10}" />
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="IsTabStop" Value="False" />
+		<Setter Property="Template" Value="{StaticResource WindowButtonCommands}" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 	</Style>
 
