@@ -3,7 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:controls="clr-namespace:ModernThemables.Controls"
 	xmlns:controlzEx="urn:controlzex"
-    xmlns:ex="http://metro.mahapps.com/winfx/xaml/controls"
+	xmlns:ex="http://metro.mahapps.com/winfx/xaml/controls"
 	xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
 	<ResourceDictionary.MergedDictionaries>
@@ -93,8 +93,8 @@
 								Content="{Binding RightWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
 								DockPanel.Dock="Right"
 								Focusable="False" />
-                            <!--  the title bar  -->
-                            <ex:MetroThumbContentControl
+							<!--  the title bar  -->
+							<ex:MetroThumbContentControl
 								x:Name="PART_TitleBar"
 								Margin="5,1,0,-1"
 								HorizontalAlignment="{TemplateBinding TitleAlignment}"
@@ -103,19 +103,19 @@
 								Content="{TemplateBinding Title}"
 								Focusable="False"
 								FontSize="12">
-                                <ex:MetroThumbContentControl.Style>
-                                    <Style>
-                                        <Setter Property="ex:MetroThumbContentControl.ContentTemplate" Value="{Binding TitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsTransparentHeader, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                                                <Setter Property="ex:MetroThumbContentControl.ContentTemplate" Value="{Binding TransparentTitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ex:MetroThumbContentControl.Style>
-                            </ex:MetroThumbContentControl>
+								<ex:MetroThumbContentControl.Style>
+									<Style>
+										<Setter Property="ex:MetroThumbContentControl.ContentTemplate" Value="{Binding TitleTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsTransparentHeader, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+												<Setter Property="ex:MetroThumbContentControl.ContentTemplate" Value="{Binding TransparentTitleTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</ex:MetroThumbContentControl.Style>
+							</ex:MetroThumbContentControl>
 
-                        </DockPanel>
+						</DockPanel>
 
 						<!--  the window button commands  -->
 						<ex:ContentPresenterEx
@@ -242,8 +242,8 @@
 				<Setter TargetName="PART_WindowTitleThumb" Property="Grid.RowSpan" Value="2" />
 			</Trigger>
 			<!--  handle active/inactive state  -->
-            <Trigger Property="IsActive" Value="False">
-                <Setter TargetName="PART_WindowTitleBackground" Property="Fill" Value="{Binding Path=NonActiveWindowTitleBrush, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+			<Trigger Property="IsActive" Value="False">
+				<Setter TargetName="PART_WindowTitleBackground" Property="Fill" Value="{Binding Path=NonActiveWindowTitleBrush, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
 			</Trigger>
 			<MultiTrigger>
 				<MultiTrigger.Conditions>
@@ -273,31 +273,31 @@
 		<Setter Property="WindowTitleBrush" Value="{DynamicResource ThemeBrush}" />
 		<Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource StatusTextLightBrush}" />
 		<Setter Property="Template" Value="{StaticResource ThemableWindow2}" />
-        <Setter Property="TransparentTitleTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <TextBlock
+		<Setter Property="TransparentTitleTemplate">
+			<Setter.Value>
+				<DataTemplate>
+					<TextBlock
 						Margin="8,-1,1,0"
 						VerticalAlignment="Center"
 						Text="{TemplateBinding Content}"
 						TextTrimming="CharacterEllipsis">
-                        <TextBlock.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}" Value="False">
-                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource StatusTextBrush}" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}" Value="True">
-                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextBrush}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="TitleTemplate">
+						<TextBlock.Style>
+							<Style>
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}" Value="False">
+										<Setter Property="TextBlock.Foreground" Value="{DynamicResource StatusTextBrush}" />
+									</DataTrigger>
+									<DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}" Value="True">
+										<Setter Property="TextBlock.Foreground" Value="{DynamicResource TextBrush}" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
+					</TextBlock>
+				</DataTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="TitleTemplate">
 			<Setter.Value>
 				<DataTemplate>
 					<TextBlock
