@@ -24,16 +24,16 @@
 		</Setter>
 	</Style>
 
-    <ControlTemplate x:Key="WindowButtonCommands" TargetType="{x:Type controls:WindowButtonCommands}">
+	<ControlTemplate x:Key="WindowButtonCommands" TargetType="{x:Type controls:WindowButtonCommands}">
 		<StackPanel Orientation="Horizontal">
 			<controls:ExtendedButton
 				x:Name="PART_ThemeSetButton"
 				Style="{StaticResource TitleBarButton}"
 				ToolTip="Set theme">
-                <scalableicons:Icon
-                    Foreground="{TemplateBinding Foreground}"
+				<scalableicons:Icon
 					Width="11"
 					Height="6"
+					Foreground="{TemplateBinding Foreground}"
 					Kind="Expand"
 					RenderTransformOrigin="0.5,0.5">
 					<scalableicons:Icon.RenderTransform>
@@ -54,12 +54,12 @@
 				Command="{x:Static SystemCommands.MinimizeWindowCommand}"
 				Style="{StaticResource TitleBarButton}"
 				ToolTip="{Binding Minimize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
-                <scalableicons:Icon
-                    Foreground="{TemplateBinding Foreground}"
+				<scalableicons:Icon
 					Width="10"
 					Height="1"
 					Margin="0,0,0,10"
 					VerticalAlignment="Bottom"
+					Foreground="{TemplateBinding Foreground}"
 					Kind="Minimise" />
 			</controls:ExtendedButton>
 			<controls:ExtendedButton
@@ -69,10 +69,10 @@
 				Command="{x:Static SystemCommands.MaximizeWindowCommand}"
 				Style="{StaticResource TitleBarButton}"
 				ToolTip="{Binding Maximize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
-                <scalableicons:Icon
-                    Foreground="{TemplateBinding Foreground}"
+				<scalableicons:Icon
 					Width="10"
 					Height="10"
+					Foreground="{TemplateBinding Foreground}"
 					Kind="Maximise" />
 			</controls:ExtendedButton>
 			<controls:ExtendedButton
@@ -85,9 +85,9 @@
 				Style="{StaticResource TitleBarButton}"
 				ToolTip="{Binding Close, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
 				<scalableicons:Icon
-                    Foreground="{TemplateBinding Foreground}"
 					Width="10"
 					Height="10"
+					Foreground="{TemplateBinding Foreground}"
 					Kind="Close" />
 			</controls:ExtendedButton>
 		</StackPanel>
@@ -139,8 +139,8 @@
 	</ControlTemplate>
 
 	<Style TargetType="{x:Type controls:WindowButtonCommands}">
-        <Setter Property="Background" Value="{x:Null}" />
-        <Setter Property="IsTabStop" Value="False" />
+		<Setter Property="Background" Value="{x:Null}" />
+		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Template" Value="{StaticResource WindowButtonCommands}" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 	</Style>
