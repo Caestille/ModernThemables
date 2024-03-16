@@ -164,6 +164,11 @@ namespace ModernThemables.Charting.Controls
 		{
 			Application.Current.Dispatcher.Invoke(async () =>
 			{
+                if (Series == null)
+                {
+                    return;
+                }
+
 				renderInProgress = true;
 
 				var newSeries = new List<InternalPieSeriesViewModel>();
