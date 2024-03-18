@@ -1,12 +1,10 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 
 namespace ModernThemables.ViewModels
 {
-	public class AliasableViewModelBase : AliasableViewModelBase<GenericViewModelBase>
+    public class AliasableViewModelBase : AliasableViewModelBase<GenericViewModelBase>
 	{
 		public AliasableViewModelBase(string name, string alias, Func<GenericViewModelBase>? createChild = null) : base(name, alias, createChild) { }
 	}

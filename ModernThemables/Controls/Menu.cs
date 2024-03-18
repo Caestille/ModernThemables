@@ -1,18 +1,15 @@
 ﻿using CoreUtilities.HelperClasses;
 using CoreUtilities.HelperClasses.Extensions;
-using ModernThemables.Charting.Controls;
-using ModernThemables.Charting.Interfaces;
 using ModernThemables.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace ModernThemables.Controls
 {
-	public class Menu : Control
+    public class Menu : Control
 	{
 		private const string PART_OpenButton = "PART_OpenButton";
 		private const string PART_PinButton = "PART_PinButton";

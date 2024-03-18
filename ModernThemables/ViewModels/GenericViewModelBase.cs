@@ -8,11 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ModernThemables.ViewModels
 {
-	public class GenericViewModelBase : ObservableRecipient
+    public class GenericViewModelBase : ObservableRecipient
 	{
 		private readonly IEnumerable<Action<Color>> notifyColourUpdates = new List<Action<Color>>();
 		public ICommand SelectCommand => new RelayCommand(Select);

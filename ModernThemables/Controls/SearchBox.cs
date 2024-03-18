@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace ModernThemables.Controls
 {
-	public class SearchBox : Control
+    public class SearchBox : Control
 	{
 		private const string PART_button = "PART_button";
 
