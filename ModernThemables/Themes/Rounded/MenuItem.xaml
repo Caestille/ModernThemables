@@ -1,69 +1,86 @@
 ﻿<ResourceDictionary
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:controls="clr-namespace:ModernThemables.Controls"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons"
-	d:DataContext="{d:DesignInstance MenuItem}"
-	mc:Ignorable="d">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:ModernThemables.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons"
+    mc:Ignorable="d">
 
-	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
-	</ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltip.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltipHorizontal.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
-	<Style TargetType="{x:Type MenuItem}">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
-		<Setter Property="Template">
-			<Setter.Value>
-                <ControlTemplate TargetType="{x:Type MenuItem}">
-                    <Grid
-		Margin="0,3,0,0"
-		Visibility="{TemplateBinding Title, Converter={StaticResource StringNotEmptyVisibilityConverter}}">
+    <Style TargetType="{x:Type controls:MenuItem}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:MenuItem}">
+                    <Grid Margin="0,3,0,0" Visibility="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource StringNotEmptyVisibilityConverter}}">
+                        <Grid.Resources>
+                            <Style
+                                x:Key="RoundButtonStyle"
+                                BasedOn="{StaticResource ResourceKey={x:Type controls:ExtendedButton}}"
+                                TargetType="{x:Type controls:ExtendedButton}">
+                                <Setter Property="Width" Value="20" />
+                                <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Width}" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                <Setter Property="Background" Value="{DynamicResource ControlClickablePartBrush}" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                <Setter Property="CornerRadius" Value="5" />
+                                <Setter Property="MouseDownColour" Value="{DynamicResource ControlClickablePartMouseDownBrush}" />
+                                <Setter Property="MouseOverColour" Value="{DynamicResource ControlClickablePartMouseOverBrush}" />
+                            </Style>
+                        </Grid.Resources>
                         <Border
-			Width="3"
-			Margin="0,10"
-			HorizontalAlignment="Left"
-			Background="{DynamicResource ThemeMouseOverBrush}"
-			CornerRadius="0,5,5,0"
-			Visibility="{TemplateBinding IsOpen, Converter={StaticResource VisibleIfTrueConverter}}" />
+                            Width="3"
+                            Margin="0,10"
+                            HorizontalAlignment="Left"
+                            Background="{DynamicResource ThemeMouseOverBrush}"
+                            CornerRadius="0,5,5,0"
+                            Visibility="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfTrueConverter}}" />
                         <StackPanel>
                             <!--#region Single item grid-->
                             <Grid x:Name="SingleItemGrid">
                                 <Border>
                                     <controls:ExtendedButton
-						Width="Auto"
-						Height="40"
-						Margin="5,2"
-						VerticalAlignment="Top"
-						HorizontalContentAlignment="Left"
-						Background="Transparent"
-						BorderThickness="0"
-						CornerRadius="5"
-						Foreground="{DynamicResource TextBrush}"
-						MouseDownColour="{DynamicResource MenuMouseDownBrush}"
-						MouseOverColour="{DynamicResource MenuMouseOverBrush}" />
+                                        Width="Auto"
+                                        Height="40"
+                                        Margin="5,2"
+                                        VerticalAlignment="Top"
+                                        HorizontalContentAlignment="Left"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Command="{Binding ToggleOpenCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        CornerRadius="5"
+                                        Foreground="{DynamicResource TextBrush}"
+                                        MouseDownColour="{DynamicResource MenuMouseDownBrush}"
+                                        MouseOverColour="{DynamicResource MenuMouseOverBrush}" />
                                     <Border.Style>
                                         <Style>
                                             <Setter Property="ToolTipService.InitialShowDelay" Value="200" />
                                         </Style>
                                     </Border.Style>
                                     <Border.ToolTip>
-                                        <ToolTip Style="{StaticResource InfoTooltipHorizontal}" Visibility="{TemplateBinding IsContainingMenuOpen, Converter={StaticResource VisibleIfFalseConverter}}">
-                                            <TextBlock FontSize="17" Text="{TemplateBinding Title}" />
+                                        <ToolTip Style="{StaticResource InfoTooltipHorizontal}" Visibility="{Binding IsContainingMenuOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfFalseConverter}}">
+                                            <TextBlock FontSize="17" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </ToolTip>
                                     </Border.ToolTip>
                                 </Border>
                                 <Border
-					Height="1"
-					Margin="15,0"
-					HorizontalAlignment="Stretch"
-					VerticalAlignment="Bottom"
-					Background="{DynamicResource StatusTextLightBrush}"
-					IsHitTestVisible="False"
-					Opacity="0.3"
-					Visibility="{TemplateBinding IsOpen, Converter={StaticResource VisibleIfTrueConverter}}" />
+                                    Height="1"
+                                    Margin="15,0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Bottom"
+                                    Background="{DynamicResource StatusTextLightBrush}"
+                                    IsHitTestVisible="False"
+                                    Opacity="0.3"
+                                    Visibility="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfTrueConverter}}" />
                                 <!--#region Icon and label-->
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -72,43 +89,50 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <ContentControl
-						Grid.Column="1"
-						Width="25"
-						Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
-						Padding="4"
-						HorizontalAlignment="Center"
-						VerticalAlignment="Center"
-						HorizontalContentAlignment="Center"
-						VerticalContentAlignment="Stretch"
-                                        ContentTemplate="{TemplateBinding IconTemplate}"
-						Content="{TemplateBinding Icon}"
-						Focusable="False"
-						IsHitTestVisible="False" />
+                                        Grid.Column="1"
+                                        Width="25"
+                                        Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+                                        Padding="4"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Stretch"
+                                        Content="{TemplateBinding Icon}"
+                                        ContentTemplate="{Binding IconTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Focusable="False"
+                                        IsHitTestVisible="False" />
                                     <ContentControl
-						Grid.Column="2"
-						Margin="10,0,0,0"
-						Padding="0"
-						VerticalAlignment="Center"
-						Content="{TemplateBinding Title}"
-                                        ContentTemplate="{TemplateBinding TitleTemplate}"
-						IsHitTestVisible="False"
-						Visibility="{Binding IsContainingMenuOpen, Converter={StaticResource VisibleIfTrueConverter}}">
-                                    </ContentControl>
+                                        Grid.Column="2"
+                                        Margin="10,0,0,0"
+                                        Padding="0"
+                                        VerticalAlignment="Center"
+                                        Content="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"
+                                        ContentTemplate="{Binding TitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                        IsHitTestVisible="False"
+                                        Visibility="{Binding IsContainingMenuOpen, Converter={StaticResource VisibleIfTrueConverter}}" />
+                                    <Label
+                                        Grid.Column="2"
+                                        Margin="10,0,0,0"
+                                        Padding="0"
+                                        VerticalAlignment="Center"
+                                        Content="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"
+                                        FontSize="20"
+                                        Foreground="{DynamicResource TextBrush}"/>
                                 </Grid>
                                 <!--#endregion-->
                                 <!--#region Add child button-->
                                 <controls:ExtendedButton
-					Margin="0,0,32,0"
-					HorizontalAlignment="Right"
-					Background="Transparent"
-					Command="{Binding AddChildCommand}"
-					Foreground="{DynamicResource StatusTextBrush}"
-					Style="{StaticResource RoundButtonStyle}"
-					ToolTip="Add">
+                                    Margin="0,0,32,0"
+                                    HorizontalAlignment="Right"
+                                    Background="Transparent"
+                                    Command="{Binding AddChildCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Foreground="{DynamicResource StatusTextBrush}"
+                                    Style="{StaticResource RoundButtonStyle}"
+                                    ToolTip="Add">
                                     <controls:ExtendedButton.Visibility>
                                         <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-                                            <Binding Path="SupportsAddingChildren" />
-                                            <Binding Path="IsMenuItemExpanded" />
+                                            <Binding Path="CanAddChild" />
+                                            <Binding Path="IsContainingMenuOpen" />
                                             <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                         </MultiBinding>
                                     </controls:ExtendedButton.Visibility>
@@ -117,23 +141,23 @@
                                 <!--#endregion-->
                                 <!--#region Drop down indicator-->
                                 <Grid
-					Width="10"
-					Height="10"
-					Margin="0,3,15,0"
-					HorizontalAlignment="Right"
-					IsHitTestVisible="False"
-					RenderTransformOrigin="0.5,0.5">
+                                    Width="10"
+                                    Height="10"
+                                    Margin="0,3,15,0"
+                                    HorizontalAlignment="Right"
+                                    IsHitTestVisible="False"
+                                    RenderTransformOrigin="0.5,0.5">
                                     <Grid.Visibility>
                                         <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
                                             <Binding Converter="{StaticResource SequenceHasElementsBooleanConverter}" Path="ChildViewModels" />
-                                            <Binding Path="IsMenuItemExpanded" />
-                                            <Binding Path="CanDropDown" />
+                                            <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
+                                            <Binding Path="CanOpen" RelativeSource="{RelativeSource TemplatedParent}" />
                                         </MultiBinding>
                                     </Grid.Visibility>
                                     <Grid.Style>
                                         <Style>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsShowingChildren}" Value="True">
+                                                <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                     <Setter Property="Grid.RenderTransform">
                                                         <Setter.Value>
                                                             <RotateTransform Angle="180" />
@@ -148,19 +172,19 @@
                                 <!--#endregion-->
                                 <!--#region Delete button-->
                                 <controls:ExtendedButton
-					Margin="10,0"
-					Padding="3"
-					HorizontalAlignment="Right"
-					VerticalAlignment="Center"
-					Background="Transparent"
-					Command="{Binding RequestDeleteCommand}"
-					Foreground="{DynamicResource StatusTextBrush}"
-					Style="{StaticResource RoundButtonStyle}"
-					ToolTip="Delete">
+                                    Margin="10,0"
+                                    Padding="3"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Background="Transparent"
+                                    Command="{Binding DeleteCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Foreground="{DynamicResource StatusTextBrush}"
+                                    Style="{StaticResource RoundButtonStyle}"
+                                    ToolTip="Delete">
                                     <controls:ExtendedButton.Visibility>
                                         <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-                                            <Binding Path="SupportsDeleting" />
-                                            <Binding Path="IsMenuItemExpanded" />
+                                            <Binding Path="CanDelete" RelativeSource="{RelativeSource TemplatedParent}" />
+                                            <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
                                             <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                         </MultiBinding>
                                     </controls:ExtendedButton.Visibility>
@@ -170,61 +194,27 @@
                             </Grid>
                             <!--#endregion-->
                             <!--#region Child items-->
-                            <Grid Visibility="{Binding IsShowingChildren, Converter={StaticResource VisibleIfTrueConverter}}">
-                                <Grid.Resources>
-                                    <DataTemplate DataType="{x:Type vms:AnalysisViewModel}">
-                                        <Grid
-							Width="0"
-							Height="0"
-							Focusable="False"
-							IsHitTestVisible="False" />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type bankVms:BanksViewModel}">
-                                        <Grid
-							Width="0"
-							Height="0"
-							Focusable="False"
-							IsHitTestVisible="False" />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type bankVms:BankViewModel}" />
-                                    <DataTemplate DataType="{x:Type vms:BudgetingViewModel}">
-                                        <Grid
-							Width="0"
-							Height="0"
-							Focusable="False"
-							IsHitTestVisible="False" />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type vms:DashboardViewModel}">
-                                        <Grid
-							Width="0"
-							Height="0"
-							Focusable="False"
-							IsHitTestVisible="False" />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type vms:SettingsViewModel}">
-                                        <controls1:SettingsControl />
-                                    </DataTemplate>
-                                </Grid.Resources>
-                                <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding ChildViewModels, UpdateSourceTrigger=PropertyChanged}">
+                            <Grid Visibility="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfTrueConverter}}">
+                                <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding ChildItems, RelativeSource={RelativeSource TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <controls1:MenuItemControl />
+                                            <MenuItem />
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                                 <ContentControl
-					HorizontalAlignment="Right"
-					VerticalAlignment="Top"
-					Content="{Binding RelativeSource={RelativeSource Self}, Path=DataContext, UpdateSourceTrigger=PropertyChanged}"
-					Focusable="False"
-					Visibility="{Binding RelativeSource={RelativeSource Self}, Path=DataContext, Converter={StaticResource VisibleIfNotNullConverter}}" />
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Content="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
+                                    Focusable="False"
+                                    Visibility="{Binding RelativeSource={RelativeSource Self}, Path=DataContext, Converter={StaticResource VisibleIfNotNullConverter}}" />
                             </Grid>
                             <!--#endregion-->
                         </StackPanel>
                     </Grid>
                 </ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

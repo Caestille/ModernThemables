@@ -11,7 +11,13 @@ using System.Windows;
 
 namespace ModernThemables.ViewModels
 {
-    public class GenericViewModelBase : ObservableRecipient
+    public interface IMenuItem
+    {
+        string Name { get; }
+        void GetChildren(ref List<object> result, bool recurse);
+    }
+
+    public class GenericViewModelBase : ObservableRecipient, IMenuItem
 	{
 		private readonly IEnumerable<Action<Color>> notifyColourUpdates = new List<Action<Color>>();
 		public ICommand SelectCommand => new RelayCommand(Select);
@@ -93,7 +99,7 @@ namespace ModernThemables.ViewModels
 
 		protected virtual void Select() { }
 
-		public virtual void GetChildren(ref RangeObservableCollection<GenericViewModelBase> result, bool recurse) { }
+		public virtual void GetChildren(ref List<object> result, bool recurse) { }
 
 		protected virtual void OnCommitColourUpdate()
 		{
@@ -107,5 +113,5 @@ namespace ModernThemables.ViewModels
 		}
 
 		protected virtual void OnShutdownStart(object? sender, EventArgs e) { }
-	}
+    }
 }

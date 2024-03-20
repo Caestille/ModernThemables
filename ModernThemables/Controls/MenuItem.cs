@@ -1,7 +1,11 @@
-﻿using ModernThemables.ViewModels;
+﻿using CoreUtilities.HelperClasses;
+using Microsoft.Toolkit.Mvvm.Input;
+using ModernThemables.ViewModels;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ModernThemables.Controls
 {
@@ -9,7 +13,12 @@ namespace ModernThemables.Controls
     {
         static MenuItem()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Menu), new FrameworkPropertyMetadata(typeof(Menu)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(MenuItem), new FrameworkPropertyMetadata(typeof(MenuItem)));
+        }
+
+        public MenuItem()
+        {
+            ToggleOpenCommand = new RelayCommand(ToggleOpen);
         }
 
         #region Properties
@@ -113,17 +122,88 @@ namespace ModernThemables.Controls
             typeof(MenuItem),
             new PropertyMetadata(false));
 
-        public ObservableCollection<object> ChildItems
+        public RangeObservableCollection<GenericViewModelBase> ChildItems
         {
-            get => (ObservableCollection<object>)GetValue(ChildItemsProperty);
+            get => (RangeObservableCollection<GenericViewModelBase>)GetValue(ChildItemsProperty);
             set => SetValue(ChildItemsProperty, value);
         }
         public static readonly DependencyProperty ChildItemsProperty = DependencyProperty.Register(
             nameof(ChildItems),
-            typeof(ObservableCollection<object>),
+            typeof(RangeObservableCollection<GenericViewModelBase>),
             typeof(MenuItem),
-            new PropertyMetadata(new ObservableCollection<object>()));
+            new PropertyMetadata(new RangeObservableCollection<GenericViewModelBase>()));
+
+        public bool CanAddChild
+        {
+            get => (bool)GetValue(CanAddChildProperty);
+            set => SetValue(CanAddChildProperty, value);
+        }
+        public static readonly DependencyProperty CanAddChildProperty = DependencyProperty.Register(
+            nameof(CanAddChild),
+            typeof(bool),
+            typeof(MenuItem),
+            new PropertyMetadata(true));
+
+        public bool CanDelete
+        {
+            get => (bool)GetValue(CanDeleteProperty);
+            set => SetValue(CanDeleteProperty, value);
+        }
+        public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(
+            nameof(CanDelete),
+            typeof(bool),
+            typeof(MenuItem),
+            new PropertyMetadata(true));
+
+        public bool CanOpen
+        {
+            get => (bool)GetValue(CanOpenProperty);
+            set => SetValue(CanOpenProperty, value);
+        }
+        public static readonly DependencyProperty CanOpenProperty = DependencyProperty.Register(
+            nameof(CanOpen),
+            typeof(bool),
+            typeof(MenuItem),
+            new PropertyMetadata(true));
+
+        public ICommand AddChildCommand
+        {
+            get => (ICommand)GetValue(AddChildCommandProperty);
+            set => SetValue(AddChildCommandProperty, value);
+        }
+        public static readonly DependencyProperty AddChildCommandProperty = DependencyProperty.Register(
+            nameof(AddChildCommand),
+            typeof(ICommand),
+            typeof(MenuItem),
+            new PropertyMetadata(null));
+
+        public ICommand DeleteCommand
+        {
+            get => (ICommand)GetValue(DeleteCommandProperty);
+            set => SetValue(DeleteCommandProperty, value);
+        }
+        public static readonly DependencyProperty DeleteCommandProperty = DependencyProperty.Register(
+            nameof(DeleteCommand),
+            typeof(ICommand),
+            typeof(MenuItem),
+            new PropertyMetadata(null));
+
+        private ICommand ToggleOpenCommand
+        {
+            get => (ICommand)GetValue(ToggleOpenCommandProperty);
+            set => SetValue(ToggleOpenCommandProperty, value);
+        }
+        public static readonly DependencyProperty ToggleOpenCommandProperty = DependencyProperty.Register(
+            nameof(ToggleOpenCommand),
+            typeof(ICommand),
+            typeof(MenuItem),
+            new PropertyMetadata(null));
 
         #endregion Properties
+
+        private void ToggleOpen()
+        {
+            IsOpen = !IsOpen;
+        }
     }
 }

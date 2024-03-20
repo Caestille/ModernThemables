@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System;
 using System.Linq;
 using ModernThemables.Messages;
+using System.Collections.Generic;
 
 namespace ModernThemables.ViewModels
 {
@@ -117,7 +118,7 @@ namespace ModernThemables.ViewModels
 			OnChildrenChanged();
 		}
 
-		public override void GetChildren(ref RangeObservableCollection<GenericViewModelBase> result, bool recurse)
+		public override void GetChildren(ref List<object> result, bool recurse)
 		{
 			result.AddRange(ChildViewModels);
 
