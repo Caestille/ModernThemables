@@ -28,8 +28,6 @@ namespace ModernThemables.ViewModels
             set => SetProperty(ref childViewModels, value);
         }
 
-        public virtual bool SupportsAddingChildren => createChildFunc != null;
-
         public ViewModelBase(string name, Func<TChild>? createChild = null)
             : base(name)
         {
@@ -72,11 +70,6 @@ namespace ModernThemables.ViewModels
 			{
 				ChildViewModels.Remove(child);
 
-				if (IsShowingChildren && !ChildViewModels.Any())
-				{
-					IsShowingChildren = false;
-				}
-
 				OnPropertyChanged(nameof(ChildViewModels));
 				OnChildrenChanged();
 			}
@@ -84,14 +77,7 @@ namespace ModernThemables.ViewModels
 
 		protected override void Select()
 		{
-			if (ChildViewModels.Count != 0)
-			{
-				IsShowingChildren = !IsShowingChildren;
-			}
-			else if (!SupportsAddingChildren)
-			{
-				Messenger.Send(new ViewModelRequestShowMessage(this));
-			}
+			Messenger.Send(new ViewModelRequestShowMessage(this));
 		}
 
 		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "")
@@ -108,11 +94,6 @@ namespace ModernThemables.ViewModels
 			}
 
 			ChildViewModels.Add(viewModel);
-
-			if (SupportsAddingChildren)
-			{
-				IsShowingChildren = true;
-			}
 
 			OnPropertyChanged(nameof(ChildViewModels));
 			OnChildrenChanged();

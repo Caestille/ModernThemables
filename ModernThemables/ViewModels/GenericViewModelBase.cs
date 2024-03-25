@@ -56,34 +56,6 @@ namespace ModernThemables.ViewModels
 			set => SetProperty(ref isDisplayed, value);
 		}
 
-		private bool isMenuItemExpanded;
-		public bool IsMenuItemExpanded
-		{
-			get => isMenuItemExpanded;
-			set => SetProperty(ref isMenuItemExpanded, value);
-		}
-
-		private bool supportsDeleting;
-		public bool SupportsDeleting
-		{
-			get => supportsDeleting;
-			set => SetProperty(ref supportsDeleting, value);
-		}
-
-		private bool canDropDown = true;
-		public bool CanDropDown
-		{
-			get => canDropDown;
-			set => SetProperty(ref canDropDown, value);
-        }
-
-        private bool isShowingChildren;
-        public bool IsShowingChildren
-        {
-            get => isShowingChildren;
-            set => SetProperty(ref isShowingChildren, value);
-        }
-
         protected IMessenger BaseMessenger => Messenger;
 
 		public GenericViewModelBase(string name)

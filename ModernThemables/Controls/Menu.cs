@@ -1,5 +1,6 @@
 ﻿using CoreUtilities.HelperClasses;
 using CoreUtilities.HelperClasses.Extensions;
+using Microsoft.Toolkit.Mvvm.Input;
 using ModernThemables.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ModernThemables.Controls
 {
@@ -23,6 +25,11 @@ namespace ModernThemables.Controls
         static Menu()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Menu), new FrameworkPropertyMetadata(typeof(Menu)));
+        }
+
+        public Menu()
+        {
+            ShowSettingsCommand = new RelayCommand(ToggleShowSettings);
         }
 
         #region Properties
@@ -49,16 +56,16 @@ namespace ModernThemables.Controls
             typeof(Menu),
             new PropertyMetadata(null));
 
-        public RangeObservableCollection<GenericViewModelBase> Items
+        public IEnumerable<IMenuItem> Items
         {
-            get => (RangeObservableCollection<GenericViewModelBase>)GetValue(ItemsProperty);
+            get => (IEnumerable<IMenuItem>)GetValue(ItemsProperty);
             set => SetValue(ItemsProperty, value);
         }
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
             nameof(Items),
-            typeof(RangeObservableCollection<GenericViewModelBase>),
+            typeof(IEnumerable<IMenuItem>),
             typeof(Menu),
-            new FrameworkPropertyMetadata(new RangeObservableCollection<GenericViewModelBase>()));
+            new UIPropertyMetadata(new ObservableCollection<IMenuItem>()));
 
         public RangeObservableCollection<GenericViewModelBase> FilteredItems
         {
@@ -117,10 +124,63 @@ namespace ModernThemables.Controls
               typeof(Menu),
               new PropertyMetadata(default(FrameworkElement)));
 
+        public object SettingsVm
+        {
+            get => (object)GetValue(SettingsVmProperty);
+            set => SetValue(SettingsVmProperty, value);
+        }
+
+        public static readonly DependencyProperty SettingsVmProperty =
+            DependencyProperty.Register(
+              nameof(SettingsVm),
+              typeof(object),
+              typeof(Menu),
+              new PropertyMetadata(default(object)));
+
+        public DataTemplate SettingsTemplate
+        {
+            get => (DataTemplate)GetValue(SettingsTemplateProperty);
+            set => SetValue(SettingsTemplateProperty, value);
+        }
+
+        public static readonly DependencyProperty SettingsTemplateProperty =
+            DependencyProperty.Register(
+              nameof(SettingsTemplate),
+              typeof(DataTemplate),
+              typeof(Menu),
+              new PropertyMetadata(null));
+
+        public bool ShowSettings
+        {
+            get => (bool)GetValue(ShowSettingsProperty);
+            set => SetValue(ShowSettingsProperty, value);
+        }
+
+        public static readonly DependencyProperty ShowSettingsProperty =
+            DependencyProperty.Register(
+              nameof(ShowSettings),
+              typeof(bool),
+              typeof(Menu),
+              new PropertyMetadata(false));
+
+        private ICommand ShowSettingsCommand
+        {
+            get => (ICommand)GetValue(ShowSettingsCommandProperty);
+            set => SetValue(ShowSettingsCommandProperty, value);
+        }
+
+        public static readonly DependencyProperty ShowSettingsCommandProperty =
+            DependencyProperty.Register(
+              nameof(ShowSettingsCommand),
+              typeof(ICommand),
+              typeof(Menu),
+              new PropertyMetadata(null));
+
         public RangeObservableCollection<GenericViewModelBase> AllViewModels
         {
             get
             {
+                if (Items == null) return new RangeObservableCollection<GenericViewModelBase>();
                 var result = new List<object>(Items);
                 Items.ToList().ForEach(x => x.GetChildren(ref result, true));
                 return new RangeObservableCollection<GenericViewModelBase>(result.Cast<GenericViewModelBase>());
@@ -168,11 +228,25 @@ namespace ModernThemables.Controls
         {
             if (sender is Menu this_)
             {
-                if (!this_.IsMenuOpen && this_.searchBox != null)
+                if (!this_.IsMenuOpen)
                 {
-                    this_.searchBox.SearchText = "";
+                    if (this_.ShowSettings)
+                    {
+                        this_.ShowSettings = false;
+                    }
+
+                    if (this_.searchBox != null)
+                    {
+                        this_.searchBox.SearchText = "";
+                    }
                 }
             }
+        }
+
+        private void ToggleShowSettings()
+        {
+            if (!IsMenuOpen) IsMenuOpen = true;
+            ShowSettings = !ShowSettings;
         }
     }
 }
