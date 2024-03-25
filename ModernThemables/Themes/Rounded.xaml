@@ -15,7 +15,6 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ListBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Menu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/MenuItem.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/OverlappingScrollViewer.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/RadioButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/RangeSlider.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ScrollBar.xaml" />
