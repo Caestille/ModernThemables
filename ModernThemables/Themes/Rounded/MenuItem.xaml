@@ -56,10 +56,12 @@
                                 <Border>
                                     <controls:ExtendedButton
                                         Width="Auto"
-                                        Height="40"
+                                        Height="Auto"
+                                        MinHeight="40"
                                         Margin="5,2"
                                         VerticalAlignment="Top"
-                                        HorizontalContentAlignment="Left"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"
                                         Background="Transparent"
                                         BorderThickness="0"
                                         Command="{Binding InternalSelectCommand, RelativeSource={RelativeSource TemplatedParent}}"
@@ -67,7 +69,219 @@
                                         Foreground="{DynamicResource TextBrush}"
                                         MouseDownColour="{DynamicResource MenuMouseDownBrush}"
                                         MouseOverColour="{DynamicResource MenuMouseOverBrush}"
-                                        ToolTip="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        ToolTip="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <!--#region Content-->
+                                        <Grid
+                                            Margin="-6"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="12" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <ContentControl
+                                                Grid.RowSpan="2"
+                                                Grid.Column="1"
+                                                Width="25"
+                                                Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                HorizontalContentAlignment="Center"
+                                                VerticalContentAlignment="Stretch"
+                                                Content="{TemplateBinding Icon}"
+                                                ContentTemplate="{Binding IconTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Focusable="False"
+                                                IsHitTestVisible="False">
+                                                <ContentControl.Visibility>
+                                                    <MultiBinding Converter="{StaticResource MultiBoolOrToVisibilityConverter}">
+                                                        <Binding
+                                                            Converter="{StaticResource IsNotNullConverter}"
+                                                            Path="IconTemplate"
+                                                            RelativeSource="{RelativeSource TemplatedParent}" />
+                                                        <Binding Path="ReserveIconSpace" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                    </MultiBinding>
+                                                </ContentControl.Visibility>
+                                            </ContentControl>
+                                            <Grid Grid.Column="2" VerticalAlignment="Center">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <ContentControl
+                                                    Margin="10,0,0,0"
+                                                    Padding="0"
+                                                    VerticalAlignment="Center"
+                                                    Content="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    ContentTemplate="{Binding TitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    IsHitTestVisible="False">
+                                                    <ContentControl.Visibility>
+                                                        <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+                                                            <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding
+                                                                Converter="{StaticResource IsNotNullConverter}"
+                                                                Path="TitleTemplate"
+                                                                RelativeSource="{RelativeSource TemplatedParent}" />
+                                                        </MultiBinding>
+                                                    </ContentControl.Visibility>
+                                                </ContentControl>
+                                                <TextBlock
+                                                    Margin="10,0,0,0"
+                                                    Padding="0"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    IsHitTestVisible="False"
+                                                    Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    TextTrimming="CharacterEllipsis">
+                                                    <TextBlock.Visibility>
+                                                        <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+                                                            <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding
+                                                                Converter="{StaticResource IsNullConverter}"
+                                                                Path="TitleTemplate"
+                                                                RelativeSource="{RelativeSource TemplatedParent}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Visibility>
+                                                    <TextBlock.Style>
+                                                        <Style>
+                                                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource StatusTextBrush}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                                    <Setter Property="TextBlock.FontWeight" Value="SemiBold" />
+                                                                    <Setter Property="TextBlock.FontSize" Value="14" />
+                                                                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextBrush}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <ContentControl
+                                                    Grid.Row="1"
+                                                    Margin="10,0,0,0"
+                                                    Padding="0"
+                                                    VerticalAlignment="Center"
+                                                    Content="{Binding SubTitle, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    ContentTemplate="{Binding SubTitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    IsHitTestVisible="False">
+                                                    <ContentControl.Visibility>
+                                                        <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+                                                            <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding
+                                                                Converter="{StaticResource IsNotNullConverter}"
+                                                                Path="SubTitleTemplate"
+                                                                RelativeSource="{RelativeSource TemplatedParent}" />
+                                                        </MultiBinding>
+                                                    </ContentControl.Visibility>
+                                                </ContentControl>
+                                                <TextBlock
+                                                    Grid.Row="1"
+                                                    Margin="10,0,0,0"
+                                                    Padding="0"
+                                                    VerticalAlignment="Center"
+                                                    Foreground="{DynamicResource ControlClickablePartMouseOverBrush}"
+                                                    IsHitTestVisible="False"
+                                                    Text="{Binding SubTitle, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    TextWrapping="Wrap">
+                                                    <TextBlock.Visibility>
+                                                        <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+                                                            <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding
+                                                                Converter="{StaticResource StringNotEmptyConverter}"
+                                                                Path="SubTitle"
+                                                                RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding
+                                                                Converter="{StaticResource IsNullConverter}"
+                                                                Path="SubTitleTemplate"
+                                                                RelativeSource="{RelativeSource TemplatedParent}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Visibility>
+                                                </TextBlock>
+                                            </Grid>
+                                            <Grid
+                                                Grid.Column="3"
+                                                Margin="0,0,13,0"
+                                                VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <!--#region Add child button-->
+                                                <controls:ExtendedButton
+                                                    HorizontalAlignment="Right"
+                                                    Background="Transparent"
+                                                    Command="{Binding AddChildCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Foreground="{DynamicResource StatusTextBrush}"
+                                                    Style="{StaticResource RoundButtonStyle}"
+                                                    ToolTip="Add">
+                                                    <controls:ExtendedButton.Visibility>
+                                                        <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+                                                            <Binding Path="CanAddChild" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
+                                                        </MultiBinding>
+                                                    </controls:ExtendedButton.Visibility>
+                                                    <scalableicons:Icon Margin="2" Kind="Plus" />
+                                                </controls:ExtendedButton>
+                                                <!--#endregion-->
+                                                <!--#region Delete button-->
+                                                <controls:ExtendedButton
+                                                    Grid.Column="1"
+                                                    Padding="3"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center"
+                                                    Background="Transparent"
+                                                    Command="{Binding DeleteCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Foreground="{DynamicResource StatusTextBrush}"
+                                                    Style="{StaticResource RoundButtonStyle}"
+                                                    ToolTip="Delete">
+                                                    <controls:ExtendedButton.Visibility>
+                                                        <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+                                                            <Binding Path="CanDelete" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
+                                                        </MultiBinding>
+                                                    </controls:ExtendedButton.Visibility>
+                                                    <scalableicons:Icon Margin="1,0,0,0" Kind="Bin" />
+                                                </controls:ExtendedButton>
+                                                <!--#endregion-->
+                                                <!--#region Drop down indicator-->
+                                                <Grid
+                                                    Grid.Column="2"
+                                                    Width="10"
+                                                    Height="10"
+                                                    Margin="3,0,0,0"
+                                                    HorizontalAlignment="Right"
+                                                    IsHitTestVisible="False"
+                                                    RenderTransformOrigin="0.5,0.5">
+                                                    <Grid.Visibility>
+                                                        <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
+                                                            <Binding Converter="{StaticResource SequenceHasElementsBooleanConverter}" Path="ChildViewModels" />
+                                                            <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding Path="CanOpen" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                        </MultiBinding>
+                                                    </Grid.Visibility>
+                                                    <Grid.Style>
+                                                        <Style>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                                    <Setter Property="Grid.RenderTransform">
+                                                                        <Setter.Value>
+                                                                            <RotateTransform Angle="180" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Grid.Style>
+                                                    <scalableicons:Icon Foreground="{DynamicResource TextBrush}" Kind="Expand" />
+                                                </Grid>
+                                                <!--#endregion-->
+                                            </Grid>
+                                        </Grid>
+                                        <!--#endregion-->
+                                    </controls:ExtendedButton>
                                     <Border.Style>
                                         <Style>
                                             <Setter Property="ToolTipService.InitialShowDelay" Value="200" />
@@ -88,217 +302,6 @@
                                     IsHitTestVisible="False"
                                     Opacity="0.3"
                                     Visibility="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfTrueConverter}}" />
-                                <!--#region Icon and label-->
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="12" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <ContentControl
-                                        Grid.RowSpan="4"
-                                        Grid.Column="1"
-                                        Width="25"
-                                        Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        VerticalContentAlignment="Stretch"
-                                        Content="{TemplateBinding Icon}"
-                                        ContentTemplate="{Binding IconTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Focusable="False"
-                                        IsHitTestVisible="False">
-                                        <ContentControl.Visibility>
-                                            <MultiBinding Converter="{StaticResource MultiBoolOrToVisibilityConverter}">
-                                                <Binding
-                                                    Converter="{StaticResource IsNotNullConverter}"
-                                                    Path="IconTemplate"
-                                                    RelativeSource="{RelativeSource TemplatedParent}" />
-                                                <Binding Path="ReserveIconSpace" RelativeSource="{RelativeSource TemplatedParent}" />
-                                            </MultiBinding>
-                                        </ContentControl.Visibility>
-                                    </ContentControl>
-                                    <ContentControl
-                                        Grid.Row="1"
-                                        Grid.Column="2"
-                                        Margin="10,0,0,0"
-                                        Padding="0"
-                                        VerticalAlignment="Center"
-                                        Content="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"
-                                        ContentTemplate="{Binding TitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                                        IsHitTestVisible="False">
-                                        <ContentControl.Visibility>
-                                            <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-                                                <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                <Binding
-                                                    Converter="{StaticResource IsNotNullConverter}"
-                                                    Path="TitleTemplate"
-                                                    RelativeSource="{RelativeSource TemplatedParent}" />
-                                            </MultiBinding>
-                                        </ContentControl.Visibility>
-                                    </ContentControl>
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="2"
-                                        Margin="10,0,0,0"
-                                        Padding="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        IsHitTestVisible="False"
-                                        Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"
-                                        TextTrimming="CharacterEllipsis">
-                                        <TextBlock.Visibility>
-                                            <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-                                                <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                <Binding
-                                                    Converter="{StaticResource IsNullConverter}"
-                                                    Path="TitleTemplate"
-                                                    RelativeSource="{RelativeSource TemplatedParent}" />
-                                            </MultiBinding>
-                                        </TextBlock.Visibility>
-                                        <TextBlock.Style>
-                                            <Style>
-                                                <Setter Property="TextBlock.Foreground" Value="{DynamicResource StatusTextBrush}" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                                                        <Setter Property="TextBlock.FontWeight" Value="SemiBold" />
-                                                        <Setter Property="TextBlock.FontSize" Value="14" />
-                                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextBrush}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                    <ContentControl
-                                        Grid.Row="2"
-                                        Grid.Column="2"
-                                        Margin="10,0,0,0"
-                                        Padding="0"
-                                        VerticalAlignment="Center"
-                                        Content="{Binding SubTitle, RelativeSource={RelativeSource TemplatedParent}}"
-                                        ContentTemplate="{Binding SubTitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                                        IsHitTestVisible="False">
-                                        <ContentControl.Visibility>
-                                            <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-                                                <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                <Binding
-                                                    Converter="{StaticResource IsNotNullConverter}"
-                                                    Path="SubTitleTemplate"
-                                                    RelativeSource="{RelativeSource TemplatedParent}" />
-                                            </MultiBinding>
-                                        </ContentControl.Visibility>
-                                    </ContentControl>
-                                    <Label
-                                        Grid.Row="2"
-                                        Grid.Column="2"
-                                        Margin="10,0,0,0"
-                                        Padding="0"
-                                        VerticalAlignment="Center"
-                                        Content="{Binding SubTitle, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Foreground="{DynamicResource ControlClickablePartMouseOverBrush}"
-                                        IsHitTestVisible="False">
-                                        <Label.Visibility>
-                                            <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-                                                <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                <Binding
-                                                    Converter="{StaticResource IsNullConverter}"
-                                                    Path="SubTitleTemplate"
-                                                    RelativeSource="{RelativeSource TemplatedParent}" />
-                                            </MultiBinding>
-                                        </Label.Visibility>
-                                    </Label>
-                                    <!--#endregion-->
-                                    <Grid
-                                        Grid.Row="1"
-                                        Margin="0,0,13,0"
-                                        Grid.RowSpan="2"
-                                        Grid.Column="3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <!--#region Add child button-->
-                                        <controls:ExtendedButton
-                                            HorizontalAlignment="Right"
-                                            Background="Transparent"
-                                            Command="{Binding AddChildCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                            Foreground="{DynamicResource StatusTextBrush}"
-                                            Style="{StaticResource RoundButtonStyle}"
-                                            ToolTip="Add">
-                                            <controls:ExtendedButton.Visibility>
-                                                <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-                                                    <Binding Path="CanAddChild" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                    <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                    <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
-                                                </MultiBinding>
-                                            </controls:ExtendedButton.Visibility>
-                                            <scalableicons:Icon Margin="2" Kind="Plus" />
-                                        </controls:ExtendedButton>
-                                        <!--#endregion-->
-                                        <!--#region Delete button-->
-                                        <controls:ExtendedButton
-                                            Grid.Column="1"
-                                            Padding="3"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            Background="Transparent"
-                                            Command="{Binding DeleteCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                            Foreground="{DynamicResource StatusTextBrush}"
-                                            Style="{StaticResource RoundButtonStyle}"
-                                            ToolTip="Delete">
-                                            <controls:ExtendedButton.Visibility>
-                                                <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-                                                    <Binding Path="CanDelete" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                    <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                    <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
-                                                </MultiBinding>
-                                            </controls:ExtendedButton.Visibility>
-                                            <scalableicons:Icon Margin="1,0,0,0" Kind="Bin" />
-                                        </controls:ExtendedButton>
-                                        <!--#endregion-->
-                                        <!--#region Drop down indicator-->
-                                        <Grid
-                                            Grid.Column="2"
-                                            Width="10"
-                                            Margin="3,0,0,0"
-                                            Height="10"
-                                            HorizontalAlignment="Right"
-                                            IsHitTestVisible="False"
-                                            RenderTransformOrigin="0.5,0.5">
-                                            <Grid.Visibility>
-                                                <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
-                                                    <Binding Converter="{StaticResource SequenceHasElementsBooleanConverter}" Path="ChildViewModels" />
-                                                    <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                    <Binding Path="CanOpen" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                </MultiBinding>
-                                            </Grid.Visibility>
-                                            <Grid.Style>
-                                                <Style>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                                                            <Setter Property="Grid.RenderTransform">
-                                                                <Setter.Value>
-                                                                    <RotateTransform Angle="180" />
-                                                                </Setter.Value>
-                                                            </Setter>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Grid.Style>
-                                            <scalableicons:Icon Foreground="{DynamicResource TextBrush}" Kind="Expand" />
-                                        </Grid>
-                                        <!--#endregion-->
-                                    </Grid>
-                                </Grid>
-                                <!--#endregion-->
                             </Grid>
                             <!--#region Child items-->
                             <Grid Visibility="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfTrueConverter}}">
