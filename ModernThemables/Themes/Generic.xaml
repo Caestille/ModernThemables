@@ -8,6 +8,7 @@
 
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/BlurHost.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ColourPickerBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/DatetimeTextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ExtendedButton.xaml" />
