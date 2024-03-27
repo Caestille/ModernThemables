@@ -3,13 +3,12 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using System.Windows.Input;
 using System;
-using System.Linq;
 using ModernThemables.Messages;
 using System.Collections.Generic;
 
 namespace ModernThemables.ViewModels
 {
-	public class ViewModelBase : ViewModelBase<GenericViewModelBase>
+    public class ViewModelBase : ViewModelBase<GenericViewModelBase>
 	{
 		public ViewModelBase(string name) : base(name) { }
 	}
