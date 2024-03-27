@@ -68,8 +68,7 @@
                                         CornerRadius="5"
                                         Foreground="{DynamicResource TextBrush}"
                                         MouseDownColour="{DynamicResource MenuMouseDownBrush}"
-                                        MouseOverColour="{DynamicResource MenuMouseOverBrush}"
-                                        ToolTip="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}">
+                                        MouseOverColour="{DynamicResource MenuMouseOverBrush}">
                                         <!--#region Content-->
                                         <Grid
                                             Margin="-6"
