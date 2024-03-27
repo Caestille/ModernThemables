@@ -82,7 +82,7 @@
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<Grid HorizontalAlignment="Left" VerticalAlignment="Bottom">
+							<Grid HorizontalAlignment="Left" VerticalAlignment="Top">
 								<Border
 									x:Name="Border1"
 									Width="{Binding BarWidth, ElementName=root}"

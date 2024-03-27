@@ -74,17 +74,24 @@ namespace ModernThemables.Charting.Controls
 
 				if (tooltipBar != null)
 				{
-					var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == tooltipBar.Identifier));
-					var formattedValue = matchingSeries.ValueFormatter != null
-						? matchingSeries.ValueFormatter(tooltipBar.BackingPoint)
-						: tooltipBar.BackingPoint.YValue.ToString();
-					var matchingBar = matchingSeries.Values.First(x => x.Identifier == tooltipBar.Identifier);
-					var category = matchingSeries.ValueFormatter != null
-						? matchingSeries.ValueFormatter(matchingBar)
-						: matchingSeries.Name;
-					var formattedDate = tooltipBar.BackingPoint.Name;
+					var matchingSeries = Series.FirstOrDefault(x => x.Values.Any(y => y.Identifier == tooltipBar.Identifier));
+                    if (matchingSeries != null)
+                    {
+                        var formattedValue = matchingSeries.ValueFormatter != null
+                            ? matchingSeries.ValueFormatter(tooltipBar.BackingPoint)
+                            : tooltipBar.BackingPoint.YValue.ToString();
+                        var matchingBar = matchingSeries.Values.First(x => x.Identifier == tooltipBar.Identifier);
+                        var category = matchingSeries.ValueFormatter != null
+                            ? matchingSeries.ValueFormatter(matchingBar)
+                            : matchingSeries.Name;
+                        var formattedDate = tooltipBar.BackingPoint.Name;
 
-					tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar?.Fill?.CoreBrush, formattedValue, formattedDate, category ?? string.Empty));
+                        tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar?.Fill?.CoreBrush, formattedValue, formattedDate, category ?? string.Empty));
+                    }
+                    else
+                    {
+                        tooltipPoints.Clear();
+                    }
 				}
 
 				return tooltipPoints;
