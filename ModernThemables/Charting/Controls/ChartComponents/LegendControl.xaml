@@ -25,7 +25,7 @@
             Background="{Binding ElementName=root, Path=Background}"
             BorderBrush="{Binding ElementName=root, Path=BorderBrush}"
             BorderThickness="{Binding ElementName=root, Path=BorderThickness}"
-            CornerRadius="5"
+            CornerRadius="{Binding ElementName=root, Path=CornerRadius}"
             Visibility="{Binding ElementName=TemplatedLegend, Path=Visibility, Converter={StaticResource VisibilityInverterConverter}}">
             <ScrollViewer Margin="0,5" VerticalScrollBarVisibility="Auto">
                 <Grid Margin="0,-5">
