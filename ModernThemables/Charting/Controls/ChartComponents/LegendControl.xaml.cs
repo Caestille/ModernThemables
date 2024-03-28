@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
@@ -65,7 +66,40 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(LegendControl),
 			new UIPropertyMetadata(Orientation.Vertical, OnSetLegendOrientation));
 
-		public LegendControl()
+        public Brush Background
+        {
+            get => (Brush)GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
+        }
+        public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
+            "Background",
+            typeof(Brush),
+            typeof(LegendControl),
+            new PropertyMetadata(null));
+
+        public Brush BorderBrush
+        {
+            get => (Brush)GetValue(BorderBrushProperty);
+            set => SetValue(BorderBrushProperty, value);
+        }
+        public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+            "BorderBrush",
+            typeof(Brush),
+            typeof(LegendControl),
+            new PropertyMetadata(null));
+
+        public Thickness BorderThickness
+        {
+            get => (Thickness)GetValue(BorderThicknessProperty);
+            set => SetValue(BorderThicknessProperty, value);
+        }
+        public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
+            "BorderThickness",
+            typeof(Thickness),
+            typeof(LegendControl),
+            new PropertyMetadata(null));
+
+        public LegendControl()
 		{
 			InitializeComponent();
 		}

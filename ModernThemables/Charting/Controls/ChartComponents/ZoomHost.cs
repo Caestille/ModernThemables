@@ -129,7 +129,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 			var diffs = GetTopBottomDiff(true);
 
-			Margin = new Thickness(0, -diffs.top, 0, -diffs.bottom);
+			Margin = new Thickness(0, double.IsNaN(diffs.top) ? 0 : -diffs.top, 0, double.IsNaN(diffs.bottom) ? 0 : -diffs.bottom);
 
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}

@@ -6,6 +6,8 @@
     public enum IconType
     {
         None,
+        ArrowUp,
+        ArrowDown,
         Bin,
         Building,
         Calculator,

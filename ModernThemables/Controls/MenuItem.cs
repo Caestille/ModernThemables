@@ -1,8 +1,7 @@
-﻿using CoreUtilities.HelperClasses;
-using Microsoft.Toolkit.Mvvm.Input;
-using ModernThemables.ViewModels;
+﻿using Microsoft.Toolkit.Mvvm.Input;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,7 +17,11 @@ namespace ModernThemables.Controls
 
         public MenuItem()
         {
-            ToggleOpenCommand = new RelayCommand(ToggleOpen);
+            InternalSelectCommand = new RelayCommand(Select);
+            if (StartOpen)
+            {
+                IsOpen = true;
+            }
         }
 
         #region Properties
@@ -30,6 +33,28 @@ namespace ModernThemables.Controls
         }
         public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.Register(
             nameof(IconTemplate),
+            typeof(DataTemplate),
+            typeof(MenuItem),
+            new PropertyMetadata(null));
+
+        public DataTemplate ChildItemTemplate
+        {
+            get => (DataTemplate)GetValue(ChildItemTemplateProperty);
+            set => SetValue(ChildItemTemplateProperty, value);
+        }
+        public static readonly DependencyProperty ChildItemTemplateProperty = DependencyProperty.Register(
+            nameof(ChildItemTemplate),
+            typeof(DataTemplate),
+            typeof(MenuItem),
+            new PropertyMetadata(null));
+
+        public DataTemplate ChildItemsTemplate
+        {
+            get => (DataTemplate)GetValue(ChildItemsTemplateProperty);
+            set => SetValue(ChildItemsTemplateProperty, value);
+        }
+        public static readonly DependencyProperty ChildItemsTemplateProperty = DependencyProperty.Register(
+            nameof(ChildItemsTemplate),
             typeof(DataTemplate),
             typeof(MenuItem),
             new PropertyMetadata(null));
@@ -100,6 +125,39 @@ namespace ModernThemables.Controls
             typeof(MenuItem),
             new PropertyMetadata(false));
 
+        public bool StartOpen
+        {
+            get => (bool)GetValue(StartOpenProperty);
+            set => SetValue(StartOpenProperty, value);
+        }
+        public static readonly DependencyProperty StartOpenProperty = DependencyProperty.Register(
+            nameof(StartOpen),
+            typeof(bool),
+            typeof(MenuItem),
+            new PropertyMetadata(false, OnSetStartOpen));
+
+        public bool ShowOpenIndicator
+        {
+            get => (bool)GetValue(ShowOpenIndicatorProperty);
+            set => SetValue(ShowOpenIndicatorProperty, value);
+        }
+        public static readonly DependencyProperty ShowOpenIndicatorProperty = DependencyProperty.Register(
+            nameof(ShowOpenIndicator),
+            typeof(bool),
+            typeof(MenuItem),
+            new PropertyMetadata(true));
+
+        public bool IsSelected
+        {
+            get => (bool)GetValue(IsSelectedProperty);
+            set => SetValue(IsSelectedProperty, value);
+        }
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
+            nameof(IsSelected),
+            typeof(bool),
+            typeof(MenuItem),
+            new PropertyMetadata(false));
+
         public bool IsContainingMenuOpen
         {
             get => (bool)GetValue(IsContainingMenuOpenProperty);
@@ -109,7 +167,7 @@ namespace ModernThemables.Controls
             nameof(IsContainingMenuOpen),
             typeof(bool),
             typeof(MenuItem),
-            new PropertyMetadata(false));
+            new PropertyMetadata(true));
 
         public bool ReserveIconSpace
         {
@@ -122,16 +180,16 @@ namespace ModernThemables.Controls
             typeof(MenuItem),
             new PropertyMetadata(false));
 
-        public RangeObservableCollection<GenericViewModelBase> ChildItems
+        public IEnumerable<object> ChildItems
         {
-            get => (RangeObservableCollection<GenericViewModelBase>)GetValue(ChildItemsProperty);
+            get => (IEnumerable<object>)GetValue(ChildItemsProperty);
             set => SetValue(ChildItemsProperty, value);
         }
         public static readonly DependencyProperty ChildItemsProperty = DependencyProperty.Register(
             nameof(ChildItems),
-            typeof(RangeObservableCollection<GenericViewModelBase>),
+            typeof(IEnumerable<object>),
             typeof(MenuItem),
-            new PropertyMetadata(new RangeObservableCollection<GenericViewModelBase>()));
+            new PropertyMetadata(new ObservableCollection<object>()));
 
         public bool CanAddChild
         {
@@ -188,22 +246,51 @@ namespace ModernThemables.Controls
             typeof(MenuItem),
             new PropertyMetadata(null));
 
-        private ICommand ToggleOpenCommand
+        public ICommand SelectCommand
         {
-            get => (ICommand)GetValue(ToggleOpenCommandProperty);
-            set => SetValue(ToggleOpenCommandProperty, value);
+            get => (ICommand)GetValue(SelectCommandProperty);
+            set => SetValue(SelectCommandProperty, value);
         }
-        public static readonly DependencyProperty ToggleOpenCommandProperty = DependencyProperty.Register(
-            nameof(ToggleOpenCommand),
+        public static readonly DependencyProperty SelectCommandProperty = DependencyProperty.Register(
+            nameof(SelectCommand),
+            typeof(ICommand),
+            typeof(MenuItem),
+            new PropertyMetadata(null));
+
+        private ICommand InternalSelectCommand
+        {
+            get => (ICommand)GetValue(InternalSelectCommandProperty);
+            set => SetValue(InternalSelectCommandProperty, value);
+        }
+        public static readonly DependencyProperty InternalSelectCommandProperty = DependencyProperty.Register(
+            nameof(InternalSelectCommand),
             typeof(ICommand),
             typeof(MenuItem),
             new PropertyMetadata(null));
 
         #endregion Properties
-
-        private void ToggleOpen()
+        
+        private static void OnSetStartOpen(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            IsOpen = !IsOpen;
+            if (sender is MenuItem this_ && this_.StartOpen && !this_.IsOpen)
+            {
+                this_.IsOpen = true;
+            }
+        }
+
+
+        private void Select()
+        {
+            if (ChildItems.Any() && CanOpen)
+            {
+                IsOpen = !IsOpen;
+                return;
+            }
+
+            if (SelectCommand != null)
+            {
+                SelectCommand.Execute(this);
+            }
         }
     }
 }

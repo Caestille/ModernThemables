@@ -220,7 +220,7 @@ namespace ModernThemables.Charting.Controls
 
 				var yMax = dataYMax;
 				var yMin = dataYMin;
-				foreach (var series in collection.Where(x => !x.Item2).Select(x => x.Item1))
+				foreach (var series in collection.Where(x => x.Item2).Select(x => x.Item1))
 				{
 					if (Series == null || !Series.Any()) break;
 

@@ -3,13 +3,12 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using System.Windows.Input;
 using System;
-using System.Linq;
 using ModernThemables.Messages;
 using System.Collections.Generic;
 
 namespace ModernThemables.ViewModels
 {
-	public class ViewModelBase : ViewModelBase<GenericViewModelBase>
+    public class ViewModelBase : ViewModelBase<GenericViewModelBase>
 	{
 		public ViewModelBase(string name) : base(name) { }
 	}
@@ -17,7 +16,7 @@ namespace ModernThemables.ViewModels
     public class ViewModelBase<TChild> : GenericViewModelBase where TChild : GenericViewModelBase
     {
         public ICommand AddChildCommand => new RelayCommand(() => AddChild());
-        public ICommand RequestDeleteCommand => new RelayCommand(OnDeleteRequested);
+        public ICommand RequestDeleteCommand => new RelayCommand(RequestDelete);
 
         private readonly Func<TChild>? createChildFunc;
 
@@ -27,8 +26,6 @@ namespace ModernThemables.ViewModels
             get => childViewModels;
             set => SetProperty(ref childViewModels, value);
         }
-
-        public virtual bool SupportsAddingChildren => createChildFunc != null;
 
         public ViewModelBase(string name, Func<TChild>? createChild = null)
             : base(name)
@@ -42,18 +39,18 @@ namespace ModernThemables.ViewModels
             Messenger.Register<ViewModelRequestShowMessage>(this, (sender, message) =>
             {
                 if (message.ViewModel == this)
-                    OnViewModelRequestShow(message);
+                    OnRequestShowReceived(message);
                 else if (IsSelected)
                     IsSelected = false;
             });
 
             Messenger.Register<ViewModelRequestDeleteMessage>(this, (sender, message) =>
             {
-                OnViewModelRequestDelete(message);
+                OnRequestDeleteReceived(message);
             });
         }
 
-        protected virtual void OnViewModelRequestShow(ViewModelRequestShowMessage message)
+        protected virtual void OnRequestShowReceived(ViewModelRequestShowMessage message)
         {
             if (IsSelected && message.ViewModel != this)
             {
@@ -61,21 +58,16 @@ namespace ModernThemables.ViewModels
             }
         }
 
-		protected virtual void OnDeleteRequested()
+		protected virtual void RequestDelete()
 		{
 			Messenger.Send(new ViewModelRequestDeleteMessage(this));
 		}
 
-		protected virtual void OnViewModelRequestDelete(ViewModelRequestDeleteMessage message)
+		protected virtual void OnRequestDeleteReceived(ViewModelRequestDeleteMessage message)
 		{
 			if (message.ViewModel is TChild child && ChildViewModels.Contains(child))
 			{
 				ChildViewModels.Remove(child);
-
-				if (IsShowingChildren && !ChildViewModels.Any())
-				{
-					IsShowingChildren = false;
-				}
 
 				OnPropertyChanged(nameof(ChildViewModels));
 				OnChildrenChanged();
@@ -84,14 +76,7 @@ namespace ModernThemables.ViewModels
 
 		protected override void Select()
 		{
-			if (ChildViewModels.Count != 0)
-			{
-				IsShowingChildren = !IsShowingChildren;
-			}
-			else if (!SupportsAddingChildren)
-			{
-				Messenger.Send(new ViewModelRequestShowMessage(this));
-			}
+			Messenger.Send(new ViewModelRequestShowMessage(this));
 		}
 
 		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "")
@@ -108,11 +93,6 @@ namespace ModernThemables.ViewModels
 			}
 
 			ChildViewModels.Add(viewModel);
-
-			if (SupportsAddingChildren)
-			{
-				IsShowingChildren = true;
-			}
 
 			OnPropertyChanged(nameof(ChildViewModels));
 			OnChildrenChanged();

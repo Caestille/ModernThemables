@@ -98,8 +98,9 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <Grid Margin="8,0,0,0" VerticalAlignment="Top">
+                                        <Grid Margin="9,0,0,0" VerticalAlignment="Top">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="Auto" />
@@ -204,7 +205,7 @@
                                                 x:Name="PART_SearchBox"
                                                 Grid.Column="2"
                                                 Height="20"
-                                                Margin="8,6,5,4"
+                                                Margin="8,6,10,4"
                                                 VerticalAlignment="Top"
                                                 Background="{DynamicResource TextBrush}"
                                                 BackgroundOpacity="0.1"
@@ -264,6 +265,35 @@
                                                 </TextBlock>
                                             </Grid>
                                         </ScrollViewer>
+                                        <Grid Grid.Row="3">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <controls:MenuItem
+                                                Title="Settings"
+                                                CanAddChild="False"
+                                                CanDelete="False"
+                                                CanOpen="True"
+                                                IsContainingMenuOpen="{Binding IsMenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                                SelectCommand="{Binding ShowSettingsCommand, RelativeSource={RelativeSource TemplatedParent}}">
+                                                <controls:MenuItem.IconTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <scalableicons:Icon
+                                                                Width="15"
+                                                                Foreground="{DynamicResource ControlClickablePartMouseOverBrush}"
+                                                                Kind="Gear" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </controls:MenuItem.IconTemplate>
+                                            </controls:MenuItem>
+                                            <ContentControl
+                                                Grid.Row="1"
+                                                Content="{Binding SettingsVm, RelativeSource={RelativeSource TemplatedParent}}"
+                                                ContentTemplate="{Binding SettingsTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Visibility="{Binding ShowSettings, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfTrueConverter}}" />
+                                        </Grid>
                                     </Grid>
                                 </controls:BlurHost>
                                 <!--#region Menu interaction controls-->
