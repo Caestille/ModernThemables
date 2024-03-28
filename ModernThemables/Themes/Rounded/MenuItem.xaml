@@ -117,7 +117,7 @@
                                         VerticalAlignment="Center"
                                         Content="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"
                                         FontSize="20"
-                                        Foreground="{DynamicResource TextBrush}"/>
+                                        Foreground="{DynamicResource TextBrush}" />
                                 </Grid>
                                 <!--#endregion-->
                                 <!--#region Add child button-->
