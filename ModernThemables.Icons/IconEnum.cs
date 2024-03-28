@@ -28,6 +28,7 @@
         Pin,
         Play,
         Plus,
+        Reload,
         Restore,
         Save,
 		Star,
