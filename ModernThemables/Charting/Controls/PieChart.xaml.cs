@@ -95,7 +95,8 @@ namespace ModernThemables.Charting.Controls
 								wedge.IsMouseOver = true;
 							}
 
-							var matchingSeries = Series.First(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
+							var matchingSeries = Series.FirstOrDefault(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
+                            if (matchingSeries == null) continue;
 							var matchingWedge = matchingSeries.Values.First(x => x.Identifier == wedge.Identifier);
 							var formattedValue = matchingSeries.ValueFormatter != null
 								? matchingSeries.ValueFormatter(matchingWedge)
