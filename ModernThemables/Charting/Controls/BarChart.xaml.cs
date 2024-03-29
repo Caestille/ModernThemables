@@ -197,12 +197,8 @@ namespace ModernThemables.Charting.Controls
 				BarCornerRadius = new CornerRadius(0, 0, radius, radius);
 				isSingleXPoint = collection.Count < 2;
 
-				await Task.Delay(18);
-				Dispatcher.Invoke(DispatcherPriority.Render, () => { });
-				await Dispatcher.BeginInvoke(
-					DispatcherPriority.Render,
-					() => { InternalSeries = new ObservableCollection<InternalChartEntity>(collection); });
-				await Dispatcher.BeginInvoke(DispatcherPriority.Render, () => SetXAxisLabels(labels));
+				InternalSeries = new ObservableCollection<InternalChartEntity>(collection);
+				_ = SetXAxisLabels(labels);
 
 				renderInProgress = false;
 			});
@@ -210,7 +206,7 @@ namespace ModernThemables.Charting.Controls
 
 		#region Calculations
 
-		private void SetXAxisLabels(IEnumerable<string> labels)
+		private async Task SetXAxisLabels(IEnumerable<string> labels)
 		{
 			if (!hasData) return;
 
@@ -228,7 +224,7 @@ namespace ModernThemables.Charting.Controls
 			}
 		}
 
-		private async void SetYAxisLabels()
+		private async Task SetYAxisLabels()
 		{
 			if (!hasData) return;
 
