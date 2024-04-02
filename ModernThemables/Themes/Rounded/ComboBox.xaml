@@ -13,36 +13,28 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Border
-                x:Name="Border3"
-                Grid.ColumnSpan="1"
-                Margin="0,0,5,0"
-                Background="Transparent"
-                BorderBrush="{DynamicResource StatusTextBrush}"
-                BorderThickness="0"
-                CornerRadius="0"
-                SnapsToDevicePixels="True" />
-            <Border
+                x:Name="BackgroundBorder"
                 Grid.ColumnSpan="2"
-                Background="{DynamicResource ControlNonClickablePartBrush}"
+                Background="{DynamicResource ControlClickablePartBrush}"
                 BorderThickness="0"
-                CornerRadius="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
+                CornerRadius="5"
                 SnapsToDevicePixels="True" />
             <Border
-                x:Name="Border2"
-                Grid.ColumnSpan="2"
-                Margin="0,0,1,0"
-                Background="Transparent"
-                BorderBrush="Red"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
-                SnapsToDevicePixels="True" />
-            <Border
-                x:Name="Border"
+                x:Name="ButtonBorder"
                 Grid.Column="1"
                 Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}"
                 Background="{DynamicResource ControlClickablePartBrush}"
                 BorderThickness="0"
-                CornerRadius="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
+                CornerRadius="0,5,5,0"
+                SnapsToDevicePixels="True" />
+            <Border
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Width="1"
+                Margin="0,3"
+                Background="{DynamicResource TextBrush}"
+                Opacity="0.3"
+                BorderThickness="0"
                 SnapsToDevicePixels="True" />
             <Path
                 x:Name="Arrow"
@@ -64,28 +56,20 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
-                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
-                <Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
+                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource ControlClickablePartMouseOverBrush}" />
+                <Setter TargetName="BackgroundBorder" Property="Background" Value="{DynamicResource ControlClickablePartMouseOverBrush}" />
             </Trigger>
             <Trigger Property="ToggleButton.IsChecked" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
-                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
-                <Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
+                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource ControlClickablePartMouseDownBrush}" />
+                <Setter TargetName="BackgroundBorder" Property="Background" Value="{DynamicResource ControlClickablePartMouseDownBrush}" />
                 <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource TextBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource StatusTextLightBrush}" />
                 <Setter Property="Foreground" Value="Gray" />
-                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource DisabledControlNonClickablePartBrush}" />
-                <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource DisabledControlNonClickablePartBrush}" />
+                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+                <Setter TargetName="BackgroundBorder" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+                <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource DisabledControlClickablePartBrush}" />
             </Trigger>
-            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}" Value="True">
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
-                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
-                <Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
-                <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource TextBrush}" />
-            </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
