@@ -32,7 +32,7 @@
                     <GradientStop Offset="0.333" Color="Blue" />
                     <GradientStop Offset="0.5" Color="Cyan" />
                     <GradientStop Offset="0.666" Color="Lime" />
-                    <GradientStop Offset="0.833" Color="Yellow" /> 
+                    <GradientStop Offset="0.833" Color="Yellow" />
                     <GradientStop Offset="0.99" Color="Red" />
                 </LinearGradientBrush>
             </Border.Background>
