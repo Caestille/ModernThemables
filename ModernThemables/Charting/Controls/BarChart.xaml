@@ -149,7 +149,7 @@
 				<chartComponents:TooltipControl
 					x:Name="TooltipControl"
 					AllowSelection="False"
-					ForceCrosshairs="False"
+					ForceCrosshairs="True"
 					ForcePointIndicators="False"
 					ForceTooltipTop="True"
 					InvertY="True"
