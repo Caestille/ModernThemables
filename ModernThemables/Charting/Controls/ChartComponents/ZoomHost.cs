@@ -153,8 +153,10 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			}
 			else
 			{
-				throw new InvalidOperationException("Please add a MouseCoordinator to your chart");
-			}
+#if !DEBUG
+                throw new InvalidOperationException("Please add a MouseCoordinator to your chart");
+#endif
+            }
 
 			ResetZoom();
 		}

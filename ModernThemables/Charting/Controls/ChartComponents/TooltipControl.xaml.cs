@@ -259,7 +259,9 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			}
 			else
 			{
-				throw new InvalidOperationException("Please add a MouseCoordinator to your chart");
+#if !DEBUG
+                throw new InvalidOperationException("Please add a MouseCoordinator to your chart");
+#endif
 			}
 		}
 
@@ -347,16 +349,16 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 				return;
 			}
 
-			#region Crosshairs
+            #region Crosshairs
 			if (ShowCrosshairs)
 			{
 				// Move crosshairs
 				XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
 				YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
 			}
-			#endregion
+            #endregion
 
-			#region Selected range
+            #region Selected range
 			if (AllowSelection && e.isUserDragging && e.lowerSelection != null)
 			{
 				IsUserSelectingRange = true;
@@ -372,9 +374,9 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			{
 				IsUserSelectingRange = false;
 			}
-			#endregion
+            #endregion
 
-			#region Tooltip
+            #region Tooltip
 			if ((ShowTooltip || ShowPointIndicators) && TooltipGetterFunc != null)
 			{
 				TooltipPoints = new ObservableCollection<TooltipViewModel>(TooltipGetterFunc(mouseLoc));
@@ -411,7 +413,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			{
 				TooltipPoints.Clear();
 			}
-			#endregion
+            #endregion
 		}
 	}
 }
