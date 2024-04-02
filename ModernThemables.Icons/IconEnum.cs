@@ -27,6 +27,7 @@
         Moon,
         OpenFile,
         Pen,
+        PieChart,
         Pin,
         Play,
         Plus,
