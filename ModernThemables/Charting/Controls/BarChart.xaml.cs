@@ -208,7 +208,11 @@ namespace ModernThemables.Charting.Controls
 
 		private async Task SetXAxisLabels(IEnumerable<string> labels)
 		{
-			if (!hasData) return;
+            if (!hasData)
+            {
+                XAxisLabels.Clear();
+                return;
+            }
 
 			var labels2 = labels.Select(x => new AxisLabel(
 				0,
@@ -226,9 +230,13 @@ namespace ModernThemables.Charting.Controls
 
 		private async Task SetYAxisLabels()
 		{
-			if (!hasData) return;
+			if (!hasData)
+            {
+                YAxisLabels.Clear();
+                return;
+            }
 
-			var yMax = Series.Max(x => x.Values.Max(y => y.YValue)) * 1.1;
+            var yMax = Series.Max(x => x.Values.Max(y => y.YValue)) * 1.1;
 			var yMin = Series.Min(x => x.Values.Min(y => y.YValue));
 
 			var yRange = yMax - yMin;

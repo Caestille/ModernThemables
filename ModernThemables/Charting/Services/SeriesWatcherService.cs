@@ -34,7 +34,7 @@ namespace ModernThemables.Charting.Services
 			Subscribe(newSeries);
 			hasSetSeries = true;
 
-			if (!newSeries.Any() || !newSeries.Any(x => x.Values?.Any() ?? false)) return;
+			if (!newSeries.Any() /*|| !newSeries.Any(x => x.Values?.Any() ?? false)*/) return;
 
 			onSeriesUpdated(null, null, true);
 		}
