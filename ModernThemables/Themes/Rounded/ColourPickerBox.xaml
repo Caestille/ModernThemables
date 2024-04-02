@@ -18,7 +18,8 @@
                             Height="{TemplateBinding Height}"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Background="{TemplateBinding Colour, Converter={StaticResource ColourToBrushConverter}}"
+                            Background="{TemplateBinding Colour,
+                                                         Converter={StaticResource ColourToBrushConverter}}"
                             BorderBrush="{DynamicResource TextBrush}"
                             BorderThickness="1"
                             CornerRadius="5"
