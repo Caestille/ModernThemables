@@ -55,7 +55,7 @@
 				BorderThickness="1,1,0,0"
 				DividerOffset="{Binding ElementName=root, Path=GroupWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
 				Foreground="{DynamicResource StatusTextBrush}"
-				LabelRotation="90"
+                LabelRotation="90"
 				Labels="{Binding ElementName=root, Path=XAxisLabels}"
 				Orientation="Horizontal"
 				ShowIndicators="False" />
@@ -84,7 +84,6 @@
 						<DataTemplate>
 							<Grid HorizontalAlignment="Left" VerticalAlignment="Top">
 								<Border
-									x:Name="Border1"
 									Width="{Binding BarWidth, ElementName=root}"
 									Height="{Binding Y}"
 									Margin="{Binding X, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=1-0-0-0}"

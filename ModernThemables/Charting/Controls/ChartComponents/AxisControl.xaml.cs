@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using ModernThemables.Charting.Services;
 using System.Windows.Input;
 using CoreUtilities.Converters;
+using System.Diagnostics;
 
 namespace ModernThemables.Charting.Controls.ChartComponents
 {
@@ -232,8 +233,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			var height = sizes.Max(x => x.Height);
 
 			var mult = _this.Orientation == Orientation.Vertical
-					? Math.Cos(_this.LabelRotation * Math.PI / 180)
-					: Math.Sin(_this.LabelRotation * Math.PI / 180);
+				? Math.Cos(_this.LabelRotation * Math.PI / 180)
+				: Math.Sin(_this.LabelRotation * Math.PI / 180);
 			var value2 = width * mult + (_this.Orientation == Orientation.Horizontal ? 20 : 10);
 
 			switch (_this.Orientation)

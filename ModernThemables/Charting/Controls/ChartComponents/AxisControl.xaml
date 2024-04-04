@@ -53,6 +53,7 @@
                                     <Binding ElementName="Text" Path="FontStretch" />
                                     <Binding ElementName="root" Path="LabelAlignment" />
                                     <Binding ElementName="root" Path="Orientation" />
+                                    <Binding ElementName="root" Path="LabelRotation" />
                                 </MultiBinding>
                             </TextBlock.Margin>
                             <TextBlock.RenderTransform>

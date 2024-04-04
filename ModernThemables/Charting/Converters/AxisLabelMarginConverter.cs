@@ -22,14 +22,19 @@ namespace ModernThemables.Charting.Converters
 				&& values[4] is FontWeight fontWeight
 				&& values[5] is FontStretch fontStretch
 				&& values[6] is HorizontalAlignment alignment
-				&& values[7] is Orientation orientation)
+				&& values[7] is Orientation orientation
+                && values[8] is double angle)
 			{
 				var left = 0d;
 				var top = orientation == Orientation.Vertical ? 0d : 10d;
 
 				if (alignment != HorizontalAlignment.Left && orientation == Orientation.Horizontal)
-				{
-					var textWidth = StringWidthGetterConverter.MeasureString(text, fontSize, fontFamily, fontStyle, fontWeight, fontStretch).Width;
+                {
+                    var mult = orientation == Orientation.Vertical
+                        ? Math.Cos(angle * Math.PI / 180)
+                        : Math.Sin(angle * Math.PI / 180);
+
+                    var textWidth = StringWidthGetterConverter.MeasureString(text, fontSize, fontFamily, fontStyle, fontWeight, fontStretch).Width * (1 - mult);
 					left = -textWidth / 2;
 				}
 
