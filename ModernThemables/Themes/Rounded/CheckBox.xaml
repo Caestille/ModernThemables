@@ -5,6 +5,10 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <Style x:Key="WrappingStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
     <Style TargetType="{x:Type CheckBox}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
         <Setter Property="Template">
@@ -19,7 +23,7 @@
                         <Grid x:Name="grid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Border
                                 x:Name="highlightCircle"
@@ -48,10 +52,13 @@
                                 x:Name="content"
                                 Grid.Column="1"
                                 Margin="5,0,5,0"
-                                HorizontalAlignment="Left"
+                                HorizontalAlignment="Stretch"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                TextBlock.FontSize="{TemplateBinding FontSize}" />
-
+                                TextBlock.FontSize="{TemplateBinding FontSize}">
+                                <ContentPresenter.Resources>
+                                    <Style BasedOn="{StaticResource WrappingStyle}" TargetType="{x:Type TextBlock}" />
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>

@@ -1,163 +1,163 @@
 ﻿<UserControl
-	x:Class="ModernThemables.Charting.Controls.BarChart"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:chartComponents="clr-namespace:ModernThemables.Charting.Controls.ChartComponents"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	x:Name="root"
-	mc:Ignorable="d">
-	<Grid SizeChanged="Grid_SizeChanged">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="Auto" />
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
-		<chartComponents:LegendControl
-			x:Name="LegendGrid"
-			Grid.Row="1"
-			Grid.Column="2"
-			HorizontalAlignment="Center"
-			VerticalAlignment="Center"
-			Background="{DynamicResource MenuBrush}"
-			BorderBrush="{DynamicResource MenuBorderBrush}"
-			BorderThickness="1"
-			CornerRadius="5"
-			Items="{Binding ElementName=root, Path=Series}" />
-		<Grid
-			Grid.Row="1"
-			Grid.Column="1"
-			Margin="0">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*" />
-				<RowDefinition Height="Auto" MinHeight="5" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" MinWidth="5" />
-				<ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>
-			<chartComponents:AxisControl
-				Margin="0,0,-1,0"
-				BorderBrush="{DynamicResource StatusTextLightBrush}"
-				BorderThickness="0,0,1,0"
-				Foreground="{DynamicResource StatusTextBrush}"
-				Labels="{Binding ElementName=root, Path=YAxisLabels}"
-				Orientation="Vertical" />
-			<chartComponents:AxisControl
-				Grid.Row="1"
-				Grid.Column="1"
-				BorderBrush="{DynamicResource StatusTextLightBrush}"
-				BorderThickness="1,1,0,0"
-				DividerOffset="{Binding ElementName=root, Path=GroupWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
-				Foreground="{DynamicResource StatusTextBrush}"
+    x:Class="ModernThemables.Charting.Controls.BarChart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:chartComponents="clr-namespace:ModernThemables.Charting.Controls.ChartComponents"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="root"
+    mc:Ignorable="d">
+    <Grid SizeChanged="Grid_SizeChanged">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <chartComponents:LegendControl
+            x:Name="LegendGrid"
+            Grid.Row="1"
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="{DynamicResource MenuBrush}"
+            BorderBrush="{DynamicResource MenuBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="5"
+            Items="{Binding ElementName=root, Path=Series}" />
+        <Grid
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" MinHeight="5" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <chartComponents:AxisControl
+                Margin="0,0,-1,0"
+                BorderBrush="{DynamicResource StatusTextLightBrush}"
+                BorderThickness="0,0,1,0"
+                Foreground="{DynamicResource StatusTextBrush}"
+                Labels="{Binding ElementName=root, Path=YAxisLabels}"
+                Orientation="Vertical" />
+            <chartComponents:AxisControl
+                Grid.Row="1"
+                Grid.Column="1"
+                BorderBrush="{DynamicResource StatusTextLightBrush}"
+                BorderThickness="1,1,0,0"
+                DividerOffset="{Binding ElementName=root, Path=GroupWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
+                Foreground="{DynamicResource StatusTextBrush}"
                 LabelRotation="90"
-				Labels="{Binding ElementName=root, Path=XAxisLabels}"
-				Orientation="Horizontal"
-				ShowIndicators="False" />
-			<Grid x:Name="Grid" Grid.Column="1">
-				<chartComponents:GridControl
-					Margin="-1"
-					Foreground="{DynamicResource StatusTextLightBrush}"
-					Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}"
-					YLabels="{Binding YAxisLabels, ElementName=root}" />
-				<ItemsControl
-					x:Name="SeriesItemsControl"
-					Width="{Binding ElementName=Grid, Path=ActualWidth}"
-					Height="{Binding ElementName=Grid, Path=ActualHeight}"
-					Margin="3,0,0,0"
-					HorizontalAlignment="Stretch"
-					VerticalAlignment="Stretch"
-					HorizontalContentAlignment="Stretch"
-					ItemsSource="{Binding InternalSeries, ElementName=root}"
-					RenderTransformOrigin="0.5,0.5">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<Grid />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-								<Border
-									Width="{Binding BarWidth, ElementName=root}"
-									Height="{Binding Y}"
-									Margin="{Binding X, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=1-0-0-0}"
-									HorizontalAlignment="Left"
-									VerticalAlignment="Bottom"
-									BorderBrush="{Binding Stroke.CoreBrush}"
-									BorderThickness="1"
-									ClipToBounds="True"
-									CornerRadius="{Binding ElementName=root, Path=BarCornerRadius}">
-									<Border
-										HorizontalAlignment="Stretch"
-										VerticalAlignment="Stretch"
-										Background="{Binding Fill.CoreBrush}"
-										BorderBrush="{Binding Stroke.CoreBrush}"
-										BorderThickness="1"
-										CornerRadius="{Binding ElementName=root, Path=BarCornerRadius}">
-										<Border.Style>
-											<Style TargetType="{x:Type Border}">
-												<Style.Triggers>
-													<DataTrigger Binding="{Binding IsMouseOver}" Value="True">
-														<DataTrigger.EnterActions>
-															<BeginStoryboard>
-																<Storyboard>
-																	<ThicknessAnimation
-																		Storyboard.TargetProperty="Margin"
-																		To="3,0,3,3"
-																		Duration="00:00:00.15">
-																		<ThicknessAnimation.EasingFunction>
-																			<BackEase Amplitude="1" EasingMode="EaseOut" />
-																		</ThicknessAnimation.EasingFunction>
-																	</ThicknessAnimation>
-																</Storyboard>
-															</BeginStoryboard>
-														</DataTrigger.EnterActions>
-														<DataTrigger.ExitActions>
-															<BeginStoryboard>
-																<Storyboard>
-																	<ThicknessAnimation
-																		Storyboard.TargetProperty="Margin"
-																		To="0"
-																		Duration="00:00:00.10">
-																		<ThicknessAnimation.EasingFunction>
-																			<BackEase Amplitude="1" EasingMode="EaseOut" />
-																		</ThicknessAnimation.EasingFunction>
-																	</ThicknessAnimation>
-																</Storyboard>
-															</BeginStoryboard>
-														</DataTrigger.ExitActions>
-													</DataTrigger>
-												</Style.Triggers>
-											</Style>
-										</Border.Style>
-									</Border>
-								</Border>
-							</Grid>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-					<ItemsControl.RenderTransform>
-						<ScaleTransform ScaleY="-1" />
-					</ItemsControl.RenderTransform>
-				</ItemsControl>
-				<chartComponents:TooltipControl
-					x:Name="TooltipControl"
-					AllowSelection="False"
-					ForceCrosshairs="True"
-					ForcePointIndicators="False"
-					ForceTooltipTop="True"
-					InvertY="True"
-					TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
-					TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
-					TooltipOffsetX="{Binding ElementName=root, Path=BarWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
-					TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
-				<chartComponents:MouseCoordinator x:Name="Coordinator" />
-			</Grid>
-		</Grid>
-	</Grid>
+                Labels="{Binding ElementName=root, Path=XAxisLabels}"
+                Orientation="Horizontal"
+                ShowIndicators="False" />
+            <Grid x:Name="Grid" Grid.Column="1">
+                <chartComponents:GridControl
+                    Margin="-1"
+                    Foreground="{DynamicResource StatusTextLightBrush}"
+                    Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}"
+                    YLabels="{Binding YAxisLabels, ElementName=root}" />
+                <ItemsControl
+                    x:Name="SeriesItemsControl"
+                    Width="{Binding ElementName=Grid, Path=ActualWidth}"
+                    Height="{Binding ElementName=Grid, Path=ActualHeight}"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    ItemsSource="{Binding InternalSeries, ElementName=root}"
+                    RenderTransformOrigin="0.5,0.5">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <Border
+                                    Width="{Binding BarWidth, ElementName=root}"
+                                    Height="{Binding Y}"
+                                    Margin="{Binding X, Converter={StaticResource DoubleToBorderThicknessConverter}, ConverterParameter=1-0-0-0}"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    BorderBrush="{Binding Stroke.CoreBrush}"
+                                    BorderThickness="1"
+                                    ClipToBounds="True"
+                                    CornerRadius="{Binding ElementName=root, Path=BarCornerRadius}">
+                                    <Border
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Background="{Binding Fill.CoreBrush}"
+                                        BorderBrush="{Binding Stroke.CoreBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="{Binding ElementName=root, Path=BarCornerRadius}">
+                                        <Border.Style>
+                                            <Style TargetType="{x:Type Border}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver}" Value="True">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ThicknessAnimation
+                                                                        Storyboard.TargetProperty="Margin"
+                                                                        To="3,0,3,3"
+                                                                        Duration="00:00:00.15">
+                                                                        <ThicknessAnimation.EasingFunction>
+                                                                            <BackEase Amplitude="1" EasingMode="EaseOut" />
+                                                                        </ThicknessAnimation.EasingFunction>
+                                                                    </ThicknessAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ThicknessAnimation
+                                                                        Storyboard.TargetProperty="Margin"
+                                                                        To="0"
+                                                                        Duration="00:00:00.10">
+                                                                        <ThicknessAnimation.EasingFunction>
+                                                                            <BackEase Amplitude="1" EasingMode="EaseOut" />
+                                                                        </ThicknessAnimation.EasingFunction>
+                                                                    </ThicknessAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.RenderTransform>
+                        <ScaleTransform ScaleY="-1" />
+                    </ItemsControl.RenderTransform>
+                </ItemsControl>
+                <chartComponents:TooltipControl
+                    x:Name="TooltipControl"
+                    AllowSelection="False"
+                    ForceCrosshairs="True"
+                    ForcePointIndicators="False"
+                    ForceTooltipTop="True"
+                    InvertY="True"
+                    TooltipGetterFunc="{Binding ElementName=root, Path=TooltipGetterFunc}"
+                    TooltipLocation="{Binding ElementName=root, Path=TooltipLocation}"
+                    TooltipOffsetX="{Binding ElementName=root, Path=BarWidth, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}"
+                    TooltipOpacity="{Binding ElementName=root, Path=TooltipOpacity}" />
+                <chartComponents:MouseCoordinator x:Name="Coordinator" />
+            </Grid>
+        </Grid>
+    </Grid>
 </UserControl>

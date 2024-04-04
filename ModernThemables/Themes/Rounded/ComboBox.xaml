@@ -29,12 +29,12 @@
                 SnapsToDevicePixels="True" />
             <Border
                 Grid.Column="1"
-                HorizontalAlignment="Left"
                 Width="1"
                 Margin="0,3"
+                HorizontalAlignment="Left"
                 Background="{DynamicResource TextBrush}"
-                Opacity="0.3"
                 BorderThickness="0"
+                Opacity="0.3"
                 SnapsToDevicePixels="True" />
             <Path
                 x:Name="Arrow"

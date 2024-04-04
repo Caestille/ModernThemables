@@ -115,6 +115,8 @@ namespace ModernThemables.Charting.Controls
 			Zoom.GetDataHeightPixelsInBounds = new Func<(double, double)>(() =>
 			{
 				var allPoints = InternalSeries.SelectMany(x => x.Data);
+                if (!allPoints.Any()) return (0, 1);
+
 				var min = allPoints.Min(x => x.X);
 				var max = allPoints.Max(x => x.X);
 				var range = max - min;
