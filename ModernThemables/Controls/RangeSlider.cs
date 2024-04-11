@@ -47,18 +47,12 @@ namespace ModernThemables.Controls
 			new FrameworkPropertyMetadata(AutoToolTipPlacement.None, RangeSlider.OnAutoToolTipPlacementChanged));
 
 		public AutoToolTipPlacement AutoToolTipPlacement
-		{
-			get
-			{
-				return (AutoToolTipPlacement)GetValue(RangeSlider.AutoToolTipPlacementProperty);
-			}
-			set
-			{
-				SetValue(RangeSlider.AutoToolTipPlacementProperty, value);
-			}
-		}
+        {
+            get => (AutoToolTipPlacement)GetValue(RangeSlider.AutoToolTipPlacementProperty);
+            set => SetValue(RangeSlider.AutoToolTipPlacementProperty, value);
+        }
 
-		private static void OnAutoToolTipPlacementChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void OnAutoToolTipPlacementChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			var rangeSlider = sender as RangeSlider;
 			if (rangeSlider != null)
@@ -79,39 +73,27 @@ namespace ModernThemables.Controls
 			new FrameworkPropertyMetadata(0));
 
 		public int AutoToolTipPrecision
-		{
-			get
-			{
-				return (int)GetValue(RangeSlider.AutoToolTipPrecisionProperty);
-			}
-			set
-			{
-				SetValue(RangeSlider.AutoToolTipPrecisionProperty, value);
-			}
-		}
+        {
+            get => (int)GetValue(RangeSlider.AutoToolTipPrecisionProperty);
+            set => SetValue(RangeSlider.AutoToolTipPrecisionProperty, value);
+        }
 
-		#endregion //AutoToolTipPrecision
+        #endregion //AutoToolTipPrecision
 
-		#region HigherValue
-		/// <summary>
-		/// HigherValue property represents the higher value within the selected range.
-		/// </summary>
-		public static readonly DependencyProperty HigherValueProperty = DependencyProperty.Register("HigherValue", typeof(double), typeof(RangeSlider)
+        #region HigherValue
+        /// <summary>
+        /// HigherValue property represents the higher value within the selected range.
+        /// </summary>
+        public static readonly DependencyProperty HigherValueProperty = DependencyProperty.Register("HigherValue", typeof(double), typeof(RangeSlider)
 		  , new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, RangeSlider.OnHigherValueChanged, RangeSlider.OnCoerceHigherValueChanged));
 
 		public double HigherValue
-		{
-			get
-			{
-				return (double)GetValue(RangeSlider.HigherValueProperty);
-			}
-			set
-			{
-				SetValue(RangeSlider.HigherValueProperty, value);
-			}
-		}
+        {
+            get => (double)GetValue(RangeSlider.HigherValueProperty);
+            set => SetValue(RangeSlider.HigherValueProperty, value);
+        }
 
-		private static object OnCoerceHigherValueChanged(DependencyObject d, object basevalue)
+        private static object OnCoerceHigherValueChanged(DependencyObject d, object basevalue)
 		{
 			var rangeSlider = (RangeSlider)d;
 			if ((rangeSlider == null) || !rangeSlider.IsLoaded)
@@ -147,18 +129,12 @@ namespace ModernThemables.Controls
 		  , new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, RangeSlider.OnLowerValueChanged, RangeSlider.OnCoerceLowerValueChanged));
 
 		public double LowerValue
-		{
-			get
-			{
-				return (double)GetValue(RangeSlider.LowerValueProperty);
-			}
-			set
-			{
-				SetValue(RangeSlider.LowerValueProperty, value);
-			}
-		}
+        {
+            get => (double)GetValue(RangeSlider.LowerValueProperty);
+            set => SetValue(RangeSlider.LowerValueProperty, value);
+        }
 
-		private static object OnCoerceLowerValueChanged(DependencyObject d, object basevalue)
+        private static object OnCoerceLowerValueChanged(DependencyObject d, object basevalue)
 		{
 			var rangeSlider = (RangeSlider)d;
 			if ((rangeSlider == null) || !rangeSlider.IsLoaded)
@@ -199,18 +175,12 @@ namespace ModernThemables.Controls
 		  , new FrameworkPropertyMetadata(RangeSlider.OnMaximumChanged));
 
 		public double Maximum
-		{
-			get
-			{
-				return (double)GetValue(RangeSlider.MaximumProperty);
-			}
-			set
-			{
-				SetValue(RangeSlider.MaximumProperty, value);
-			}
-		}
+        {
+            get => (double)GetValue(RangeSlider.MaximumProperty);
+            set => SetValue(RangeSlider.MaximumProperty, value);
+        }
 
-		private static void OnMaximumChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        private static void OnMaximumChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
 		{
 			if (sender is RangeSlider rangeSlider)
 			{
@@ -233,18 +203,12 @@ namespace ModernThemables.Controls
 		  , new FrameworkPropertyMetadata(RangeSlider.OnMinimumChanged));
 
 		public double Minimum
-		{
-			get
-			{
-				return (double)GetValue(RangeSlider.MinimumProperty);
-			}
-			set
-			{
-				SetValue(RangeSlider.MinimumProperty, value);
-			}
-		}
+        {
+            get => (double)GetValue(RangeSlider.MinimumProperty);
+            set => SetValue(RangeSlider.MinimumProperty, value);
+        }
 
-		private static void OnMinimumChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        private static void OnMinimumChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
 		{
 			if (sender is RangeSlider rangeSlider)
 			{
@@ -271,48 +235,36 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty RangeWidthProperty = RangeWidthPropertyKey.DependencyProperty;
 
 		public double RangeWidth
-		{
-			get
-			{
-				return (double)GetValue(RangeSlider.RangeWidthProperty);
-			}
-			private set
-			{
-				SetValue(RangeSlider.RangeWidthPropertyKey, value);
-			}
-		}
+        {
+            get => (double)GetValue(RangeSlider.RangeWidthProperty);
+            private set => SetValue(RangeSlider.RangeWidthPropertyKey, value);
+        }
 
-		#endregion RangeWidth
+        #endregion RangeWidth
 
-		#region RangeMargin
-		/// <summary>
-		/// RangeMargin property is a readonly property, used to calculate the offset of the range within the left hand side of the range.
-		/// </summary>
+        #region RangeMargin
+        /// <summary>
+        /// RangeMargin property is a readonly property, used to calculate the offset of the range within the left hand side of the range.
+        /// </summary>
 
-		private static readonly DependencyPropertyKey RangeMarginPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeMargin", typeof(Thickness)
+        private static readonly DependencyPropertyKey RangeMarginPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeMargin", typeof(Thickness)
 		  , typeof(RangeSlider), new PropertyMetadata(new Thickness(0)));
 
 		public static readonly DependencyProperty RangeMarginProperty = RangeMarginPropertyKey.DependencyProperty;
 
 		public Thickness RangeMargin
-		{
-			get
-			{
-				return (Thickness)GetValue(RangeSlider.RangeMarginProperty);
-			}
-			private set
-			{
-				SetValue(RangeSlider.RangeMarginPropertyKey, value);
-			}
-		}
+        {
+            get => (Thickness)GetValue(RangeSlider.RangeMarginProperty);
+            private set => SetValue(RangeSlider.RangeMarginPropertyKey, value);
+        }
 
-		#endregion RangeWidth
+        #endregion RangeWidth
 
-		#endregion Properties
+        #endregion Properties
 
-		#region Override
+        #region Override
 
-		public override void OnApplyTemplate()
+        public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
 
@@ -457,35 +409,23 @@ namespace ModernThemables.Controls
 
 		public static readonly RoutedEvent LowerValueChangedEvent = EventManager.RegisterRoutedEvent("LowerValueChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RangeSlider));
 		public event RoutedEventHandler LowerValueChanged
-		{
-			add
-			{
-				AddHandler(RangeSlider.LowerValueChangedEvent, value);
-			}
-			remove
-			{
-				RemoveHandler(RangeSlider.LowerValueChangedEvent, value);
-			}
-		}
+        {
+            add => AddHandler(RangeSlider.LowerValueChangedEvent, value);
+            remove => RemoveHandler(RangeSlider.LowerValueChangedEvent, value);
+        }
 
-		public static readonly RoutedEvent HigherValueChangedEvent = EventManager.RegisterRoutedEvent("HigherValueChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RangeSlider));
+        public static readonly RoutedEvent HigherValueChangedEvent = EventManager.RegisterRoutedEvent("HigherValueChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RangeSlider));
 		public event RoutedEventHandler HigherValueChanged
-		{
-			add
-			{
-				AddHandler(RangeSlider.HigherValueChangedEvent, value);
-			}
-			remove
-			{
-				RemoveHandler(RangeSlider.HigherValueChangedEvent, value);
-			}
-		}
+        {
+            add => AddHandler(RangeSlider.HigherValueChangedEvent, value);
+            remove => RemoveHandler(RangeSlider.HigherValueChangedEvent, value);
+        }
 
-		#endregion //Events
+        #endregion //Events
 
-		#region Events Handlers
+        #region Events Handlers
 
-		private void RangeSlider_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void RangeSlider_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			AdjustView();
 		}

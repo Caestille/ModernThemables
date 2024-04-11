@@ -142,7 +142,7 @@
                         Background="{DynamicResource ThemeTextBrush}"
                         CornerRadius="0,0,4,0"
                         ToolTip="Theme text colour" />
-                    <controls:ExtendedButton
+                    <controls:Button2
                         Grid.RowSpan="2"
                         Grid.ColumnSpan="2"
                         Background="{DynamicResource TextBrush}"
@@ -152,7 +152,7 @@
                         MouseOverColour="{DynamicResource TextBrush}"
                         ToolTip="Change theme colour"
                         ToolTipService.InitialShowDelay="100">
-                        <controls:ExtendedButton.Style>
+                        <controls:Button2.Style>
                             <Style>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
@@ -163,8 +163,8 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </controls:ExtendedButton.Style>
-                    </controls:ExtendedButton>
+                        </controls:Button2.Style>
+                    </controls:Button2>
                 </Grid>
             </Grid>
         </Border>

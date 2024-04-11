@@ -8,46 +8,47 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <ControlTemplate x:Key="GenericColourPickerBoxTemplate" TargetType="{x:Type controls:ColourPickerBox}">
+        <Grid>
+            <Border
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Background="{TemplateBinding Colour,
+                                             Converter={StaticResource ColourToBrushConverter}}"
+                BorderBrush="{TemplateBinding Foreground}"
+                BorderThickness="1"
+                CornerRadius="5"
+                ToolTip="Set colour"
+                ToolTipService.InitialShowDelay="100">
+                <controls:Button2
+                    x:Name="PART_button"
+                    Background="{TemplateBinding Foreground}"
+                    CornerRadius="5"
+                    MouseOverColour="{TemplateBinding Foreground}">
+                    <controls:Button2.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
+                                    <Setter Property="controls:ExtendedButton.Opacity" Value="0.2" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False">
+                                    <Setter Property="controls:ExtendedButton.Opacity" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:Button2.Style>
+                </controls:Button2>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
     <Style TargetType="{x:Type controls:ColourPickerBox}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:ColourPickerBox}">
-                    <Grid>
-                        <Border
-                            Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Background="{TemplateBinding Colour,
-                                                         Converter={StaticResource ColourToBrushConverter}}"
-                            BorderBrush="{DynamicResource TextBrush}"
-                            BorderThickness="1"
-                            CornerRadius="5"
-                            ToolTip="Set colour"
-                            ToolTipService.InitialShowDelay="100">
-                            <controls:ExtendedButton
-                                x:Name="PART_button"
-                                Background="{DynamicResource TextBrush}"
-                                CornerRadius="5"
-                                MouseOverColour="{DynamicResource TextBrush}">
-                                <controls:ExtendedButton.Style>
-                                    <Style>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
-                                                <Setter Property="controls:ExtendedButton.Opacity" Value="0.2" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False">
-                                                <Setter Property="controls:ExtendedButton.Opacity" Value="0" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </controls:ExtendedButton.Style>
-                            </controls:ExtendedButton>
-                        </Border>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Template" Value="{StaticResource GenericColourPickerBoxTemplate}" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="Width" Value="30" />
+        <Setter Property="Height" Value="30" />
     </Style>
 
 </ResourceDictionary>

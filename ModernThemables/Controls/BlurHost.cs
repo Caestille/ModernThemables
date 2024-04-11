@@ -16,7 +16,7 @@ namespace ModernThemables.Controls
 
 		public static readonly DependencyProperty BlurBackgroundProperty =
 			DependencyProperty.Register(
-			  "BlurBackground",
+			  nameof(BlurBackground),
 			  typeof(FrameworkElement),
 			  typeof(BlurHost),
 			  new PropertyMetadata(default(FrameworkElement), OnBlurBackgroundChanged));
@@ -29,7 +29,7 @@ namespace ModernThemables.Controls
 
 		public static readonly DependencyProperty OffsetXProperty =
 			DependencyProperty.Register(
-			  "OffsetX",
+			  nameof(OffsetX),
 			  typeof(double),
 			  typeof(BlurHost),
 			  new PropertyMetadata(0d));
@@ -42,7 +42,7 @@ namespace ModernThemables.Controls
 
 		public static readonly DependencyProperty OffsetYProperty =
 			DependencyProperty.Register(
-			  "OffsetY",
+			  nameof(OffsetY),
 			  typeof(double),
 			  typeof(BlurHost),
 			  new PropertyMetadata(0d));
@@ -55,7 +55,7 @@ namespace ModernThemables.Controls
 
 		public static readonly DependencyProperty BlurRadiusProperty =
 			DependencyProperty.Register(
-			  "BlurRadius",
+			  nameof(BlurRadius),
 			  typeof(double),
 			  typeof(BlurHost),
 			  new UIPropertyMetadata(30d, OnBlurBackgroundChanged));
@@ -68,7 +68,7 @@ namespace ModernThemables.Controls
 
 		public static readonly DependencyProperty BlurOpacityProperty =
 			DependencyProperty.Register(
-			  "BlurOpacity",
+			  nameof(BlurOpacity),
 			  typeof(double),
 			  typeof(BlurHost),
 			  new PropertyMetadata(1.0));
@@ -81,7 +81,7 @@ namespace ModernThemables.Controls
 
 		public static readonly DependencyProperty PreventResampleProperty =
 			DependencyProperty.Register(
-			  "PreventResample",
+			  nameof(PreventResample),
 			  typeof(bool),
 			  typeof(BlurHost),
 			  new PropertyMetadata(false));
@@ -94,7 +94,7 @@ namespace ModernThemables.Controls
 
 		public static readonly DependencyProperty BlurEnabledProperty =
 			DependencyProperty.Register(
-			  "BlurEnabled",
+			  nameof(BlurEnabled),
 			  typeof(bool),
 			  typeof(BlurHost),
 			  new PropertyMetadata(true));
@@ -107,7 +107,7 @@ namespace ModernThemables.Controls
 
 		public static readonly DependencyProperty RedrawTriggerProperty =
 			DependencyProperty.Register(
-			  "RedrawTrigger",
+			  nameof(RedrawTrigger),
 			  typeof(object),
 			  typeof(BlurHost),
 			  new PropertyMetadata(new object(), Draw));

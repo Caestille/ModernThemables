@@ -4,7 +4,7 @@
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
-    <Style x:Key="TitleBarButton" TargetType="{x:Type controls:ExtendedButton}">
+    <Style x:Key="TitleBarButton" TargetType="{x:Type controls:Button2}">
         <Setter Property="Width" Value="46" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Margin" Value="1,1,1,0" />
@@ -26,7 +26,7 @@
 
     <ControlTemplate x:Key="WindowButtonCommands" TargetType="{x:Type controls:WindowButtonCommands}">
         <StackPanel Orientation="Horizontal">
-            <controls:ExtendedButton
+            <controls:Button2
                 x:Name="PART_ThemeSetButton"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="Set theme">
@@ -40,14 +40,14 @@
                         <RotateTransform x:Name="RotateTransformBlah" Angle="0" />
                     </scalableicons:Icon.RenderTransform>
                 </scalableicons:Icon>
-            </controls:ExtendedButton>
+            </controls:Button2>
             <Border
                 x:Name="PART_Splitter"
                 Width="1"
                 Margin="1,4,1,4"
                 Background="{DynamicResource ThemeTextBrush}"
                 Opacity="0.2" />
-            <controls:ExtendedButton
+            <controls:Button2
                 x:Name="PART_Min"
                 AutomationProperties.AutomationId="Minimize"
                 AutomationProperties.Name="Minimize"
@@ -61,8 +61,8 @@
                     VerticalAlignment="Bottom"
                     Foreground="{TemplateBinding Foreground}"
                     Kind="Minimise" />
-            </controls:ExtendedButton>
-            <controls:ExtendedButton
+            </controls:Button2>
+            <controls:Button2
                 x:Name="PART_Max"
                 AutomationProperties.AutomationId="MaximizeRestore"
                 AutomationProperties.Name="Maximize"
@@ -74,8 +74,8 @@
                     Height="10"
                     Foreground="{TemplateBinding Foreground}"
                     Kind="Maximise" />
-            </controls:ExtendedButton>
-            <controls:ExtendedButton
+            </controls:Button2>
+            <controls:Button2
                 x:Name="PART_Close"
                 AutomationProperties.AutomationId="Close"
                 AutomationProperties.Name="Close"
@@ -89,7 +89,7 @@
                     Height="10"
                     Foreground="{TemplateBinding Foreground}"
                     Kind="Close" />
-            </controls:ExtendedButton>
+            </controls:Button2>
         </StackPanel>
         <ControlTemplate.Triggers>
             <Trigger Property="IsThemingMenuVisible" Value="True">

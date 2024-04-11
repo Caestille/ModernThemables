@@ -58,7 +58,7 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <controls:ExtendedButton
+                        <controls:Button2
                             x:Name="UpButton"
                             Margin="0,3"
                             Background="Transparent"
@@ -73,8 +73,8 @@
                                     Kind="ArrowUp"
                                     Visibility="{Binding ElementName=UpButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
                             </Grid>
-                        </controls:ExtendedButton>
-                        <controls:ExtendedButton
+                        </controls:Button2>
+                        <controls:Button2
                             x:Name="DownButton"
                             Grid.Row="2"
                             Margin="0,3"
@@ -90,7 +90,7 @@
                                     Kind="ArrowDown"
                                     Visibility="{Binding ElementName=DownButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
                             </Grid>
-                        </controls:ExtendedButton>
+                        </controls:Button2>
                         <Track
                             x:Name="PART_Track"
                             Grid.Row="1"

@@ -30,11 +30,11 @@ namespace ModernThemables.Controls
 			new PropertyMetadata(0d, OnSetStrokeFraction));
 
 		public bool RoundedEnd
-		{
-			get { return (bool)GetValue(RoundedEndProperty); }
-			set { SetValue(RoundedEndProperty, value); }
-		}
-		public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
+        {
+            get => (bool)GetValue(RoundedEndProperty);
+            set => SetValue(RoundedEndProperty, value);
+        }
+        public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
 			"RoundedEnd",
 			typeof(bool),
 			typeof(CircularProgressBar),

@@ -22,7 +22,7 @@
 			Margin="1"
 			VerticalAlignment="Bottom"
 			Background="{DynamicResource MenuBrush}" />
-		<local:ExtendedButton
+		<local:Button2
 			Width="60"
 			Margin="10"
 			Padding="0,3"
@@ -37,7 +37,7 @@
 			Foreground="{DynamicResource TextBrush}"
 			MouseDownColour="{DynamicResource ControlClickablePartMouseDownBrush}"
 			MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}" />
-		<local:ExtendedButton
+		<local:Button2
 			Width="60"
 			Margin="10"
 			Padding="0,3"

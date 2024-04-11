@@ -8,11 +8,11 @@ namespace ModernThemables.Controls
 	public class ProgressArc : Shape
 	{
 		public double Radius
-		{
-			get { return (double)GetValue(RadiusProperty); }
-			set { SetValue(RadiusProperty, value); }
-		}
-		public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
+        {
+            get => (double)GetValue(RadiusProperty);
+            set => SetValue(RadiusProperty, value);
+        }
+        public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
 			"Radius",
 			typeof(double),
 			typeof(ProgressArc),
@@ -21,11 +21,11 @@ namespace ModernThemables.Controls
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 		public bool IsIndeterminate
-		{
-			get { return (bool)GetValue(IsIndeterminateProperty); }
-			set { SetValue(IsIndeterminateProperty, value); }
-		}
-		public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
+        {
+            get => (bool)GetValue(IsIndeterminateProperty);
+            set => SetValue(IsIndeterminateProperty, value);
+        }
+        public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
 			"IsIndeterminate",
 			typeof(bool),
 			typeof(ProgressArc),
@@ -34,11 +34,11 @@ namespace ModernThemables.Controls
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 		public bool RoundedEnd
-		{
-			get { return (bool)GetValue(RoundedEndProperty); }
-			set { SetValue(RoundedEndProperty, value); }
-		}
-		public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
+        {
+            get => (bool)GetValue(RoundedEndProperty);
+            set => SetValue(RoundedEndProperty, value);
+        }
+        public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
 			"RoundedEnd",
 			typeof(bool),
 			typeof(ProgressArc),
@@ -47,11 +47,11 @@ namespace ModernThemables.Controls
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 		public double InnerRadiusFraction
-		{
-			get { return (double)GetValue(InnerRadiusProperty); }
-			set { SetValue(InnerRadiusProperty, value); }
-		}
-		public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
+        {
+            get => (double)GetValue(InnerRadiusProperty);
+            set => SetValue(InnerRadiusProperty, value);
+        }
+        public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
 			"InnerRadiusFraction",
 			typeof(double),
 			typeof(ProgressArc),
@@ -60,11 +60,11 @@ namespace ModernThemables.Controls
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 		public double RotationAngle
-		{
-			get { return (double)GetValue(RotationAngleProperty); }
-			set { SetValue(RotationAngleProperty, value); }
-		}
-		public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
+        {
+            get => (double)GetValue(RotationAngleProperty);
+            set => SetValue(RotationAngleProperty, value);
+        }
+        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
 			"RotationAngle",
 			typeof(double),
 			typeof(ProgressArc),
@@ -73,11 +73,11 @@ namespace ModernThemables.Controls
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 		public double CentreX
-		{
-			get { return (double)GetValue(CentreXProperty); }
-			set { SetValue(CentreXProperty, value); }
-		}
-		public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
+        {
+            get => (double)GetValue(CentreXProperty);
+            set => SetValue(CentreXProperty, value);
+        }
+        public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
 			"CentreX",
 			typeof(double),
 			typeof(ProgressArc),
@@ -86,11 +86,11 @@ namespace ModernThemables.Controls
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 		public double CentreY
-		{
-			get { return (double)GetValue(CentreYProperty); }
-			set { SetValue(CentreYProperty, value); }
-		}
-		public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
+        {
+            get => (double)GetValue(CentreYProperty);
+            set => SetValue(CentreYProperty, value);
+        }
+        public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
 			"CentreY",
 			typeof(double),
 			typeof(ProgressArc),
@@ -99,11 +99,11 @@ namespace ModernThemables.Controls
 				FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 		public double Percentage
-		{
-			get { return (double)GetValue(PercentageProperty); }
-			set { SetValue(PercentageProperty, value); }
-		}
-		public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
+        {
+            get => (double)GetValue(PercentageProperty);
+            set => SetValue(PercentageProperty, value);
+        }
+        public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
 			"Percentage",
 			typeof(double),
 			typeof(ProgressArc),

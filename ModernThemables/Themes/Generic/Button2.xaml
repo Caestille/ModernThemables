@@ -1,0 +1,55 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:ModernThemables.Controls"
+    xmlns:vms="clr-namespace:ModernThemables.ViewModels"
+    xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
+
+    <helperclasses:BindingProxy x:Key="PrimaryBrush" Data="{DynamicResource PrimaryControlBrush}" />
+    <helperclasses:BindingProxy x:Key="PrimaryText" Data="{DynamicResource PrimaryTextBrush}" />
+
+    <ControlTemplate x:Key="GenericButton2Template" TargetType="{x:Type controls:Button2}">
+        <Border
+            x:Name="PART_border"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <ContentPresenter
+                x:Name="contentPresenter"
+                Margin="{TemplateBinding Padding}"
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                Focusable="False"
+                RecognizesAccessKey="True"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="PART_border" Property="Background" Value="{Binding MouseOverBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter TargetName="PART_border" Property="Background" Value="{Binding MouseDownBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter TargetName="PART_border" Property="Background" Value="{Binding PrimaryBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static vms:ThemeManager.DisabledModifier}}" />
+                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding PrimaryText, Converter={StaticResource BrushBrightnessConverter},ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <helperclasses:BindingProxy x:Key="PrimaryBrush" Data="{DynamicResource PrimaryControlBrush}" />
+
+    <Style TargetType="{x:Type controls:Button2}">
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="MouseOverBrush" Value="{Binding PrimaryBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseOverModifier}}" />
+        <Setter Property="MouseDownBrush" Value="{Binding PrimaryBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Template" Value="{StaticResource GenericButton2Template}" />
+    </Style>
+
+</ResourceDictionary>

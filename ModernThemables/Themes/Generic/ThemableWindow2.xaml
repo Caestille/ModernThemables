@@ -133,7 +133,7 @@
                             FocusVisualStyle="{x:Null}"
                             UseLayoutRounding="False" />
 
-                        <controls:ExtendedButton
+                        <controls:Button2
                             x:Name="PART_SettingsCloseRegion"
                             Grid.Row="1"
                             Grid.ColumnSpan="3"
@@ -180,7 +180,7 @@
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Bottom" />
                                     </controls:BlurHost>
-                                    <controls:ExtendedButton
+                                    <controls:Button2
                                         x:Name="PART_SettingsCloseButton"
                                         Width="40"
                                         Height="30"
@@ -196,7 +196,7 @@
                                             Height="10"
                                             Foreground="{DynamicResource TextBrush}"
                                             Kind="Close" />
-                                    </controls:ExtendedButton>
+                                    </controls:Button2>
                                 </Grid>
                             </Border>
                         </Grid>

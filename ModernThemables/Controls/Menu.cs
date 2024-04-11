@@ -18,8 +18,8 @@ namespace ModernThemables.Controls
         private const string PART_PinButton = "PART_PinButton";
         private const string PART_SearchBox = "PART_SearchBox";
 
-        private ExtendedButton? openButton;
-        private ExtendedButton? pinButton;
+        private Button2? openButton;
+        private Button2? pinButton;
         private SearchBox? searchBox;
 
         static Menu()
@@ -194,11 +194,11 @@ namespace ModernThemables.Controls
             base.OnApplyTemplate();
 
             if (openButton != null) openButton.Click -= OpenButton_Click;
-            if (Template.FindName(PART_OpenButton, this) is ExtendedButton open) openButton = open;
+            if (Template.FindName(PART_OpenButton, this) is Button2 open) openButton = open;
             if (openButton != null) openButton.Click += OpenButton_Click;
 
             if (pinButton != null) pinButton.Click -= PinButton_Click;
-            if (Template.FindName(PART_PinButton, this) is ExtendedButton pin) pinButton = pin;
+            if (Template.FindName(PART_PinButton, this) is Button2 pin) pinButton = pin;
             if (pinButton != null) pinButton.Click += PinButton_Click; ;
 
             if (searchBox != null) searchBox.SearchTextChanged -= SearchBox_SearchTextChanged;

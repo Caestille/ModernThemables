@@ -23,8 +23,8 @@
                         <Grid.Resources>
                             <Style
                                 x:Key="RoundButtonStyle"
-                                BasedOn="{StaticResource ResourceKey={x:Type controls:ExtendedButton}}"
-                                TargetType="{x:Type controls:ExtendedButton}">
+                                BasedOn="{StaticResource ResourceKey={x:Type controls:Button2}}"
+                                TargetType="{x:Type controls:Button2}">
                                 <Setter Property="Width" Value="20" />
                                 <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Width}" />
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -54,7 +54,7 @@
                             <!--#region Single item grid-->
                             <Grid x:Name="SingleItemGrid">
                                 <Border>
-                                    <controls:ExtendedButton
+                                    <controls:Button2
                                         Width="Auto"
                                         Height="Auto"
                                         MinHeight="40"
@@ -207,25 +207,25 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <!--#region Add child button-->
-                                                <controls:ExtendedButton
+                                                <controls:Button2
                                                     HorizontalAlignment="Right"
                                                     Background="Transparent"
                                                     Command="{Binding AddChildCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                                     Foreground="{DynamicResource StatusTextBrush}"
                                                     Style="{StaticResource RoundButtonStyle}"
                                                     ToolTip="Add">
-                                                    <controls:ExtendedButton.Visibility>
+                                                    <controls:Button2.Visibility>
                                                         <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
                                                             <Binding Path="CanAddChild" RelativeSource="{RelativeSource TemplatedParent}" />
                                                             <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
                                                             <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                                         </MultiBinding>
-                                                    </controls:ExtendedButton.Visibility>
+                                                    </controls:Button2.Visibility>
                                                     <scalableicons:Icon Margin="2" Kind="Plus" />
-                                                </controls:ExtendedButton>
+                                                </controls:Button2>
                                                 <!--#endregion-->
                                                 <!--#region Delete button-->
-                                                <controls:ExtendedButton
+                                                <controls:Button2
                                                     Grid.Column="1"
                                                     Padding="3"
                                                     HorizontalAlignment="Right"
@@ -235,15 +235,15 @@
                                                     Foreground="{DynamicResource StatusTextBrush}"
                                                     Style="{StaticResource RoundButtonStyle}"
                                                     ToolTip="Delete">
-                                                    <controls:ExtendedButton.Visibility>
+                                                    <controls:Button2.Visibility>
                                                         <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
                                                             <Binding Path="CanDelete" RelativeSource="{RelativeSource TemplatedParent}" />
                                                             <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
                                                             <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                                         </MultiBinding>
-                                                    </controls:ExtendedButton.Visibility>
+                                                    </controls:Button2.Visibility>
                                                     <scalableicons:Icon Margin="1,0,0,0" Kind="Bin" />
-                                                </controls:ExtendedButton>
+                                                </controls:Button2>
                                                 <!--#endregion-->
                                                 <!--#region Drop down indicator-->
                                                 <Grid
@@ -280,7 +280,7 @@
                                             </Grid>
                                         </Grid>
                                         <!--#endregion-->
-                                    </controls:ExtendedButton>
+                                    </controls:Button2>
                                     <Border.Style>
                                         <Style>
                                             <Setter Property="ToolTipService.InitialShowDelay" Value="200" />

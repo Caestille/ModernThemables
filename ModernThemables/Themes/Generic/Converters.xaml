@@ -11,6 +11,8 @@
     <converters:RoundedGeometryGroupConverter x:Key="RoundedGeometryGroupConverter" />
     <converters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />
     <converters:MultiBindingDoubleToBorderThicknessConverter x:Key="MultiBindingDoubleToBorderThicknessConverter" />
+    <converters:BrushBrightnessConverter x:Key="BrushBrightnessConverter" />
+    <converters:ColourInverterConverter x:Key="ColourInverterConverter" />
     <chartConverters:PieCentreRadiusConverter x:Key="PieCentreRadiusConverter" />
     <chartConverters:PieLabelMarginConverter x:Key="PieLabelMarginConverter" />
     <chartConverters:PieCentrererConverter x:Key="PieCentrererConverter" />

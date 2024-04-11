@@ -3,30 +3,32 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls">
 
+    <ControlTemplate x:Key="GenericDateTimeTextboxTemplate" TargetType="{x:Type controls:DatetimeTextBox}">
+        <Border
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBox
+                    x:Name="PART_textbox"
+                    Width="Auto"
+                    Height="Auto"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Foreground="{TemplateBinding Foreground}"
+                    SnapsToDevicePixels="True" />
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
     <Style TargetType="{x:Type controls:DatetimeTextBox}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:DatetimeTextBox}">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <TextBox
-                                x:Name="PART_textbox"
-                                Width="Auto"
-                                Height="Auto"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Foreground="{TemplateBinding Foreground}"
-                                SnapsToDevicePixels="True" />
-                        </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Template" Value="{StaticResource GenericDateTimeTextboxTemplate}" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
 </ResourceDictionary>

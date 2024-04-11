@@ -92,7 +92,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <controls:ExtendedButton
+                            <controls:Button2
                                 x:Name="PART_button"
                                 Grid.Column="2"
                                 Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
@@ -111,7 +111,7 @@
                                     VerticalAlignment="Stretch"
                                     Background="Transparent"
                                     Kind="Close" />
-                            </controls:ExtendedButton>
+                            </controls:Button2>
                         </Grid>
                     </Grid>
                 </ControlTemplate>

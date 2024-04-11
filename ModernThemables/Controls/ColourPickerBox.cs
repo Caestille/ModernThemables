@@ -10,7 +10,7 @@ namespace ModernThemables.Controls
 	{
 		private const string PART_button = "PART_button";
 
-		private ExtendedButton? button;
+		private Button2? button;
 
 		public event EventHandler<Color>? ColourChanged;
 
@@ -58,7 +58,7 @@ namespace ModernThemables.Controls
 				button.Click -= Button_Click;
 			}
 
-			if (Template.FindName(PART_button, this) is ExtendedButton bt)
+			if (Template.FindName(PART_button, this) is Button2 bt)
 			{
 				button = bt;
 			}

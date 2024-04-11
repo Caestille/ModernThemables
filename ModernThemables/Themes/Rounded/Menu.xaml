@@ -106,7 +106,7 @@
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <controls:ExtendedButton
+                                            <controls:Button2
                                                 x:Name="PART_OpenButton"
                                                 Grid.Column="0"
                                                 Width="30"
@@ -117,8 +117,8 @@
                                                 BorderThickness="0"
                                                 CornerRadius="5"
                                                 Foreground="{DynamicResource TextBrush}">
-                                                <controls:ExtendedButton.Style>
-                                                    <Style TargetType="{x:Type controls:ExtendedButton}">
+                                                <controls:Button2.Style>
+                                                    <Style TargetType="{x:Type controls:Button2}">
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsMenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                                 <Setter Property="Button.ToolTip" Value="Collapse Menu" />
@@ -128,8 +128,8 @@
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </controls:ExtendedButton.Style>
-                                                <controls:ExtendedButton.Visibility>
+                                                </controls:Button2.Style>
+                                                <controls:Button2.Visibility>
                                                     <MultiBinding Converter="{StaticResource MultiBoolOrToVisibilityConverter}">
                                                         <Binding
                                                             Converter="{StaticResource BoolInverter}"
@@ -140,9 +140,9 @@
                                                             Path="IsMenuOpen"
                                                             RelativeSource="{RelativeSource TemplatedParent}" />
                                                     </MultiBinding>
-                                                </controls:ExtendedButton.Visibility>
+                                                </controls:Button2.Visibility>
                                                 <!--#region Button icon-->
-                                                <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ExtendedButton}}, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ExtendedButton}}, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-3}">
+                                                <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Button2}}, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Button2}}, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-3}">
                                                     <Grid.Background>
                                                         <SolidColorBrush Opacity="0.01" Color="Black" />
                                                     </Grid.Background>
@@ -162,8 +162,8 @@
                                                         IsOpen="{TemplateBinding IsMenuOpen}" />
                                                 </Grid>
                                                 <!--#endregion-->
-                                            </controls:ExtendedButton>
-                                            <controls:ExtendedButton
+                                            </controls:Button2>
+                                            <controls:Button2
                                                 x:Name="PART_PinButton"
                                                 Grid.Column="1"
                                                 Width="30"
@@ -176,8 +176,8 @@
                                                 Foreground="{DynamicResource TextBrush}">
                                                 <!--#region Button icon-->
                                                 <Grid
-                                                    Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ExtendedButton}}, Path=ActualWidth}"
-                                                    Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ExtendedButton}}, Path=ActualHeight}"
+                                                    Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Button2}}, Path=ActualWidth}"
+                                                    Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Button2}}, Path=ActualHeight}"
                                                     Margin="0,-1,0,0">
                                                     <Grid.Background>
                                                         <SolidColorBrush Opacity="0.01" Color="Black" />
@@ -200,7 +200,7 @@
                                                         Kind="Pin" />
                                                 </Grid>
                                                 <!--#endregion-->
-                                            </controls:ExtendedButton>
+                                            </controls:Button2>
                                             <controls:SearchBox
                                                 x:Name="PART_SearchBox"
                                                 Grid.Column="2"

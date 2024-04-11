@@ -9,8 +9,8 @@ namespace ModernThemables.Charting.Models.PieChart
     {
         public double Radius
         {
-            get { return (double)GetValue(RadiusProperty); }
-            set { SetValue(RadiusProperty, value); }
+            get => (double)GetValue(RadiusProperty);
+            set => SetValue(RadiusProperty, value);
         }
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
             "Radius",
@@ -21,11 +21,11 @@ namespace ModernThemables.Charting.Models.PieChart
                 FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 		public bool IsIndeterminate
-		{
-			get { return (bool)GetValue(IsIndeterminateProperty); }
-			set { SetValue(IsIndeterminateProperty, value); }
-		}
-		public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
+        {
+            get => (bool)GetValue(IsIndeterminateProperty);
+            set => SetValue(IsIndeterminateProperty, value);
+        }
+        public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
 			"IsIndeterminate",
 			typeof(bool),
 			typeof(PieArc),
@@ -35,8 +35,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
 		public double PushOut
         {
-            get { return (double)GetValue(PushOutProperty); }
-            set { SetValue(PushOutProperty, value); }
+            get => (double)GetValue(PushOutProperty);
+            set => SetValue(PushOutProperty, value);
         }
         public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
             "PushOut",
@@ -48,8 +48,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double InnerRadiusFraction
         {
-            get { return (double)GetValue(InnerRadiusProperty); }
-            set { SetValue(InnerRadiusProperty, value); }
+            get => (double)GetValue(InnerRadiusProperty);
+            set => SetValue(InnerRadiusProperty, value);
         }
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
             "InnerRadiusFraction",
@@ -61,8 +61,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double RotationAngle
         {
-            get { return (double)GetValue(RotationAngleProperty); }
-            set { SetValue(RotationAngleProperty, value); }
+            get => (double)GetValue(RotationAngleProperty);
+            set => SetValue(RotationAngleProperty, value);
         }
         public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
             "RotationAngle",
@@ -74,8 +74,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double CentreX
         {
-            get { return (double)GetValue(CentreXProperty); }
-            set { SetValue(CentreXProperty, value); }
+            get => (double)GetValue(CentreXProperty);
+            set => SetValue(CentreXProperty, value);
         }
         public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
             "CentreX",
@@ -87,8 +87,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double CentreY
         {
-            get { return (double)GetValue(CentreYProperty); }
-            set { SetValue(CentreYProperty, value); }
+            get => (double)GetValue(CentreYProperty);
+            set => SetValue(CentreYProperty, value);
         }
         public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
             "CentreY",
@@ -100,8 +100,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double Percentage
         {
-            get { return (double)GetValue(PercentageProperty); }
-            set { SetValue(PercentageProperty, value); }
+            get => (double)GetValue(PercentageProperty);
+            set => SetValue(PercentageProperty, value);
         }
         public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
             "Percentage",
@@ -112,8 +112,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double PieceValue
         {
-            get { return (double)GetValue(PieceValueProperty); }
-            set { SetValue(PieceValueProperty, value); }
+            get => (double)GetValue(PieceValueProperty);
+            set => SetValue(PieceValueProperty, value);
         }
         public static readonly DependencyProperty PieceValueProperty = DependencyProperty.Register(
             "PieceValue",
