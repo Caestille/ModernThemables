@@ -79,7 +79,7 @@ namespace ModernThemables.ViewModels
 			Messenger.Send(new ViewModelRequestShowMessage(this));
 		}
 
-		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "")
+		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "", int? index = null)
 		{
 			var viewModel = viewModelToAdd ?? (createChildFunc != null ? createChildFunc() : null);
 			if (viewModel is null)
@@ -92,9 +92,16 @@ namespace ModernThemables.ViewModels
 				viewModel.Name = name;
 			}
 
-			ChildViewModels.Add(viewModel);
+            if (index == null)
+            {
+                ChildViewModels.Add(viewModel);
+            }
+            else
+            {
+                ChildViewModels.Insert(index.Value, viewModel);
+            }
 
-			OnPropertyChanged(nameof(ChildViewModels));
+            OnPropertyChanged(nameof(ChildViewModels));
 			OnChildrenChanged();
 		}
 
