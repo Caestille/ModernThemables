@@ -74,12 +74,12 @@ namespace ModernThemables.ViewModels
 			}
 		}
 
-		protected override void Select()
+		public override void Select(GenericViewModelBase? sender = null)
 		{
-			Messenger.Send(new ViewModelRequestShowMessage(this));
+			Messenger.Send(new ViewModelRequestShowMessage(this, sender ?? this));
 		}
 
-		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "")
+		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "", int? index = null)
 		{
 			var viewModel = viewModelToAdd ?? (createChildFunc != null ? createChildFunc() : null);
 			if (viewModel is null)
@@ -92,23 +92,34 @@ namespace ModernThemables.ViewModels
 				viewModel.Name = name;
 			}
 
-			ChildViewModels.Add(viewModel);
+            if (index == null)
+            {
+                ChildViewModels.Add(viewModel);
+            }
+            else
+            {
+                ChildViewModels.Insert(index.Value, viewModel);
+            }
 
-			OnPropertyChanged(nameof(ChildViewModels));
+            OnPropertyChanged(nameof(ChildViewModels));
 			OnChildrenChanged();
 		}
 
-		public override void GetChildren(ref List<object> result, bool recurse)
+		public override List<object> GetChildren(bool recurse = false)
 		{
+            var result = new List<object>();
 			result.AddRange(ChildViewModels);
 
-			if (!recurse)
-				return;
+            if (!recurse)
+                return result;
 
-			foreach (var childVm in ChildViewModels)
+
+            foreach (var childVm in ChildViewModels)
 			{
-				childVm.GetChildren(ref result, true);
+                result.AddRange(childVm.GetChildren(true));
 			}
+
+            return result;
 		}
 
 		protected virtual void OnChildrenChanged() { }

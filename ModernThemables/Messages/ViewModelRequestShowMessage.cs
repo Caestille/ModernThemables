@@ -3,22 +3,28 @@
 namespace ModernThemables.Messages
 {
 	public class ViewModelRequestShowMessage
-	{
-		public GenericViewModelBase ViewModel { get; protected set; }
+    {
+        public GenericViewModelBase Sender { get; protected set; }
 
-		public ViewModelRequestShowMessage(GenericViewModelBase viewModelToShow)
+        public GenericViewModelBase ViewModel { get; protected set; }
+
+		public ViewModelRequestShowMessage(GenericViewModelBase viewModelToShow, GenericViewModelBase sender)
 		{
 			ViewModel = viewModelToShow;
-		}
+            Sender = sender;
+        }
 	}
 
 	public class ViewModelRequestShowMessage<T> where T : GenericViewModelBase
 	{
-		public T ViewModel { get; protected set; }
+        public GenericViewModelBase Sender { get; protected set; }
 
-		public ViewModelRequestShowMessage(T viewModelToShow)
+        public T ViewModel { get; protected set; }
+
+		public ViewModelRequestShowMessage(T viewModelToShow, GenericViewModelBase sender)
 		{
 			ViewModel = viewModelToShow;
-		}
+            Sender = sender;
+        }
 	}
 }

@@ -13,13 +13,13 @@ namespace ModernThemables.ViewModels
     public interface IMenuItem
     {
         string Name { get; }
-        void GetChildren(ref List<object> result, bool recurse);
+        List<object> GetChildren(bool recurse = false);
     }
 
-    public class GenericViewModelBase : ObservableRecipient, IMenuItem
+    public abstract class GenericViewModelBase : ObservableRecipient, IMenuItem
 	{
 		private readonly IEnumerable<Action<Color>> notifyColourUpdates = new List<Action<Color>>();
-		public ICommand SelectCommand => new RelayCommand(Select);
+		public ICommand SelectCommand => new RelayCommand(() => Select(this));
 
 		public static string? WorkingDirectory { protected get; set; }
 
@@ -46,9 +46,16 @@ namespace ModernThemables.ViewModels
 		{
 			get => isSelected;
 			set => SetProperty(ref isSelected, value);
-		}
+        }
 
-		private bool isDisplayed;
+        private bool isExpanded;
+        public bool IsExpanded
+        {
+            get => isExpanded;
+            set => SetProperty(ref isExpanded, value);
+        }
+
+        private bool isDisplayed;
 		public bool IsDisplayed
 		{
 			get => isDisplayed;
@@ -68,9 +75,9 @@ namespace ModernThemables.ViewModels
 			notifyColourUpdates.Append(toInvoke);
 		}
 
-		protected virtual void Select() { }
+		public virtual void Select(GenericViewModelBase? sender = null) { }
 
-		public virtual void GetChildren(ref List<object> result, bool recurse) { }
+        public abstract List<object> GetChildren(bool recurse = false);
 
 		protected virtual void OnCommitColourUpdate()
 		{
