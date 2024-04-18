@@ -105,17 +105,21 @@ namespace ModernThemables.ViewModels
 			OnChildrenChanged();
 		}
 
-		public override void GetChildren(ref List<object> result, bool recurse)
+		public override List<object> GetChildren(bool recurse = false)
 		{
+            var result = new List<object>();
 			result.AddRange(ChildViewModels);
 
-			if (!recurse)
-				return;
+            if (!recurse)
+                return result;
 
-			foreach (var childVm in ChildViewModels)
+
+            foreach (var childVm in ChildViewModels)
 			{
-				childVm.GetChildren(ref result, true);
+                result.AddRange(childVm.GetChildren(true));
 			}
+
+            return result;
 		}
 
 		protected virtual void OnChildrenChanged() { }

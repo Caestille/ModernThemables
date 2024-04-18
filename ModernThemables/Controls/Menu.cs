@@ -182,7 +182,7 @@ namespace ModernThemables.Controls
             {
                 if (Items == null) return new RangeObservableCollection<GenericViewModelBase>();
                 var result = new List<object>(Items);
-                Items.ToList().ForEach(x => x.GetChildren(ref result, true));
+                Items.ToList().ForEach(x => result.AddRange(x.GetChildren(true)));
                 return new RangeObservableCollection<GenericViewModelBase>(result.Cast<GenericViewModelBase>());
             }
         }
