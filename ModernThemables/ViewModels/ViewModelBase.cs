@@ -74,9 +74,9 @@ namespace ModernThemables.ViewModels
 			}
 		}
 
-		protected override void Select()
+		public override void Select(GenericViewModelBase? sender = null)
 		{
-			Messenger.Send(new ViewModelRequestShowMessage(this));
+			Messenger.Send(new ViewModelRequestShowMessage(this, sender ?? this));
 		}
 
 		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "", int? index = null)

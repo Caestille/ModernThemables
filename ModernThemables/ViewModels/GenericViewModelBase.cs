@@ -19,7 +19,7 @@ namespace ModernThemables.ViewModels
     public abstract class GenericViewModelBase : ObservableRecipient, IMenuItem
 	{
 		private readonly IEnumerable<Action<Color>> notifyColourUpdates = new List<Action<Color>>();
-		public ICommand SelectCommand => new RelayCommand(Select);
+		public ICommand SelectCommand => new RelayCommand(() => Select(this));
 
 		public static string? WorkingDirectory { protected get; set; }
 
@@ -75,7 +75,7 @@ namespace ModernThemables.ViewModels
 			notifyColourUpdates.Append(toInvoke);
 		}
 
-		protected virtual void Select() { }
+		public virtual void Select(GenericViewModelBase? sender = null) { }
 
         public abstract List<object> GetChildren(bool recurse = false);
 
