@@ -16,7 +16,6 @@ namespace ModernThemables.ViewModels
     public class ViewModelBase<TChild> : GenericViewModelBase where TChild : GenericViewModelBase
     {
         public ICommand AddChildCommand => new RelayCommand(() => AddChild());
-        public ICommand RequestDeleteCommand => new RelayCommand(RequestDelete);
 
         private readonly Func<TChild>? createChildFunc;
 
@@ -58,15 +57,11 @@ namespace ModernThemables.ViewModels
             }
         }
 
-		protected virtual void RequestDelete()
-		{
-			Messenger.Send(new ViewModelRequestDeleteMessage(this));
-		}
-
 		protected virtual void OnRequestDeleteReceived(ViewModelRequestDeleteMessage message)
 		{
 			if (message.ViewModel is TChild child && ChildViewModels.Contains(child))
 			{
+                child.OnDelete();
 				ChildViewModels.Remove(child);
 
 				OnPropertyChanged(nameof(ChildViewModels));
@@ -74,12 +69,7 @@ namespace ModernThemables.ViewModels
 			}
 		}
 
-		protected override void Select()
-		{
-			Messenger.Send(new ViewModelRequestShowMessage(this));
-		}
-
-		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "")
+		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "", int? index = null)
 		{
 			var viewModel = viewModelToAdd ?? (createChildFunc != null ? createChildFunc() : null);
 			if (viewModel is null)
@@ -92,23 +82,34 @@ namespace ModernThemables.ViewModels
 				viewModel.Name = name;
 			}
 
-			ChildViewModels.Add(viewModel);
+            if (index == null)
+            {
+                ChildViewModels.Add(viewModel);
+            }
+            else
+            {
+                ChildViewModels.Insert(index.Value, viewModel);
+            }
 
-			OnPropertyChanged(nameof(ChildViewModels));
+            OnPropertyChanged(nameof(ChildViewModels));
 			OnChildrenChanged();
 		}
 
-		public override void GetChildren(ref List<object> result, bool recurse)
+		public override List<object> GetChildren(bool recurse = false)
 		{
+            var result = new List<object>();
 			result.AddRange(ChildViewModels);
 
-			if (!recurse)
-				return;
+            if (!recurse)
+                return result;
 
-			foreach (var childVm in ChildViewModels)
+
+            foreach (var childVm in ChildViewModels)
 			{
-				childVm.GetChildren(ref result, true);
+                result.AddRange(childVm.GetChildren(true));
 			}
+
+            return result;
 		}
 
 		protected virtual void OnChildrenChanged() { }
