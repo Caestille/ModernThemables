@@ -21,8 +21,9 @@ namespace ModernThemables.ViewModels
 	{
 		private readonly IEnumerable<Action<Color>> notifyColourUpdates = new List<Action<Color>>();
 		public ICommand SelectCommand => new RelayCommand(() => Select(this));
+        public ICommand DeleteCommand => new RelayCommand(() => Delete());
 
-		public static string? WorkingDirectory { protected get; set; }
+        public static string? WorkingDirectory { protected get; set; }
 
 		private string name = string.Empty;
 		public virtual string Name

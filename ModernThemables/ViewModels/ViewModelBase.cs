@@ -16,7 +16,6 @@ namespace ModernThemables.ViewModels
     public class ViewModelBase<TChild> : GenericViewModelBase where TChild : GenericViewModelBase
     {
         public ICommand AddChildCommand => new RelayCommand(() => AddChild());
-        public ICommand DeleteCommand => new RelayCommand(Delete);
 
         private readonly Func<TChild>? createChildFunc;
 
