@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using ModernThemables.Messages;
 
 namespace ModernThemables.ViewModels
 {
@@ -73,9 +74,19 @@ namespace ModernThemables.ViewModels
 		public void RegisterColourUpdateNotification(Action<Color> toInvoke)
 		{
 			notifyColourUpdates.Append(toInvoke);
-		}
+        }
 
-		public virtual void Select(GenericViewModelBase? sender = null) { }
+        public virtual void Select(GenericViewModelBase? sender = null)
+        {
+            Messenger.Send(new ViewModelRequestShowMessage(this, sender ?? this));
+        }
+
+        public virtual void Delete()
+        {
+            Messenger.Send(new ViewModelRequestDeleteMessage(this));
+        }
+
+        public  virtual void OnDelete() { }
 
         public abstract List<object> GetChildren(bool recurse = false);
 
