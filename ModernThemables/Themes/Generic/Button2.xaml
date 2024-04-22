@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:vms="clr-namespace:ModernThemables.ViewModels"
+    xmlns:mt="clr-namespace:ModernThemables"
     xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
 
     <helperclasses:BindingProxy x:Key="PrimaryBrush" Data="{DynamicResource PrimaryControlBrush}" />
@@ -38,16 +39,14 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <helperclasses:BindingProxy x:Key="PrimaryBrush" Data="{DynamicResource PrimaryControlBrush}" />
-
     <Style TargetType="{x:Type controls:Button2}">
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="MouseOverBrush" Value="{Binding PrimaryBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseOverModifier}}" />
-        <Setter Property="MouseDownBrush" Value="{Binding PrimaryBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
+        <Setter Property="MouseOverBrush" Value="{mt:DynamicResourceBinding PrimaryControlBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseOverModifier}}" />
+        <Setter Property="MouseDownBrush" Value="{Binding PrimaryBrush, Converter={StaticResource BrushBrightnessConverter Invert}, ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="Template" Value="{StaticResource GenericButton2Template}" />
     </Style>
