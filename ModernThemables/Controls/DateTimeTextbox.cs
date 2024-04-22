@@ -20,8 +20,6 @@ namespace ModernThemables.Controls
 
 		private const string PART_textbox = "PART_textbox";
 
-		private bool dateValid;
-
 		private TextBox? textbox;
 
 		private bool blockUpdate;
@@ -81,7 +79,7 @@ namespace ModernThemables.Controls
 		}
 
 		public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register(
-			"DateTime",
+            nameof(DateTime),
 			typeof(DateTime?),
 			typeof(DatetimeTextBox),
 			new FrameworkPropertyMetadata(null, OnSetDateTime));
@@ -93,24 +91,47 @@ namespace ModernThemables.Controls
 		}
 
 		public static readonly DependencyProperty FormatProperty = DependencyProperty.Register(
-			"Format",
+            nameof(Format),
 			typeof(string),
 			typeof(DatetimeTextBox),
 			new FrameworkPropertyMetadata("dd/MM/yyyy HH:mm:ss", OnSetFormat));
 
-		public Brush WarningBrush
+        public bool Valid
+        {
+            get => (bool)GetValue(ValidProperty);
+            set => SetValue(ValidProperty, value);
+        }
+
+        public static readonly DependencyProperty ValidProperty = DependencyProperty.Register(
+            nameof(Valid),
+            typeof(bool),
+            typeof(DatetimeTextBox),
+            new FrameworkPropertyMetadata(true));
+
+        public Brush WarningBrush
 		{
 			get => (Brush)GetValue(WarningBrushProperty);
 			set => SetValue(WarningBrushProperty, value);
 		}
 
 		public static readonly DependencyProperty WarningBrushProperty = DependencyProperty.Register(
-			"WarningBrush",
+            nameof(WarningBrush),
 			typeof(Brush),
 			typeof(DatetimeTextBox),
 			new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Red)));
 
-		private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        public CornerRadius CornerRadius
+        {
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
+        }
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+            nameof(CornerRadius),
+            typeof(CornerRadius),
+            typeof(DatetimeTextBox),
+            new PropertyMetadata(new CornerRadius(0)));
+
+        private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			var _this = sender as DatetimeTextBox;
 			if (_this != null && _this.textbox != null)
@@ -244,9 +265,8 @@ namespace ModernThemables.Controls
 				textbox.SelectionStart++;
 			}
 
-			dateValid = System.DateTime.TryParseExact(
+			Valid = System.DateTime.TryParseExact(
 				textbox.Text, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
-			FormatText(PART_textbox, textbox, dateValid);
 			CalculateDate();
 		}
 
@@ -369,7 +389,7 @@ namespace ModernThemables.Controls
 
 			Application.Current.Dispatcher.Invoke(() => {
 				DateTime? newVal = null;
-				if (dateValid) newVal = System.DateTime.ParseExact(textbox.Text, Format, CultureInfo.InvariantCulture);
+				if (Valid) newVal = System.DateTime.ParseExact(textbox.Text, Format, CultureInfo.InvariantCulture);
 
 				if (newVal != DateTime)
 				{
@@ -384,35 +404,6 @@ namespace ModernThemables.Controls
 			});
 
 			isKeyboardUpdate = false;
-		}
-
-		private void FormatText(string textBoxName, TextBox textBox, bool valid)
-		{
-			if (!valid && (!validCache.ContainsKey(textBoxName) || validCache[textBoxName] != valid))
-			{
-				BindingExpression expression = textBox.GetBindingExpression(TextBox.ForegroundProperty);
-				if (expression != null)
-				{
-					Binding binding = expression.ParentBinding;
-					cachedBindings[textBoxName] = binding;
-				}
-				cachedBrushes[textBoxName] = textBox.Foreground;
-				textBox.Foreground = WarningBrush;
-				validCache[textBoxName] = valid;
-			}
-			else if (valid && (!validCache.ContainsKey(textBoxName) || validCache[textBoxName] != valid))
-			{
-				if (cachedBrushes.ContainsKey(textBoxName))
-				{
-					textBox.Foreground = cachedBrushes[textBoxName];
-				}
-
-				if (cachedBindings.ContainsKey(textBoxName))
-				{
-					textBox.SetBinding(TextBox.ForegroundProperty, cachedBindings[textBoxName]);
-				}
-				validCache[textBoxName] = valid;
-			}
 		}
 	}
 }

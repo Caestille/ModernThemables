@@ -5,15 +5,21 @@
 
     <ControlTemplate x:Key="GenericBlurHostTemplate" TargetType="{x:Type controls:BlurHost}">
         <Grid>
+            <Border Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" />
             <Border
                 x:Name="PART_BlurDecorator"
+                CornerRadius="{TemplateBinding CornerRadius}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}" />
-            <ContentPresenter />
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
         </Grid>
     </ControlTemplate>
 
     <Style TargetType="{x:Type controls:BlurHost}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Template" Value="{StaticResource GenericBlurHostTemplate}" />
     </Style>
 

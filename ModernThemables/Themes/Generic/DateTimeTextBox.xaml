@@ -1,34 +1,56 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:ModernThemables.Controls">
+    xmlns:controls="clr-namespace:ModernThemables.Controls"
+    xmlns:mt="clr-namespace:ModernThemables">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="GenericDateTimeTextboxTemplate" TargetType="{x:Type controls:DatetimeTextBox}">
         <Border
+            x:Name="Back"
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}">
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <TextBox
-                    x:Name="PART_textbox"
-                    Width="Auto"
-                    Height="Auto"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Foreground="{TemplateBinding Foreground}"
-                    SnapsToDevicePixels="True" />
-            </Grid>
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <TextBox
+                x:Name="PART_textbox"
+                Width="Auto"
+                Height="Auto"
+                Margin="{TemplateBinding Padding}"
+                Background="Transparent"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                CaretBrush="{TemplateBinding Foreground}"
+                BorderThickness="0"
+                SnapsToDevicePixels="True">
+                <TextBox.Style>
+                    <Style>
+                        <Setter Property="TextBox.Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Valid, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
+                                <DataTrigger.Setters>
+                                    <Setter Property="TextBox.Foreground" Value="{Binding WarningBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </DataTrigger.Setters>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </Border>
     </ControlTemplate>
 
     <Style TargetType="{x:Type controls:DatetimeTextBox}">
         <Setter Property="Template" Value="{StaticResource GenericDateTimeTextboxTemplate}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource SecondaryControlBrush}" />
+        <Setter Property="WarningBrush" Value="Red" />
+        <Setter Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.BorderModifier}}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
     </Style>
 
 </ResourceDictionary>

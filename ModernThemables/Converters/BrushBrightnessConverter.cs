@@ -10,9 +10,9 @@ namespace ModernThemables.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is SolidColorBrush brush && float.TryParse((string)parameter, out var changeFactor))
+			if (value is SolidColorBrush brush && parameter is double changeFactor)
             {
-                return new SolidColorBrush(brush.Color.ChangeColourBrightness(changeFactor));
+                return new SolidColorBrush(brush.Color.ChangeColourBrightness((float)changeFactor));
             }
 
             return value;

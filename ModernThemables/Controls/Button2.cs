@@ -17,13 +17,57 @@ namespace ModernThemables.Controls
             typeof(Button2),
             new UIPropertyMetadata(null));
 
-        public new Brush Foreground
+        //public new Brush Foreground
+        //{
+        //    get => (Brush)GetValue(ForegroundProperty);
+        //    set => SetValue(ForegroundProperty, value);
+        //}
+        //public new static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
+        //    nameof(Foreground),
+        //    typeof(Brush),
+        //    typeof(Button2),
+        //    new UIPropertyMetadata(null));
+
+        public new Brush DisabledBackground
         {
-            get => (Brush)GetValue(ForegroundProperty);
-            set => SetValue(ForegroundProperty, value);
+            get => (Brush)GetValue(DisabledBackgroundProperty);
+            set => SetValue(DisabledBackgroundProperty, value);
         }
-        public new static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
-            nameof(Foreground),
+        public new static readonly DependencyProperty DisabledBackgroundProperty = DependencyProperty.Register(
+            nameof(DisabledBackground),
+            typeof(Brush),
+            typeof(Button2),
+            new UIPropertyMetadata(null));
+
+        public new Brush DisabledForeground
+        {
+            get => (Brush)GetValue(DisabledForegroundProperty);
+            set => SetValue(DisabledForegroundProperty, value);
+        }
+        public new static readonly DependencyProperty DisabledForegroundProperty = DependencyProperty.Register(
+            nameof(DisabledForeground),
+            typeof(Brush),
+            typeof(Button2),
+            new UIPropertyMetadata(null));
+
+        public new Brush BorderBrush
+        {
+            get => (Brush)GetValue(BorderBrushProperty);
+            set => SetValue(BorderBrushProperty, value);
+        }
+        public new static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+            nameof(BorderBrush),
+            typeof(Brush),
+            typeof(Button2),
+            new UIPropertyMetadata(null));
+
+        public new Brush DisabledBorderBrush
+        {
+            get => (Brush)GetValue(DisabledBorderBrushProperty);
+            set => SetValue(DisabledBorderBrushProperty, value);
+        }
+        public new static readonly DependencyProperty DisabledBorderBrushProperty = DependencyProperty.Register(
+            nameof(DisabledBorderBrush),
             typeof(Brush),
             typeof(Button2),
             new UIPropertyMetadata(null));

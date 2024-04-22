@@ -34,10 +34,10 @@
                                     <Style>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
-                                                <Setter Property="controls:ExtendedButton.Opacity" Value="0.2" />
+                                                <Setter Property="controls:Button2.Opacity" Value="0.2" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False">
-                                                <Setter Property="controls:ExtendedButton.Opacity" Value="0" />
+                                                <Setter Property="controls:Button2.Opacity" Value="0" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

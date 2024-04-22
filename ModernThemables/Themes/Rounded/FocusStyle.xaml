@@ -7,14 +7,14 @@
                     <Grid>
                         <Border
                             Margin="-3"
-                            Background="{DynamicResource StatusTextBrush}"
+                            Background="{DynamicResource SecondaryTextBrush}"
                             CornerRadius="3"
                             Opacity="0.2"
                             SnapsToDevicePixels="true" />
                         <Border
                             Margin="-3"
                             Background="Transparent"
-                            BorderBrush="{DynamicResource StatusTextBrush}"
+                            BorderBrush="{DynamicResource SecondaryTextBrush}"
                             BorderThickness="1"
                             CornerRadius="3"
                             SnapsToDevicePixels="true" />

@@ -2,7 +2,6 @@
 using System.Windows.Media;
 using System.Globalization;
 using System.Windows.Data;
-using CoreUtilities.HelperClasses.Extensions;
 
 namespace ModernThemables.Converters
 {

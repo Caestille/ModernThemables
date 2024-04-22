@@ -6,10 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons"
-    xmlns:viewmodels="clr-namespace:ModernThemables.ViewModels"
-    x:Name="WindowControl"
-    Width="Auto"
-    Height="Auto"
+    xmlns:mt="clr-namespace:ModernThemables"
     mc:Ignorable="d">
     <Grid Margin="0" Focusable="False">
         <Grid.RowDefinitions>
@@ -26,7 +23,7 @@
         </Grid.ColumnDefinitions>
         <Label
             Content="Sync with Windows"
-            Foreground="{DynamicResource TextBrush}"
+            Foreground="{DynamicResource PrimaryTextBrush}"
             SnapsToDevicePixels="True" />
         <CheckBox
             x:Name="SyncCheckbox"
@@ -42,7 +39,7 @@
             Grid.Row="1"
             Grid.Column="0"
             Content="Brightness Mode"
-            Foreground="{DynamicResource TextBrush}"
+            Foreground="{DynamicResource PrimaryTextBrush}"
             SnapsToDevicePixels="True" />
         <CheckBox
             Grid.Row="1"
@@ -65,21 +62,21 @@
                 Grid.Row="1"
                 Width="15"
                 Height="15"
-                Foreground="{DynamicResource StatusTextBrush}"
+                Foreground="{DynamicResource SecondaryTextBrush}"
                 Kind="Sun"
                 Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfFalseConverter}}" />
             <scalableicons:Icon
                 Grid.Row="1"
                 Width="15"
                 Height="15"
-                Foreground="{DynamicResource StatusTextBrush}"
+                Foreground="{DynamicResource SecondaryTextBrush}"
                 Kind="Moon"
                 Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfTrueConverter}}" />
         </Grid>
         <Label
             Grid.Row="2"
             Content="Transparent Title Bar"
-            Foreground="{DynamicResource TextBrush}"
+            Foreground="{DynamicResource PrimaryTextBrush}"
             SnapsToDevicePixels="True" />
         <CheckBox
             Grid.Row="2"
@@ -93,7 +90,7 @@
         <Label
             Grid.Row="3"
             Content="Theme Colour"
-            Foreground="{DynamicResource TextBrush}"
+            Foreground="{DynamicResource PrimaryTextBrush}"
             SnapsToDevicePixels="True" />
         <Border
             Grid.Row="3"
@@ -105,7 +102,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Background="{Binding Colour, Converter={StaticResource ColourToBrushConverter}}"
-            BorderBrush="{DynamicResource TextBrush}"
+            BorderBrush="{DynamicResource PrimaryTextBrush}"
             BorderThickness="1"
             CornerRadius="5">
             <Grid>
@@ -127,13 +124,13 @@
                     <Border
                         Grid.Row="0"
                         Grid.Column="1"
-                        Background="{DynamicResource ThemeMouseOverBrush}"
+                        Background="{mt:DynamicResourceBinding ThemeBrush, Converter={StaticResource ColourBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.MouseOverModifier}}"
                         CornerRadius="0,4,0,0"
                         ToolTip="Theme mouse over colour" />
                     <Border
                         Grid.Row="1"
                         Grid.Column="0"
-                        Background="{DynamicResource ThemeMouseDownBrush}"
+                        Background="{mt:DynamicResourceBinding ThemeBrush, Converter={StaticResource ColourBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.MouseDownModifier}}"
                         CornerRadius="0,0,0,4"
                         ToolTip="Theme mouse down colour" />
                     <Border
@@ -145,21 +142,20 @@
                     <controls:Button2
                         Grid.RowSpan="2"
                         Grid.ColumnSpan="2"
-                        Background="{DynamicResource TextBrush}"
+                        Background="{DynamicResource PrimaryTextBrush}"
                         Command="{Binding ChangeColourCommand}"
                         CornerRadius="5"
                         IsEnabled="{Binding IsSyncingWithOs, Converter={StaticResource BoolInverter}}"
-                        MouseOverColour="{DynamicResource TextBrush}"
                         ToolTip="Change theme colour"
                         ToolTipService.InitialShowDelay="100">
                         <controls:Button2.Style>
                             <Style>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
-                                        <Setter Property="controls:ExtendedButton.Opacity" Value="0.2" />
+                                        <Setter Property="controls:Button2.Opacity" Value="0.2" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False">
-                                        <Setter Property="controls:ExtendedButton.Opacity" Value="0" />
+                                        <Setter Property="controls:Button2.Opacity" Value="0" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

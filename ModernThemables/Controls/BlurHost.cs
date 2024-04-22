@@ -112,7 +112,18 @@ namespace ModernThemables.Controls
 			  typeof(BlurHost),
 			  new PropertyMetadata(new object(), Draw));
 
-		private Border? PART_BlurDecorator { get; set; }
+        public CornerRadius CornerRadius
+        {
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
+        }
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+            nameof(CornerRadius),
+            typeof(CornerRadius),
+            typeof(BlurHost),
+            new PropertyMetadata(new CornerRadius(0)));
+
+        private Border? PART_BlurDecorator { get; set; }
 		private VisualBrush BlurDecoratorBrush { get; set; }
 
 		static BlurHost()
@@ -161,7 +172,9 @@ namespace ModernThemables.Controls
 			if (TryFindVisualRootContainer(this, out var rootContainer) && rootContainer != null)
 			{
 				rootContainer.SizeChanged += OnRootContainerElementResized;
-			}
+                this.SizeChanged += OnRootContainerElementResized;
+
+            }
 
 			DrawBlurredElementBackground();
 		}

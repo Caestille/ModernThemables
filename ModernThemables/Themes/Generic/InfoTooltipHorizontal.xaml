@@ -4,6 +4,51 @@
         <ResourceDictionary Source="Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <ControlTemplate x:Key="GenericInfoTooltipHorizontalTemplate" TargetType="ToolTip">
+        <Grid>
+            <Border
+                Margin="5,10,10,10"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="10">
+                <ContentPresenter Margin="6" />
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="10"
+                        Opacity="0.6"
+                        ShadowDepth="0"
+                        Color="{Binding PrimaryText, Converter={StaticResource ColourInverterConverter}}" />
+                </Border.Effect>
+            </Border>
+            <Grid
+                Width="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center">
+                <Polygon
+                    Fill="{TemplateBinding Background}"
+                    Points="0,5,5,0,5,10"
+                    Stroke="{TemplateBinding BorderBrush}"
+                    StrokeThickness="1">
+                    <Polygon.Effect>
+                        <DropShadowEffect
+                            BlurRadius="10"
+                            Opacity="0.6"
+                            ShadowDepth="0"
+                            Color="{Binding PrimaryText, Converter={StaticResource ColourInverterConverter}}" />
+                    </Polygon.Effect>
+                </Polygon>
+                <Border
+                    Width="3"
+                    Height="7"
+                    Margin="0,0,-2,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Background="{TemplateBinding Background}" />
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
     <Style x:Key="InfoTooltipHorizontal" TargetType="ToolTip">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Placement" Value="Right" />
@@ -18,55 +63,10 @@
         </Setter>
         <Setter Property="HasDropShadow" Value="False" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ToolTip">
-                    <Grid>
-                        <Border
-                            Margin="5,10,10,10"
-                            Background="{DynamicResource MenuBrush}"
-                            BorderBrush="{DynamicResource MenuBorderBrush}"
-                            BorderThickness="1"
-                            CornerRadius="10">
-                            <ContentPresenter Margin="6" />
-                            <Border.Effect>
-                                <DropShadowEffect
-                                    BlurRadius="10"
-                                    Opacity="0.6"
-                                    ShadowDepth="0"
-                                    Color="{DynamicResource InvertedTextColour}" />
-                            </Border.Effect>
-                        </Border>
-                        <Grid
-                            Width="5"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center">
-                            <Polygon
-                                Fill="{DynamicResource MenuBrush}"
-                                Points="0,5,5,0,5,10"
-                                Stroke="{DynamicResource MenuBorderBrush}"
-                                StrokeThickness="1">
-                                <Polygon.Effect>
-                                    <DropShadowEffect
-                                        BlurRadius="10"
-                                        Opacity="0.6"
-                                        ShadowDepth="0"
-                                        Color="{DynamicResource InvertedTextColour}" />
-                                </Polygon.Effect>
-                            </Polygon>
-                            <Border
-                                Width="3"
-                                Height="7"
-                                Margin="0,0,-2,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Background="{DynamicResource MenuBrush}" />
-                        </Grid>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SecondaryControlBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryControlBrush}" />
+        <Setter Property="Template" Value="{StaticResource GenericInfoTooltipHorizontalTemplate}" />
     </Style>
 
 </ResourceDictionary>

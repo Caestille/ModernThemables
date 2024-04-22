@@ -12,7 +12,7 @@
     <ControlTemplate x:Key="GenericInfoTooltipTemplate" TargetType="ToolTip">
         <Grid>
             <Border
-                Margin="10,10,10,10"
+                Margin="10,8,10,10"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="1"
@@ -52,7 +52,7 @@
                     Margin="0,0,0,-2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
-                    Background="{DynamicResource MenuBrush}" />
+                    Background="{TemplateBinding Background}" />
             </Grid>
         </Grid>
     </ControlTemplate>
@@ -71,7 +71,7 @@
         </Setter>
         <Setter Property="HasDropShadow" Value="False" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="Background" Value="{DynamicResource SecondaryControlBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="Template" Value="{StaticResource GenericInfoTooltipTemplate}" />

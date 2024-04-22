@@ -17,24 +17,21 @@
                 VerticalAlignment="Center"
                 Background="{TemplateBinding Colour,
                                              Converter={StaticResource ColourToBrushConverter}}"
-                BorderBrush="{TemplateBinding Foreground}"
-                BorderThickness="1"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="5"
                 ToolTip="Set colour"
                 ToolTipService.InitialShowDelay="100">
                 <controls:Button2
                     x:Name="PART_button"
                     Background="{TemplateBinding Foreground}"
-                    CornerRadius="5"
-                    MouseOverColour="{TemplateBinding Foreground}">
+                    CornerRadius="5">
                     <controls:Button2.Style>
                         <Style>
+                            <Setter Property="controls:Button2.Opacity" Value="0" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
-                                    <Setter Property="controls:ExtendedButton.Opacity" Value="0.2" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False">
-                                    <Setter Property="controls:ExtendedButton.Opacity" Value="0" />
+                                    <Setter Property="controls:Button2.Opacity" Value="0.2" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -45,10 +42,14 @@
     </ControlTemplate>
 
     <Style TargetType="{x:Type controls:ColourPickerBox}">
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Template" Value="{StaticResource GenericColourPickerBoxTemplate}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="Width" Value="30" />
-        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
     </Style>
 
 </ResourceDictionary>

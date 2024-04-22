@@ -8,9 +8,9 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 
-namespace ModernThemables.ViewModels
+namespace ModernThemables
 {
-	public static class ThemeManager
+    public static class ThemeManager
     {
         [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
         public static extern bool ShouldSystemUseDarkMode();
@@ -20,19 +20,20 @@ namespace ModernThemables.ViewModels
         private static bool isDarkMode;
         private static bool isSyncingWithOs;
 
-        public static Color BackgroundColour => !isDarkMode ? MonoColour(255) : MonoColour(10);
-		public static Color PrimaryTextColour => !isDarkMode ? Colors.Black : Colors.White;
-		public static Color SecondaryTextColour => !isDarkMode ? Colors.Gray : Colors.DarkGray;
-		public static Color TertiaryTextColour => !isDarkMode ? MonoColour(215) : MonoColour(40);
-		public static Color PrimaryControlColour => !isDarkMode ? MonoColour(195) : MonoColour(60);
-		public static Color SecondaryControlColour => !isDarkMode ? MonoColour(235) : MonoColour(20);
+        public static Color BackgroundColour => isDarkMode ? MonoColour(10) : MonoColour(255);
+        public static Color PrimaryTextColour => isDarkMode ? Colors.White : Colors.Black;
+        public static Color SecondaryTextColour => isDarkMode ? Colors.DarkGray : Colors.Gray;
+        public static Color TertiaryTextColour => isDarkMode ? MonoColour(40) : MonoColour(215);
+        public static Color PrimaryControlColour => isDarkMode ? MonoColour(60) : MonoColour(195);
+        public static Color SecondaryControlColour => isDarkMode ? MonoColour(20) : MonoColour(235);
 
-		public static Color ThemeColour = Color.FromArgb(255, 47, 47, 74);
+        public static Color ThemeColour = Color.FromArgb(255, 47, 47, 74);
         public static Color ThemeTextColour = Color.FromArgb(255, 47, 47, 74);
 
-        public static double DisabledModifier => !isDarkMode ? 0.2 : -0.2;
-        public static double MouseOverModifier => !isDarkMode ? -0.1 : 0.1;
-        public static double MouseDownModifier => !isDarkMode ? 0.1 : -0.1;
+        public static double DisabledModifier => isDarkMode ? -0.7 : 0.7;
+        public static double MouseOverModifier => isDarkMode ? 0.1 : -0.1;
+        public static double MouseDownModifier => isDarkMode ? -0.1 : 0.1;
+        public static double BorderModifier => isDarkMode ? 0.3 : -0.3;
 
         static ThemeManager()
         {
@@ -46,7 +47,7 @@ namespace ModernThemables.ViewModels
 
         private static void Load()
         {
-            
+
         }
 
         public static void SetDarkMode(bool isDarkMode)
@@ -80,10 +81,13 @@ namespace ModernThemables.ViewModels
 
         public static void Dispose()
         {
+            if (Application.Current != null)
+            {
+                Application.Current.Dispatcher.ShutdownStarted -= Dispatcher_ShutdownStarted;
+            }
+
             osThemePollTimer.Elapsed -= OsThemePollTimer_Elapsed;
             osThemePollTimer.Stop();
-
-            Application.Current.Dispatcher.ShutdownStarted -= Dispatcher_ShutdownStarted;
         }
 
         private static Color MonoColour(byte value)

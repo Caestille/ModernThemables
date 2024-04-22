@@ -26,4 +26,9 @@
 		<None Include="..\..\CoreUtilities\CoreUtilities\.editorconfig" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Charting\Controls\ChartComponents\" />
+	  <Folder Include="Charting\Themes\" />
+	</ItemGroup>
+
 </Project>

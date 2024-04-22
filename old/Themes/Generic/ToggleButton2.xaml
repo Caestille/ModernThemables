@@ -8,7 +8,7 @@
     <helperclasses:BindingProxy x:Key="PrimaryBrush" Data="{DynamicResource PrimaryControlBrush}" />
     <helperclasses:BindingProxy x:Key="PrimaryText" Data="{DynamicResource PrimaryTextBrush}" />
 
-    <ControlTemplate x:Key="GenericToggleButton2Template" TargetType="{x:Type controls:ExtendedToggleButton}">
+    <ControlTemplate x:Key="GenericToggleButton2Template" TargetType="{x:Type controls:ToggleButton2}">
         <Border
             x:Name="PART_border"
             Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"

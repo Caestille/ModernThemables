@@ -21,7 +21,7 @@
 			Height="40"
 			Margin="1"
 			VerticalAlignment="Bottom"
-			Background="{DynamicResource MenuBrush}" />
+			Background="{DynamicResource SecondaryBackgroundBrush}" />
 		<local:Button2
 			Width="60"
 			Margin="10"
@@ -29,14 +29,12 @@
 			HorizontalAlignment="Right"
 			VerticalAlignment="Bottom"
 			HorizontalContentAlignment="Center"
-			Background="{DynamicResource ControlClickablePartBrush}"
+			Background="{DynamicResource PrimaryControlBrush}"
 			BorderThickness="0"
 			Click="OkButton_Click"
 			Content="OK"
 			CornerRadius="5"
-			Foreground="{DynamicResource TextBrush}"
-			MouseDownColour="{DynamicResource ControlClickablePartMouseDownBrush}"
-			MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}" />
+			Foreground="{DynamicResource PrimaryTextBrush}" />
 		<local:Button2
 			Width="60"
 			Margin="10"
@@ -44,13 +42,11 @@
 			HorizontalAlignment="Left"
 			VerticalAlignment="Bottom"
 			HorizontalContentAlignment="Center"
-			Background="{DynamicResource ControlClickablePartBrush}"
+			Background="{DynamicResource PrimaryControlBrush}"
 			BorderThickness="0"
 			Click="CancelButton_Click"
 			Content="Cancel"
 			CornerRadius="5"
-			Foreground="{DynamicResource TextBrush}"
-			MouseDownColour="{DynamicResource ControlClickablePartMouseDownBrush}"
-			MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}" />
+			Foreground="{DynamicResource PrimaryTextBrush}" />
 	</Grid>
 </local:ThemableWindow2>
