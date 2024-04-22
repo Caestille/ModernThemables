@@ -16,7 +16,6 @@ namespace ModernThemables.ViewModels
     public class ViewModelBase<TChild> : GenericViewModelBase where TChild : GenericViewModelBase
     {
         public ICommand AddChildCommand => new RelayCommand(() => AddChild());
-        public ICommand RequestDeleteCommand => new RelayCommand(RequestDelete);
 
         private readonly Func<TChild>? createChildFunc;
 
@@ -58,25 +57,16 @@ namespace ModernThemables.ViewModels
             }
         }
 
-		protected virtual void RequestDelete()
-		{
-			Messenger.Send(new ViewModelRequestDeleteMessage(this));
-		}
-
 		protected virtual void OnRequestDeleteReceived(ViewModelRequestDeleteMessage message)
 		{
 			if (message.ViewModel is TChild child && ChildViewModels.Contains(child))
 			{
+                child.OnDelete();
 				ChildViewModels.Remove(child);
 
 				OnPropertyChanged(nameof(ChildViewModels));
 				OnChildrenChanged();
 			}
-		}
-
-		public override void Select(GenericViewModelBase? sender = null)
-		{
-			Messenger.Send(new ViewModelRequestShowMessage(this, sender ?? this));
 		}
 
 		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "", int? index = null)
