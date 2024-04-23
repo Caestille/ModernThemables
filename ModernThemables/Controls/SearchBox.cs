@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace ModernThemables.Controls
 {
-    public class SearchBox : Control
+    public class SearchBox : TextBox
 	{
 		private const string PART_button = "PART_button";
 
@@ -45,9 +45,20 @@ namespace ModernThemables.Controls
                 typeof(SearchBox),
                 new PropertyMetadata(1d));
 
-		#endregion Properties
+        public CornerRadius CornerRadius
+        {
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
+        }
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+            nameof(CornerRadius),
+            typeof(CornerRadius),
+            typeof(SearchBox),
+            new PropertyMetadata(new CornerRadius(0)));
 
-		public override void OnApplyTemplate()
+        #endregion Properties
+
+        public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
 
@@ -64,10 +75,6 @@ namespace ModernThemables.Controls
 			if (button != null)
 			{
 				button.Click += Button_Click;
-			}
-			else
-			{
-				throw new InvalidOperationException("Template missing rquired UI elements");
 			}
 		}
 
