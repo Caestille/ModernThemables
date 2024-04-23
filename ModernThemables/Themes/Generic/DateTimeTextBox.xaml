@@ -20,11 +20,11 @@
                 Width="Auto"
                 Height="Auto"
                 Margin="{TemplateBinding Padding}"
-                Background="Transparent"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                CaretBrush="{TemplateBinding Foreground}"
+                Background="Transparent"
                 BorderThickness="0"
+                CaretBrush="{TemplateBinding Foreground}"
                 SnapsToDevicePixels="True">
                 <TextBox.Style>
                     <Style>

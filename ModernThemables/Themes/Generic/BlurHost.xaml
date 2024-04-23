@@ -8,9 +8,9 @@
             <Border Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" />
             <Border
                 x:Name="PART_BlurDecorator"
-                CornerRadius="{TemplateBinding CornerRadius}"
                 BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}" />
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}" />
             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
         </Grid>
     </ControlTemplate>
