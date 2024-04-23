@@ -17,17 +17,6 @@ namespace ModernThemables.Controls
             typeof(Button2),
             new UIPropertyMetadata(null));
 
-        //public new Brush Foreground
-        //{
-        //    get => (Brush)GetValue(ForegroundProperty);
-        //    set => SetValue(ForegroundProperty, value);
-        //}
-        //public new static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
-        //    nameof(Foreground),
-        //    typeof(Brush),
-        //    typeof(Button2),
-        //    new UIPropertyMetadata(null));
-
         public new Brush DisabledBackground
         {
             get => (Brush)GetValue(DisabledBackgroundProperty);
@@ -46,17 +35,6 @@ namespace ModernThemables.Controls
         }
         public new static readonly DependencyProperty DisabledForegroundProperty = DependencyProperty.Register(
             nameof(DisabledForeground),
-            typeof(Brush),
-            typeof(Button2),
-            new UIPropertyMetadata(null));
-
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
-        public new static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            nameof(BorderBrush),
             typeof(Brush),
             typeof(Button2),
             new UIPropertyMetadata(null));

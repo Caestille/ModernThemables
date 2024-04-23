@@ -18,7 +18,8 @@
         <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/RangeSlider.xaml" />-->
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/SearchBox.xaml" />
         <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ThemableWindow2.xaml" />-->
-        <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox.xaml" />-->
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox2.xaml" />
         <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/WindowButtonCommands.xaml" />-->
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

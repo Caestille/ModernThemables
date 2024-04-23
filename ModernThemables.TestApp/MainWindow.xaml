@@ -61,5 +61,7 @@
         </Grid>
         <controls:DatetimeTextBox Margin="5" DateTime="10/02/1997 14:01:10" />
         <controls:SearchBox Margin="5" SearchText="Test" />
+        <CheckBox Content="Test" Margin="5" Style="{StaticResource ToggleCheckbox}" />
+        <controls:CheckBox2 Content="Test" Margin="5" Style="{StaticResource ToggleCheckbox2}" />
     </WrapPanel>
 </Window>
