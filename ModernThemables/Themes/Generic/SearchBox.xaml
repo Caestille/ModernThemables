@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
-    xmlns:mt="clr-namespace:ModernThemables" xmlns:icons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
+    xmlns:icons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons"
+    xmlns:mt="clr-namespace:ModernThemables">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
@@ -22,8 +23,8 @@
                 <TextBox
                     x:Name="PART_textBox"
                     Width="Auto"
-                    HorizontalAlignment="Stretch"
                     Height="Auto"
+                    HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
                     Background="Transparent"
                     BorderThickness="0"
@@ -45,7 +46,10 @@
                     BorderThickness="0"
                     CornerRadius="{TemplateBinding CornerRadius}"
                     Foreground="{TemplateBinding Foreground}">
-                    <icons:Icon Kind="Close" Width="10" Height="10" />
+                    <icons:Icon
+                        Width="10"
+                        Height="10"
+                        Kind="Close" />
                 </controls:Button2>
             </Grid>
         </Border>

@@ -13,13 +13,6 @@
                 BorderThickness="1"
                 CornerRadius="5">
                 <ContentPresenter Margin="{TemplateBinding Padding}" />
-                <Border.Effect>
-                    <DropShadowEffect
-                        BlurRadius="10"
-                        Opacity="0.6"
-                        ShadowDepth="0"
-                        Color="{Binding PrimaryText, Converter={StaticResource ColourInverterConverter}}" />
-                </Border.Effect>
             </Border>
             <Grid
                 Width="5"
@@ -30,13 +23,6 @@
                     Points="0,5,5,0,5,10"
                     Stroke="{TemplateBinding BorderBrush}"
                     StrokeThickness="1">
-                    <Polygon.Effect>
-                        <DropShadowEffect
-                            BlurRadius="10"
-                            Opacity="0.6"
-                            ShadowDepth="0"
-                            Color="{Binding PrimaryText, Converter={StaticResource ColourInverterConverter}}" />
-                    </Polygon.Effect>
                 </Polygon>
                 <Border
                     Width="3"
