@@ -137,7 +137,7 @@
 
     <Style x:Key="ToggleCheckbox" TargetType="CheckBox">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="Background" Value="{mt:DynamicResourceBinding PrimaryControlBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.MouseOverModifier}}" />
+        <Setter Property="Background" Value="{mt:DynamicResourceBinding PrimaryControlBrush, Converter={StaticResource MouseOverConverter}}" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="BorderThickness" Value="0" />

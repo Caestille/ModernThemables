@@ -47,7 +47,7 @@
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="Background" Value="{DynamicResource SecondaryControlBrush}" />
         <Setter Property="WarningBrush" Value="Red" />
-        <Setter Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.BorderModifier}}" />
+        <Setter Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource Self},Converter={StaticResource BorderConverter}}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />

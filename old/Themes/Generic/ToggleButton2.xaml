@@ -35,8 +35,8 @@
                 <Setter TargetName="PART_border" Property="Background" Value="{Binding MouseDownBrush, RelativeSource={RelativeSource TemplatedParent}}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter TargetName="PART_border" Property="Background" Value="{Binding PrimaryBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static vms:ThemeManager.DisabledModifier}}" />
-                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding PrimaryText, Converter={StaticResource BrushBrightnessConverter},ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
+                <Setter TargetName="PART_border" Property="Background" Value="{Binding PrimaryBrush, Converter={StaticResource MouseOverConverter}, ConverterParameter={x:Static vms:ThemeManager.DisabledModifier}}" />
+                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding PrimaryText, Converter={StaticResource MouseOverConverter},ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -48,8 +48,8 @@
         <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="CheckedBrush" Value="{DynamicResource ThemeBrush}" />
-        <Setter Property="MouseOverBrush" Value="{Binding PrimaryBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseOverModifier}}" />
-        <Setter Property="MouseDownBrush" Value="{Binding PrimaryBrush, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
+        <Setter Property="MouseOverBrush" Value="{Binding PrimaryBrush, Converter={StaticResource MouseOverConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseOverModifier}}" />
+        <Setter Property="MouseDownBrush" Value="{Binding PrimaryBrush, Converter={StaticResource MouseOverConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="Template" Value="{StaticResource GenericToggleButton2Template}" />
     </Style>

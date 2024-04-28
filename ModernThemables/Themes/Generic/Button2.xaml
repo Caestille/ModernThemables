@@ -47,15 +47,15 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.BorderModifier}}" />
+        <Setter Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BorderConverter}}" />
         <Setter Property="Padding" Value="5,2" />
         <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="MouseOverBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.MouseOverModifier}}" />
-        <Setter Property="MouseDownBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.MouseDownModifier}}" />
-        <Setter Property="DisabledBackground" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.DisabledModifier}}" />
-        <Setter Property="DisabledForeground" Value="{Binding Foreground, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.DisabledModifier}}" />
-        <Setter Property="DisabledBorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushBrightnessConverter}, ConverterParameter={x:Static mt:ThemeManager.DisabledModifier}}" />
+        <Setter Property="MouseOverBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource MouseOverConverter}}" />
+        <Setter Property="MouseDownBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource MouseDownConverter}}" />
+        <Setter Property="DisabledBackground" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource DisabledConverter}}" />
+        <Setter Property="DisabledForeground" Value="{Binding Foreground, RelativeSource={RelativeSource Self}, Converter={StaticResource DisabledConverter}}" />
+        <Setter Property="DisabledBorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource Self}, Converter={StaticResource DisabledConverter}}" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="Template" Value="{StaticResource GenericButton2Template}" />
     </Style>
