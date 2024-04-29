@@ -50,6 +50,15 @@
                         Maximum="100"
                         Minimum="0"
                         Value="50" />
+                    <Slider
+                        Width="100"
+                        Margin="5"
+                        TickFrequency="10"
+                        IsSnapToTickEnabled="True"
+                        TickPlacement="BottomRight"
+                        Maximum="100"
+                        Minimum="0"
+                        Value="50" />
                     <DataGrid Margin="5">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Col1" />
