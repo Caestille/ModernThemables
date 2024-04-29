@@ -6,13 +6,13 @@ namespace ModernThemables.Controls
 {
 	public class CheckBox2 : CheckBox
     {
-        public Brush DisabledBorderBrush
+        public Brush UncheckedBackground
         {
-            get => (Brush)GetValue(DisabledBorderBrushProperty);
-            set => SetValue(DisabledBorderBrushProperty, value);
+            get => (Brush)GetValue(UncheckedBackgroundProperty);
+            set => SetValue(UncheckedBackgroundProperty, value);
         }
-        public static readonly DependencyProperty DisabledBorderBrushProperty = DependencyProperty.Register(
-            nameof(DisabledBorderBrush),
+        public static readonly DependencyProperty UncheckedBackgroundProperty = DependencyProperty.Register(
+            nameof(UncheckedBackground),
             typeof(Brush),
             typeof(CheckBox2),
             new UIPropertyMetadata(null));
@@ -24,17 +24,6 @@ namespace ModernThemables.Controls
         }
         public static readonly DependencyProperty CheckedBackgroundProperty = DependencyProperty.Register(
             nameof(CheckedBackground),
-            typeof(Brush),
-            typeof(CheckBox2),
-            new UIPropertyMetadata(null));
-
-        public Brush CheckedForeground
-        {
-            get => (Brush)GetValue(CheckedForegroundProperty);
-            set => SetValue(CheckedForegroundProperty, value);
-        }
-        public static readonly DependencyProperty CheckedForegroundProperty = DependencyProperty.Register(
-            nameof(CheckedForeground),
             typeof(Brush),
             typeof(CheckBox2),
             new UIPropertyMetadata(null));

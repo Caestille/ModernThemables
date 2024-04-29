@@ -44,6 +44,12 @@
                         <RadioButton Margin="5" Content="Test1" />
                         <RadioButton Margin="5" Content="Test2" />
                     </StackPanel>
+                    <Slider
+                        Width="100"
+                        Margin="5"
+                        Maximum="100"
+                        Minimum="0"
+                        Value="50" />
                     <DataGrid Margin="5">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Col1" />
@@ -79,13 +85,6 @@
                         <ListBoxItem Content="Test1" />
                         <ListBoxItem Content="Test2" />
                     </ListBox>
-
-                    <Slider
-                        Width="100"
-                        Margin="5"
-                        Maximum="100"
-                        Minimum="0"
-                        Value="50" />
                     <TabControl Margin="5">
                         <TabItem Header="Test1" />
                         <TabItem Header="Test2" />
@@ -140,6 +139,7 @@
                             <controls:Button2 Margin="10,10,0,0" Content="Hello" />
                         </controls:BlurHost>
                     </Grid>
+                    <controls:RangeSlider Minimum="0" Maximum="100" LowerValue="20" HigherValue="80" Margin="5" />
                 </WrapPanel>
             </GroupBox>
             <GroupBox Margin="5" Header="Tooltips">

@@ -19,13 +19,13 @@
                                              Converter={StaticResource ColourToBrushConverter}}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="5"
+                CornerRadius="{TemplateBinding CornerRadius}"
                 ToolTip="Set colour"
                 ToolTipService.InitialShowDelay="100">
                 <controls:Button2
                     x:Name="PART_button"
                     Background="{TemplateBinding Foreground}"
-                    CornerRadius="5">
+                    CornerRadius="{TemplateBinding CornerRadius}">
                     <controls:Button2.Style>
                         <Style>
                             <Setter Property="controls:Button2.Opacity" Value="0" />

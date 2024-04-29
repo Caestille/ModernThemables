@@ -47,6 +47,17 @@ namespace ModernThemables.Controls
                 typeof(ColourPickerBox),
                 new FrameworkPropertyMetadata(null));
 
+        public CornerRadius CornerRadius
+        {
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
+        }
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+            nameof(CornerRadius),
+            typeof(CornerRadius),
+            typeof(ColourPickerBox),
+            new PropertyMetadata(new CornerRadius(0)));
+
         #endregion Properties
 
         public override void OnApplyTemplate()

@@ -11,7 +11,7 @@
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="1"
-                CornerRadius="5">
+                CornerRadius="0">
                 <ContentPresenter Margin="{TemplateBinding Padding}" />
             </Border>
             <Grid
@@ -22,8 +22,7 @@
                     Fill="{TemplateBinding Background}"
                     Points="0,5,5,0,5,10"
                     Stroke="{TemplateBinding BorderBrush}"
-                    StrokeThickness="1">
-                </Polygon>
+                    StrokeThickness="1" />
                 <Border
                     Width="3"
                     Height="8"

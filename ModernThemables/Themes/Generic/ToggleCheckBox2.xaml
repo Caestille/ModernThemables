@@ -5,6 +5,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="GenericToggleCheckboxTemplate" TargetType="{x:Type controls:CheckBox2}">
@@ -20,7 +21,7 @@
                 Margin="1,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Background="Gray"
+                Background="{TemplateBinding UncheckedBackground}"
                 BorderThickness="0"
                 CornerRadius="8" />
             <Border
@@ -29,7 +30,7 @@
                 Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Background="White"
+                Background="{TemplateBinding Background}"
                 BorderThickness="0"
                 CornerRadius="8.5" />
             <ContentPresenter
@@ -40,6 +41,7 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{Binding CheckedBackground, RelativeSource={RelativeSource TemplatedParent}}" />
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
@@ -112,28 +114,20 @@
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
-                <Setter TargetName="Border" Property="Background" Value="Green" />
-                <Setter TargetName="highlightCircle" Property="Background" Value="LightGreen" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="highlightCircle" Property="Background" Value="LightGray" />
+                <Setter TargetName="highlightCircle" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MouseOverConverter}}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="highlightCircle" Property="Background" Value="DarkGray" />
+                <Setter TargetName="highlightCircle" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
             </Trigger>
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsChecked" Value="True" />
-                    <Condition Property="IsMouseOver" Value="True" />
-                </MultiTrigger.Conditions>
-                <MultiTrigger.Setters>
-                    <Setter TargetName="highlightCircle" Property="Background" Value="PaleGreen" />
-                </MultiTrigger.Setters>
-            </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style x:Key="ToggleCheckbox2" TargetType="{x:Type controls:CheckBox2}">
+        <Setter Property="UncheckedBackground" Value="{DynamicResource SecondaryControlBrush}" />
+        <Setter Property="CheckedBackground" Value="{DynamicResource ThemeBrush}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="HorizontalAlignment" Value="Left" />

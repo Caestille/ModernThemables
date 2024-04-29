@@ -31,8 +31,8 @@ namespace ModernThemables
         public static Color ThemeTextColour = Color.FromArgb(255, 47, 47, 74);
 
         public static double DisabledModifier => isDarkMode ? -0.7 : 0.7;
-        public static double MouseOverModifier => isDarkMode ? 0.1 : -0.1;
-        public static double MouseDownModifier => isDarkMode ? -0.1 : 0.1;
+        public static double MouseOverModifier => isDarkMode ? 0.1 : 0.2;
+        public static double MouseDownModifier => isDarkMode ? -0.1 : -0.1;
         public static double BorderModifier => isDarkMode ? 0.3 : -0.3;
 
         static ThemeManager()
