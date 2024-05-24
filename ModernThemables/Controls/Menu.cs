@@ -126,7 +126,7 @@ namespace ModernThemables.Controls
 
         public object SettingsVm
         {
-            get => (object)GetValue(SettingsVmProperty);
+            get => GetValue(SettingsVmProperty);
             set => SetValue(SettingsVmProperty, value);
         }
 

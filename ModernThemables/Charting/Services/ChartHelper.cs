@@ -59,7 +59,7 @@ namespace ModernThemables.Charting.Services
 			}
 
 			var yRange = max - min;
-			var idealStep = yRange / (double)itemCount;
+			var idealStep = yRange / itemCount;
 			double valMin = double.MaxValue;
 			int stepAtMin = 1;
 			var roundedSteps = new List<int>()

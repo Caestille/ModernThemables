@@ -158,7 +158,7 @@ namespace ModernThemables.Charting.Controls
 				var labels = groupedBars.Select(x => x.First()?.Item1?.Name ?? string.Empty);
 				double barCount = groupedBars.Any() ? groupedBars.Max(x => x.Count()) : 0;
 
-				var groupWidth = groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) : 0;
+				var groupWidth = groups.Any() ? ((double)plotAreaWidth / groups.Count()) : 0;
                 var barWidth = Math.Min(50, groupWidth > 0 ? ((groupWidth - BarGroupSeparationPixels) / barCount) - (barSep * ((barCount - 1) / barCount)) : 0);
                 var groupSep = groupWidth - (((barWidth + barSep) * barCount) - barSep);
 
@@ -192,7 +192,7 @@ namespace ModernThemables.Charting.Controls
 				});
 
 				BarWidth = barWidth;
-				GroupWidth = Math.Floor(groups.Any() ? ((double)plotAreaWidth / (double)groups.Count()) : 0);
+				GroupWidth = Math.Floor(groups.Any() ? ((double)plotAreaWidth / groups.Count()) : 0);
 				var radius = BarWidth * BarCornerRadiusFraction / 2;
 				BarCornerRadius = new CornerRadius(0, 0, radius, radius);
 				isSingleXPoint = collection.Count < 2;

@@ -61,7 +61,7 @@ namespace ModernThemables.Controls
 
         public object Icon
         {
-            get => (object)GetValue(IconProperty);
+            get => GetValue(IconProperty);
             set => SetValue(IconProperty, value);
         }
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
