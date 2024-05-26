@@ -33,9 +33,9 @@
                 <Setter TargetName="PART_border" Property="Background" Value="{Binding MouseDownBrush, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MouseDownConverter}}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter TargetName="PART_border" Property="Background" Value="{Binding DisabledBackground, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
-                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding DisabledForeground, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
-                <Setter TargetName="PART_border" Property="BorderBrush" Value="{Binding DisabledBorderBrush, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
+                <Setter TargetName="PART_border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
+                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
+                <Setter TargetName="PART_border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

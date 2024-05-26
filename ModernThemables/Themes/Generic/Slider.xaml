@@ -26,6 +26,7 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter TargetName="grip" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
+                <Setter TargetName="grip" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -58,6 +59,7 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter TargetName="grip" Property="Fill" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
+                <Setter TargetName="grip" Property="Stroke" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -89,6 +91,7 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter TargetName="grip" Property="Fill" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
+                <Setter TargetName="grip" Property="Stroke" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

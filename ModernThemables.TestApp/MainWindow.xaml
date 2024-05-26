@@ -44,21 +44,23 @@
                         <RadioButton Margin="5" Content="Test1" />
                         <RadioButton Margin="5" Content="Test2" />
                     </StackPanel>
-                    <Slider
-                        Width="100"
-                        Margin="5"
-                        Maximum="100"
-                        Minimum="0"
-                        Value="50" />
-                    <Slider
-                        Width="100"
-                        Margin="5"
-                        TickFrequency="10"
-                        IsSnapToTickEnabled="True"
-                        TickPlacement="BottomRight"
-                        Maximum="100"
-                        Minimum="0"
-                        Value="50" />
+                    <StackPanel>
+                        <Slider
+                            Width="100"
+                            Margin="5"
+                            Maximum="100"
+                            Minimum="0"
+                            Value="50" />
+                        <Slider
+                            Width="100"
+                            Margin="5"
+                            IsSnapToTickEnabled="True"
+                            Maximum="100"
+                            Minimum="0"
+                            TickFrequency="10"
+                            TickPlacement="BottomRight"
+                            Value="50" />
+                    </StackPanel>
                     <DataGrid Margin="5">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Col1" />
@@ -148,7 +150,12 @@
                             <controls:Button2 Margin="10,10,0,0" Content="Hello" />
                         </controls:BlurHost>
                     </Grid>
-                    <controls:RangeSlider Minimum="0" Maximum="100" LowerValue="20" HigherValue="80" Margin="5" />
+                    <controls:RangeSlider
+                        Margin="5"
+                        HigherValue="80"
+                        LowerValue="20"
+                        Maximum="100"
+                        Minimum="0" />
                 </WrapPanel>
             </GroupBox>
             <GroupBox Margin="5" Header="Tooltips">
