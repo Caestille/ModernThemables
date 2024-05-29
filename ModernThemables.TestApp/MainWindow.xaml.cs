@@ -31,7 +31,7 @@ namespace ModernThemables.TestApp
             public VM()
             {
                 ThemeVm.IsDarkMode = false;
-                ThemeVm.ThemeColourProperty = Colors.Red;
+                ThemeVm.ThemeColourProperty = Colors.DeepSkyBlue;
             }
         }
     }
