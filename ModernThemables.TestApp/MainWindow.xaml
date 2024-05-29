@@ -4,8 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls;assembly=ModernThemables"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:icons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons"
-    xmlns:local="clr-namespace:ModernThemables.TestApp"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="1200"
@@ -27,7 +25,7 @@
             <GroupBox Margin="5" Header="Default Controls">
                 <WrapPanel>
                     <Button Margin="5" Content="Test" />
-                    <RepeatButton Margin="5" Content="Test" />
+                    <ToggleButton  Margin="5" Content="Toggle Button" />
                     <Expander
                         Margin="5"
                         Content="Test"
@@ -68,6 +66,30 @@
                         </DataGrid.Columns>
                         <RowDefinition />
                     </DataGrid>
+                    <ComboBox Margin="5" SelectedIndex="1">
+                        <ComboBoxItem Content="Test1" />
+                        <ComboBoxItem Content="Test2" />
+                    </ComboBox>
+                    <ListBox Margin="5">
+                        <ListBoxItem Content="Test1" />
+                        <ListBoxItem Content="Test2" />
+                    </ListBox>
+                    <TabControl Margin="5">
+                        <TabItem Header="Test1" />
+                        <TabItem Header="Test2" />
+                    </TabControl>
+                    <Label Margin="5" Content="Label" />
+                    <TextBlock Margin="5" Text="TextBlock" />
+                    <TextBox
+                        Width="100"
+                        Margin="5"
+                        Text="Test" />
+                    <PasswordBox Margin="5" Password="A strong password" />
+                </WrapPanel>
+            </GroupBox>
+            <GroupBox Margin="5" Header="Controls I don't give a shit about">
+                <WrapPanel>
+                    <RepeatButton Margin="5" Content="Test" />
                     <ListView Margin="5">
                         <ListViewItem Content="Test1" />
                         <ListViewItem Content="Test2" />
@@ -88,29 +110,7 @@
                     <ToolBar Margin="5">
                         <Button Content="Test" />
                     </ToolBar>
-                    <ComboBox Margin="5" SelectedIndex="1">
-                        <ComboBoxItem Content="Test1" />
-                        <ComboBoxItem Content="Test2" />
-                    </ComboBox>
-                    <ListBox Margin="5">
-                        <ListBoxItem Content="Test1" />
-                        <ListBoxItem Content="Test2" />
-                    </ListBox>
-                    <TabControl Margin="5">
-                        <TabItem Header="Test1" />
-                        <TabItem Header="Test2" />
-                    </TabControl>
                     <AccessText Margin="5" Text="Access text" />
-                    <Label Margin="5" Content="Label" />
-                    <TextBlock Margin="5" Text="TextBlock" />
-                    <StatusBar Margin="5">
-                        <StatusBarItem Content="Test" />
-                    </StatusBar>
-                    <TextBox
-                        Width="100"
-                        Margin="5"
-                        Text="Test" />
-                    <PasswordBox Margin="5" Password="A strong password" />
                 </WrapPanel>
             </GroupBox>
             <GroupBox Margin="5" Header="Extended Controls">

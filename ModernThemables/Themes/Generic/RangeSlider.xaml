@@ -21,9 +21,7 @@
                         Style="{StaticResource SliderRepeatButton}" />
                 </Track.DecreaseRepeatButton>
                 <Track.Thumb>
-                    <Thumb
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center" />
+                    <Thumb HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Track.Thumb>
             </Track>
         </Grid>
@@ -42,9 +40,7 @@
                         Style="{StaticResource SliderRepeatButton}" />
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
-                    <Thumb
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center" />
+                    <Thumb HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Track.Thumb>
             </Track>
         </Grid>
@@ -66,13 +62,13 @@
 
                             <Thumb
                                 x:Name="PART_MidRange"
-                                BorderThickness="0"
                                 Width="{TemplateBinding RangeWidth}"
-                                Background="{DynamicResource PrimaryControlBrush}"
                                 Height="5"
                                 Margin="{TemplateBinding RangeMargin}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
+                                Background="{DynamicResource PrimaryControlBrush}"
+                                BorderThickness="0"
                                 SnapsToDevicePixels="True" />
 
                             <Slider

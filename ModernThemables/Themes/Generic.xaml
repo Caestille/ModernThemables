@@ -4,6 +4,7 @@
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/BlurHost.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Button.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Button2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/CircularProgressBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />

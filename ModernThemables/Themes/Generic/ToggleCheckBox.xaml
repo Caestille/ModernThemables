@@ -118,7 +118,7 @@
                 <Setter TargetName="highlightCircle" Property="Background" Value="LightGreen" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="highlightCircle" Property="Background" Value="White" />
+                <Setter TargetName="highlightCircle" Property="Background" Value="LightGray" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="highlightCircle" Property="Background" Value="DimGray" />
@@ -137,7 +137,7 @@
 
     <Style x:Key="ToggleCheckbox" TargetType="CheckBox">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="Background" Value="{mt:DynamicResourceBinding PrimaryControlBrush, Converter={StaticResource MouseOverConverter}}" />
+        <Setter Property="Background" Value="{DynamicResource SecondaryControlBrush}" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="BorderThickness" Value="0" />
