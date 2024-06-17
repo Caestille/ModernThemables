@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernThemables", "ModernThemables.csproj", "{847BE7B0-1950-47B0-965E-0A17920060DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernThemables\ModernThemables", "ModernThemables\ModernThemables.csproj", "{847BE7B0-1950-47B0-965E-0A17920060DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "old", "..\old\old.csproj", "{260C449D-8C48-4CE8-8B15-396084E75FE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "old\old", "..\old\old\old.csproj", "{260C449D-8C48-4CE8-8B15-396084E75FE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernThemables.TestApp", "..\ModernThemables.TestApp\ModernThemables.TestApp.csproj", "{29FCC940-D036-4571-B8C0-B9689BB22D34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernThemables.TestApp\ModernThemables.TestApp", "..\ModernThemables.TestApp\ModernThemables.TestApp\ModernThemables.TestApp.csproj", "{29FCC940-D036-4571-B8C0-B9689BB22D34}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernThemables.Icons", "..\ModernThemables.Icons\ModernThemables.Icons.csproj", "{36F993E9-A976-4040-BE28-7B9612F31F7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernThemables.Icons\ModernThemables.Icons", "..\ModernThemables.Icons\ModernThemables.Icons\ModernThemables.Icons.csproj", "{36F993E9-A976-4040-BE28-7B9612F31F7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
