@@ -11,7 +11,7 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ColourPickerBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/DatetimeTextBox.xaml" />
-        <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleButton2.xaml" />-->
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleButton2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltipHorizontal.xaml" />
         <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Menu.xaml" />-->
@@ -19,9 +19,9 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/RangeSlider.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/SearchBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Slider.xaml" />
-        <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ThemableWindow2.xaml" />-->
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Window2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox2.xaml" />
-        <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/WindowButtonCommands.xaml" />-->
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/WindowButtonCommands.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

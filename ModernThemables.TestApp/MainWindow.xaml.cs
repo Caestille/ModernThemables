@@ -1,4 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using ModernThemables.Controls;
 using ModernThemables.ViewModels;
 using System.Windows;
 using System.Windows.Media;
@@ -8,7 +9,7 @@ namespace ModernThemables.TestApp
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window2
     {
         public MainWindow()
         {

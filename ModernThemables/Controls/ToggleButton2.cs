@@ -7,50 +7,6 @@ namespace ModernThemables.Controls
 {
 	public class ToggleButton2 : ToggleButton
     {
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            nameof(Background),
-            typeof(Brush),
-            typeof(ToggleButton2),
-            new UIPropertyMetadata(null));
-
-        public new Brush Foreground
-        {
-            get => (Brush)GetValue(ForegroundProperty);
-            set => SetValue(ForegroundProperty, value);
-        }
-        public new static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
-            nameof(Foreground),
-            typeof(Brush),
-            typeof(ToggleButton2),
-            new UIPropertyMetadata(null));
-
-        public SolidColorBrush MouseOverBrush
-        {
-            get => (SolidColorBrush)GetValue(MouseOverBrushProperty);
-            set => SetValue(MouseOverBrushProperty, value);
-        }
-        public static readonly DependencyProperty MouseOverBrushProperty = DependencyProperty.Register(
-            nameof(MouseOverBrush),
-            typeof(SolidColorBrush),
-            typeof(ToggleButton2),
-            new UIPropertyMetadata(null));
-
-        public SolidColorBrush MouseDownBrush
-        {
-            get => (SolidColorBrush)GetValue(MouseDownBrushProperty);
-            set => SetValue(MouseDownBrushProperty, value);
-        }
-        public static readonly DependencyProperty MouseDownBrushProperty = DependencyProperty.Register(
-            nameof(MouseDownBrush),
-            typeof(SolidColorBrush),
-            typeof(ToggleButton2),
-            new UIPropertyMetadata(null));
-
         public SolidColorBrush CheckedBrush
         {
             get => (SolidColorBrush)GetValue(CheckedBrushProperty);

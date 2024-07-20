@@ -31,4 +31,10 @@
 	  <Folder Include="Charting\Themes\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Page Update="Themes\Generic\ToggleButton2.xaml">
+	    <SubType>Designer</SubType>
+	  </Page>
+	</ItemGroup>
+
 </Project>

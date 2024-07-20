@@ -17,6 +17,7 @@
     <themeConverters:MouseOverConverter x:Key="MouseOverConverter" />
     <themeConverters:MouseDownConverter x:Key="MouseDownConverter" />
     <converters:ColourInverterConverter x:Key="ColourInverterConverter" />
+    <converters:BrushToColourConverter x:Key="BrushToColourConverter" />
     <chartConverters:PieCentreRadiusConverter x:Key="PieCentreRadiusConverter" />
     <chartConverters:PieLabelMarginConverter x:Key="PieLabelMarginConverter" />
     <chartConverters:PieCentrererConverter x:Key="PieCentrererConverter" />

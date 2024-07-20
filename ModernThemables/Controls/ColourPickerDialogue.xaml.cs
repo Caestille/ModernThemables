@@ -7,7 +7,7 @@ namespace ModernThemables.Controls
 	/// <summary>
 	/// Interaction logic for ColourPickerDialogue.xaml
 	/// </summary>
-	public partial class ColourPickerDialogue : ThemableWindow2
+	public partial class ColourPickerDialogue : Window2
 	{
 		private Color initialColour;
 		private readonly Action<Color>? colourChangedCallback;

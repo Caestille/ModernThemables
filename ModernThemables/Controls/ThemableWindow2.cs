@@ -32,7 +32,7 @@ namespace ModernThemables.Controls
 	[TemplatePart(Name = PART_SettingsCloseButton, Type = typeof(Button))]
 	[TemplatePart(Name = PART_SettingsCloseRegion, Type = typeof(Button))]
 	[TemplatePart(Name = PART_ThemingMenu, Type = typeof(ThemingControl))]
-	public class ThemableWindow2 : WindowChromeWindow
+	public class Window2 : WindowChromeWindow
 	{
 		private const string PART_Icon = "PART_Icon";
 		private const string PART_WindowTitleThumb = "PART_WindowTitleThumb";
@@ -69,7 +69,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty ShowThemingMenuProperty = DependencyProperty.Register(
 			nameof(ShowThemingMenu),
 			typeof(bool),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(false));
         public bool IsTransparentHeader
         {
@@ -79,7 +79,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty IsTransparentHeaderProperty = DependencyProperty.Register(
             nameof(IsTransparentHeader),
             typeof(bool),
-            typeof(ThemableWindow2),
+            typeof(Window2),
             new PropertyMetadata(false));
 
         /// <summary>
@@ -93,12 +93,12 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
 			nameof(ShowIcon),
 			typeof(bool),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(true, OnShowIconPropertyChangedCallback));
 
 		private static void OnShowIconPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var window = (ThemableWindow2)d;
+			var window = (Window2)d;
 			if (e.NewValue != e.OldValue)
 			{
 				window.UpdateIconVisibility();
@@ -116,7 +116,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IconEdgeModeProperty = DependencyProperty.Register(
 			nameof(IconEdgeMode),
 			typeof(EdgeMode),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(EdgeMode.Aliased));
 
 		/// <summary>
@@ -130,7 +130,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IconBitmapScalingModeProperty = DependencyProperty.Register(
 			nameof(IconBitmapScalingMode),
 			typeof(BitmapScalingMode),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(BitmapScalingMode.HighQuality));
 
 		/// <summary>
@@ -144,7 +144,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IconScalingModeProperty = DependencyProperty.Register(
 			nameof(IconScalingMode),
 			typeof(MultiFrameImageMode),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new FrameworkPropertyMetadata(MultiFrameImageMode.ScaleDownLargerFrame, FrameworkPropertyMetadataOptions.AffectsRender));
 
 		/// <summary>
@@ -158,7 +158,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty ShowTitleBarProperty = DependencyProperty.Register(
 			nameof(ShowTitleBar),
 			typeof(bool),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(true, OnShowTitleBarPropertyChangedCallback));
 
 		/// <summary>
@@ -172,7 +172,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty ShowSystemMenuProperty = DependencyProperty.Register(
 			nameof(ShowSystemMenu),
 			typeof(bool),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(true));
 
 		/// <summary>
@@ -186,7 +186,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty ShowSystemMenuOnRightClickProperty = DependencyProperty.Register(
 			nameof(ShowSystemMenuOnRightClick),
 			typeof(bool),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(true));
 
 		/// <summary>
@@ -200,14 +200,14 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TitleBarHeightProperty = DependencyProperty.Register(
 			nameof(TitleBarHeight),
 			typeof(int),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(30, TitleBarHeightPropertyChangedCallback));
 
 		private static void TitleBarHeightPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (e.NewValue != e.OldValue)
 			{
-				((ThemableWindow2)d).UpdateTitleBarElementsVisibility();
+				((Window2)d).UpdateTitleBarElementsVisibility();
 			}
 		}
 
@@ -222,19 +222,19 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TitleAlignmentProperty = DependencyProperty.Register(
 			nameof(TitleAlignment),
 			typeof(HorizontalAlignment),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(HorizontalAlignment.Stretch, OnTitleAlignmentChanged));
 
 		private static void OnTitleAlignmentChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			if (e.OldValue != e.NewValue)
 			{
-				var window = (ThemableWindow2)dependencyObject;
+				var window = (Window2)dependencyObject;
 
-				window.SizeChanged -= window.ThemableWindow2_SizeChanged;
+				window.SizeChanged -= window.Window2_SizeChanged;
 				if (e.NewValue is HorizontalAlignment horizontalAlignment && horizontalAlignment == HorizontalAlignment.Center && window.titleBar != null)
 				{
-					window.SizeChanged += window.ThemableWindow2_SizeChanged;
+					window.SizeChanged += window.Window2_SizeChanged;
 				}
 			}
 		}
@@ -250,7 +250,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TitleForegroundProperty = DependencyProperty.Register(
 			nameof(TitleForeground),
 			typeof(Brush),
-			typeof(ThemableWindow2));
+			typeof(Window2));
 
 		/// <summary>
 		/// Gets or sets the brush used for the TitleBar's foreground.
@@ -263,7 +263,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty NonActiveTitleForegroundProperty = DependencyProperty.Register(
 			nameof(NonActiveTitleForeground),
 			typeof(Brush),
-			typeof(ThemableWindow2));
+			typeof(Window2));
 
 		/// <summary>
 		/// Gets or sets the <see cref="DataTemplate"/> for the <see cref="Window.Title"/>.
@@ -276,7 +276,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty TitleTemplateProperty = DependencyProperty.Register(
 			nameof(TitleTemplate),
 			typeof(DataTemplate),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(null));
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty TransparentTitleTemplateProperty = DependencyProperty.Register(
             nameof(TransparentTitleTemplate),
             typeof(DataTemplate),
-            typeof(ThemableWindow2),
+            typeof(Window2),
             new PropertyMetadata(null));
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty WindowTitleBrushProperty = DependencyProperty.Register(
 			nameof(WindowTitleBrush),
 			typeof(Brush),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(Brushes.Transparent));
 
 		/// <summary>
@@ -318,7 +318,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty NonActiveWindowTitleBrushProperty = DependencyProperty.Register(
 			nameof(NonActiveWindowTitleBrush),
 			typeof(Brush),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(Brushes.Gray));
 
 		/// <summary>
@@ -332,7 +332,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty NonActiveBorderBrushProperty = DependencyProperty.Register(
 			nameof(NonActiveBorderBrush),
 			typeof(Brush),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(Brushes.Gray));
 
 		/// <summary>
@@ -346,12 +346,12 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.Register(
 			nameof(IconTemplate),
 			typeof(DataTemplate),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(null, (o, e) =>
 			{
 				if (e.NewValue != e.OldValue)
 				{
-					(o as ThemableWindow2)?.UpdateIconVisibility();
+					(o as Window2)?.UpdateIconVisibility();
 				}
 			}));
 
@@ -366,7 +366,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty LeftWindowCommandsProperty = DependencyProperty.Register(
 			nameof(LeftWindowCommands),
 			typeof(WindowCommands),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(null, OnLeftWindowCommandsPropertyChanged));
 
 		private static void OnLeftWindowCommandsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -391,7 +391,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty RightWindowCommandsProperty = DependencyProperty.Register(
 			nameof(RightWindowCommands),
 			typeof(WindowCommands),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(null, OnRightWindowCommandsPropertyChanged));
 
         private static void OnRightWindowCommandsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -415,14 +415,14 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty WindowButtonCommandsProperty = DependencyProperty.Register(
 			nameof(WindowButtonCommands),
 			typeof(WindowButtonCommands),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(null, UpdateLogicalChildren));
 
 		private static void OnShowTitleBarPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (e.NewValue != e.OldValue)
 			{
-				((ThemableWindow2)d).UpdateTitleBarElementsVisibility();
+				((Window2)d).UpdateTitleBarElementsVisibility();
 			}
 		}
 
@@ -437,7 +437,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty IsWindowDraggableProperty = DependencyProperty.Register(
 			nameof(IsWindowDraggable),
 			typeof(bool),
-			typeof(ThemableWindow2),
+			typeof(Window2),
 			new PropertyMetadata(true));
 
 		/// <inheritdoc />
@@ -473,27 +473,27 @@ namespace ModernThemables.Controls
 
 		#endregion
 
-		static ThemableWindow2()
+		static Window2()
 		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(ThemableWindow2), new FrameworkPropertyMetadata(typeof(ThemableWindow2)));
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(Window2), new FrameworkPropertyMetadata(typeof(Window2)));
 
 			IconProperty.OverrideMetadata(
-				typeof(ThemableWindow2),
+				typeof(Window2),
 				new FrameworkPropertyMetadata(
 					(o, e) =>
 					{
 						if (e.NewValue != e.OldValue)
 						{
-							(o as ThemableWindow2)?.UpdateIconVisibility();
+							(o as Window2)?.UpdateIconVisibility();
 						}
 					}));
 
         }
 
 		/// <summary>
-		/// Initializes a new instance of the ThemableWindow2 class.
+		/// Initializes a new instance of the Window2 class.
 		/// </summary>
-		public ThemableWindow2()
+		public Window2()
         {
             themeVm.TransparentHeaderChanged += (sender, e) =>
             {
@@ -515,7 +515,7 @@ namespace ModernThemables.Controls
                 });
 
             };
-            DataContextChanged += ThemableWindow2_DataContextChanged;
+            DataContextChanged += Window2_DataContextChanged;
 		}
 
 		private void UpdateIconVisibility()
@@ -548,7 +548,7 @@ namespace ModernThemables.Controls
             SetWindowEvents();
 		}
 
-		private void ThemableWindow2_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+		private void Window2_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			// MahApps add these controls to the window with AddLogicalChild method.
 			// This has the side effect that the DataContext doesn't update, so do this now here.
@@ -568,7 +568,7 @@ namespace ModernThemables.Controls
 			}
 		}
 
-		private void ThemableWindow2_SizeChanged(object sender, RoutedEventArgs e)
+		private void Window2_SizeChanged(object sender, RoutedEventArgs e)
 		{
 			// this all works only for centered title
 			if (TitleAlignment != HorizontalAlignment.Center
@@ -577,7 +577,7 @@ namespace ModernThemables.Controls
 				return;
 			}
 
-			// Half of this ThemableWindow2
+			// Half of this Window2
 			var halfDistance = ActualWidth / 2;
 			// Distance between center and left/right
 			var margin = (Thickness)titleBar.GetValue(MarginProperty);
@@ -613,7 +613,7 @@ namespace ModernThemables.Controls
 
 		private static void UpdateLogicalChildren(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
-			if (dependencyObject is not ThemableWindow2 window)
+			if (dependencyObject is not Window2 window)
 			{
 				return;
 			}
@@ -721,7 +721,7 @@ namespace ModernThemables.Controls
 				ThemingMenu.InternalRequestClose -= ThemingMenu_InternalRequestClose;
 			}
 
-			SizeChanged -= ThemableWindow2_SizeChanged;
+			SizeChanged -= Window2_SizeChanged;
 		}
 
 		private void SetWindowEvents()
@@ -775,7 +775,7 @@ namespace ModernThemables.Controls
 			// handle size if we have a Grid for the title (e.g. clean window have a centered title)
 			if (titleBar != null && TitleAlignment == HorizontalAlignment.Center)
 			{
-				SizeChanged += ThemableWindow2_SizeChanged;
+				SizeChanged += Window2_SizeChanged;
 			}
 		}
 
@@ -832,7 +832,7 @@ namespace ModernThemables.Controls
 			CloseThemingMenu(sender, null);
 		}
 
-		internal static void DoWindowTitleThumbOnPreviewMouseLeftButtonUp(ThemableWindow2 window, MouseButtonEventArgs mouseButtonEventArgs)
+		internal static void DoWindowTitleThumbOnPreviewMouseLeftButtonUp(Window2 window, MouseButtonEventArgs mouseButtonEventArgs)
 		{
 			if (mouseButtonEventArgs.Source == mouseButtonEventArgs.OriginalSource)
 			{
@@ -840,7 +840,7 @@ namespace ModernThemables.Controls
 			}
 		}
 
-		internal static void DoWindowTitleThumbMoveOnDragDelta(IMetroThumb? thumb, ThemableWindow2? window, DragDeltaEventArgs dragDeltaEventArgs)
+		internal static void DoWindowTitleThumbMoveOnDragDelta(IMetroThumb? thumb, Window2? window, DragDeltaEventArgs dragDeltaEventArgs)
 		{
 			if (thumb is null)
 			{
@@ -896,7 +896,7 @@ namespace ModernThemables.Controls
 			PInvoke.SendMessage(new HWND(window.CriticalHandle), PInvoke.WM_NCLBUTTONDOWN, new WPARAM((nuint)HT.CAPTION), new IntPtr(x | (y << 16)));
 		}
 
-		internal static void DoWindowTitleThumbChangeWindowStateOnMouseDoubleClick(ThemableWindow2 window, MouseButtonEventArgs mouseButtonEventArgs)
+		internal static void DoWindowTitleThumbChangeWindowStateOnMouseDoubleClick(Window2 window, MouseButtonEventArgs mouseButtonEventArgs)
 		{
 			// restore/maximize only with left button
 			if (mouseButtonEventArgs.ChangedButton == MouseButton.Left)
@@ -922,7 +922,7 @@ namespace ModernThemables.Controls
 			}
 		}
 
-		internal static void DoWindowTitleThumbSystemMenuOnMouseRightButtonUp(ThemableWindow2 window, MouseButtonEventArgs e)
+		internal static void DoWindowTitleThumbSystemMenuOnMouseRightButtonUp(Window2 window, MouseButtonEventArgs e)
 		{
 			if (window.ShowSystemMenuOnRightClick)
 			{

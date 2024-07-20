@@ -42,7 +42,7 @@
         <ControlTemplate.Triggers>
             <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="Border" Property="Background" Value="{Binding CheckedBackground, RelativeSource={RelativeSource TemplatedParent}}" />
-                <Setter TargetName="highlightCircle" Property="Background" Value="{Binding CheckedBackground, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MouseOverConverter}}" />
+                <Setter TargetName="highlightCircle" Property="Background" Value="{Binding CheckedBackground, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BorderConverter}}" />
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>

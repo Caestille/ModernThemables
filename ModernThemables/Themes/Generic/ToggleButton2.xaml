@@ -2,11 +2,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
-    xmlns:vms="clr-namespace:ModernThemables.ViewModels"
-    xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
+    xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities"
+    xmlns:vms="clr-namespace:ModernThemables.ViewModels">
 
-    <helperclasses:BindingProxy x:Key="PrimaryBrush" Data="{DynamicResource PrimaryControlBrush}" />
-    <helperclasses:BindingProxy x:Key="PrimaryText" Data="{DynamicResource PrimaryTextBrush}" />
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="GenericToggleButton2Template" TargetType="{x:Type controls:ToggleButton2}">
         <Border
@@ -26,30 +27,34 @@
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
-                <Setter TargetName="PART_border" Property="Background" Value="{Binding MouseOverBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="PART_border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MouseOverConverter}}" />
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="PART_border" Property="Background" Value="{Binding CheckedBrush, RelativeSource={RelativeSource TemplatedParent}}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="true">
-                <Setter TargetName="PART_border" Property="Background" Value="{Binding MouseDownBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="PART_border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MouseDownConverter}}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter TargetName="PART_border" Property="Background" Value="{Binding PrimaryBrush, Converter={StaticResource MouseOverConverter}, ConverterParameter={x:Static vms:ThemeManager.DisabledModifier}}" />
-                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding PrimaryText, Converter={StaticResource MouseOverConverter},ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
+                <Setter TargetName="PART_border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
+                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
+                <Setter TargetName="PART_border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DisabledConverter}}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style TargetType="{x:Type controls:ToggleButton2}">
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="CheckedBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BorderConverter}}" />
+        <Setter Property="Padding" Value="5,2" />
         <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="CheckedBrush" Value="{DynamicResource ThemeBrush}" />
-        <Setter Property="MouseOverBrush" Value="{Binding PrimaryBrush, Converter={StaticResource MouseOverConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseOverModifier}}" />
-        <Setter Property="MouseDownBrush" Value="{Binding PrimaryBrush, Converter={StaticResource MouseOverConverter}, ConverterParameter={x:Static vms:ThemeManager.MouseDownModifier}}" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="Template" Value="{StaticResource GenericToggleButton2Template}" />
     </Style>

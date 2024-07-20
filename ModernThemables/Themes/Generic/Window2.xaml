@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:controlzEx="urn:controlzex"
+    xmlns:mt="clr-namespace:ModernThemables"
     xmlns:ex="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
@@ -22,7 +23,7 @@
         </Setter>
     </Style>
 
-    <ControlTemplate x:Key="ThemableWindow2" TargetType="{x:Type controls:ThemableWindow2}">
+    <ControlTemplate x:Key="Window2" TargetType="{x:Type controls:Window2}">
         <Border
             x:Name="PART_Border"
             Margin="{TemplateBinding Padding}"
@@ -137,12 +138,12 @@
                             x:Name="PART_SettingsCloseRegion"
                             Grid.Row="1"
                             Grid.ColumnSpan="3"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
                             Background="Black"
                             BorderThickness="0"
                             Focusable="False"
                             IsHitTestVisible="False"
-                            MouseDownColour="Black"
-                            MouseOverColour="Black"
                             Opacity="0" />
 
                         <Grid
@@ -154,8 +155,8 @@
                                 Margin="5,-150,5,5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Background="{DynamicResource MenuBrush}"
-                                BorderBrush="{DynamicResource MenuBorderBrush}"
+                                Background="{DynamicResource SecondaryBackgroundBrush}"
+                                BorderBrush="{DynamicResource BackgroundBrush}"
                                 BorderThickness="1"
                                 CornerRadius="5"
                                 Focusable="False">
@@ -188,9 +189,7 @@
                                         VerticalAlignment="Top"
                                         Background="Transparent"
                                         BorderThickness="0"
-                                        CornerRadius="0,5,0,5"
-                                        MouseDownColour="{DynamicResource ControlClickablePartMouseDownBrush}"
-                                        MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}">
+                                        CornerRadius="0,5,0,5">
                                         <scalableicons:Icon
                                             Width="10"
                                             Height="10"
@@ -263,16 +262,16 @@
 
     </ControlTemplate>
 
-    <Style TargetType="{x:Type controls:ThemableWindow2}">
+    <Style TargetType="{x:Type controls:Window2}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="TitleBarHeight" Value="31" />
         <Setter Property="GlowDepth" Value="1" />
-        <Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}" />
-        <Setter Property="GlowColor" Value="{DynamicResource ThemeMouseOverColour}" />
-        <Setter Property="NonActiveGlowColor" Value="{DynamicResource DisabledControlClickablePartColour}" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+        <!--<Setter Property="GlowColor" Value="{mt:DynamicResourceBinding ThemeBrush, Converter={StaticResource MouseOverConverter}}" />-->
+        <Setter Property="NonActiveGlowColor" Value="{mt:DynamicResourceBinding SecondaryControlBrush, Converter={StaticResource BrushToColourConverter}}" />
         <Setter Property="WindowTitleBrush" Value="{DynamicResource ThemeBrush}" />
-        <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource StatusTextLightBrush}" />
-        <Setter Property="Template" Value="{StaticResource ThemableWindow2}" />
+        <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource SecondaryTextBrush}" />
+        <Setter Property="Template" Value="{StaticResource Window2}" />
         <Setter Property="TransparentTitleTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -284,10 +283,10 @@
                         <TextBlock.Style>
                             <Style>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}" Value="False">
-                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource StatusTextBrush}" />
+                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="False">
+                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource SecondaryTextBrush}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}" Value="True">
+                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="True">
                                         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -308,10 +307,10 @@
                         <TextBlock.Style>
                             <Style>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}" Value="False">
-                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ThemeDisabledTextBrush}" />
+                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="False">
+                                        <Setter Property="TextBlock.Foreground" Value="{mt:DynamicResourceBinding ThemeBrush, Converter={StaticResource DisabledConverter}}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}" Value="True">
+                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="True">
                                         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ThemeTextBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -329,9 +328,9 @@
                             <ex:MultiFrameImage
                                 Width="{TemplateBinding Width}"
                                 Height="{TemplateBinding Height}"
-                                MultiFrameImageMode="{Binding IconScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}"
-                                RenderOptions.BitmapScalingMode="{Binding IconBitmapScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}"
-                                RenderOptions.EdgeMode="{Binding IconEdgeMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ThemableWindow2}}}"
+                                MultiFrameImageMode="{Binding IconScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}"
+                                RenderOptions.BitmapScalingMode="{Binding IconBitmapScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}"
+                                RenderOptions.EdgeMode="{Binding IconEdgeMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}"
                                 Source="{TemplateBinding Content}" />
                         </DataTemplate>
                     </Setter.Value>

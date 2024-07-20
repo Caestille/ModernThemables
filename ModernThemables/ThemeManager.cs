@@ -21,6 +21,8 @@ namespace ModernThemables
         private static bool isSyncingWithOs;
 
         public static Color BackgroundColour => isDarkMode ? MonoColour(10) : MonoColour(255);
+        public static Color SecondaryBackgroundColour => isDarkMode ? MonoColour(30) : MonoColour(235);
+        public static Color TertiaryBackgroundColour => isDarkMode ? MonoColour(50) : MonoColour(215);
         public static Color PrimaryTextColour => isDarkMode ? Colors.White : Colors.Black;
         public static Color SecondaryTextColour => isDarkMode ? Colors.DarkGray : Colors.Gray;
         public static Color TertiaryTextColour => isDarkMode ? MonoColour(40) : MonoColour(215);
@@ -55,6 +57,8 @@ namespace ModernThemables
             ThemeManager.isDarkMode = isDarkMode;
 
             Application.Current.Resources[nameof(BackgroundColour).Replace("Colour", "Brush")] = new SolidColorBrush(BackgroundColour);
+            Application.Current.Resources[nameof(SecondaryBackgroundColour).Replace("Colour", "Brush")] = new SolidColorBrush(SecondaryBackgroundColour);
+            Application.Current.Resources[nameof(TertiaryBackgroundColour).Replace("Colour", "Brush")] = new SolidColorBrush(TertiaryBackgroundColour);
             Application.Current.Resources[nameof(PrimaryTextColour).Replace("Colour", "Brush")] = new SolidColorBrush(PrimaryTextColour);
             Application.Current.Resources[nameof(SecondaryTextColour).Replace("Colour", "Brush")] = new SolidColorBrush(SecondaryTextColour);
             Application.Current.Resources[nameof(TertiaryTextColour).Replace("Colour", "Brush")] = new SolidColorBrush(TertiaryTextColour);

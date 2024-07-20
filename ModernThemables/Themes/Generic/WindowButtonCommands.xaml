@@ -12,21 +12,13 @@
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
         <Setter Property="UseLayoutRounding" Value="True" />
-        <Setter Property="MouseOverColour">
-            <Setter.Value>
-                <SolidColorBrush Opacity="0.15" Color="White" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="MouseDownColour">
-            <Setter.Value>
-                <SolidColorBrush Opacity="0.3" Color="White" />
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <ControlTemplate x:Key="WindowButtonCommands" TargetType="{x:Type controls:WindowButtonCommands}">
         <StackPanel Orientation="Horizontal">
             <controls:Button2
+                Background="{DynamicResource ThemeBrush}"
+                VerticalAlignment="Stretch"
                 x:Name="PART_ThemeSetButton"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="Set theme">
@@ -48,6 +40,8 @@
                 Background="{DynamicResource ThemeTextBrush}"
                 Opacity="0.2" />
             <controls:Button2
+                Background="{DynamicResource ThemeBrush}"
+                VerticalAlignment="Stretch"
                 x:Name="PART_Min"
                 AutomationProperties.AutomationId="Minimize"
                 AutomationProperties.Name="Minimize"
@@ -63,6 +57,8 @@
                     Kind="Minimise" />
             </controls:Button2>
             <controls:Button2
+                Background="{DynamicResource ThemeBrush}"
+                VerticalAlignment="Stretch"
                 x:Name="PART_Max"
                 AutomationProperties.AutomationId="MaximizeRestore"
                 AutomationProperties.Name="Maximize"
@@ -76,12 +72,12 @@
                     Kind="Maximise" />
             </controls:Button2>
             <controls:Button2
+                Background="{DynamicResource ThemeBrush}"
+                VerticalAlignment="Stretch"
                 x:Name="PART_Close"
                 AutomationProperties.AutomationId="Close"
                 AutomationProperties.Name="Close"
                 Command="{x:Static SystemCommands.CloseWindowCommand}"
-                MouseDownColour="DarkRed"
-                MouseOverColour="#e81123"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="{Binding Close, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
                 <scalableicons:Icon
@@ -116,13 +112,13 @@
                     </BeginStoryboard>
                 </Trigger.ExitActions>
             </Trigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ThemableWindow2}}, Path=WindowStyle}" Value="ToolWindow">
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:Window2}}, Path=WindowStyle}" Value="ToolWindow">
                 <Setter TargetName="PART_ThemeSetButton" Property="Visibility" Value="Collapsed" />
                 <Setter TargetName="PART_Max" Property="Visibility" Value="Collapsed" />
                 <Setter TargetName="PART_Min" Property="Visibility" Value="Collapsed" />
                 <Setter TargetName="PART_Splitter" Property="Visibility" Value="Collapsed" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ThemableWindow2}}, Path=WindowState}" Value="Maximized">
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:Window2}}, Path=WindowState}" Value="Maximized">
                 <Setter TargetName="PART_Max" Property="AutomationProperties.Name" Value="Restore" />
                 <Setter TargetName="PART_Max" Property="Command" Value="{x:Static SystemCommands.RestoreWindowCommand}" />
                 <Setter TargetName="PART_Max" Property="ToolTip" Value="{Binding Restore, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
