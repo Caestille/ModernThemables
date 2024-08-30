@@ -13,6 +13,7 @@
         Calculator,
         Calendar,
         ClipboardList,
+        ClockNow,
         Close,
         Collapse,
         Download,
