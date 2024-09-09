@@ -5,6 +5,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="GenericCircularProgressBarTemplate" TargetType="{x:Type controls:CircularProgressBar}">

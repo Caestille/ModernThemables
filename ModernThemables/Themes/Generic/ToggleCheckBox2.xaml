@@ -5,7 +5,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="GenericToggleCheckboxTemplate" TargetType="{x:Type controls:CheckBox2}">

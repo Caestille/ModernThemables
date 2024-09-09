@@ -32,10 +32,10 @@ namespace ModernThemables
         public static Color ThemeColour = Color.FromArgb(255, 47, 47, 74);
         public static Color ThemeTextColour = Color.FromArgb(255, 47, 47, 74);
 
-        public static double DisabledModifier => isDarkMode ? -0.7 : 0.7;
-        public static double MouseOverModifier => isDarkMode ? 0.1 : 0.2;
-        public static double MouseDownModifier => isDarkMode ? -0.1 : -0.1;
-        public static double BorderModifier => isDarkMode ? 0.3 : -0.3;
+        public static float DisabledModifier => isDarkMode ? -0.7f : 0.7f;
+        public static float MouseOverModifier => isDarkMode ? 0.1f : 0.2f;
+        public static float MouseDownModifier => isDarkMode ? -0.1f : -0.1f;
+        public static float BorderModifier => isDarkMode ? 0.3f : -0.3f;
 
         static ThemeManager()
         {
@@ -64,6 +64,17 @@ namespace ModernThemables
             Application.Current.Resources[nameof(TertiaryTextColour).Replace("Colour", "Brush")] = new SolidColorBrush(TertiaryTextColour);
             Application.Current.Resources[nameof(PrimaryControlColour).Replace("Colour", "Brush")] = new SolidColorBrush(PrimaryControlColour);
             Application.Current.Resources[nameof(SecondaryControlColour).Replace("Colour", "Brush")] = new SolidColorBrush(SecondaryControlColour);
+            Application.Current.Resources[nameof(PrimaryControlColour).Replace("Colour", "BorderBrush")] = new SolidColorBrush(PrimaryControlColour.ChangeColourBrightness(BorderModifier));
+            Application.Current.Resources[nameof(SecondaryControlColour).Replace("Colour", "BorderBrush")] = new SolidColorBrush(SecondaryControlColour.ChangeColourBrightness(BorderModifier));
+
+            Application.Current.Resources[nameof(PrimaryControlColour).Replace("Colour", "MouseOverBrush")] = new SolidColorBrush(PrimaryControlColour.ChangeColourBrightness(MouseOverModifier));
+            Application.Current.Resources[nameof(SecondaryControlColour).Replace("Colour", "MouseOverBrush")] = new SolidColorBrush(SecondaryControlColour.ChangeColourBrightness(MouseOverModifier));
+
+            Application.Current.Resources[nameof(PrimaryControlColour).Replace("Colour", "MouseDownBrush")] = new SolidColorBrush(PrimaryControlColour.ChangeColourBrightness(MouseDownModifier));
+            Application.Current.Resources[nameof(SecondaryControlColour).Replace("Colour", "MouseDownBrush")] = new SolidColorBrush(SecondaryControlColour.ChangeColourBrightness(MouseDownModifier));
+
+            Application.Current.Resources[nameof(PrimaryControlColour).Replace("Colour", "DisabledBrush")] = new SolidColorBrush(PrimaryControlColour.ChangeColourBrightness(DisabledModifier));
+            Application.Current.Resources[nameof(SecondaryControlColour).Replace("Colour", "DisabledBrush")] = new SolidColorBrush(SecondaryControlColour.ChangeColourBrightness(DisabledModifier));
         }
 
         public static void SetTheme(Color newThemeColour)
@@ -76,6 +87,14 @@ namespace ModernThemables
 
             Application.Current.Resources[nameof(ThemeColour).Replace("Colour", "Brush")] = new SolidColorBrush(ThemeColour);
             Application.Current.Resources[nameof(ThemeTextColour).Replace("Colour", "Brush")] = new SolidColorBrush(ThemeTextColour);
+
+            Application.Current.Resources[nameof(ThemeColour).Replace("Colour", "BorderBrush")] = new SolidColorBrush(ThemeColour.ChangeColourBrightness(BorderModifier));
+
+            Application.Current.Resources[nameof(ThemeColour).Replace("Colour", "MouseOverBrush")] = new SolidColorBrush(ThemeColour.ChangeColourBrightness(MouseOverModifier));
+
+            Application.Current.Resources[nameof(ThemeColour).Replace("Colour", "MouseDownBrush")] = new SolidColorBrush(ThemeColour.ChangeColourBrightness(MouseDownModifier));
+
+            Application.Current.Resources[nameof(ThemeColour).Replace("Colour", "DisabledBrush")] = new SolidColorBrush(ThemeColour.ChangeColourBrightness(DisabledModifier));
         }
 
         public static void SyncThemeWithOs(bool doSync)

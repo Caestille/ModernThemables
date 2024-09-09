@@ -8,8 +8,9 @@
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Converters.xaml" />
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="WindowTitle" TargetType="{x:Type Thumb}">

@@ -7,7 +7,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/ModernThemables;component/Themes/Generic.xaml" />
                 <ResourceDictionary Source="/ModernThemables.Icons;component/Themes/Generic.xaml" />
                 <ResourceDictionary Source="/ModernThemables;component/Themes/Rounded.xaml" />
                 <!--<ResourceDictionary Source="/ModernThemables;component/Charting/Themes/Generic.xaml" />-->

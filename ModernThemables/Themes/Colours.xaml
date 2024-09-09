@@ -1,0 +1,30 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="BackgroundBrush" Color="White" />
+    <SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="White" />
+    <SolidColorBrush x:Key="TertiaryBackgroundBrush" Color="White" />
+    <SolidColorBrush x:Key="PrimaryTextBrush" Color="Black" />
+    <SolidColorBrush x:Key="SecondaryTextBrush" Color="Gray" />
+    <SolidColorBrush x:Key="TertiaryTextBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="PrimaryControlBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="SecondaryControlBrush" Color="Gray" />
+    <SolidColorBrush x:Key="ThemeBrush" Color="DeepSkyBlue" />
+    <SolidColorBrush x:Key="ThemeTextBrush" Color="White" />
+
+    <SolidColorBrush x:Key="PrimaryControlBorderBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="SecondaryControlBorderBrush" Color="Gray" />
+    <SolidColorBrush x:Key="ThemeBorderBrush" Color="DeepSkyBlue" />
+
+    <SolidColorBrush x:Key="PrimaryControlMouseOverBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="SecondaryControlMouseOverBrush" Color="Gray" />
+    <SolidColorBrush x:Key="ThemeMouseOverBrush" Color="DeepSkyBlue" />
+
+    <SolidColorBrush x:Key="PrimaryControlMouseDownBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="SecondaryControlMouseDownBrush" Color="Gray" />
+    <SolidColorBrush x:Key="ThemeMouseDownBrush" Color="DeepSkyBlue" />
+    
+    <SolidColorBrush x:Key="PrimaryControlDisabledBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="SecondaryControlDisabledBrush" Color="Gray" />
+    <SolidColorBrush x:Key="ThemeDisabledBrush" Color="DeepSkyBlue" />
+
+</ResourceDictionary>

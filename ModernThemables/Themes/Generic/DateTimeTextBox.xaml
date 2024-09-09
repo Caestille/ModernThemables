@@ -5,7 +5,8 @@
     xmlns:mt="clr-namespace:ModernThemables">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="GenericDateTimeTextboxTemplate" TargetType="{x:Type controls:DatetimeTextBox}">

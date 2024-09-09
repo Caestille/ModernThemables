@@ -5,7 +5,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Slider.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="SliderTemplate" TargetType="{x:Type Slider}">

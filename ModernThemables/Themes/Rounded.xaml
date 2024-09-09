@@ -4,7 +4,6 @@
         <ResourceDictionary Source="Generic.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/AutofillTextbox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/BigGreenCheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/CheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ColourPickerBox.xaml" />

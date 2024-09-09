@@ -6,7 +6,8 @@
     xmlns:vms="clr-namespace:ModernThemables.ViewModels">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="GenericToggleButton2Template" TargetType="{x:Type controls:ToggleButton2}">

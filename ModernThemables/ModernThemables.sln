@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernThemables", "ModernThemables.csproj", "{847BE7B0-1950-47B0-965E-0A17920060DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "old", "..\old\old.csproj", "{260C449D-8C48-4CE8-8B15-396084E75FE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernThemables.TestApp", "..\ModernThemables.TestApp\ModernThemables.TestApp.csproj", "{29FCC940-D036-4571-B8C0-B9689BB22D34}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernThemables.Icons", "..\ModernThemables.Icons\ModernThemables.Icons.csproj", "{36F993E9-A976-4040-BE28-7B9612F31F7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{847BE7B0-1950-47B0-965E-0A17920060DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{847BE7B0-1950-47B0-965E-0A17920060DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{847BE7B0-1950-47B0-965E-0A17920060DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{847BE7B0-1950-47B0-965E-0A17920060DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{260C449D-8C48-4CE8-8B15-396084E75FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{260C449D-8C48-4CE8-8B15-396084E75FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{260C449D-8C48-4CE8-8B15-396084E75FE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29FCC940-D036-4571-B8C0-B9689BB22D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29FCC940-D036-4571-B8C0-B9689BB22D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29FCC940-D036-4571-B8C0-B9689BB22D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29FCC940-D036-4571-B8C0-B9689BB22D34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36F993E9-A976-4040-BE28-7B9612F31F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36F993E9-A976-4040-BE28-7B9612F31F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36F993E9-A976-4040-BE28-7B9612F31F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36F993E9-A976-4040-BE28-7B9612F31F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {525F407D-AD1D-4B5B-97D9-D0072D3A079D}
+	EndGlobalSection
+EndGlobal
