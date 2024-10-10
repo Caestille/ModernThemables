@@ -6,6 +6,17 @@ namespace ModernThemables.Controls
 {
 	public class Button2 : Button
     {
+        public SolidColorBrush DisabledForegroundBrush
+        {
+            get => (SolidColorBrush)GetValue(DisabledForegroundBrushProperty);
+            set => SetValue(DisabledForegroundBrushProperty, value);
+        }
+        public static readonly DependencyProperty DisabledForegroundBrushProperty = DependencyProperty.Register(
+            nameof(DisabledForegroundBrush),
+            typeof(SolidColorBrush),
+            typeof(Button2),
+            new UIPropertyMetadata(null));
+
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);

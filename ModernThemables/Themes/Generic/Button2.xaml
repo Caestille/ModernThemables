@@ -35,6 +35,7 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter TargetName="PART_border" Property="Background" Value="{Binding DisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding DisabledForegroundBrush, RelativeSource={RelativeSource TemplatedParent}}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -49,6 +50,8 @@
         <Setter Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BorderConverter}}" />
         <Setter Property="Padding" Value="5,2" />
         <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
+        <Setter Property="DisabledBrush" Value="{DynamicResource PrimaryControlDisabledBrush}" />
+        <Setter Property="DisabledForegroundBrush" Value="{DynamicResource SecondaryTextBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="Template" Value="{StaticResource GenericButton2Template}" />

@@ -4,7 +4,6 @@
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/BlurHost.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Button.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Button2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/CircularProgressBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
@@ -14,13 +13,9 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleButton2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltipHorizontal.xaml" />
-        <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Menu.xaml" />-->
-        <!--<ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/MenuItem.xaml" />-->
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/RangeSlider.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/SearchBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Slider.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Window2.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/ToggleCheckBox2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/WindowButtonCommands.xaml" />
     </ResourceDictionary.MergedDictionaries>
