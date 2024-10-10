@@ -127,15 +127,13 @@
                     <Border
                         Grid.Row="0"
                         Grid.Column="1"
-                        Background="{mt:DynamicResourceBinding ThemeBrush,
-                                                               Converter={StaticResource MouseOverConverter}}"
+                        Background="{DynamicResource ThemeMouseOverBrush}"
                         CornerRadius="0,4,0,0"
                         ToolTip="Theme mouse over colour" />
                     <Border
                         Grid.Row="1"
                         Grid.Column="0"
-                        Background="{mt:DynamicResourceBinding ThemeBrush,
-                                                               Converter={StaticResource MouseDownConverter}}"
+                        Background="{DynamicResource ThemeMouseDownBrush}"
                         CornerRadius="0,0,0,4"
                         ToolTip="Theme mouse down colour" />
                     <Border

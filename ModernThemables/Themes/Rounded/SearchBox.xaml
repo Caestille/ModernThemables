@@ -104,7 +104,7 @@
                                 BorderThickness="0"
                                 CornerRadius="3"
                                 Foreground="{DynamicResource StatusTextBrush}"
-                                MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}">
+                                MouseOverBrush="{DynamicResource ControlClickablePartMouseOverBrush}">
                                 <scalableicons:Icon
                                     Margin="2"
                                     HorizontalAlignment="Stretch"

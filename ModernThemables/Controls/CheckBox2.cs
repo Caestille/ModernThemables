@@ -6,17 +6,6 @@ namespace ModernThemables.Controls
 {
 	public class CheckBox2 : CheckBox
     {
-        public Brush UncheckedBackground
-        {
-            get => (Brush)GetValue(UncheckedBackgroundProperty);
-            set => SetValue(UncheckedBackgroundProperty, value);
-        }
-        public static readonly DependencyProperty UncheckedBackgroundProperty = DependencyProperty.Register(
-            nameof(UncheckedBackground),
-            typeof(Brush),
-            typeof(CheckBox2),
-            new UIPropertyMetadata(null));
-
         public Brush CheckedBackground
         {
             get => (Brush)GetValue(CheckedBackgroundProperty);

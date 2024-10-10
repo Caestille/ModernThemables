@@ -269,7 +269,7 @@
         <Setter Property="GlowDepth" Value="1" />
         <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
         <!--<Setter Property="GlowColor" Value="{mt:DynamicResourceBinding ThemeBrush, Converter={StaticResource MouseOverConverter}}" />-->
-        <Setter Property="NonActiveGlowColor" Value="{mt:DynamicResourceBinding SecondaryControlBrush, Converter={StaticResource BrushToColourConverter}}" />
+        <Setter Property="NonActiveGlowColor" Value="Black" />
         <Setter Property="WindowTitleBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource SecondaryTextBrush}" />
         <Setter Property="Template" Value="{StaticResource Window2}" />
