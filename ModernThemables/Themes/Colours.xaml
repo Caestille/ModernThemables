@@ -22,7 +22,7 @@
     <SolidColorBrush x:Key="PrimaryControlMouseDownBrush" Color="LightGray" />
     <SolidColorBrush x:Key="SecondaryControlMouseDownBrush" Color="Gray" />
     <SolidColorBrush x:Key="ThemeMouseDownBrush" Color="DeepSkyBlue" />
-    
+
     <SolidColorBrush x:Key="PrimaryControlDisabledBrush" Color="LightGray" />
     <SolidColorBrush x:Key="SecondaryControlDisabledBrush" Color="Gray" />
     <SolidColorBrush x:Key="ThemeDisabledBrush" Color="DeepSkyBlue" />

@@ -60,7 +60,7 @@
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource Self}}" />
         <Setter Property="Background" Value="{DynamicResource SecondaryControlBrush}" />
-        <Setter Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BorderConverter}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />

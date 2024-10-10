@@ -10,36 +10,34 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="GenericColourPickerBoxTemplate" TargetType="{x:Type controls:ColourPickerBox}">
-        <Grid>
-            <Border
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Background="{TemplateBinding Colour,
-                                             Converter={StaticResource ColourToBrushConverter}}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="{TemplateBinding CornerRadius}"
-                ToolTip="Set colour"
-                ToolTipService.InitialShowDelay="100">
-                <controls:Button2
-                    x:Name="PART_button"
-                    Background="{TemplateBinding Foreground}"
-                    CornerRadius="{TemplateBinding CornerRadius}">
-                    <controls:Button2.Style>
-                        <Style>
-                            <Setter Property="controls:Button2.Opacity" Value="0" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
-                                    <Setter Property="controls:Button2.Opacity" Value="0.2" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:Button2.Style>
-                </controls:Button2>
-            </Border>
-        </Grid>
+        <Border
+            Width="{TemplateBinding Width}"
+            Height="{TemplateBinding Height}"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Background="{TemplateBinding Colour,
+                                         Converter={StaticResource ColourToBrushConverter}}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            ToolTip="Set colour"
+            ToolTipService.InitialShowDelay="100">
+            <controls:Button2
+                x:Name="PART_button"
+                Background="{TemplateBinding Foreground}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+                <controls:Button2.Style>
+                    <Style>
+                        <Setter Property="controls:Button2.Opacity" Value="0" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
+                                <Setter Property="controls:Button2.Opacity" Value="0.2" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:Button2.Style>
+            </controls:Button2>
+        </Border>
     </ControlTemplate>
 
     <Style TargetType="{x:Type controls:ColourPickerBox}">

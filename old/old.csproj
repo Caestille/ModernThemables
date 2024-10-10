@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Themes\" />
+    <Compile Remove="Themes\**" />
+    <EmbeddedResource Remove="Themes\**" />
+    <None Remove="Themes\**" />
+    <Page Remove="Themes\**" />
   </ItemGroup>
 
 </Project>

@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:controlzEx="urn:controlzex"
-    xmlns:mt="clr-namespace:ModernThemables"
     xmlns:ex="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mt="clr-namespace:ModernThemables"
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
     <ResourceDictionary.MergedDictionaries>
@@ -139,8 +139,8 @@
                             x:Name="PART_SettingsCloseRegion"
                             Grid.Row="1"
                             Grid.ColumnSpan="3"
-                            VerticalAlignment="Stretch"
                             HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
                             Background="Black"
                             BorderThickness="0"
                             Focusable="False"

@@ -17,9 +17,9 @@
     <ControlTemplate x:Key="WindowButtonCommands" TargetType="{x:Type controls:WindowButtonCommands}">
         <StackPanel Orientation="Horizontal">
             <controls:Button2
-                Background="{DynamicResource ThemeBrush}"
-                VerticalAlignment="Stretch"
                 x:Name="PART_ThemeSetButton"
+                VerticalAlignment="Stretch"
+                Background="{DynamicResource ThemeBrush}"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="Set theme">
                 <scalableicons:Icon
@@ -40,11 +40,11 @@
                 Background="{DynamicResource ThemeTextBrush}"
                 Opacity="0.2" />
             <controls:Button2
-                Background="{DynamicResource ThemeBrush}"
-                VerticalAlignment="Stretch"
                 x:Name="PART_Min"
+                VerticalAlignment="Stretch"
                 AutomationProperties.AutomationId="Minimize"
                 AutomationProperties.Name="Minimize"
+                Background="{DynamicResource ThemeBrush}"
                 Command="{x:Static SystemCommands.MinimizeWindowCommand}"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="{Binding Minimize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
@@ -57,11 +57,11 @@
                     Kind="Minimise" />
             </controls:Button2>
             <controls:Button2
-                Background="{DynamicResource ThemeBrush}"
-                VerticalAlignment="Stretch"
                 x:Name="PART_Max"
+                VerticalAlignment="Stretch"
                 AutomationProperties.AutomationId="MaximizeRestore"
                 AutomationProperties.Name="Maximize"
+                Background="{DynamicResource ThemeBrush}"
                 Command="{x:Static SystemCommands.MaximizeWindowCommand}"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="{Binding Maximize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
@@ -72,11 +72,11 @@
                     Kind="Maximise" />
             </controls:Button2>
             <controls:Button2
-                Background="{DynamicResource ThemeBrush}"
-                VerticalAlignment="Stretch"
                 x:Name="PART_Close"
+                VerticalAlignment="Stretch"
                 AutomationProperties.AutomationId="Close"
                 AutomationProperties.Name="Close"
+                Background="{DynamicResource ThemeBrush}"
                 Command="{x:Static SystemCommands.CloseWindowCommand}"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="{Binding Close, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
