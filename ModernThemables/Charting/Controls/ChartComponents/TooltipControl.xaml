@@ -44,7 +44,7 @@
                     ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="{DynamicResource StatusTextBrush}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryTextBrush}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -79,7 +79,7 @@
                     ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="{DynamicResource StatusTextBrush}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryTextBrush}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -104,8 +104,8 @@
         <Border
             x:Name="SelectionRangeBorder"
             HorizontalAlignment="Left"
-            Background="{DynamicResource StatusTextLightBrush}"
-            BorderBrush="{DynamicResource TextBrush}"
+            Background="{DynamicResource TertiaryTextBrush}"
+            BorderBrush="{DynamicResource PrimaryTextBrush}"
             BorderThickness="1,0,1,0"
             IsHitTestVisible="False"
             Opacity="0.3">
@@ -141,7 +141,7 @@
                                 Height="{Binding LocationY}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                BorderBrush="{DynamicResource StatusTextBrush}"
+                                BorderBrush="{DynamicResource SecondaryTextBrush}"
                                 BorderThickness="0,0,0,1"
                                 IsHitTestVisible="False">
                                 <Border.Style>
@@ -177,7 +177,7 @@
                                 Height="30"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Fill="{DynamicResource TextBrush}"
+                                Fill="{DynamicResource PrimaryTextBrush}"
                                 IsHitTestVisible="False"
                                 Opacity="0.1"
                                 Visibility="{Binding IsNearest, Converter={StaticResource VisibleIfTrueConverter}}">
@@ -197,7 +197,7 @@
                                 IsHitTestVisible="False"
                                 Opacity="0"
                                 RenderTransformOrigin="0.5,0.5"
-                                Stroke="{DynamicResource TextBrush}"
+                                Stroke="{DynamicResource PrimaryTextBrush}"
                                 StrokeThickness="1"
                                 Visibility="{Binding IsNearest, Converter={StaticResource VisibleIfTrueConverter}}">
                                 <Ellipse.Margin>
@@ -263,7 +263,7 @@
                                 VerticalAlignment="Top"
                                 Fill="{Binding Fill}"
                                 IsHitTestVisible="False"
-                                Stroke="{DynamicResource MainBackgroundBrush}"
+                                Stroke="{DynamicResource PrimaryBackgroundBrush}"
                                 StrokeThickness="1.5">
                                 <Ellipse.Margin>
                                     <MultiBinding Converter="{StaticResource PointHighlightMarginConverter}" ConverterParameter="5">

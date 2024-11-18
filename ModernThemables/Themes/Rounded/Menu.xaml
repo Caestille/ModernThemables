@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedicons="clr-namespace:ModernThemables.Icons.AnimatedIcons;assembly=ModernThemables.Icons"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
+    xmlns:cuHelpers="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons"
@@ -10,11 +11,12 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type controls:Menu}">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:Menu}">
@@ -47,7 +49,7 @@
                             x:Name="SettingsBorder"
                             Width="51"
                             HorizontalAlignment="Left"
-                            Background="{DynamicResource MainBackgroundBrush}"
+                            Background="{DynamicResource PrimaryBackgroundBrush}"
                             BorderThickness="1"
                             CornerRadius="10">
                             <Border.Style>
@@ -66,7 +68,7 @@
                             </Border.Style>
                             <Grid>
                                 <Border
-                                    BorderBrush="{DynamicResource MenuBorderBrush}"
+                                    BorderBrush="{DynamicResource SecondaryBackgroundBrush}"
                                     BorderThickness="0,0,1,0"
                                     CornerRadius="0,10,10,0">
                                     <Border.Visibility>
@@ -80,7 +82,7 @@
                                     </Border.Visibility>
                                     <Border.Background>
                                         <LinearGradientBrush Opacity="0.1">
-                                            <GradientStop Offset="0" Color="{DynamicResource ThemeMouseOverColour}" />
+                                            <GradientStop Offset="0" Color="{DynamicResource ThemeMouseOverBrush.Color}" />
                                             <GradientStop Offset="1" Color="Transparent" />
                                         </LinearGradientBrush>
                                     </Border.Background>
@@ -106,7 +108,7 @@
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <controls:ExtendedButton
+                                            <controls:Button2
                                                 x:Name="PART_OpenButton"
                                                 Grid.Column="0"
                                                 Width="30"
@@ -116,9 +118,9 @@
                                                 Background="Transparent"
                                                 BorderThickness="0"
                                                 CornerRadius="5"
-                                                Foreground="{DynamicResource TextBrush}">
-                                                <controls:ExtendedButton.Style>
-                                                    <Style TargetType="{x:Type controls:ExtendedButton}">
+                                                Foreground="{DynamicResource PrimaryTextBrush}">
+                                                <controls:Button2.Style>
+                                                    <Style TargetType="{x:Type controls:Button2}">
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsMenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                                 <Setter Property="Button.ToolTip" Value="Collapse Menu" />
@@ -128,8 +130,8 @@
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </controls:ExtendedButton.Style>
-                                                <controls:ExtendedButton.Visibility>
+                                                </controls:Button2.Style>
+                                                <controls:Button2.Visibility>
                                                     <MultiBinding Converter="{StaticResource MultiBoolOrToVisibilityConverter}">
                                                         <Binding
                                                             Converter="{StaticResource BoolInverter}"
@@ -140,9 +142,9 @@
                                                             Path="IsMenuOpen"
                                                             RelativeSource="{RelativeSource TemplatedParent}" />
                                                     </MultiBinding>
-                                                </controls:ExtendedButton.Visibility>
+                                                </controls:Button2.Visibility>
                                                 <!--#region Button icon-->
-                                                <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ExtendedButton}}, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ExtendedButton}}, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-3}">
+                                                <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Button2}}, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Button2}}, Path=ActualHeight, Converter={StaticResource ValueAdderConverter}, ConverterParameter=-3}">
                                                     <Grid.Background>
                                                         <SolidColorBrush Opacity="0.01" Color="Black" />
                                                     </Grid.Background>
@@ -157,13 +159,13 @@
                                                     </Grid.Style>
                                                     <animatedicons:AnimatedMenuIcon
                                                         Margin="3,3,5,3"
-                                                        Background="{DynamicResource MenuBrush}"
-                                                        Foreground="{DynamicResource StatusTextBrush}"
+                                                        Background="{DynamicResource SecondaryBackgroundBrush}"
+                                                        Foreground="{DynamicResource SecondaryTextBrush}"
                                                         IsOpen="{TemplateBinding IsMenuOpen}" />
                                                 </Grid>
                                                 <!--#endregion-->
-                                            </controls:ExtendedButton>
-                                            <controls:ExtendedButton
+                                            </controls:Button2>
+                                            <controls:Button2
                                                 x:Name="PART_PinButton"
                                                 Grid.Column="1"
                                                 Width="30"
@@ -173,11 +175,11 @@
                                                 Background="Transparent"
                                                 BorderThickness="0"
                                                 CornerRadius="5"
-                                                Foreground="{DynamicResource TextBrush}">
+                                                Foreground="{DynamicResource PrimaryTextBrush}">
                                                 <!--#region Button icon-->
                                                 <Grid
-                                                    Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ExtendedButton}}, Path=ActualWidth}"
-                                                    Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ExtendedButton}}, Path=ActualHeight}"
+                                                    Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Button2}}, Path=ActualWidth}"
+                                                    Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Button2}}, Path=ActualHeight}"
                                                     Margin="0,-1,0,0">
                                                     <Grid.Background>
                                                         <SolidColorBrush Opacity="0.01" Color="Black" />
@@ -196,20 +198,20 @@
                                                     </Grid.Style>
                                                     <scalableicons:Icon
                                                         Margin="5"
-                                                        Foreground="{DynamicResource StatusTextBrush}"
+                                                        Foreground="{DynamicResource SecondaryTextBrush}"
                                                         Kind="Pin" />
                                                 </Grid>
                                                 <!--#endregion-->
-                                            </controls:ExtendedButton>
+                                            </controls:Button2>
                                             <controls:SearchBox
                                                 x:Name="PART_SearchBox"
                                                 Grid.Column="2"
                                                 Height="20"
                                                 Margin="8,6,10,4"
                                                 VerticalAlignment="Top"
-                                                Background="{DynamicResource TextBrush}"
+                                                Background="{DynamicResource PrimaryTextBrush}"
                                                 BackgroundOpacity="0.1"
-                                                Foreground="{DynamicResource TextBrush}"
+                                                Foreground="{DynamicResource PrimaryTextBrush}"
                                                 Visibility="{TemplateBinding IsMenuOpen,
                                                                              Converter={StaticResource VisibleIfTrueConverter}}" />
                                         </Grid>
@@ -218,7 +220,7 @@
                                             Height="1"
                                             Margin="10,12,10,0"
                                             VerticalAlignment="Top"
-                                            Background="{DynamicResource TextBrush}"
+                                            Background="{DynamicResource PrimaryTextBrush}"
                                             Opacity="0.1" />
                                         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                                             <Grid>
@@ -249,7 +251,7 @@
                                                         </MultiBinding>
                                                     </ItemsControl.Visibility>
                                                 </ItemsControl>
-                                                <TextBlock Foreground="{DynamicResource TextBrush}" Text="No Results">
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}" Text="No Results">
                                                     <TextBlock.Visibility>
                                                         <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
                                                             <Binding
@@ -282,7 +284,7 @@
                                                         <Grid>
                                                             <scalableicons:Icon
                                                                 Width="15"
-                                                                Foreground="{DynamicResource ControlClickablePartMouseOverBrush}"
+                                                                Foreground="{DynamicResource PrimaryControlMouseOverBrush}"
                                                                 Kind="Gear" />
                                                         </Grid>
                                                     </DataTemplate>

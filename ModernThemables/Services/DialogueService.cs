@@ -26,7 +26,7 @@ namespace ModernThemables.Services
 		/// <inheritdoc />
 		public void ShowCustomDialogue(object dataContext, Size? dialogueSize = null)
 		{
-			var window = new ThemableWindow2();
+			var window = new Window2();
 			window.UseLayoutRounding = true;
 			window.SnapsToDevicePixels = true;
 			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;

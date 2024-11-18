@@ -13,7 +13,7 @@ namespace ModernThemables.Controls
 		}
 
 		public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
-			"Percentage",
+			nameof(Percentage),
 			typeof(double),
 			typeof(CircularProgressBar),
 			new PropertyMetadata(0d, OnSetPercentage));
@@ -24,18 +24,18 @@ namespace ModernThemables.Controls
 		}
 
 		public static readonly DependencyProperty StrokeWidthFractionProperty = DependencyProperty.Register(
-			"StrokeWidthFraction",
+			nameof(StrokeWidthFraction),
 			typeof(double),
 			typeof(CircularProgressBar),
 			new PropertyMetadata(0d, OnSetStrokeFraction));
 
 		public bool RoundedEnd
-		{
-			get { return (bool)GetValue(RoundedEndProperty); }
-			set { SetValue(RoundedEndProperty, value); }
-		}
-		public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
-			"RoundedEnd",
+        {
+            get => (bool)GetValue(RoundedEndProperty);
+            set => SetValue(RoundedEndProperty, value);
+        }
+        public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
+			nameof(RoundedEnd),
 			typeof(bool),
 			typeof(CircularProgressBar),
 			new FrameworkPropertyMetadata(
@@ -49,7 +49,7 @@ namespace ModernThemables.Controls
 		}
 
 		public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
-			"IsIndeterminate",
+			nameof(IsIndeterminate),
 			typeof(bool),
 			typeof(CircularProgressBar),
 			new PropertyMetadata(false));

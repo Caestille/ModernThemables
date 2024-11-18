@@ -23,8 +23,8 @@ namespace ModernThemables.Icons
         [TypeConverter(typeof(GeometryConverter))]
         public string Data
         {
-            get { return (string)GetValue(DataProperty); }
-            protected set { SetValue(DataPropertyKey, value); }
+            get => (string)GetValue(DataProperty);
+            protected set => SetValue(DataPropertyKey, value);
         }
 
         private static readonly DependencyPropertyKey YScalePropertyKey
@@ -37,8 +37,8 @@ namespace ModernThemables.Icons
         /// </summary>
         public int YScale
         {
-            get { return (int)GetValue(YScaleProperty); }
-            protected set { SetValue(YScalePropertyKey, value); }
+            get => (int)GetValue(YScaleProperty);
+            protected set => SetValue(YScalePropertyKey, value);
         }
 
         public override void OnApplyTemplate()
@@ -72,8 +72,8 @@ namespace ModernThemables.Icons
         /// <value>The rotation.</value>
         public double RotationAngle
         {
-            get { return (double)GetValue(RotationAngleProperty); }
-            set { SetValue(RotationAngleProperty, value); }
+            get => (double)GetValue(RotationAngleProperty);
+            set => SetValue(RotationAngleProperty, value);
         }
     }
 }

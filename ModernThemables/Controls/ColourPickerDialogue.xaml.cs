@@ -7,7 +7,7 @@ namespace ModernThemables.Controls
 	/// <summary>
 	/// Interaction logic for ColourPickerDialogue.xaml
 	/// </summary>
-	public partial class ColourPickerDialogue : ThemableWindow2
+	public partial class ColourPickerDialogue : Window2
 	{
 		private Color initialColour;
 		private readonly Action<Color>? colourChangedCallback;
@@ -18,7 +18,7 @@ namespace ModernThemables.Controls
 			set => SetValue(ColourProperty, value);
 		}
 		public static readonly DependencyProperty ColourProperty = DependencyProperty.Register(
-			"Colour",
+			nameof(Colour),
 			typeof(Color),
 			typeof(ColourPickerDialogue),
 			new FrameworkPropertyMetadata(Colors.Black, OnColourSet));

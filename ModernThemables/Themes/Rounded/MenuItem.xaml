@@ -8,14 +8,14 @@
     mc:Ignorable="d">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Button2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltip.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/InfoTooltipHorizontal.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/InfoTooltipHorizontal.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type controls:MenuItem}">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:MenuItem}">
@@ -23,18 +23,18 @@
                         <Grid.Resources>
                             <Style
                                 x:Key="RoundButtonStyle"
-                                BasedOn="{StaticResource ResourceKey={x:Type controls:ExtendedButton}}"
-                                TargetType="{x:Type controls:ExtendedButton}">
+                                BasedOn="{StaticResource ResourceKey={x:Type controls:Button2}}"
+                                TargetType="{x:Type controls:Button2}">
                                 <Setter Property="Width" Value="20" />
                                 <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Width}" />
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                 <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                                <Setter Property="Background" Value="{DynamicResource ControlClickablePartBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
                                 <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
                                 <Setter Property="CornerRadius" Value="5" />
-                                <Setter Property="MouseDownColour" Value="{DynamicResource ControlClickablePartMouseDownBrush}" />
-                                <Setter Property="MouseOverColour" Value="{DynamicResource ControlClickablePartMouseOverBrush}" />
+                                <Setter Property="MouseDownBrush" Value="{DynamicResource PrimaryControlMouseDownBrush}" />
+                                <Setter Property="MouseOverBrush" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
                             </Style>
                         </Grid.Resources>
                         <Border
@@ -54,7 +54,7 @@
                             <!--#region Single item grid-->
                             <Grid x:Name="SingleItemGrid">
                                 <Border>
-                                    <controls:ExtendedButton
+                                    <controls:Button2
                                         Width="Auto"
                                         Height="Auto"
                                         MinHeight="40"
@@ -66,9 +66,9 @@
                                         BorderThickness="0"
                                         Command="{Binding InternalSelectCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                         CornerRadius="5"
-                                        Foreground="{DynamicResource TextBrush}"
-                                        MouseDownColour="{DynamicResource MenuMouseDownBrush}"
-                                        MouseOverColour="{DynamicResource MenuMouseOverBrush}">
+                                        Foreground="{DynamicResource PrimaryTextBrush}"
+                                        MouseDownBrush="{DynamicResource SecondaryBackgroundBrush}"
+                                        MouseOverBrush="{DynamicResource SecondaryBackgroundBrush}">
                                         <!--#region Content-->
                                         <Grid
                                             Margin="-6"
@@ -144,12 +144,12 @@
                                                     </TextBlock.Visibility>
                                                     <TextBlock.Style>
                                                         <Style>
-                                                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource StatusTextBrush}" />
+                                                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource SecondaryTextBrush}" />
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                                     <Setter Property="TextBlock.FontWeight" Value="SemiBold" />
                                                                     <Setter Property="TextBlock.FontSize" Value="14" />
-                                                                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource TextBrush}" />
+                                                                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource PrimaryTextBrush}" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
@@ -178,7 +178,7 @@
                                                     Margin="10,0,0,0"
                                                     Padding="0"
                                                     VerticalAlignment="Center"
-                                                    Foreground="{DynamicResource ControlClickablePartMouseOverBrush}"
+                                                    Foreground="{DynamicResource PrimaryControlMouseOverBrush}"
                                                     IsHitTestVisible="False"
                                                     Text="{Binding SubTitle, RelativeSource={RelativeSource TemplatedParent}}"
                                                     TextWrapping="Wrap">
@@ -207,43 +207,43 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <!--#region Add child button-->
-                                                <controls:ExtendedButton
+                                                <controls:Button2
                                                     HorizontalAlignment="Right"
                                                     Background="Transparent"
                                                     Command="{Binding AddChildCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    Foreground="{DynamicResource StatusTextBrush}"
+                                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                                     Style="{StaticResource RoundButtonStyle}"
                                                     ToolTip="Add">
-                                                    <controls:ExtendedButton.Visibility>
+                                                    <controls:Button2.Visibility>
                                                         <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
                                                             <Binding Path="CanAddChild" RelativeSource="{RelativeSource TemplatedParent}" />
                                                             <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
                                                             <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                                         </MultiBinding>
-                                                    </controls:ExtendedButton.Visibility>
+                                                    </controls:Button2.Visibility>
                                                     <scalableicons:Icon Margin="2" Kind="Plus" />
-                                                </controls:ExtendedButton>
+                                                </controls:Button2>
                                                 <!--#endregion-->
                                                 <!--#region Delete button-->
-                                                <controls:ExtendedButton
+                                                <controls:Button2
                                                     Grid.Column="1"
                                                     Padding="3"
                                                     HorizontalAlignment="Right"
                                                     VerticalAlignment="Center"
                                                     Background="Transparent"
                                                     Command="{Binding DeleteCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    Foreground="{DynamicResource StatusTextBrush}"
+                                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                                     Style="{StaticResource RoundButtonStyle}"
                                                     ToolTip="Delete">
-                                                    <controls:ExtendedButton.Visibility>
+                                                    <controls:Button2.Visibility>
                                                         <MultiBinding Converter="{StaticResource MultiBoolAndToVisibilityConverter}">
                                                             <Binding Path="CanDelete" RelativeSource="{RelativeSource TemplatedParent}" />
                                                             <Binding Path="IsContainingMenuOpen" RelativeSource="{RelativeSource TemplatedParent}" />
                                                             <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                                         </MultiBinding>
-                                                    </controls:ExtendedButton.Visibility>
+                                                    </controls:Button2.Visibility>
                                                     <scalableicons:Icon Margin="1,0,0,0" Kind="Bin" />
-                                                </controls:ExtendedButton>
+                                                </controls:Button2>
                                                 <!--#endregion-->
                                                 <!--#region Drop down indicator-->
                                                 <Grid
@@ -274,13 +274,13 @@
                                                             </Style.Triggers>
                                                         </Style>
                                                     </Grid.Style>
-                                                    <scalableicons:Icon Foreground="{DynamicResource TextBrush}" Kind="Expand" />
+                                                    <scalableicons:Icon Foreground="{DynamicResource PrimaryTextBrush}" Kind="Expand" />
                                                 </Grid>
                                                 <!--#endregion-->
                                             </Grid>
                                         </Grid>
                                         <!--#endregion-->
-                                    </controls:ExtendedButton>
+                                    </controls:Button2>
                                     <Border.Style>
                                         <Style>
                                             <Setter Property="ToolTipService.InitialShowDelay" Value="200" />
@@ -297,7 +297,7 @@
                                     Margin="15,0"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Bottom"
-                                    Background="{DynamicResource StatusTextLightBrush}"
+                                    Background="{DynamicResource TertiaryTextBrush}"
                                     IsHitTestVisible="False"
                                     Opacity="0.3"
                                     Visibility="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfTrueConverter}}" />

@@ -2,7 +2,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
@@ -12,8 +12,8 @@
                 Width="14"
                 Height="14"
                 VerticalAlignment="Center"
-                Fill="{DynamicResource ControlClickablePartBrush}"
-                Stroke="{DynamicResource MenuBrush}" />
+                Fill="{DynamicResource PrimaryControlBrush}"
+                Stroke="{DynamicResource SecondaryBackgroundBrush}" />
             <Border
                 x:Name="gripBorder"
                 Width="12"
@@ -27,14 +27,14 @@
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
                 <Setter TargetName="grip" Property="Fill" Value="{DynamicResource ThemeMouseOverBrush}" />
-                <Setter TargetName="gripBorder" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverNearBackgroundBrush}" />
+                <Setter TargetName="gripBorder" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
             </Trigger>
             <Trigger Property="IsDragging" Value="true">
                 <Setter TargetName="grip" Property="Fill" Value="{DynamicResource ThemeMouseDownBrush}" />
-                <Setter TargetName="gripBorder" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownNearBackgroundBrush}" />
+                <Setter TargetName="gripBorder" Property="BorderBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter TargetName="grip" Property="Fill" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+                <Setter TargetName="grip" Property="Fill" Value="{DynamicResource PrimaryControlDisabledBrush}" />
                 <Setter TargetName="gripBorder" Property="BorderBrush" Value="Transparent" />
             </Trigger>
         </ControlTemplate.Triggers>
@@ -51,8 +51,8 @@
                     <Border
                         Height="4"
                         Margin="-10,0,7,0"
-                        Background="{DynamicResource ControlNonClickablePartBrush}"
-                        BorderBrush="{DynamicResource ControlNonClickablePartBrush}"
+                        Background="{DynamicResource SecondaryControlBrush}"
+                        BorderBrush="{DynamicResource SecondaryControlBrush}"
                         BorderThickness="1"
                         CornerRadius="1" />
                 </ControlTemplate>
@@ -69,8 +69,8 @@
                     <Border
                         Height="6"
                         Margin="7,-1,-10,0"
-                        Background="{DynamicResource ThemeBackgroundBrush}"
-                        BorderBrush="{DynamicResource ThemeBackgroundNearBackgroundBrush}"
+                        Background="{DynamicResource ThemeBrush}"
+                        BorderBrush="{DynamicResource ThemeBrush}"
                         BorderThickness="1"
                         CornerRadius="1"
                         SnapsToDevicePixels="True" />

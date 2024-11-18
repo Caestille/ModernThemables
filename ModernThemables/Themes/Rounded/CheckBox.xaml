@@ -2,94 +2,96 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="WrappingStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
+    <ControlTemplate x:Key="RoundedCheckboxControlTemplate" TargetType="{x:Type CheckBox}">
+        <Border
+            x:Name="Border"
+            Background="Transparent"
+            BorderBrush="Gray"
+            BorderThickness="0"
+            CornerRadius="4">
+            <Grid x:Name="grid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    x:Name="highlightCircle"
+                    Height="14"
+                    Margin="1"
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="3">
+                    <Grid
+                        x:Name="GlyphPanel"
+                        Height="16"
+                        Margin="2,2,2,0"
+                        VerticalAlignment="Top"
+                        Visibility="Hidden">
+                        <Path
+                            x:Name="GlyphPanelPath"
+                            VerticalAlignment="Top"
+                            Data="M0,2 L0,4.8 L2.5,7.4 L7.1,2.8 L7.1,0 L2.5,4.6 z"
+                            Fill="{DynamicResource ThemeTextBrush}"
+                            FlowDirection="LeftToRight" />
+                    </Grid>
+                </Border>
+                <ContentPresenter
+                    x:Name="content"
+                    Grid.Column="1"
+                    Margin="5,0,5,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    TextBlock.FontSize="{TemplateBinding FontSize}">
+                    <ContentPresenter.Resources>
+                        <Style BasedOn="{StaticResource WrappingStyle}" TargetType="{x:Type TextBlock}" />
+                    </ContentPresenter.Resources>
+                </ContentPresenter>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <!--  The GlyphPanel contains the CheckMark  -->
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="GlyphPanel" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeBrush}" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="highlightCircle" Property="Background" Value="Gray" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PrimaryControlDisabledBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource PrimaryControlDisabledBrush}" />
+                <Setter TargetName="highlightCircle" Property="BorderBrush" Value="Gray" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="True" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <Style TargetType="{x:Type CheckBox}">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type CheckBox}">
-                    <Border
-                        x:Name="Border"
-                        Background="Transparent"
-                        BorderBrush="Gray"
-                        BorderThickness="0"
-                        CornerRadius="4">
-                        <Grid x:Name="grid">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Border
-                                x:Name="highlightCircle"
-                                Height="14"
-                                Margin="1"
-                                VerticalAlignment="Top"
-                                Background="Transparent"
-                                BorderBrush="{DynamicResource StatusTextBrush}"
-                                BorderThickness="1"
-                                CornerRadius="3">
-                                <Grid
-                                    x:Name="GlyphPanel"
-                                    Height="16"
-                                    Margin="2,2,2,0"
-                                    VerticalAlignment="Top"
-                                    Visibility="Hidden">
-                                    <Path
-                                        x:Name="GlyphPanelPath"
-                                        VerticalAlignment="Top"
-                                        Data="M0,2 L0,4.8 L2.5,7.4 L7.1,2.8 L7.1,0 L2.5,4.6 z"
-                                        Fill="{DynamicResource ThemeTextBrush}"
-                                        FlowDirection="LeftToRight" />
-                                </Grid>
-                            </Border>
-                            <ContentPresenter
-                                x:Name="content"
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                TextBlock.FontSize="{TemplateBinding FontSize}">
-                                <ContentPresenter.Resources>
-                                    <Style BasedOn="{StaticResource WrappingStyle}" TargetType="{x:Type TextBlock}" />
-                                </ContentPresenter.Resources>
-                            </ContentPresenter>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <!--  The GlyphPanel contains the CheckMark  -->
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="GlyphPanel" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="highlightCircle" Property="Background" Value="Gray" />
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
-                            <Setter TargetName="highlightCircle" Property="BorderBrush" Value="Gray" />
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="True" />
-                                <Condition Property="IsMouseOver" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
+        <Setter Property="Template" Value="{StaticResource RoundedCheckboxControlTemplate}" />
     </Style>
 
 </ResourceDictionary>

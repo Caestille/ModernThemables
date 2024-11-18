@@ -3,11 +3,11 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="ToggleCheckbox" TargetType="CheckBox">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -16,7 +16,7 @@
                             x:Name="Border"
                             Width="30"
                             Height="15"
-                            Background="{DynamicResource ControlNonClickablePartBrush}"
+                            Background="{DynamicResource SecondaryControlBrush}"
                             BorderThickness="0"
                             CornerRadius="{Binding Path=Height, ElementName=Border, Converter={StaticResource ValueMultiplierConverter}, ConverterParameter=0.5}" />
                         <Border
@@ -26,13 +26,13 @@
                             Margin="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Background="{DynamicResource ControlClickablePartBrush}"
+                            Background="{DynamicResource PrimaryControlBrush}"
                             BorderThickness="0"
                             CornerRadius="6.5" />
                         <Border
                             x:Name="ThemeBorder"
                             Background="Transparent"
-                            BorderBrush="{DynamicResource ThemeNearBackgroundBrush}"
+                            BorderBrush="{DynamicResource ThemeBrush}"
                             BorderThickness="1"
                             CornerRadius="{Binding ElementName=Border, Path=CornerRadius}"
                             Opacity="0.5" />
@@ -72,18 +72,18 @@
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeBrush}" />
-                            <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource StatusTextBrush}" />
+                            <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource SecondaryTextBrush}" />
                             <Setter TargetName="highlightCircle" Property="Grid.Column" Value="1" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
-                            <Setter TargetName="ThemeBorder" Property="BorderBrush" Value="{DynamicResource ControlNonClickablePartBrush}" />
+                            <Setter TargetName="ThemeBorder" Property="BorderBrush" Value="{DynamicResource SecondaryControlBrush}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledControlNonClickablePartBrush}" />
-                            <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource SecondaryControlDisabledBrush}" />
+                            <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource PrimaryControlDisabledBrush}" />
                             <Setter TargetName="ThemeBorder" Property="BorderBrush" Value="Transparent" />
                         </Trigger>
                         <MultiTrigger>
@@ -92,7 +92,7 @@
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ControlClickablePartMouseOverBrush}" />
+                                <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <MultiTrigger>
@@ -101,8 +101,8 @@
                                 <Condition Property="IsEnabled" Value="False" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledControlNonClickablePartBrush}" />
-                                <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource DisabledControlClickablePartBrush}" />
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource SecondaryControlDisabledBrush}" />
+                                <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource PrimaryControlDisabledBrush}" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>

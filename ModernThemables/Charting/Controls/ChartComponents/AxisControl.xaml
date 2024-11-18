@@ -111,7 +111,7 @@
             Height="18"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Background="{DynamicResource StatusTextLightBrush}"
+            Background="{DynamicResource TertiaryTextBrush}"
             CornerRadius="5"
             IsHitTestVisible="False"
             Visibility="Collapsed">
@@ -121,7 +121,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="11"
-                Foreground="{DynamicResource TextBrush}" />
+                Foreground="{DynamicResource PrimaryTextBrush}" />
         </Border>
     </Grid>
 </UserControl>

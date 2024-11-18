@@ -6,7 +6,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Slider.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="SliderRepeatButton2" TargetType="RepeatButton">
@@ -20,8 +20,8 @@
                     <Border
                         Height="4"
                         Margin="7,-1,-10,0"
-                        Background="{DynamicResource ControlNonClickablePartBrush}"
-                        BorderBrush="{DynamicResource ControlNonClickablePartBrush}"
+                        Background="{DynamicResource SecondaryControlBrush}"
+                        BorderBrush="{DynamicResource SecondaryControlBrush}"
                         BorderThickness="1"
                         CornerRadius="1" />
                 </ControlTemplate>

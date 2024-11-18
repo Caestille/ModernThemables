@@ -32,8 +32,8 @@
             Grid.Column="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Background="{DynamicResource MenuBrush}"
-            BorderBrush="{DynamicResource MenuBorderBrush}"
+            Background="{DynamicResource SecondaryBackgroundBrush}"
+            BorderBrush="{DynamicResource SecondaryBackgroundBrush}"
             BorderThickness="1"
             CornerRadius="5"
             Items="{Binding ElementName=root, Path=Series}" />
@@ -53,7 +53,7 @@
                 <chartcomponents:GridControl
                     x:Name="GridControl"
                     Margin="0,-1"
-                    Foreground="{DynamicResource StatusTextLightBrush}"
+                    Foreground="{DynamicResource TertiaryTextBrush}"
                     Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}"
                     YLabels="{Binding YAxisLabels, ElementName=root}" />
                 <Grid
@@ -108,17 +108,17 @@
             </Grid>
             <chartcomponents:AxisControl
                 Margin="0,0,-1,0"
-                BorderBrush="{DynamicResource StatusTextLightBrush}"
+                BorderBrush="{DynamicResource TertiaryTextBrush}"
                 BorderThickness="0,0,1,0"
-                Foreground="{DynamicResource StatusTextBrush}"
+                Foreground="{DynamicResource SecondaryTextBrush}"
                 Labels="{Binding ElementName=root, Path=YAxisLabels}"
                 Orientation="Vertical" />
             <chartcomponents:AxisControl
                 Grid.Row="1"
                 Grid.Column="1"
-                BorderBrush="{DynamicResource StatusTextLightBrush}"
+                BorderBrush="{DynamicResource TertiaryTextBrush}"
                 BorderThickness="1,1,0,0"
-                Foreground="{DynamicResource StatusTextBrush}"
+                Foreground="{DynamicResource SecondaryTextBrush}"
                 LabelRotation="0"
                 Labels="{Binding ElementName=root, Path=XAxisLabels}"
                 Orientation="Horizontal" />

@@ -7,7 +7,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type controls:SearchBox}">
@@ -31,7 +31,7 @@
                                 Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                                 Margin="3"
                                 HorizontalAlignment="Left"
-                                Foreground="{DynamicResource StatusTextBrush}"
+                                Foreground="{DynamicResource SecondaryTextBrush}"
                                 Kind="MagnifyingGlass" />
                             <TextBox
                                 x:Name="PART_textBox"
@@ -47,9 +47,6 @@
                                 SnapsToDevicePixels="True"
                                 Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 TextAlignment="Left">
-                                <TextBox.Background>
-                                    <SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
-                                </TextBox.Background>
                             </TextBox>
                             <TextBlock
                                 Grid.Column="1"
@@ -58,7 +55,7 @@
                                 Margin="3,0,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Foreground="{DynamicResource StatusTextBrush}"
+                                Foreground="{DynamicResource SecondaryTextBrush}"
                                 IsHitTestVisible="False"
                                 SnapsToDevicePixels="True"
                                 Text="Search"
@@ -92,7 +89,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <controls:ExtendedButton
+                            <controls:Button2
                                 x:Name="PART_button"
                                 Grid.Column="2"
                                 Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
@@ -103,15 +100,15 @@
                                 Background="Transparent"
                                 BorderThickness="0"
                                 CornerRadius="3"
-                                Foreground="{DynamicResource StatusTextBrush}"
-                                MouseOverColour="{DynamicResource ControlClickablePartMouseOverBrush}">
+                                Foreground="{DynamicResource SecondaryTextBrush}"
+                                MouseOverBrush="{DynamicResource PrimaryControlMouseOverBrush}">
                                 <scalableicons:Icon
                                     Margin="2"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"
                                     Background="Transparent"
                                     Kind="Close" />
-                            </controls:ExtendedButton>
+                            </controls:Button2>
                         </Grid>
                     </Grid>
                 </ControlTemplate>

@@ -4,12 +4,13 @@
         <ResourceDictionary Source="Generic.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/AutofillTextbox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/BigGreenCheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/CheckBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ComboBox2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ColourPickerBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/DataGrid.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/DatetimeTextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Button2.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ToggleButton2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/InfoTooltip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/InfoTooltipHorizontal.xaml" />

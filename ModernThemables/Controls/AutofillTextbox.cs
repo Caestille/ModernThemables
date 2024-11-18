@@ -4,17 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
 	public class AutofillTextbox : TextBox
 	{
-		#region Members
-
-		#endregion Members
-
-		#region Constructors
-
 		static AutofillTextbox()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(AutofillTextbox), new FrameworkPropertyMetadata(typeof(AutofillTextbox)));
@@ -24,10 +19,6 @@ namespace ModernThemables.Controls
 		{
 			
 		}
-
-		#endregion Constructors
-
-		#region Properties
 
 		public ObservableCollection<string> AutofillOptions
 		{
@@ -59,14 +50,20 @@ namespace ModernThemables.Controls
             set => SetValue(CornerRadiusProperty, value);
         }
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius",
+            nameof(CornerRadius),
             typeof(CornerRadius),
             typeof(AutofillTextbox),
             new PropertyMetadata(new CornerRadius(0)));
 
-        #endregion Properties
-
-        #region Override
+        public Brush WatermarkForeground
+        {
+            get => (Brush)GetValue(WatermarkForegroundProperty);
+            set => SetValue(WatermarkForegroundProperty, value);
+        }
+        public static readonly DependencyProperty WatermarkForegroundProperty = DependencyProperty.Register(
+            nameof(WatermarkForeground),
+            typeof(Brush),
+            typeof(AutofillTextbox));
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
@@ -116,7 +113,5 @@ namespace ModernThemables.Controls
 		{
 			base.OnApplyTemplate();
 		}
-
-		#endregion Override
 	}
 }

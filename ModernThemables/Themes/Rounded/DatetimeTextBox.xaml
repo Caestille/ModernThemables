@@ -6,45 +6,58 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="RoundedDateTimeTextboxControlTemplate" TargetType="{x:Type controls:DatetimeTextBox}">
+        <Border
+            x:Name="Border"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            SnapsToDevicePixels="True">
+            <Border.Width>
+                <MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00/00/0000 00:00:00|7">
+                    <Binding Path="Format" RelativeSource="{RelativeSource TemplatedParent}" />
+                    <Binding Path="Text" RelativeSource="{RelativeSource TemplatedParent}" />
+                    <Binding Path="FontSize" RelativeSource="{RelativeSource TemplatedParent}" />
+                    <Binding Path="FontFamily" RelativeSource="{RelativeSource TemplatedParent}" />
+                    <Binding Path="FontStyle" RelativeSource="{RelativeSource TemplatedParent}" />
+                    <Binding Path="FontWeight" RelativeSource="{RelativeSource TemplatedParent}" />
+                    <Binding Path="FontStretch" RelativeSource="{RelativeSource TemplatedParent}" />
+                </MultiBinding>
+            </Border.Width>
+            <ScrollViewer
+                x:Name="PART_ContentHost"
+                Background="Transparent"
+                Focusable="false"
+                HorizontalScrollBarVisibility="Hidden"
+                TextElement.Foreground="{TemplateBinding Foreground}"
+                VerticalScrollBarVisibility="Hidden" />
+        </Border>
+    </ControlTemplate>
 
     <Style TargetType="{x:Type controls:DatetimeTextBox}">
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:DatetimeTextBox}">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="5"
-                        Focusable="False">
-                        <TextBox
-                            x:Name="PART_textbox"
-                            Margin="0"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Foreground="{TemplateBinding Foreground}">
-                            <TextBox.Background>
-                                <SolidColorBrush Opacity="0.01" Color="{DynamicResource InvertedTextColour}" />
-                            </TextBox.Background>
-                            <TextBox.Width>
-                                <MultiBinding Converter="{StaticResource StringWidthGetterConverter}" ConverterParameter="00/00/0000 00:00:00|7">
-                                    <Binding Path="Format" RelativeSource="{RelativeSource TemplatedParent}" />
-                                    <Binding Path="Text" RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="FontSize" RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="FontFamily" RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="FontStyle" RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="FontWeight" RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="FontStretch" RelativeSource="{RelativeSource Self}" />
-                                </MultiBinding>
-                            </TextBox.Width>
-                        </TextBox>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="WarningBrush" Value="Red" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource SecondaryTextBrush}" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Format" Value="dd/MM/yyyy HH:mm:ss" />
+        <Setter Property="AllowDrop" Value="true" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="Template" Value="{StaticResource RoundedDateTimeTextboxControlTemplate}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DateTimeValid}" Value="False">
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WarningBrush}" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

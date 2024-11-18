@@ -2,22 +2,22 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="HasDropShadow" Value="False" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
                     <Grid>
                         <Border
                             Margin="10,10,10,10"
-                            Background="{DynamicResource MenuBrush}"
-                            BorderBrush="{DynamicResource MenuBorderBrush}"
+                            Background="{DynamicResource SecondaryBackgroundBrush}"
+                            BorderBrush="{DynamicResource SecondaryBackgroundBrush}"
                             BorderThickness="1"
                             CornerRadius="5">
                             <ContentPresenter Margin="6" />
@@ -26,7 +26,7 @@
                                     BlurRadius="10"
                                     Opacity="0.6"
                                     ShadowDepth="0"
-                                    Color="{DynamicResource InvertedTextColour}" />
+                                    Color="Black" />
                             </Border.Effect>
                         </Border>
                     </Grid>

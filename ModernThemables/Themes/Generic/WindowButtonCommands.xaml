@@ -4,7 +4,7 @@
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
-    <Style x:Key="TitleBarButton" TargetType="{x:Type controls:ExtendedButton}">
+    <Style x:Key="TitleBarButton" TargetType="{x:Type controls:Button2}">
         <Setter Property="Width" Value="46" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Margin" Value="1,1,1,0" />
@@ -12,12 +12,12 @@
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
         <Setter Property="UseLayoutRounding" Value="True" />
-        <Setter Property="MouseOverColour">
+        <Setter Property="MouseOverBrush">
             <Setter.Value>
                 <SolidColorBrush Opacity="0.15" Color="White" />
             </Setter.Value>
         </Setter>
-        <Setter Property="MouseDownColour">
+        <Setter Property="MouseDownBrush">
             <Setter.Value>
                 <SolidColorBrush Opacity="0.3" Color="White" />
             </Setter.Value>
@@ -26,7 +26,7 @@
 
     <ControlTemplate x:Key="WindowButtonCommands" TargetType="{x:Type controls:WindowButtonCommands}">
         <StackPanel Orientation="Horizontal">
-            <controls:ExtendedButton
+            <controls:Button2
                 x:Name="PART_ThemeSetButton"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="Set theme">
@@ -40,14 +40,14 @@
                         <RotateTransform x:Name="RotateTransformBlah" Angle="0" />
                     </scalableicons:Icon.RenderTransform>
                 </scalableicons:Icon>
-            </controls:ExtendedButton>
+            </controls:Button2>
             <Border
                 x:Name="PART_Splitter"
                 Width="1"
                 Margin="1,4,1,4"
                 Background="{DynamicResource ThemeTextBrush}"
                 Opacity="0.2" />
-            <controls:ExtendedButton
+            <controls:Button2
                 x:Name="PART_Min"
                 AutomationProperties.AutomationId="Minimize"
                 AutomationProperties.Name="Minimize"
@@ -61,8 +61,8 @@
                     VerticalAlignment="Bottom"
                     Foreground="{TemplateBinding Foreground}"
                     Kind="Minimise" />
-            </controls:ExtendedButton>
-            <controls:ExtendedButton
+            </controls:Button2>
+            <controls:Button2
                 x:Name="PART_Max"
                 AutomationProperties.AutomationId="MaximizeRestore"
                 AutomationProperties.Name="Maximize"
@@ -74,14 +74,14 @@
                     Height="10"
                     Foreground="{TemplateBinding Foreground}"
                     Kind="Maximise" />
-            </controls:ExtendedButton>
-            <controls:ExtendedButton
+            </controls:Button2>
+            <controls:Button2
                 x:Name="PART_Close"
                 AutomationProperties.AutomationId="Close"
                 AutomationProperties.Name="Close"
                 Command="{x:Static SystemCommands.CloseWindowCommand}"
-                MouseDownColour="DarkRed"
-                MouseOverColour="#e81123"
+                MouseDownBrush="DarkRed"
+                MouseOverBrush="#e81123"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="{Binding Close, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
                 <scalableicons:Icon
@@ -89,7 +89,7 @@
                     Height="10"
                     Foreground="{TemplateBinding Foreground}"
                     Kind="Close" />
-            </controls:ExtendedButton>
+            </controls:Button2>
         </StackPanel>
         <ControlTemplate.Triggers>
             <Trigger Property="IsThemingMenuVisible" Value="True">
@@ -116,13 +116,13 @@
                     </BeginStoryboard>
                 </Trigger.ExitActions>
             </Trigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ThemableWindow2}}, Path=WindowStyle}" Value="ToolWindow">
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:Window2}}, Path=WindowStyle}" Value="ToolWindow">
                 <Setter TargetName="PART_ThemeSetButton" Property="Visibility" Value="Collapsed" />
                 <Setter TargetName="PART_Max" Property="Visibility" Value="Collapsed" />
                 <Setter TargetName="PART_Min" Property="Visibility" Value="Collapsed" />
                 <Setter TargetName="PART_Splitter" Property="Visibility" Value="Collapsed" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ThemableWindow2}}, Path=WindowState}" Value="Maximized">
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:Window2}}, Path=WindowState}" Value="Maximized">
                 <Setter TargetName="PART_Max" Property="AutomationProperties.Name" Value="Restore" />
                 <Setter TargetName="PART_Max" Property="Command" Value="{x:Static SystemCommands.RestoreWindowCommand}" />
                 <Setter TargetName="PART_Max" Property="ToolTip" Value="{Binding Restore, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />

@@ -6,11 +6,10 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/Colours.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
@@ -42,7 +41,6 @@
     </Style>
 
     <Style TargetType="{x:Type ScrollBar}">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ThemableFocusStyle}" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
         <Setter Property="Foreground" Value="{DynamicResource StatusTextBrush}" />
         <Setter Property="Background" Value="Transparent" />
@@ -58,39 +56,61 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <controls:ExtendedButton
+                        <controls:Button2
                             x:Name="UpButton"
                             Margin="0,3"
+                            Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
                             Command="ScrollBar.PageUpCommand"
                             CornerRadius="3"
                             Opacity="0">
-                            <Grid>
-                                <icons:Icon Foreground="{DynamicResource StatusTextBrush}" Kind="ArrowUp" />
-                                <icons:Icon
-                                    Foreground="{DynamicResource TextBrush}"
-                                    Kind="ArrowUp"
-                                    Visibility="{Binding ElementName=UpButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
-                            </Grid>
-                        </controls:ExtendedButton>
-                        <controls:ExtendedButton
+                            <Viewbox>
+                                <Grid>
+                                    <Path
+                                        Width="10"
+                                        Height="10"
+                                        Data="M300 175A43 43 0 0 0 266.75 191L161.5 318.5A52.5 52.5 0 0 0 155 373.75A44 44 0 0 0 194.75 400H405.25A44 44 0 0 0 445 373.75A52.5 52.5 0 0 0 438.5 318.5L333.25 191A43 43 0 0 0 300 175z"
+                                        Fill="Gray"
+                                        Stretch="Uniform" />
+                                    <Path
+                                        Width="10"
+                                        Height="10"
+                                        Data="M300 175A43 43 0 0 0 266.75 191L161.5 318.5A52.5 52.5 0 0 0 155 373.75A44 44 0 0 0 194.75 400H405.25A44 44 0 0 0 445 373.75A52.5 52.5 0 0 0 438.5 318.5L333.25 191A43 43 0 0 0 300 175z"
+                                        Fill="White"
+                                        Stretch="Uniform"
+                                        Visibility="{Binding ElementName=UpButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
+                                </Grid>
+                            </Viewbox>
+                        </controls:Button2>
+                        <controls:Button2
                             x:Name="DownButton"
                             Grid.Row="2"
                             Margin="0,3"
+                            Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
                             Command="ScrollBar.PageDownCommand"
                             CornerRadius="3"
                             Opacity="0">
-                            <Grid>
-                                <icons:Icon Foreground="{DynamicResource StatusTextBrush}" Kind="ArrowDown" />
-                                <icons:Icon
-                                    Foreground="{DynamicResource TextBrush}"
-                                    Kind="ArrowDown"
-                                    Visibility="{Binding ElementName=DownButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
-                            </Grid>
-                        </controls:ExtendedButton>
+                            <Viewbox>
+                                <Grid>
+                                    <Path
+                                        Width="10"
+                                        Height="10"
+                                        Data="M405.25 200H194.75A44 44 0 0 0 155 225A52.5 52.5 0 0 0 161.5 280.25L266.75 407.75A44 44 0 0 0 333.25 407.75L438.5 280.25A52.5 52.5 0 0 0 445 225A44 44 0 0 0 405.25 200z"
+                                        Fill="Gray"
+                                        Stretch="Uniform" />
+                                    <Path
+                                        Width="10"
+                                        Height="10"
+                                        Data="M405.25 200H194.75A44 44 0 0 0 155 225A52.5 52.5 0 0 0 161.5 280.25L266.75 407.75A44 44 0 0 0 333.25 407.75L438.5 280.25A52.5 52.5 0 0 0 445 225A44 44 0 0 0 405.25 200z"
+                                        Fill="White"
+                                        Stretch="Uniform"
+                                        Visibility="{Binding ElementName=DownButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
+                                </Grid>
+                            </Viewbox>
+                        </controls:Button2>
                         <Track
                             x:Name="PART_Track"
                             Grid.Row="1"
@@ -182,10 +202,10 @@
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
-                            <Setter TargetName="Thumb" Property="Background" Value="{DynamicResource ControlClickablePartMouseOverBrush}" />
+                            <Setter TargetName="Thumb" Property="Background" Value="DarkGray" />
                         </Trigger>
                         <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
-                            <Setter TargetName="Thumb" Property="Background" Value="{DynamicResource ControlClickablePartMouseDownBrush}" />
+                            <Setter TargetName="Thumb" Property="Background" Value="Gray" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />

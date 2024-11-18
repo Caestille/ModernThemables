@@ -11,7 +11,7 @@
     mc:Ignorable="d">
     <Grid
         x:Name="MouseCaptureGrid"
-        Background="{DynamicResource MainBackgroundBrush}"
+        Background="{DynamicResource PrimaryBackgroundBrush}"
         MouseDown="MouseCaptureGrid_MouseDown"
         MouseLeave="MouseCaptureGrid_MouseLeave"
         MouseMove="MouseCaptureGrid_MouseMove"

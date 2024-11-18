@@ -47,7 +47,7 @@
                                         Margin="5,0,10,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        Foreground="{DynamicResource TextBrush}"
+                                        Foreground="{DynamicResource PrimaryTextBrush}"
                                         Text="{Binding Name}" />
                                 </WrapPanel>
                             </DataTemplate>

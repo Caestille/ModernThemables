@@ -15,8 +15,8 @@
             CornerRadius="5">
             <Border
                 Padding="5"
-                Background="{DynamicResource MenuBrush}"
-                BorderBrush="{DynamicResource MenuBorderBrush}"
+                Background="{DynamicResource SecondaryBackgroundBrush}"
+                BorderBrush="{DynamicResource SecondaryBackgroundBrush}"
                 BorderThickness="1"
                 CornerRadius="5">
                 <Grid>
@@ -34,17 +34,17 @@
                         VerticalAlignment="Center"
                         FontSize="20"
                         FontWeight="DemiBold"
-                        Foreground="{DynamicResource TextBrush}"
+                        Foreground="{DynamicResource PrimaryTextBrush}"
                         Text="{Binding PrimaryValue}" />
                     <TextBlock
                         Grid.Column="1"
                         FontWeight="Bold"
-                        Foreground="{DynamicResource TextBrush}"
+                        Foreground="{DynamicResource PrimaryTextBrush}"
                         Text="{Binding SecondaryValue}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1"
-                        Foreground="{DynamicResource TextBrush}"
+                        Foreground="{DynamicResource PrimaryTextBrush}"
                         Text="{Binding TertiaryValue}" />
                 </Grid>
             </Border>

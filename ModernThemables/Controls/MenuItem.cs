@@ -24,8 +24,6 @@ namespace ModernThemables.Controls
             }
         }
 
-        #region Properties
-
         public DataTemplate IconTemplate
         {
             get => (DataTemplate)GetValue(IconTemplateProperty);
@@ -267,8 +265,6 @@ namespace ModernThemables.Controls
             typeof(ICommand),
             typeof(MenuItem),
             new PropertyMetadata(null));
-
-        #endregion Properties
         
         private static void OnSetStartOpen(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {

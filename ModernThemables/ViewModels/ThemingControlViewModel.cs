@@ -30,9 +30,9 @@ namespace ModernThemables.ViewModels
 		private const string ColourModeSettingName = "ColourMode";
 		private const string OsSyncSettingName = "ThemeOsSync";
 		private const string ThemeSettingName = "Theme";
-        private const string TransparentHeaderSettingName = "TransparentHeader";
+		private const string TransparentHeaderSettingName = "TransparentHeader";
 
-        private bool? wasDarkBeforeSync;
+		private bool? wasDarkBeforeSync;
 		private Color? themeBeforeSync;
 
 		private readonly IRegistryService registryService;
@@ -40,11 +40,11 @@ namespace ModernThemables.ViewModels
 
 		private readonly Timer osThemePollTimer = new Timer(1000);
 
-        public event EventHandler<bool>? TransparentHeaderChanged;
-        public event EventHandler<bool>? IsDarkChanged;
-        public event EventHandler<bool>? SyncWithOsChanged;
+		public event EventHandler<bool>? TransparentHeaderChanged;
+		public event EventHandler<bool>? IsDarkChanged;
+		public event EventHandler<bool>? SyncWithOsChanged;
 
-        public ICommand ChangeColourCommand => new RelayCommand(ChangeColour);
+		public ICommand ChangeColourCommand => new RelayCommand(ChangeColour);
 
 		private void ChangeColour()
 		{
@@ -71,8 +71,8 @@ namespace ModernThemables.ViewModels
 			{
 				SetProperty(ref isSyncingWithOs, value);
 				SyncThemeWithOs(value);
-                SyncWithOsChanged?.Invoke(this, value);
-            }
+				SyncWithOsChanged?.Invoke(this, value);
+			}
 		}
 
 		private bool isDarkMode;
@@ -85,32 +85,32 @@ namespace ModernThemables.ViewModels
 			set
 			{
 				SetProperty(ref isDarkMode, value);
-				SetThemeAndBrightnessMode();
-                IsDarkChanged?.Invoke(this, value);
-            }
-        }
+				SetBrightnessMode();
+				IsDarkChanged?.Invoke(this, value);
+			}
+		}
 
-        private bool isTransparentHeader;
-        /// <summary>
-        /// Gets or sets whether the theme is being synchronised with the OS.
-        /// </summary>
-        public bool IsTransparentHeader
-        {
-            get => isTransparentHeader;
-            set
-            {
-                SetProperty(ref isTransparentHeader, value);
-                TransparentHeaderChanged?.Invoke(this, value);
-                registryService.SetSetting(TransparentHeaderSettingName, value.ToString());
-            }
-        }
+		private bool isTransparentHeader;
+		/// <summary>
+		/// Gets or sets whether the theme is being synchronised with the OS.
+		/// </summary>
+		public bool IsTransparentHeader
+		{
+			get => isTransparentHeader;
+			set
+			{
+				SetProperty(ref isTransparentHeader, value);
+				TransparentHeaderChanged?.Invoke(this, value);
+				registryService.SetSetting(TransparentHeaderSettingName, value.ToString());
+			}
+		}
 
-        /// <summary>
-        /// Initialises a new <see cref="ThemingControlViewModel"/>.
-        /// </summary>
-        public ThemingControlViewModel()
-        {
-            registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
+		/// <summary>
+		/// Initialises a new <see cref="ThemingControlViewModel"/>.
+		/// </summary>
+		public ThemingControlViewModel()
+		{
+			registryService = new RegistryService(@"SOFTWARE\ThemableApps", true);
 			dialogueService = new DialogueService();
 
 			registryService.TryGetSetting(ColourModeSettingName, lightModeKey, out string? mode);
@@ -122,92 +122,64 @@ namespace ModernThemables.ViewModels
 			{
 				var accent = theme.Split('-').Select(byte.Parse).ToList();
 				SetThemeColour(Color.FromArgb(accent[0], accent[1], accent[2], accent[3]));
-            }
+			}
 
-            registryService.TryGetSetting(TransparentHeaderSettingName, "false", out string? transparent);
-            if (!string.IsNullOrEmpty(transparent))
-            {
-                IsTransparentHeader = bool.Parse(transparent);
-            }
+			registryService.TryGetSetting(TransparentHeaderSettingName, "false", out string? transparent);
+			if (!string.IsNullOrEmpty(transparent))
+			{
+				IsTransparentHeader = bool.Parse(transparent);
+			}
 
-            registryService.TryGetSetting(OsSyncSettingName, false, out bool sync);
+			registryService.TryGetSetting(OsSyncSettingName, false, out bool sync);
 			IsSyncingWithOs = sync;
 
-            osThemePollTimer.Elapsed += OsThemePollTimer_Elapsed;
+			osThemePollTimer.Elapsed += OsThemePollTimer_Elapsed;
 			osThemePollTimer.AutoReset = true;
-            osThemePollTimer.Start();
+			osThemePollTimer.Start();
 
-            Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 		}
 
 		public void Dispose()
 		{
 			osThemePollTimer.Elapsed -= OsThemePollTimer_Elapsed;
 			osThemePollTimer.Stop();
-		}
+        }
 
-		private void SetThemeAndBrightnessMode()
+        private void SetBrightnessMode()
 		{
 			registryService.SetSetting(ColourModeSettingName, isDarkMode ? darkModeKey : lightModeKey);
-			SetThemeBackground();
 
-			Application.Current.Resources["MainBackgroundBrush"] = isDarkMode 
-				? new SolidColorBrush(MainBackgroundColourDark) 
-				: new SolidColorBrush(MainBackgroundColourLight);
-			Application.Current.Resources["TextBrush"] = isDarkMode 
-				? new SolidColorBrush(TextColourDark) 
-				: new SolidColorBrush(TextColourLight);
-			Application.Current.Resources["TextColour"] = isDarkMode 
-				? Color.FromArgb(TextColourDark.A, TextColourDark.R, TextColourDark.G, TextColourDark.B) 
-				: Color.FromArgb(TextColourLight.A, TextColourLight.R, TextColourLight.G, TextColourLight.B);
-			Application.Current.Resources["InvertedTextColour"] = !isDarkMode
-				? Color.FromArgb(TextColourDark.A, TextColourDark.R, TextColourDark.G, TextColourDark.B)
-				: Color.FromArgb(TextColourLight.A, TextColourLight.R, TextColourLight.G, TextColourLight.B);
-			Application.Current.Resources["InvertedTextBrush"] = isDarkMode
-				? new SolidColorBrush(InvertedTextColourDark)
-				: new SolidColorBrush(InvertedTextColourLight);
-			Application.Current.Resources["StatusTextBrush"] = isDarkMode 
-				? new SolidColorBrush(StatusTextColourDark) 
-				: new SolidColorBrush(StatusTextColourLight);
-			Application.Current.Resources["StatusTextLightBrush"] = isDarkMode 
-				? new SolidColorBrush(StatusTextLightColourDark) 
-				: new SolidColorBrush(StatusTextLightColourLight);
-			Application.Current.Resources["MenuBrush"] = isDarkMode
-				? new SolidColorBrush(MenuColourDark)
-				: new SolidColorBrush(MenuColourLight);
-			Application.Current.Resources["MenuMouseOverBrush"] = isDarkMode
-				? new SolidColorBrush(MenuMouseOverColourDark)
-				: new SolidColorBrush(MenuMouseOverColourLight);
-			Application.Current.Resources["MenuMouseDownBrush"] = isDarkMode
-				? new SolidColorBrush(MenuMouseDownColourDark)
-				: new SolidColorBrush(MenuMouseDownColourLight);
-			Application.Current.Resources["MenuBorderBrush"] = isDarkMode 
-				? new SolidColorBrush(MenuBorderColourDark) 
-				: new SolidColorBrush(MenuBorderColourLight);
-			Application.Current.Resources["DisabledControlClickablePartBrush"] = isDarkMode
-				? new SolidColorBrush(DisabledControlClickablePartColourDark) 
-				: new SolidColorBrush(DisabledControlClickablePartColourLight);
-			Application.Current.Resources["DisabledControlClickablePartColour"] = isDarkMode
-				? Color.FromArgb(DisabledControlClickablePartColourDark.A, DisabledControlClickablePartColourDark.R, DisabledControlClickablePartColourDark.G, DisabledControlClickablePartColourDark.B)
-				: Color.FromArgb(DisabledControlClickablePartColourLight.A, DisabledControlClickablePartColourLight.R, DisabledControlClickablePartColourLight.G, DisabledControlClickablePartColourLight.B);
-			Application.Current.Resources["DisabledControlNonClickablePartBrush"] = isDarkMode 
-				? new SolidColorBrush(DisabledControlNonClickablePartColourDark) 
-				: new SolidColorBrush(DisabledControlNonClickablePartColourLight);
-			Application.Current.Resources["ControlClickablePartBrush"] = isDarkMode 
-				? new SolidColorBrush(ControlClickablePartColourDark) 
-				: new SolidColorBrush(ControlClickablePartColourLight);
-			Application.Current.Resources["ControlClickablePartMouseOverBrush"] = isDarkMode 
-				? new SolidColorBrush(ControlClickablePartMouseOverColourDark) 
-				: new SolidColorBrush(ControlClickablePartMouseOverColourLight);
-			Application.Current.Resources["ControlClickablePartMouseDownBrush"] = isDarkMode 
-				? new SolidColorBrush(ControlClickablePartMouseDownColourDark)
-				: new SolidColorBrush(ControlClickablePartMouseDownColourLight);
-			Application.Current.Resources["ControlNonClickablePartBrush"] = isDarkMode 
-				? new SolidColorBrush(ControlNonClickablePartColourDark) 
-				: new SolidColorBrush(ControlNonClickablePartColourLight);
-			Application.Current.Resources["ButtonForegroundBrush"] = isDarkMode
-				? new SolidColorBrush(ButtonForegroundColourDark)
-				: new SolidColorBrush(ButtonForegroundColourLight);
+			Application.Current.Resources[nameof(PrimaryBackgroundColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? PrimaryBackgroundColourDark : PrimaryBackgroundColourLight);
+			Application.Current.Resources[nameof(SecondaryBackgroundColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? SecondaryBackgroundColourDark : SecondaryBackgroundColourLight);
+			Application.Current.Resources[nameof(PrimaryTextColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? PrimaryTextColourDark : PrimaryTextColourLight);
+			Application.Current.Resources[nameof(SecondaryTextColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? SecondaryTextColourDark : SecondaryTextColourLight);
+			Application.Current.Resources[nameof(TertiaryTextColorLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? TertiaryTextColourDark : TertiaryTextColorLight);
+			Application.Current.Resources[nameof(PrimaryControlColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? PrimaryControlColourDark : PrimaryControlColourLight);
+			Application.Current.Resources[nameof(SecondaryControlColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? SecondaryControlColourDark : SecondaryControlColourLight);
+			Application.Current.Resources[nameof(PrimaryControlMouseOverBrushLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? PrimaryControlMouseOverBrushDark : PrimaryControlMouseOverBrushLight);
+			Application.Current.Resources[nameof(SecondaryControlMouseOverBrushLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? SecondaryControlMouseOverBrushDark : SecondaryControlMouseOverBrushLight);
+			Application.Current.Resources[nameof(PrimaryControlMouseDownBrushLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? PrimaryControlMouseDownBrushDark : PrimaryControlMouseDownBrushLight);
+			Application.Current.Resources[nameof(SecondaryControlMouseDownBrushLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? SecondaryControlMouseDownBrushDark : SecondaryControlMouseDownBrushLight);
+			Application.Current.Resources[nameof(PrimaryControlBorderColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? PrimaryControlBorderColourDark : PrimaryControlBorderColourLight);
+			Application.Current.Resources[nameof(SecondaryControlBorderColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? SecondaryControlBorderColourDark : SecondaryControlBorderColourLight);
+			Application.Current.Resources[nameof(PrimaryControlDisabledColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? PrimaryControlDisabledColourDark : PrimaryControlDisabledColourLight);
+			Application.Current.Resources[nameof(SecondaryControlDisabledColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+				= new SolidColorBrush(isDarkMode ? SecondaryControlDisabledColourDark : SecondaryControlDisabledColourLight);
 		}
 
 		private async void SyncThemeWithOs(bool doSync)
@@ -246,85 +218,39 @@ namespace ModernThemables.ViewModels
 
 			ThemeColour = colour;
 			OnPropertyChanged(nameof(ThemeColourProperty));
-			SetThemeBackground();
 
 			var isThemeDark = ThemeColour.PerceivedBrightness() < 0.5;
-
 			ThemeTextColour = isThemeDark ? Colors.White : Colors.Black;
-			ThemeStatusColour = isThemeDark ? Colors.LightGray : Colors.DimGray;
 
-			var desiredBrightness = Math.Min(
-				Math.Max(
-					ThemeBackgroundColour.PerceivedBrightness() + (isThemeDark ? 0.15 : -0.15),
-					0),
-				1);
-			ThemeDisabledTextColour = Colors.Black;
-			var themeDisabledTextPerceivedBrightness = ThemeDisabledTextColour.PerceivedBrightness();
-			var count = 0;
-			while (Math.Abs(themeDisabledTextPerceivedBrightness - desiredBrightness) > 0.01 && count < 200)
-			{
-				ThemeDisabledTextColour.ChangeThisColourBrightness(0.01f);
-				themeDisabledTextPerceivedBrightness = ThemeDisabledTextColour.PerceivedBrightness();
-				count++;
-			}
+			ThemeMouseOverBrush = ThemeColour.ChangeColourBrightness(0.3f);
+
+			ThemeMouseDownBrush = ThemeColour.ChangeColourBrightness(-0.2f);
+
+			ThemeBorderColour = ThemeColour.ChangeColourBrightness(isDarkMode ? -0.2f : 0.3f);
+
+			ThemeDisabledColour = ThemeColour
+				.ChangeColourBrightness(isDarkMode ? -0.2f : 0.3f)
+				.Combine(Colors.Gray, 0.4);
 
 			Application.Current.Resources["ThemeBrush"] = new SolidColorBrush(ThemeColour);
-			Application.Current.Resources["ThemeBackgroundBrush"] = new SolidColorBrush(ThemeBackgroundColour);
 			Application.Current.Resources["ThemeTextBrush"] = new SolidColorBrush(ThemeTextColour);
-			Application.Current.Resources["ThemeStatusBrush"] = new SolidColorBrush(ThemeStatusColour);
-			Application.Current.Resources["ThemeDisabledTextBrush"] = new SolidColorBrush(ThemeDisabledTextColour);
+			Application.Current.Resources["ThemeMouseOverBrush"] = new SolidColorBrush(ThemeMouseOverBrush);
+			Application.Current.Resources["ThemeMouseDownBrush"] = new SolidColorBrush(ThemeMouseDownBrush);
+			Application.Current.Resources["ThemeBorderBrush"] = new SolidColorBrush(ThemeMouseOverBrush);
+			Application.Current.Resources["ThemeDisabledBrush"] = new SolidColorBrush(ThemeMouseDownBrush);
 		}
 
-		private void SetThemeBackground()
+		private void OsThemePollTimer_Elapsed(object? sender, ElapsedEventArgs e)
 		{
-			float modifier = isDarkMode ? -0.2f : 0.2f;
-			float perceivedBrightnessFactor = (((float)ThemeColour.PerceivedBrightness() + 1f) / 1f) * 1f;
+			if (Application.Current == null) return;
 
-			ThemeBackgroundColour = ThemeColour.ChangeColourBrightness(modifier * perceivedBrightnessFactor);
-			ThemeMouseOverColour = ThemeColour.ChangeColourBrightness(0.1f * perceivedBrightnessFactor);
-			ThemeMouseDownColour = ThemeColour.ChangeColourBrightness(-0.1f * perceivedBrightnessFactor);
-			var compare = isDarkMode ? ThemeBackgroundColour : ThemeMouseOverColour;
-			var background = isDarkMode ? MainBackgroundColourDark : MainBackgroundColourLight;
-			var threshold = isDarkMode ? 0.03 : 0.03;
-			var diffFactor = isDarkMode ? -1 : 1;
-			var modifierFactor = -modifier / (isDarkMode ? 1 : 2) * perceivedBrightnessFactor;
-			ThemeNearBackgroundColour.AdjustBrightnessIfNearColour(
-				compare, background, ThemeColour, diffFactor, threshold, modifierFactor);
-			ThemeBackgroundNearBackgroundColour.AdjustBrightnessIfNearColour(
-				compare, background, ThemeBackgroundColour, diffFactor, threshold, modifierFactor);
-			ThemeMouseOverNearBackgroundColour.AdjustBrightnessIfNearColour(
-				compare, background, ThemeMouseOverColour, diffFactor, threshold, modifierFactor);
-			ThemeMouseDownNearBackgroundColour.AdjustBrightnessIfNearColour(
-				compare, background, ThemeMouseDownColour, diffFactor, threshold, modifierFactor);
-
-			Application.Current.Resources["ThemeBackgroundBrush"] = new SolidColorBrush(ThemeBackgroundColour);
-			Application.Current.Resources["ThemeMouseOverBrush"] = new SolidColorBrush(ThemeMouseOverColour);
-			Application.Current.Resources["ThemeMouseOverColour"] = ThemeMouseOverColour;
-			Application.Current.Resources["ThemeMouseDownBrush"] = new SolidColorBrush(ThemeMouseDownColour);
-			Application.Current.Resources["ThemeNearBackgroundBrush"] = new SolidColorBrush(ThemeNearBackgroundColour);
-			Application.Current.Resources["ThemeBackgroundNearBackgroundBrush"]
-				= new SolidColorBrush(ThemeBackgroundNearBackgroundColour);
-			Application.Current.Resources["ThemeMouseOverNearBackgroundBrush"]
-				= new SolidColorBrush(ThemeMouseOverNearBackgroundColour);
-			Application.Current.Resources["ThemeMouseDownNearBackgroundBrush"]
-				= new SolidColorBrush(ThemeMouseDownNearBackgroundColour);
-		}
-
-		private void OsThemePollTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
-		{
 			if (isSyncingWithOs)
 				SyncThemeWithOs(true);
-			if (Application.Current == null) return;
-        }
+		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
 			Dispose();
-		}
-
-		private static Color MonoColour(byte value)
-		{
-			return Color.FromArgb(255, value, value, value);
 		}
 	}
 }
