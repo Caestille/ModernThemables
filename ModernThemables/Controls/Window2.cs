@@ -745,7 +745,7 @@ namespace ModernThemables.Controls
 
 		private void OnMaximised(object sender, WindowEventHandlerArgs e)
 		{
-			SetResourceReference(GlowColorProperty, "ThemeMouseOverBrush.Color");
+			SetResourceReference(GlowColorProperty, "ThemeBrush.Color");
 		}
 
 		private void CloseThemingMenu(object? sender, RoutedEventArgs? e)

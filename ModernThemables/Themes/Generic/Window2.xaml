@@ -139,6 +139,8 @@
                             Grid.ColumnSpan="3"
                             Background="Black"
                             BorderThickness="0"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
                             Focusable="False"
                             IsHitTestVisible="False"
                             MouseDownBrush="Black"
@@ -268,7 +270,7 @@
         <Setter Property="TitleBarHeight" Value="31" />
         <Setter Property="GlowDepth" Value="1" />
         <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundBrush}" />
-        <Setter Property="GlowColor" Value="{DynamicResource ThemeMouseOverBrush.Color}" />
+        <Setter Property="GlowColor" Value="{DynamicResource PrimaryTextBrush.Color}" />
         <Setter Property="NonActiveGlowColor" Value="{DynamicResource DisabledControlClickablePartColour.Color}" />
         <Setter Property="WindowTitleBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource TertiaryTextBrush}" />

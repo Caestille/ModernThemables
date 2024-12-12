@@ -4,10 +4,20 @@
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
-    <Style x:Key="TitleBarButton" TargetType="{x:Type controls:Button2}">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ModernThemables.Icons;component/Themes/Generic.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Button2.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style
+        x:Key="TitleBarButton"
+        BasedOn="{StaticResource ResourceKey={x:Type controls:Button2}}"
+        TargetType="{x:Type controls:Button2}">
         <Setter Property="Width" Value="46" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Margin" Value="1,1,1,0" />
+        <Setter Property="CornerRadius" Value="0" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />

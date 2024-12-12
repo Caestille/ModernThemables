@@ -46,8 +46,7 @@
                                 Foreground="{TemplateBinding Foreground}"
                                 SnapsToDevicePixels="True"
                                 Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                TextAlignment="Left">
-                            </TextBox>
+                                TextAlignment="Left" />
                             <TextBlock
                                 Grid.Column="1"
                                 Width="Auto"

@@ -4,6 +4,7 @@
     xmlns:chartConverters="clr-namespace:ModernThemables.Charting.Converters"
     xmlns:converters="clr-namespace:ModernThemables.Converters">
 
+    <converters:BrushColourInverterConverter x:Key="BrushColourInverterConverter" />
     <chartConverters:CentreToolTipConverter x:Key="CentreToolTipConverter" />
     <chartConverters:PointToolTipConverter x:Key="PointToolTipConverter" />
     <converters:ColourRgbConverter x:Key="ColourRgbConverter" />
@@ -11,7 +12,6 @@
     <converters:RoundedGeometryGroupConverter x:Key="RoundedGeometryGroupConverter" />
     <converters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />
     <converters:MultiBindingDoubleToBorderThicknessConverter x:Key="MultiBindingDoubleToBorderThicknessConverter" />
-    <converters:BrushColourInverterConverter x:Key="BrushColourInverterConverter" />
     <converters:BrushToColourConverter x:Key="BrushToColourConverter" />
     <chartConverters:PieCentreRadiusConverter x:Key="PieCentreRadiusConverter" />
     <chartConverters:PieLabelMarginConverter x:Key="PieLabelMarginConverter" />
