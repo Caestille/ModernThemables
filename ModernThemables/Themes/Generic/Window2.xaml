@@ -263,8 +263,28 @@
                 <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding Path=BorderBrush, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
             </MultiTrigger>
         </ControlTemplate.Triggers>
-
     </ControlTemplate>
+
+    <DataTemplate x:Key="TransparentTitleBarTemplate">
+        <TextBlock
+            Margin="8,-1,1,0"
+            VerticalAlignment="Center"
+            Text="{TemplateBinding Content}"
+            TextTrimming="CharacterEllipsis">
+            <TextBlock.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="False">
+                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="True">
+                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </DataTemplate>
 
     <Style TargetType="{x:Type controls:Window2}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -276,29 +296,7 @@
         <Setter Property="WindowTitleBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource TertiaryTextBrush}" />
         <Setter Property="Template" Value="{StaticResource Window2}" />
-        <Setter Property="TransparentTitleTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <TextBlock
-                        Margin="8,-1,1,0"
-                        VerticalAlignment="Center"
-                        Text="{TemplateBinding Content}"
-                        TextTrimming="CharacterEllipsis">
-                        <TextBlock.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="False">
-                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource SecondaryTextBrush}" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="True">
-                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </DataTemplate>
-            </Setter.Value>
+        <Setter Property="TransparentTitleTemplate" Value="{StaticResource TransparentTitleBarTemplate}" >
         </Setter>
         <Setter Property="TitleTemplate">
             <Setter.Value>
