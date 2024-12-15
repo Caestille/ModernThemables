@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:controlzEx="urn:controlzex"
+    xmlns:ch="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities"
     xmlns:ex="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
@@ -270,8 +271,8 @@
         <Setter Property="TitleBarHeight" Value="31" />
         <Setter Property="GlowDepth" Value="1" />
         <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundBrush}" />
-        <Setter Property="GlowColor" Value="{DynamicResource PrimaryTextBrush.Color}" />
-        <Setter Property="NonActiveGlowColor" Value="{DynamicResource DisabledControlClickablePartColour.Color}" />
+        <Setter Property="GlowColor" Value="{ch:DynamicResourceBinding ThemeMouseOverBrush, Converter={StaticResource BrushToColourConverter}}" />
+        <Setter Property="NonActiveGlowColor" Value="{ch:DynamicResourceBinding PrimaryControlDisabledBrush, Converter={StaticResource BrushToColourConverter}}" />
         <Setter Property="WindowTitleBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource TertiaryTextBrush}" />
         <Setter Property="Template" Value="{StaticResource Window2}" />
