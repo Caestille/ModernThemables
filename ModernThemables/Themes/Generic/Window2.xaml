@@ -1,9 +1,9 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ch="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:controlzEx="urn:controlzex"
-    xmlns:ch="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities"
     xmlns:ex="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
 
@@ -138,10 +138,10 @@
                             x:Name="PART_SettingsCloseRegion"
                             Grid.Row="1"
                             Grid.ColumnSpan="3"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
                             Background="Black"
                             BorderThickness="0"
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch"
                             Focusable="False"
                             IsHitTestVisible="False"
                             MouseDownBrush="Black"
@@ -312,7 +312,7 @@
                             <Style>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="False">
-                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ThemeTextBrush}" />
+                                        <Setter Property="TextBlock.Foreground" Value="{DynamicResource SecondaryTextBrush}" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Window2}}}" Value="True">
                                         <Setter Property="TextBlock.Foreground" Value="{DynamicResource ThemeTextBrush}" />
