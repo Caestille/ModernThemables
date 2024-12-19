@@ -19,7 +19,7 @@ namespace ModernThemables.Controls
 		private const String PART_LowerSlider = "PART_LowerSlider";
 		private const String PART_Track = "PART_Track";
 
-		private RepeatButton? _midRange;
+		private Thumb? _midRange;
 		private Slider? _lowerSlider;
 		private Slider? _higherSlider;
 
@@ -270,12 +270,12 @@ namespace ModernThemables.Controls
 
 			if (_midRange != null)
 			{
-				//_midRange.Click -= new RoutedEventHandler(this.HigherRange_Click);
-			}
-			_midRange = Template.FindName(PART_MidRange, this) as RepeatButton;
+                _midRange.DragDelta -= _midRange_DragDelta;
+            }
+			_midRange = Template.FindName(PART_MidRange, this) as Thumb;
 			if (_midRange != null)
 			{
-				//_midRange.Click += new RoutedEventHandler(this.HigherRange_Click);
+                _midRange.DragDelta += _midRange_DragDelta;
 			}
 
 			if (_lowerSlider != null)
@@ -305,11 +305,23 @@ namespace ModernThemables.Controls
 			}
 		}
 
-		#endregion Override
+        private void _midRange_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            var newMin = LowerValue + e.HorizontalChange;
+            var newMax = HigherValue + e.HorizontalChange;
 
-		#region Methods
+            if (newMin >= Minimum && newMax <= Maximum)
+            {
+                LowerValue = newMin;
+                HigherValue = newMax;
+            }
+        }
 
-		private void AdjustView(bool isHigherValueChanged = false)
+        #endregion Override
+
+        #region Methods
+
+        private void AdjustView(bool isHigherValueChanged = false)
 		{
 			//Coerce values to make them consistent.
 			var cv = GetCoercedValues();
