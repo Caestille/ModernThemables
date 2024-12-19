@@ -59,7 +59,6 @@
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="highlightCircle" Property="Background" Value="Gray" />
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PrimaryControlDisabledBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource PrimaryControlDisabledBrush}" />
@@ -71,7 +70,7 @@
                     <Condition Property="IsMouseOver" Value="True" />
                 </MultiTrigger.Conditions>
                 <MultiTrigger.Setters>
-                    <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeMouseDownBrush}" />
+                    <Setter TargetName="highlightCircle" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
                 </MultiTrigger.Setters>
             </MultiTrigger>
         </ControlTemplate.Triggers>

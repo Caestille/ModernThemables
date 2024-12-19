@@ -40,13 +40,15 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="MouseOverBrush" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
+        <Setter Property="MouseDownBrush" Value="{DynamicResource PrimaryControlMouseDownBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryControlBorderBrush}" />
         <Setter Property="CheckedBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="Padding" Value="5,2" />
         <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="CornerRadius" Value="5" />
-        <Setter Property="Template" Value="{StaticResource RoundedButton2ControlTemplate}" />
+        <Setter Property="Template" Value="{StaticResource RoundedToggleButton2ControlTemplate}" />
     </Style>
 
 </ResourceDictionary>

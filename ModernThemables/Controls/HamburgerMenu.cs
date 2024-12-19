@@ -9,10 +9,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
-    public class Menu : Control
+    public class HamburgerMenu : Control
     {
         private const string PART_OpenButton = "PART_OpenButton";
         private const string PART_PinButton = "PART_PinButton";
@@ -22,12 +23,12 @@ namespace ModernThemables.Controls
         private Button2? pinButton;
         private SearchBox? searchBox;
 
-        static Menu()
+        static HamburgerMenu()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Menu), new FrameworkPropertyMetadata(typeof(Menu)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(HamburgerMenu), new FrameworkPropertyMetadata(typeof(HamburgerMenu)));
         }
 
-        public Menu()
+        public HamburgerMenu()
         {
             ShowSettingsCommand = new RelayCommand(ToggleShowSettings);
         }
@@ -40,7 +41,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
             nameof(ItemTemplate),
             typeof(DataTemplate),
-            typeof(Menu),
+            typeof(HamburgerMenu),
             new PropertyMetadata(null));
 
         public DataTemplate SearchItemTemplate
@@ -51,30 +52,41 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty SearchItemTemplateProperty = DependencyProperty.Register(
             nameof(SearchItemTemplate),
             typeof(DataTemplate),
-            typeof(Menu),
+            typeof(HamburgerMenu),
             new PropertyMetadata(null));
 
-        public IEnumerable<IMenuItem> Items
+        public Brush AccentBrush
         {
-            get => (IEnumerable<IMenuItem>)GetValue(ItemsProperty);
+            get => (Brush)GetValue(AccentBrushProperty);
+            set => SetValue(AccentBrushProperty, value);
+        }
+        public static readonly DependencyProperty AccentBrushProperty = DependencyProperty.Register(
+            nameof(AccentBrush),
+            typeof(Brush),
+            typeof(HamburgerMenu),
+            new PropertyMetadata(new SolidColorBrush(Colors.DeepSkyBlue)));
+
+        public IEnumerable<IHamburgerMenuItem> Items
+        {
+            get => (IEnumerable<IHamburgerMenuItem>)GetValue(ItemsProperty);
             set => SetValue(ItemsProperty, value);
         }
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
             nameof(Items),
-            typeof(IEnumerable<IMenuItem>),
-            typeof(Menu),
-            new UIPropertyMetadata(new ObservableCollection<IMenuItem>()));
+            typeof(IEnumerable<IHamburgerMenuItem>),
+            typeof(HamburgerMenu),
+            new UIPropertyMetadata(new ObservableCollection<IHamburgerMenuItem>()));
 
-        public RangeObservableCollection<GenericViewModelBase> FilteredItems
+        public RangeObservableCollection<IHamburgerMenuItem> FilteredItems
         {
-            get => (RangeObservableCollection<GenericViewModelBase>)GetValue(FilteredItemsProperty);
+            get => (RangeObservableCollection<IHamburgerMenuItem>)GetValue(FilteredItemsProperty);
             set => SetValue(FilteredItemsProperty, value);
         }
         public static readonly DependencyProperty FilteredItemsProperty = DependencyProperty.Register(
             nameof(FilteredItems),
-            typeof(RangeObservableCollection<GenericViewModelBase>),
-            typeof(Menu),
-            new FrameworkPropertyMetadata(new RangeObservableCollection<GenericViewModelBase>()));
+            typeof(RangeObservableCollection<IHamburgerMenuItem>),
+            typeof(HamburgerMenu),
+            new FrameworkPropertyMetadata(new RangeObservableCollection<IHamburgerMenuItem>()));
 
         public bool IsMenuOpen
         {
@@ -84,7 +96,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty IsMenuOpenProperty = DependencyProperty.Register(
             nameof(IsMenuOpen),
             typeof(bool),
-            typeof(Menu),
+            typeof(HamburgerMenu),
             new FrameworkPropertyMetadata(false, OnSetIsMenuOpen));
 
         public bool IsMenuPinned
@@ -95,7 +107,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty IsMenuPinnedProperty = DependencyProperty.Register(
             nameof(IsMenuPinned),
             typeof(bool),
-            typeof(Menu),
+            typeof(HamburgerMenu),
             new FrameworkPropertyMetadata(false));
 
         public string SearchText
@@ -106,7 +118,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
             nameof(SearchText),
             typeof(string),
-            typeof(Menu),
+            typeof(HamburgerMenu),
             new FrameworkPropertyMetadata(string.Empty));
 
         public FrameworkElement BlurBackground
@@ -119,7 +131,7 @@ namespace ModernThemables.Controls
             DependencyProperty.Register(
               nameof(BlurBackground),
               typeof(FrameworkElement),
-              typeof(Menu),
+              typeof(HamburgerMenu),
               new PropertyMetadata(default(FrameworkElement)));
 
         public object SettingsVm
@@ -132,7 +144,7 @@ namespace ModernThemables.Controls
             DependencyProperty.Register(
               nameof(SettingsVm),
               typeof(object),
-              typeof(Menu),
+              typeof(HamburgerMenu),
               new PropertyMetadata(default(object)));
 
         public DataTemplate SettingsTemplate
@@ -145,7 +157,7 @@ namespace ModernThemables.Controls
             DependencyProperty.Register(
               nameof(SettingsTemplate),
               typeof(DataTemplate),
-              typeof(Menu),
+              typeof(HamburgerMenu),
               new PropertyMetadata(null));
 
         public bool ShowSettings
@@ -158,10 +170,10 @@ namespace ModernThemables.Controls
             DependencyProperty.Register(
               nameof(ShowSettings),
               typeof(bool),
-              typeof(Menu),
+              typeof(HamburgerMenu),
               new PropertyMetadata(false));
 
-        private ICommand ShowSettingsCommand
+        public ICommand ShowSettingsCommand
         {
             get => (ICommand)GetValue(ShowSettingsCommandProperty);
             set => SetValue(ShowSettingsCommandProperty, value);
@@ -171,17 +183,17 @@ namespace ModernThemables.Controls
             DependencyProperty.Register(
               nameof(ShowSettingsCommand),
               typeof(ICommand),
-              typeof(Menu),
+              typeof(HamburgerMenu),
               new PropertyMetadata(null));
 
-        public RangeObservableCollection<GenericViewModelBase> AllViewModels
+        public RangeObservableCollection<IHamburgerMenuItem> AllViewModels
         {
             get
             {
-                if (Items == null) return new RangeObservableCollection<GenericViewModelBase>();
+                if (Items == null) return new RangeObservableCollection<IHamburgerMenuItem>();
                 var result = new List<object>(Items);
                 Items.ToList().ForEach(x => result.AddRange(x.GetChildren(true)));
-                return new RangeObservableCollection<GenericViewModelBase>(result.Cast<GenericViewModelBase>());
+                return new RangeObservableCollection<IHamburgerMenuItem>(result.Cast<IHamburgerMenuItem>());
             }
         }
 
@@ -202,7 +214,7 @@ namespace ModernThemables.Controls
             if (searchBox != null) searchBox.SearchTextChanged += SearchBox_SearchTextChanged;
         }
 
-        private async void OpenButton_Click(object sender, RoutedEventArgs e)
+        private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
             IsMenuOpen = !IsMenuOpen;
         }
@@ -222,7 +234,7 @@ namespace ModernThemables.Controls
 
         private static void OnSetIsMenuOpen(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            if (sender is Menu this_)
+            if (sender is HamburgerMenu this_)
             {
                 if (!this_.IsMenuOpen)
                 {

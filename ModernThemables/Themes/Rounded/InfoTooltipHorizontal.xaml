@@ -7,48 +7,21 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="RoundedInfoTooltipHorizontalControlTemplate" TargetType="ToolTip">
-        <Grid>
-            <Border
-                Margin="5,10,10,10"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="10">
-                <ContentPresenter Margin="6" />
-                <Border.Effect>
-                    <DropShadowEffect
-                        BlurRadius="10"
-                        Opacity="0.6"
-                        ShadowDepth="0"
-                        Color="Black" />
-                </Border.Effect>
-            </Border>
-            <Grid
-                Width="5"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center">
-                <Polygon
-                    Fill="{TemplateBinding Background}"
-                    Points="0,5,5,0,5,10"
-                    Stroke="{TemplateBinding BorderBrush}"
-                    StrokeThickness="1">
-                    <Polygon.Effect>
-                        <DropShadowEffect
-                            BlurRadius="10"
-                            Opacity="0.6"
-                            ShadowDepth="0"
-                            Color="Black" />
-                    </Polygon.Effect>
-                </Polygon>
-                <Border
-                    Width="3"
-                    Height="7"
-                    Margin="0,0,-2,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Background="{TemplateBinding Background}" />
-            </Grid>
-        </Grid>
+        <Border
+            Margin="5"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="5">
+            <ContentPresenter Margin="4" />
+            <Border.Effect>
+                <DropShadowEffect
+                    BlurRadius="10"
+                    Opacity="0.6"
+                    ShadowDepth="0"
+                    Color="Black" />
+            </Border.Effect>
+        </Border>
     </ControlTemplate>
 
     <Style x:Key="InfoTooltipHorizontal" TargetType="ToolTip">

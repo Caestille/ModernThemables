@@ -4,47 +4,54 @@
     xmlns:controls="clr-namespace:ModernThemables.Controls">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="RoundedColourPickerBoxControlTemplate" TargetType="{x:Type controls:ColourPickerBox}">
-        <Grid>
+        <controls:Button2
+            x:Name="PART_button"
+            Width="{TemplateBinding Width}"
+            Height="{TemplateBinding Height}"
+            Padding="0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            MouseDownBrush="{TemplateBinding Background}"
+            MouseOverBrush="{TemplateBinding Background}"
+            ToolTip="Set colour"
+            ToolTipService.InitialShowDelay="100">
             <Border
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Background="{TemplateBinding Colour,
-                                             Converter={StaticResource ColourToBrushConverter}}"
-                BorderBrush="{DynamicResource PrimaryTextBrush}"
-                BorderThickness="1"
-                CornerRadius="5"
-                ToolTip="Set colour"
-                ToolTipService.InitialShowDelay="100">
-                <controls:Button2
-                    x:Name="PART_button"
-                    Background="{DynamicResource PrimaryTextBrush}"
-                    CornerRadius="5"
-                    MouseOverBrush="{DynamicResource PrimaryTextBrush}">
-                    <controls:Button2.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
-                                    <Setter Property="controls:Button2.Opacity" Value="0.2" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False">
-                                    <Setter Property="controls:Button2.Opacity" Value="0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:Button2.Style>
-                </controls:Button2>
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="White"
+                IsHitTestVisible="False">
+                <Border.Style>
+                    <Style>
+                        <Setter Property="Border.Opacity" Value="0" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Button2}}, Path=IsMouseOver}" Value="True">
+                                <Setter Property="Border.Opacity" Value="0.2" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
             </Border>
-        </Grid>
+        </controls:Button2>
     </ControlTemplate>
 
     <Style TargetType="{x:Type controls:ColourPickerBox}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="Template" Value="{StaticResource RoundedColourPickerBoxControlTemplate}" />
     </Style>
 

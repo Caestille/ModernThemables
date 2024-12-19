@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace ModernThemables.Controls
 {
-	public class DatetimeTextBox : TextBox
+	public class DateTimeTextBox : TextBox
 	{
 		private bool blockUpdate;
 		private readonly RefreshTrigger trigger;
@@ -22,16 +22,17 @@ namespace ModernThemables.Controls
 
 		private DateTime? lastValue;
 
-		static DatetimeTextBox()
+		static DateTimeTextBox()
 		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(DatetimeTextBox), new FrameworkPropertyMetadata(typeof(DatetimeTextBox)));
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(DateTimeTextBox), new FrameworkPropertyMetadata(typeof(DateTimeTextBox)));
 		}
 
-		public DatetimeTextBox()
+		public DateTimeTextBox()
 		{
 			trigger = new RefreshTrigger(() => { CalculateDate(false); }, 100);
 			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			DataContextChanged += DatetimeTextBox_DataContextChanged;
+            OnSetDateTime(this, new DependencyPropertyChangedEventArgs(DateTimeProperty, System.DateTime.MinValue, DateTime));
 		}
 
 		private void DatetimeTextBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -48,8 +49,8 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register(
 			nameof(DateTime),
 			typeof(DateTime?),
-			typeof(DatetimeTextBox),
-			new FrameworkPropertyMetadata(null, OnSetDateTime));
+			typeof(DateTimeTextBox),
+			new FrameworkPropertyMetadata(System.DateTime.Now, OnSetDateTime));
 
         public bool DateTimeValid
         {
@@ -60,7 +61,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty DateTimeValidProperty = DependencyProperty.Register(
             nameof(DateTimeValid),
             typeof(bool),
-            typeof(DatetimeTextBox),
+            typeof(DateTimeTextBox),
             new FrameworkPropertyMetadata(true));
 
         public string Format
@@ -72,7 +73,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty FormatProperty = DependencyProperty.Register(
 			nameof(Format),
 			typeof(string),
-			typeof(DatetimeTextBox),
+			typeof(DateTimeTextBox),
 			new FrameworkPropertyMetadata(OnSetFormat));
 
 		public Brush WarningBrush
@@ -84,7 +85,7 @@ namespace ModernThemables.Controls
 		public static readonly DependencyProperty WarningBrushProperty = DependencyProperty.Register(
 			nameof(WarningBrush),
 			typeof(Brush),
-			typeof(DatetimeTextBox),
+			typeof(DateTimeTextBox),
 			new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Red)));
 
         public CornerRadius CornerRadius
@@ -95,12 +96,12 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             nameof(CornerRadius),
             typeof(CornerRadius),
-            typeof(DatetimeTextBox),
+            typeof(DateTimeTextBox),
             new PropertyMetadata(new CornerRadius(0)));
 
         private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			var _this = sender as DatetimeTextBox;
+			var _this = sender as DateTimeTextBox;
 			if (_this != null)
 			{
 				_this.blockRecalculateOnce = true;
@@ -110,7 +111,7 @@ namespace ModernThemables.Controls
 
 		private static void OnSetDateTime(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			var _this = sender as DatetimeTextBox;
+			var _this = sender as DateTimeTextBox;
 			if (_this != null)
 			{
 				if (!_this.isKeyboardUpdate && _this.IsKeyboardFocused)
@@ -161,12 +162,11 @@ namespace ModernThemables.Controls
 			}
 		}
 
-
 		public static readonly RoutedEvent DateChangedEvent = EventManager.RegisterRoutedEvent(
 			nameof(DateChanged),
 			RoutingStrategy.Bubble,
 			typeof(RoutedPropertyChangedEventHandler<DateTime?>),
-			typeof(DatetimeTextBox));
+			typeof(DateTimeTextBox));
 
 		public event RoutedPropertyChangedEventHandler<DateTime?> DateChanged
 		{

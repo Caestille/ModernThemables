@@ -145,6 +145,8 @@
                     <controls:Button2
                         Grid.RowSpan="2"
                         Grid.ColumnSpan="2"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
                         Background="{DynamicResource PrimaryTextBrush}"
                         Command="{Binding ChangeColourCommand}"
                         CornerRadius="5"

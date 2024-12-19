@@ -11,13 +11,14 @@ using ModernThemables.Messages;
 
 namespace ModernThemables.ViewModels
 {
-    public interface IMenuItem
+    public interface IHamburgerMenuItem
     {
         string Name { get; }
+
         List<object> GetChildren(bool recurse = false);
     }
 
-    public abstract class GenericViewModelBase : ObservableRecipient, IMenuItem
+    public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenuItem
 	{
 		private readonly IEnumerable<Action<Color>> notifyColourUpdates = new List<Action<Color>>();
 		public ICommand SelectCommand => new RelayCommand(() => Select(this));

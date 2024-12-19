@@ -1,17 +1,23 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:b="http://schemas.microsoft.com/xaml/behaviors">
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:controls="clr-namespace:ModernThemables.Controls">
 
     <ControlTemplate x:Key="RoundedDataGridThumbControlTemplate" TargetType="{x:Type Thumb}">
         <Rectangle
             Width="1"
             Cursor="SizeWE"
-            Stroke="{TemplateBinding BorderBrush}" />
+            Stroke="Transparent" />
     </ControlTemplate>
 
+    <Style x:Key="ThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryControlBrush}" />
+        <Setter Property="Template" Value="{StaticResource RoundedDataGridThumbControlTemplate}" />
+    </Style>
+
     <ControlTemplate x:Key="RoundedDataGridColumnHeaderControlTemplate" TargetType="DataGridColumnHeader">
-        <Grid Margin="0,0,0,0">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -19,9 +25,18 @@
             <Border
                 x:Name="BackgroundBorder"
                 Grid.ColumnSpan="2"
+                Margin="0,0,1,0"
                 Background="{TemplateBinding Background}"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                CornerRadius="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:DataGrid2}}, Path=CornerRadius}" />
+            <Border
+                Grid.ColumnSpan="2"
+                Height="10"
+                VerticalAlignment="Center"
+                Background="Transparent"
                 BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="0,1,1,1" />
+                BorderThickness="{TemplateBinding BorderThickness}" />
             <ContentPresenter
                 Margin="7,1,7,2"
                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -50,7 +65,8 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
-                <Setter TargetName="BackgroundBorder" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
+                <Setter TargetName="BackgroundBorder" Property="Background" Value="{DynamicResource ThemeBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
             </Trigger>
             <Trigger Property="SortDirection" Value="Ascending">
                 <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
@@ -78,7 +94,8 @@
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="DataGridRow.IsSelected" Value="True">
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeBrush}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -92,13 +109,13 @@
         </Border>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="DataGridControlTemplate" TargetType="{x:Type DataGrid}">
+    <ControlTemplate x:Key="DataGridControlTemplate" TargetType="{x:Type controls:DataGrid2}">
         <Border
-            x:Name="Border"
             Padding="{TemplateBinding Padding}"
-            Background="#252526"
+            Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}"
             SnapsToDevicePixels="True">
             <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
                 <ScrollViewer.Template>
@@ -165,20 +182,15 @@
         </Border>
     </ControlTemplate>
 
-    <Style x:Key="ThumbStyle" TargetType="{x:Type Thumb}">
-        <Setter Property="BorderBrush" Value="{DynamicResource}" />
-        <Setter Property="Template" Value="{StaticResource RoundedDataGridThumbControlTemplate}" />
-    </Style>
-
     <Style x:Key="ColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="MinWidth" Value="0" />
         <Setter Property="MinHeight" Value="0" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="#c2c0c0" />
+        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:DataGrid2}}, Path=ColumnHeaderForeground}" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="BorderThickness" Value="0,0,1,0" />
-        <Setter Property="BorderBrush" Value="#3f3f46" />
+        <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:DataGrid2}}, Path=BorderBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="TextBlock.TextAlignment" Value="Center" />
         <Setter Property="Template" Value="{StaticResource RoundedDataGridColumnHeaderControlTemplate}" />
@@ -195,19 +207,21 @@
         <Setter Property="Template" Value="{StaticResource RoundedDataGridCellControlTemplate}" />
     </Style>
 
-    <Style TargetType="{x:Type DataGrid}">
+    <Style TargetType="{x:Type controls:DataGrid2}">
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="HorizontalGridLinesBrush" Value="Transparent" />
         <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
-        <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundBrush}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundBrush}" />
         <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="EnableRowVirtualization" Value="True" />
         <Setter Property="RowBackground" Value="Transparent" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
         <Setter Property="RowStyle" Value="{StaticResource RowStyle}" />
         <Setter Property="CellStyle" Value="{StaticResource CellStyle}" />
+        <Setter Property="ColumnHeaderForeground" Value="{DynamicResource SecondaryTextBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource ColumnHeaderStyle}" />
         <Setter Property="Template" Value="{StaticResource DataGridControlTemplate}" />

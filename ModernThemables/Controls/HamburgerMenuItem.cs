@@ -5,17 +5,20 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ModernThemables.Controls
 {
-    public class MenuItem : Control
+    public class HamburgerMenuItem : Control
     {
-        static MenuItem()
+        readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
+
+        static HamburgerMenuItem()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(MenuItem), new FrameworkPropertyMetadata(typeof(MenuItem)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(HamburgerMenuItem), new FrameworkPropertyMetadata(typeof(HamburgerMenuItem)));
         }
 
-        public MenuItem()
+        public HamburgerMenuItem()
         {
             InternalSelectCommand = new RelayCommand(Select);
             if (StartOpen)
@@ -23,6 +26,60 @@ namespace ModernThemables.Controls
                 IsOpen = true;
             }
         }
+
+        public Brush SelectedForeground
+        {
+            get => (Brush)GetValue(SelectedForegroundProperty);
+            set => SetValue(SelectedForegroundProperty, value);
+        }
+        public static readonly DependencyProperty SelectedForegroundProperty = DependencyProperty.Register(
+            nameof(SelectedForeground),
+            typeof(Brush),
+            typeof(HamburgerMenuItem),
+            new FrameworkPropertyMetadata(DefaultMouseOverProperty));
+
+        public Brush SubtitleForeground
+        {
+            get => (Brush)GetValue(SubtitleForegroundProperty);
+            set => SetValue(SubtitleForegroundProperty, value);
+        }
+        public static readonly DependencyProperty SubtitleForegroundProperty = DependencyProperty.Register(
+            nameof(SubtitleForeground),
+            typeof(Brush),
+            typeof(HamburgerMenuItem),
+            new FrameworkPropertyMetadata(DefaultMouseOverProperty));
+
+        public Brush MouseOverBrush
+        {
+            get => (Brush)GetValue(MouseOverBrushProperty);
+            set => SetValue(MouseOverBrushProperty, value);
+        }
+        public static readonly DependencyProperty MouseOverBrushProperty = DependencyProperty.Register(
+            nameof(MouseOverBrush),
+            typeof(Brush),
+            typeof(HamburgerMenuItem),
+            new FrameworkPropertyMetadata(DefaultMouseOverProperty));
+
+        public Brush MouseDownBrush
+        {
+            get => (Brush)GetValue(MouseDownBrushProperty);
+            set => SetValue(MouseDownBrushProperty, value);
+        }
+        public static readonly DependencyProperty MouseDownBrushProperty = DependencyProperty.Register(
+            nameof(MouseDownBrush),
+            typeof(Brush),
+            typeof(HamburgerMenuItem));
+
+        public Brush AccentBrush
+        {
+            get => (Brush)GetValue(AccentBrushProperty);
+            set => SetValue(AccentBrushProperty, value);
+        }
+        public static readonly DependencyProperty AccentBrushProperty = DependencyProperty.Register(
+            nameof(AccentBrush),
+            typeof(Brush),
+            typeof(HamburgerMenuItem),
+            new PropertyMetadata(new SolidColorBrush(Colors.DeepSkyBlue)));
 
         public DataTemplate IconTemplate
         {
@@ -32,7 +89,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.Register(
             nameof(IconTemplate),
             typeof(DataTemplate),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public DataTemplate ChildItemTemplate
@@ -43,7 +100,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty ChildItemTemplateProperty = DependencyProperty.Register(
             nameof(ChildItemTemplate),
             typeof(DataTemplate),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public DataTemplate ChildItemsTemplate
@@ -54,7 +111,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty ChildItemsTemplateProperty = DependencyProperty.Register(
             nameof(ChildItemsTemplate),
             typeof(DataTemplate),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public object Icon
@@ -65,7 +122,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
             nameof(Icon),
             typeof(object),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public DataTemplate TitleTemplate
@@ -76,7 +133,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty TitleTemplateProperty = DependencyProperty.Register(
             nameof(TitleTemplate),
             typeof(DataTemplate),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public string Title
@@ -87,7 +144,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             nameof(Title),
             typeof(string),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public DataTemplate SubTitleTemplate
@@ -98,7 +155,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty SubTitleTemplateProperty = DependencyProperty.Register(
             nameof(SubTitleTemplate),
             typeof(DataTemplate),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public string SubTitle
@@ -109,7 +166,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(
             nameof(SubTitle),
             typeof(string),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public bool IsOpen
@@ -120,7 +177,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
             nameof(IsOpen),
             typeof(bool),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(false));
 
         public bool StartOpen
@@ -131,7 +188,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty StartOpenProperty = DependencyProperty.Register(
             nameof(StartOpen),
             typeof(bool),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(false, OnSetStartOpen));
 
         public bool ShowOpenIndicator
@@ -142,7 +199,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty ShowOpenIndicatorProperty = DependencyProperty.Register(
             nameof(ShowOpenIndicator),
             typeof(bool),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(true));
 
         public bool IsSelected
@@ -153,7 +210,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             nameof(IsSelected),
             typeof(bool),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(false));
 
         public bool IsContainingMenuOpen
@@ -164,7 +221,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty IsContainingMenuOpenProperty = DependencyProperty.Register(
             nameof(IsContainingMenuOpen),
             typeof(bool),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(true));
 
         public bool ReserveIconSpace
@@ -175,7 +232,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty ReserveIconSpaceProperty = DependencyProperty.Register(
             nameof(ReserveIconSpace),
             typeof(bool),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(false));
 
         public IEnumerable<object> ChildItems
@@ -186,7 +243,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty ChildItemsProperty = DependencyProperty.Register(
             nameof(ChildItems),
             typeof(IEnumerable<object>),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(new ObservableCollection<object>()));
 
         public bool CanAddChild
@@ -197,7 +254,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty CanAddChildProperty = DependencyProperty.Register(
             nameof(CanAddChild),
             typeof(bool),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(true));
 
         public bool CanDelete
@@ -208,7 +265,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(
             nameof(CanDelete),
             typeof(bool),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(true));
 
         public bool CanOpen
@@ -219,7 +276,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty CanOpenProperty = DependencyProperty.Register(
             nameof(CanOpen),
             typeof(bool),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(true));
 
         public ICommand AddChildCommand
@@ -230,7 +287,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty AddChildCommandProperty = DependencyProperty.Register(
             nameof(AddChildCommand),
             typeof(ICommand),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public ICommand DeleteCommand
@@ -241,7 +298,7 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty DeleteCommandProperty = DependencyProperty.Register(
             nameof(DeleteCommand),
             typeof(ICommand),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
         public ICommand SelectCommand
@@ -252,10 +309,10 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty SelectCommandProperty = DependencyProperty.Register(
             nameof(SelectCommand),
             typeof(ICommand),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
 
-        private ICommand InternalSelectCommand
+        internal ICommand InternalSelectCommand
         {
             get => (ICommand)GetValue(InternalSelectCommandProperty);
             set => SetValue(InternalSelectCommandProperty, value);
@@ -263,12 +320,12 @@ namespace ModernThemables.Controls
         public static readonly DependencyProperty InternalSelectCommandProperty = DependencyProperty.Register(
             nameof(InternalSelectCommand),
             typeof(ICommand),
-            typeof(MenuItem),
+            typeof(HamburgerMenuItem),
             new PropertyMetadata(null));
         
         private static void OnSetStartOpen(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            if (sender is MenuItem this_ && this_.StartOpen && !this_.IsOpen)
+            if (sender is HamburgerMenuItem this_ && this_.StartOpen && !this_.IsOpen)
             {
                 this_.IsOpen = true;
             }

@@ -3,6 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <ControlTemplate x:Key="RoundedButton2ControlTemplate" TargetType="{x:Type controls:Button2}">
         <Border
             x:Name="PART_border"
@@ -31,6 +35,7 @@
     </ControlTemplate>
 
     <Style TargetType="{x:Type controls:Button2}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -40,8 +45,13 @@
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryControlBorderBrush}" />
         <Setter Property="Padding" Value="5,2" />
         <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
+        <Setter Property="MouseOverBrush" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
+        <Setter Property="MouseDownBrush" Value="{DynamicResource PrimaryControlMouseDownBrush}" />
+        <Setter Property="DisabledBackground" Value="{DynamicResource PrimaryControlDisabledBrush}" />
+        <Setter Property="DisabledForeground" Value="{DynamicResource SecondaryTextBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template" Value="{StaticResource RoundedButton2ControlTemplate}" />
     </Style>
 

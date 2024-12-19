@@ -19,19 +19,6 @@ namespace ModernThemables.Controls
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(ColourPickerBox), new FrameworkPropertyMetadata(typeof(ColourPickerBox)));
 		}
 
-		public Color Colour
-		{
-			get => (Color)GetValue(ColourProperty);
-			set => SetValue(ColourProperty, value);
-        }
-
-        public static readonly DependencyProperty ColourProperty =
-            DependencyProperty.Register(
-                nameof(Colour),
-                typeof(Color),
-                typeof(ColourPickerBox),
-                new FrameworkPropertyMetadata(null));
-
         public Color TemporaryColour
         {
             get => (Color)GetValue(TemporaryColourProperty);
@@ -43,7 +30,18 @@ namespace ModernThemables.Controls
                 nameof(TemporaryColour),
                 typeof(Color),
                 typeof(ColourPickerBox),
-                new FrameworkPropertyMetadata(null));
+                new FrameworkPropertyMetadata(Colors.Black));
+
+        public CornerRadius CornerRadius
+        {
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
+        }
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+            nameof(CornerRadius),
+            typeof(CornerRadius),
+            typeof(ColourPickerBox),
+            new PropertyMetadata(new CornerRadius(0)));
 
         public override void OnApplyTemplate()
 		{
@@ -71,7 +69,10 @@ namespace ModernThemables.Controls
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-            Colour = new DialogueService().ShowColourPickerDialogue(Colour, colour => TemporaryColour = colour);
+            Background = new SolidColorBrush(
+                new DialogueService().ShowColourPickerDialogue(
+                    (Background as SolidColorBrush)!.Color,
+                    colour => TemporaryColour = colour));
 		}
     }
 }

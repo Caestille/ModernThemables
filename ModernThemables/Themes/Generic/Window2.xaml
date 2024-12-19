@@ -296,8 +296,7 @@
         <Setter Property="WindowTitleBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource TertiaryTextBrush}" />
         <Setter Property="Template" Value="{StaticResource Window2}" />
-        <Setter Property="TransparentTitleTemplate" Value="{StaticResource TransparentTitleBarTemplate}" >
-        </Setter>
+        <Setter Property="TransparentTitleTemplate" Value="{StaticResource TransparentTitleBarTemplate}" />
         <Setter Property="TitleTemplate">
             <Setter.Value>
                 <DataTemplate>

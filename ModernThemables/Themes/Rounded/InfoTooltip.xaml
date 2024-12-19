@@ -7,51 +7,21 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="RoundedInfoTooltipControlTemplate" TargetType="ToolTip">
-        <Grid>
-            <Border
-                Margin="10,10,10,10"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="10">
-                <ContentPresenter Margin="6" />
-                <Border.Effect>
-                    <DropShadowEffect
-                        BlurRadius="10"
-                        Opacity="0.6"
-                        ShadowDepth="0"
-                        Color="Black" />
-                </Border.Effect>
-            </Border>
-            <Grid
-                Height="10"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top">
-                <Polygon
-                    Fill="{TemplateBinding Background}"
-                    Points="10,0,20,10,0,10"
-                    Stroke="{TemplateBinding BorderBrush}"
-                    StrokeThickness="1">
-                    <Polygon.Effect>
-                        <DropShadowEffect
-                            BlurRadius="10"
-                            Opacity="0.6"
-                            ShadowDepth="0"
-                            Color="Black" />
-                    </Polygon.Effect>
-                    <Polygon.Clip>
-                        <RectangleGeometry Rect="-10,-20,50,30" />
-                    </Polygon.Clip>
-                </Polygon>
-                <Border
-                    Width="7"
-                    Height="3"
-                    Margin="0,0,0,-2"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Background="{TemplateBinding Background}" />
-            </Grid>
-        </Grid>
+        <Border
+            Margin="5"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="5">
+            <ContentPresenter Margin="4" />
+            <Border.Effect>
+                <DropShadowEffect
+                    BlurRadius="10"
+                    Opacity="0.6"
+                    ShadowDepth="0"
+                    Color="Black" />
+            </Border.Effect>
+        </Border>
     </ControlTemplate>
 
     <Style x:Key="InfoTooltip" TargetType="ToolTip">

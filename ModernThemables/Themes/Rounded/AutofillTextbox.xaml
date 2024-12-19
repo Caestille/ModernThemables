@@ -47,7 +47,8 @@
     <Style TargetType="{x:Type controls:AutofillTextbox}">
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="CornerRadius" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="WatermarkForeground" Value="{DynamicResource TertiaryTextBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
         <Setter Property="CaretBrush" Value="{DynamicResource SecondaryTextBrush}" />

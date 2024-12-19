@@ -5,7 +5,7 @@
             <Border
                 Margin="-3"
                 Background="{DynamicResource SecondaryTextBrush}"
-                CornerRadius="3"
+                CornerRadius="7"
                 Opacity="0.2"
                 SnapsToDevicePixels="true" />
             <Border
@@ -13,7 +13,7 @@
                 Background="Transparent"
                 BorderBrush="{DynamicResource SecondaryTextBrush}"
                 BorderThickness="1"
-                CornerRadius="3"
+                CornerRadius="7"
                 SnapsToDevicePixels="true" />
         </Grid>
     </ControlTemplate>

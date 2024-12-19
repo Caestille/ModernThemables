@@ -9,7 +9,7 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <ControlTemplate x:Key="RoundedDateTimeTextboxControlTemplate" TargetType="{x:Type controls:DatetimeTextBox}">
+    <ControlTemplate x:Key="RoundedDateTimeTextboxControlTemplate" TargetType="{x:Type controls:DateTimeTextBox}">
         <Border
             x:Name="Border"
             Background="{TemplateBinding Background}"
@@ -33,16 +33,16 @@
                 Background="Transparent"
                 Focusable="false"
                 HorizontalScrollBarVisibility="Hidden"
-                TextElement.Foreground="{TemplateBinding Foreground}"
                 VerticalScrollBarVisibility="Hidden" />
         </Border>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type controls:DatetimeTextBox}">
+    <Style TargetType="{x:Type controls:DateTimeTextBox}">
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="CornerRadius" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="WarningBrush" Value="Red" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
         <Setter Property="CaretBrush" Value="{DynamicResource SecondaryTextBrush}" />
@@ -54,8 +54,8 @@
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="Template" Value="{StaticResource RoundedDateTimeTextboxControlTemplate}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DateTimeValid}" Value="False">
-                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WarningBrush}" />
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=DateTimeValid}" Value="False">
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=WarningBrush}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
