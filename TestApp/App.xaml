@@ -1,0 +1,16 @@
+﻿<Application
+    x:Class="TestApp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:TestApp"
+    StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
+                <ResourceDictionary Source="/ModernThemables;component/Themes/Colours.xaml" />
+                <ResourceDictionary Source="/ModernThemables;component/Themes/Rounded.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
