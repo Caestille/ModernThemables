@@ -9,17 +9,16 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="RoundedSliderThumb" TargetType="{x:Type Thumb}">
-        <Grid Width="20" Height="20">
-            <Border
-                x:Name="grip"
-                Width="14"
-                Height="14"
-                VerticalAlignment="Center"
-                Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBrush}"
-                BorderBrush="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBorderBrush}"
-                BorderThickness="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBorderThickness}"
-                CornerRadius="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbCornerRadius}" />
-        </Grid>
+        <Border
+            x:Name="grip"
+            Width="14"
+            Margin="-7,0"
+            Height="14"
+            VerticalAlignment="Center"
+            Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBrush}"
+            BorderBrush="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBorderBrush}"
+            BorderThickness="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBorderThickness}"
+            CornerRadius="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbCornerRadius}" />
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
                 <Setter TargetName="grip" Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbMouseOverBrush}" />
@@ -42,7 +41,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
                     <Border
-                        Height="6"
+                        Height="8"
                         Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=InactiveBarBrush}"
                         BorderThickness="1"
                         CornerRadius="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=BarCornerRadius}" />
