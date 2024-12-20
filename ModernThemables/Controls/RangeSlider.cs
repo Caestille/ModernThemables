@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Diagnostics;
 
 namespace ModernThemables.Controls
 {
@@ -12,16 +13,19 @@ namespace ModernThemables.Controls
 
 	public class RangeSlider : Control
 	{
-		#region Members
+        #region Members
 
-		private const String PART_MidRange = "PART_MidRange";
+        private bool midRangeMouseDown;
+        private Point midRangeMouseDownPoint;
+
+        private const String PART_MidRange = "PART_MidRange";
 		private const String PART_HigherSlider = "PART_HigherSlider";
 		private const String PART_LowerSlider = "PART_LowerSlider";
 		private const String PART_Track = "PART_Track";
 
-		private Thumb? _midRange;
-		private Slider? _lowerSlider;
-		private Slider? _higherSlider;
+		private RepeatButton? midRange;
+		private Slider? lowerSlider;
+		private Slider? higherSlider;
 
 		#endregion Members
 
@@ -268,47 +272,69 @@ namespace ModernThemables.Controls
 		{
 			base.OnApplyTemplate();
 
-			if (_midRange != null)
+			if (midRange != null)
 			{
-                _midRange.DragDelta -= _midRange_DragDelta;
+                midRange.PreviewMouseDown += _midRange_MouseDown;
+                midRange.PreviewMouseMove -= _midRange_MouseMove;
+                midRange.PreviewMouseUp -= _midRange_MouseUp;
             }
-			_midRange = Template.FindName(PART_MidRange, this) as Thumb;
-			if (_midRange != null)
+			midRange = Template.FindName(PART_MidRange, this) as RepeatButton;
+			if (midRange != null)
 			{
-                _midRange.DragDelta += _midRange_DragDelta;
+                midRange.PreviewMouseDown += _midRange_MouseDown;
+                midRange.PreviewMouseMove += _midRange_MouseMove;
+                midRange.PreviewMouseUp += _midRange_MouseUp;
+            }
+
+			if (lowerSlider != null)
+			{
+				lowerSlider.Loaded -= Slider_Loaded;
+				lowerSlider.ValueChanged -= LowerSlider_ValueChanged;
+			}
+			lowerSlider = Template.FindName(PART_LowerSlider, this) as Slider;
+			if (lowerSlider != null)
+			{
+				lowerSlider.Loaded += Slider_Loaded;
+				lowerSlider.ValueChanged += LowerSlider_ValueChanged;
+				lowerSlider.ApplyTemplate();
 			}
 
-			if (_lowerSlider != null)
+			if (higherSlider != null)
 			{
-				_lowerSlider.Loaded -= Slider_Loaded;
-				_lowerSlider.ValueChanged -= LowerSlider_ValueChanged;
+				higherSlider.Loaded -= Slider_Loaded;
+				higherSlider.ValueChanged -= HigherSlider_ValueChanged;
 			}
-			_lowerSlider = Template.FindName(PART_LowerSlider, this) as Slider;
-			if (_lowerSlider != null)
+			higherSlider = Template.FindName(PART_HigherSlider, this) as Slider;
+			if (higherSlider != null)
 			{
-				_lowerSlider.Loaded += Slider_Loaded;
-				_lowerSlider.ValueChanged += LowerSlider_ValueChanged;
-				_lowerSlider.ApplyTemplate();
-			}
-
-			if (_higherSlider != null)
-			{
-				_higherSlider.Loaded -= Slider_Loaded;
-				_higherSlider.ValueChanged -= HigherSlider_ValueChanged;
-			}
-			_higherSlider = Template.FindName(PART_HigherSlider, this) as Slider;
-			if (_higherSlider != null)
-			{
-				_higherSlider.Loaded += Slider_Loaded;
-				_higherSlider.ValueChanged += HigherSlider_ValueChanged;
-				_higherSlider.ApplyTemplate();
+				higherSlider.Loaded += Slider_Loaded;
+				higherSlider.ValueChanged += HigherSlider_ValueChanged;
+				higherSlider.ApplyTemplate();
 			}
 		}
 
-        private void _midRange_DragDelta(object sender, DragDeltaEventArgs e)
+        private void _midRange_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var newMin = LowerValue + e.HorizontalChange;
-            var newMax = HigherValue + e.HorizontalChange;
+            midRangeMouseDownPoint = e.GetPosition(midRange);
+            midRangeMouseDown = true;
+        }
+
+        private void _midRange_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            midRangeMouseDown = false;
+        }
+
+        private void _midRange_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (!midRangeMouseDown)
+            {
+                return;
+            }
+
+            var pos = e.GetPosition(midRange);
+
+            var newMin = LowerValue + pos.X - midRangeMouseDownPoint.X;
+            var newMax = HigherValue + pos.X - midRangeMouseDownPoint.X;
 
             if (newMin >= Minimum && newMax <= Maximum)
             {
@@ -364,12 +390,12 @@ namespace ModernThemables.Controls
 
 		private void SetLowerSliderValues(double value, double? minimum, double? maximum)
 		{
-			SetSliderValues(_lowerSlider, LowerSlider_ValueChanged, value, minimum, maximum);
+			SetSliderValues(lowerSlider, LowerSlider_ValueChanged, value, minimum, maximum);
 		}
 
 		private void SetHigherSliderValues(double value, double? minimum, double? maximum)
 		{
-			SetSliderValues(_higherSlider, HigherSlider_ValueChanged, value, minimum, maximum);
+			SetSliderValues(higherSlider, HigherSlider_ValueChanged, value, minimum, maximum);
 		}
 
 		private void SetSliderValues(
@@ -449,7 +475,7 @@ namespace ModernThemables.Controls
 
 		private void LowerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			if ((_lowerSlider != null) && _lowerSlider.IsLoaded)
+			if ((lowerSlider != null) && lowerSlider.IsLoaded)
 			{
 				UpdateLowerValue(e.NewValue);
 			}
@@ -457,7 +483,7 @@ namespace ModernThemables.Controls
 
 		private void HigherSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			if ((_higherSlider != null) && _higherSlider.IsLoaded)
+			if ((higherSlider != null) && higherSlider.IsLoaded)
 			{
 				UpdateHigherValue(e.NewValue);
 			}

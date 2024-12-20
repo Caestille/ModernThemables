@@ -22,7 +22,7 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ScrollBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ScrollViewer.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/SearchBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Slider.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Slider2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/TextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/ToggleCheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Tooltip.xaml" />

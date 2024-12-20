@@ -5,7 +5,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Slider.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Slider2.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
@@ -44,7 +44,7 @@
                     <Thumb
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Template="{StaticResource SliderThumbHorizontalDefault}" />
+                        Template="{StaticResource RoundedSliderThumb}" />
                 </Track.Thumb>
             </Track>
         </Grid>
@@ -65,7 +65,7 @@
                     <Thumb
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Template="{StaticResource SliderThumbHorizontalDefault}" />
+                        Template="{StaticResource RoundedSliderThumb}" />
                 </Track.Thumb>
             </Track>
         </Grid>

@@ -51,7 +51,8 @@
                     <RadioButton Content="Hello" />
                     <RadioButton Content="World" />
                 </StackPanel>
-                <controls:RangeSlider Minimum="0" Maximum="100" LowerValue="20" HigherValue="60" />
+                <controls:Slider2 Minimum="0" Maximum="100" Value="30" />
+                <!--<controls:RangeSlider Minimum="0" Maximum="100" LowerValue="20" HigherValue="60" />-->
             </WrapPanel>
         </ContentControl>
         <controls:HamburgerMenu x:Name="Menu" BlurBackground="{Binding ElementName=WrappyLad}" />

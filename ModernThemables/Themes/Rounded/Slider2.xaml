@@ -1,0 +1,109 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:ModernThemables.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="RoundedSliderThumb" TargetType="{x:Type Thumb}">
+        <Grid Width="20" Height="20">
+            <Border
+                x:Name="grip"
+                Width="14"
+                Height="14"
+                VerticalAlignment="Center"
+                Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBrush}"
+                BorderBrush="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBorderBrush}"
+                BorderThickness="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBorderThickness}"
+                CornerRadius="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbCornerRadius}" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="grip" Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbMouseOverBrush}" />
+            </Trigger>
+            <Trigger Property="IsDragging" Value="true">
+                <Setter TargetName="grip" Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbMouseDownBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter TargetName="grip" Property="Background" Value="{DynamicResource PrimaryControlDisabledBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="InactiveRangeRoundedSliderRepeatButton" TargetType="RepeatButton">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="IsTabStop" Value="false" />
+        <Setter Property="Focusable" Value="false" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border
+                        Height="6"
+                        Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=InactiveBarBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=BarCornerRadius}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ActiveRangeRoundedSliderRepeatButton" TargetType="RepeatButton">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border
+                        Height="8"
+                        Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ActiveBarBrush}"
+                        CornerRadius="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=BarCornerRadius}"
+                        SnapsToDevicePixels="True" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="SliderRound" TargetType="controls:Slider2">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Track x:Name="PART_Track" Grid.Row="1">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton Command="Slider.DecreaseLarge" Style="{StaticResource ActiveRangeRoundedSliderRepeatButton}" />
+                </Track.DecreaseRepeatButton>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource InactiveRangeRoundedSliderRepeatButton}" />
+                </Track.IncreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Template="{StaticResource RoundedSliderThumb}" />
+                </Track.Thumb>
+            </Track>
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="controls:Slider2">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Template" Value="{StaticResource SliderRound}" />
+        <Setter Property="ActiveBarBrush" Value="{DynamicResource ThemeBrush}" />
+        <Setter Property="InactiveBarBrush" Value="{DynamicResource SecondaryControlBrush}" />
+        <Setter Property="ThumbBrush" Value="{DynamicResource PrimaryControlBrush}" />
+        <Setter Property="ThumbBorderBrush" Value="{DynamicResource PrimaryControlBorderBrush}" />
+        <Setter Property="ThumbBorderThickness" Value="1" />
+        <Setter Property="ThumbCornerRadius" Value="6.5" />
+        <Setter Property="BarCornerRadius" Value="3" />
+        <Setter Property="ThumbMouseOverBrush" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
+        <Setter Property="ThumbMouseDownBrush" Value="{DynamicResource PrimaryControlMouseDownBrush}" />
+        <Setter Property="MinHeight" Value="21" />
+        <Setter Property="MinWidth" Value="104" />
+    </Style>
+
+</ResourceDictionary>
