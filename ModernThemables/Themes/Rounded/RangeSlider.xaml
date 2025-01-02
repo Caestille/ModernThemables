@@ -57,8 +57,8 @@
             </Grid.RowDefinitions>
             <Track x:Name="PART_Track" Grid.Row="1">
                 <Track.IncreaseRepeatButton>
-                    <!-- From Slider.xaml template -->
-                    <RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource RoundedSliderRepeatButtonIncrease}" /> 
+                    <!--  From Slider.xaml template  -->
+                    <RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource RoundedSliderRepeatButtonIncrease}" />
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
                     <Thumb

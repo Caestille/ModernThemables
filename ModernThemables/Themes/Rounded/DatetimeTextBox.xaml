@@ -35,6 +35,17 @@
                 HorizontalScrollBarVisibility="Hidden"
                 VerticalScrollBarVisibility="Hidden" />
         </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource SecondaryControlDisabledBrush}" />
+            </Trigger>
+            <Trigger Property="IsFocused" Value="true">
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeBrush}" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style BasedOn="{StaticResource ResourceKey={x:Type TextBox}}" TargetType="{x:Type controls:DateTimeTextBox}">

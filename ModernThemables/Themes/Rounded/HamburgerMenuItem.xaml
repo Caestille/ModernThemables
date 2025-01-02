@@ -39,8 +39,8 @@
                         <controls:Button2
                             Width="Auto"
                             Height="Auto"
-                            Padding="0"
                             MinHeight="40"
+                            Padding="0"
                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                             VerticalAlignment="Top"
                             HorizontalContentAlignment="Stretch"
@@ -52,9 +52,7 @@
                             Foreground="{TemplateBinding Foreground}"
                             MouseDownBrush="{TemplateBinding MouseDownBrush}"
                             MouseOverBrush="{TemplateBinding MouseOverBrush}">
-                            <Grid
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="7" />
                                     <ColumnDefinition Width="Auto" />
@@ -200,7 +198,11 @@
                                                 <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                             </MultiBinding>
                                         </controls:Button2.Visibility>
-                                        <scalableicons:Icon Margin="2" Width="10" Height="10" Kind="Plus" />
+                                        <scalableicons:Icon
+                                            Width="10"
+                                            Height="10"
+                                            Margin="2"
+                                            Kind="Plus" />
                                     </controls:Button2>
                                     <!--#endregion-->
                                     <!--#region Delete button-->
@@ -216,7 +218,11 @@
                                                 <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                             </MultiBinding>
                                         </controls:Button2.Visibility>
-                                        <scalableicons:Icon Margin="1,0,0,0" Width="10" Height="10" Kind="Bin" />
+                                        <scalableicons:Icon
+                                            Width="10"
+                                            Height="10"
+                                            Margin="1,0,0,0"
+                                            Kind="Bin" />
                                     </controls:Button2>
                                     <!--#endregion-->
                                     <!--#region Drop down indicator-->
