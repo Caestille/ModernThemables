@@ -8,7 +8,8 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <ControlTemplate x:Key="RoundedAutofillTextboxTemplate" TargetType="{x:Type controls:AutofillTextbox}">
+
+    <ControlTemplate x:Key="RoundedTextBox2Template" TargetType="{x:Type controls:TextBox2}">
         <Border
             x:Name="Border"
             Background="{TemplateBinding Background}"
@@ -17,11 +18,6 @@
             CornerRadius="{TemplateBinding CornerRadius}"
             SnapsToDevicePixels="True">
             <Grid>
-                <TextBlock
-                    Margin="2,0.5,0,0"
-                    Foreground="{TemplateBinding WatermarkForeground}"
-                    SnapsToDevicePixels="True"
-                    Text="{TemplateBinding SuggestionText}" />
                 <ScrollViewer
                     x:Name="PART_ContentHost"
                     Background="Transparent"
@@ -44,12 +40,11 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type controls:AutofillTextbox}">
+    <Style TargetType="{x:Type controls:TextBox2}">
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="WatermarkForeground" Value="{DynamicResource TertiaryTextBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
         <Setter Property="CaretBrush" Value="{DynamicResource SecondaryTextBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -57,7 +52,7 @@
         <Setter Property="AllowDrop" Value="true" />
         <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-        <Setter Property="Template" Value="{StaticResource RoundedAutofillTextboxTemplate}" />
+        <Setter Property="Template" Value="{StaticResource RoundedTextBox2Template}" />
     </Style>
 
 </ResourceDictionary>

@@ -11,25 +11,19 @@ namespace ModernThemables.Controls
 	[TemplatePart(Name = PART_LowerSlider, Type = typeof(Slider))]
 	[TemplatePart(Name = PART_Track, Type = typeof(Track))]
 
-	public class RangeSlider : Control
+	public class RangeSlider : Slider2
 	{
-        #region Members
-
         private bool midRangeMouseDown;
         private Point midRangeMouseDownPoint;
 
-        private const String PART_MidRange = "PART_MidRange";
-		private const String PART_HigherSlider = "PART_HigherSlider";
-		private const String PART_LowerSlider = "PART_LowerSlider";
-		private const String PART_Track = "PART_Track";
+        private const string PART_MidRange = "PART_MidRange";
+		private const string PART_HigherSlider = "PART_HigherSlider";
+		private const string PART_LowerSlider = "PART_LowerSlider";
+		private const string PART_Track = "PART_Track";
 
 		private RepeatButton? midRange;
 		private Slider? lowerSlider;
 		private Slider? higherSlider;
-
-		#endregion Members
-
-		#region Constructors
 
 		static RangeSlider()
 		{
@@ -40,8 +34,6 @@ namespace ModernThemables.Controls
 		{
 			SizeChanged += RangeSlider_SizeChanged;
 		}
-
-		#endregion Constructors
 
 		#region Properties
 
@@ -352,7 +344,7 @@ namespace ModernThemables.Controls
 			//Coerce values to make them consistent.
 			var cv = GetCoercedValues();
 
-			double actualWidth = ActualWidth - 16;
+			double actualWidth = ActualWidth;
 			double lowerSliderThumbWidth = 0d;
 			double higherSliderThumbWidth = 0d;
 

@@ -10,109 +10,129 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <ControlTemplate x:Key="RoundedSearchBoxTemplate" TargetType="{x:Type controls:SearchBox}">
+        <Grid>
+            <Border
+                x:Name="Border"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}" />
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <scalableicons:Icon
+                    Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                    Height="12"
+                    Margin="3"
+                    HorizontalAlignment="Left"
+                    Foreground="{DynamicResource SecondaryTextBrush}"
+                    Kind="MagnifyingGlass" />
+                <ScrollViewer
+                    x:Name="PART_ContentHost"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="Transparent"
+                    Focusable="false"
+                    HorizontalScrollBarVisibility="Hidden"
+                    TextElement.Foreground="{TemplateBinding Foreground}"
+                    VerticalScrollBarVisibility="Hidden" />
+                <TextBlock
+                    Grid.Column="1"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="2,0,0,1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Foreground="{DynamicResource SecondaryTextBrush}"
+                    IsHitTestVisible="False"
+                    SnapsToDevicePixels="True"
+                    Text="Search"
+                    Visibility="{Binding ElementName=PART_textBox, Path=Text, Converter={StaticResource StringNotEmptyVisibilityConverter}, ConverterParameter=true}">
+                    <TextBlock.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text, Converter={StaticResource StringNotEmptyConverter}}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="0"
+                                                    Duration="0:0:0.1" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="1"
+                                                    Duration="0:0:0.1" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <controls:Button2
+                    x:Name="PART_button"
+                    Grid.Column="2"
+                    Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                    Margin="10,2,3,2"
+                    Padding="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    CornerRadius="3"
+                    Foreground="{DynamicResource SecondaryTextBrush}"
+                    MouseOverBrush="{DynamicResource PrimaryControlMouseOverBrush}">
+                    <scalableicons:Icon
+                        Margin="2"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="Transparent"
+                        Kind="Close" />
+                </controls:Button2>
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource SecondaryControlDisabledBrush}" />
+            </Trigger>
+            <Trigger Property="IsFocused" Value="true">
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeBrush}" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <Style TargetType="{x:Type controls:SearchBox}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:SearchBox}">
-                    <Grid>
-                        <Border
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="5"
-                            Opacity="{TemplateBinding BackgroundOpacity}" />
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <scalableicons:Icon
-                                Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                                Margin="3"
-                                HorizontalAlignment="Left"
-                                Foreground="{DynamicResource SecondaryTextBrush}"
-                                Kind="MagnifyingGlass" />
-                            <TextBox
-                                x:Name="PART_textBox"
-                                Grid.Column="1"
-                                Width="Auto"
-                                Height="Auto"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                HorizontalContentAlignment="Left"
-                                BorderThickness="0"
-                                Cursor="IBeam"
-                                Foreground="{TemplateBinding Foreground}"
-                                SnapsToDevicePixels="True"
-                                Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                TextAlignment="Left" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Width="Auto"
-                                Height="Auto"
-                                Margin="3,0,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Foreground="{DynamicResource SecondaryTextBrush}"
-                                IsHitTestVisible="False"
-                                SnapsToDevicePixels="True"
-                                Text="Search"
-                                Visibility="{Binding ElementName=PART_textBox, Path=Text, Converter={StaticResource StringNotEmptyVisibilityConverter}, ConverterParameter=true}">
-                                <TextBlock.Style>
-                                    <Style>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsKeyboardFocused, ElementName=PART_textBox}" Value="True">
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation
-                                                                Storyboard.TargetProperty="Opacity"
-                                                                To="0"
-                                                                Duration="0:0:0.1" />
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation
-                                                                Storyboard.TargetProperty="Opacity"
-                                                                To="1"
-                                                                Duration="0:0:0.1" />
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            <controls:Button2
-                                x:Name="PART_button"
-                                Grid.Column="2"
-                                Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                                Margin="3,2"
-                                HorizontalAlignment="Right"
-                                HorizontalContentAlignment="Stretch"
-                                VerticalContentAlignment="Stretch"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                CornerRadius="3"
-                                Foreground="{DynamicResource SecondaryTextBrush}"
-                                MouseOverBrush="{DynamicResource PrimaryControlMouseOverBrush}">
-                                <scalableicons:Icon
-                                    Margin="2"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    Background="Transparent"
-                                    Kind="Close" />
-                            </controls:Button2>
-                        </Grid>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="WatermarkForeground" Value="{DynamicResource TertiaryTextBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource SecondaryTextBrush}" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="true" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="Template" Value="{StaticResource RoundedSearchBoxTemplate}" />
     </Style>
 
 </ResourceDictionary>

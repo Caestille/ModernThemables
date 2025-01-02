@@ -209,9 +209,9 @@ namespace ModernThemables.Controls
             if (Template.FindName(PART_PinButton, this) is Button2 pin) pinButton = pin;
             if (pinButton != null) pinButton.Click += PinButton_Click; ;
 
-            if (searchBox != null) searchBox.SearchTextChanged -= SearchBox_SearchTextChanged;
+            if (searchBox != null) searchBox.TextChanged -= SearchBox_SearchTextChanged;
             if (Template.FindName(PART_SearchBox, this) is SearchBox search) searchBox = search;
-            if (searchBox != null) searchBox.SearchTextChanged += SearchBox_SearchTextChanged;
+            if (searchBox != null) searchBox.TextChanged += SearchBox_SearchTextChanged;
         }
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
@@ -224,9 +224,9 @@ namespace ModernThemables.Controls
             IsMenuPinned = !IsMenuPinned;
         }
 
-        private void SearchBox_SearchTextChanged(object? sender, string e)
+        private void SearchBox_SearchTextChanged(object? sender, TextChangedEventArgs e)
         {
-            SearchText = e;
+            SearchText = (e.OriginalSource as TextBox)!.Text;
             FilteredItems = AllViewModels
                 .Where(x => x.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
                 .ToRangeObservableCollection();
@@ -245,7 +245,7 @@ namespace ModernThemables.Controls
 
                     if (this_.searchBox != null)
                     {
-                        this_.searchBox.SearchText = "";
+                        this_.searchBox.Text = "";
                     }
                 }
             }

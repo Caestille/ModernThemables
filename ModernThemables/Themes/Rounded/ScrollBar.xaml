@@ -40,197 +40,226 @@
         </Setter>
     </Style>
 
+    <ControlTemplate x:Key="RoundedScrollBarTemplate" TargetType="{x:Type ScrollBar}">
+        <Grid
+            x:Name="GridRoot"
+            Width="9"
+            Background="{TemplateBinding Background}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <controls:Button2
+                x:Name="UpButton"
+                Height="0"
+                Margin="0,3"
+                Padding="0"
+                Background="Transparent"
+                BorderThickness="0"
+                Command="ScrollBar.PageUpCommand"
+                CornerRadius="3"
+                MouseDownBrush="Transparent"
+                MouseOverBrush="Transparent"
+                Opacity="0">
+                <Viewbox>
+                    <Grid>
+                        <Path
+                            Width="10"
+                            Height="10"
+                            Data="M300 175A43 43 0 0 0 266.75 191L161.5 318.5A52.5 52.5 0 0 0 155 373.75A44 44 0 0 0 194.75 400H405.25A44 44 0 0 0 445 373.75A52.5 52.5 0 0 0 438.5 318.5L333.25 191A43 43 0 0 0 300 175z"
+                            Fill="Gray"
+                            Stretch="Uniform" />
+                        <Path
+                            Width="10"
+                            Height="10"
+                            Data="M300 175A43 43 0 0 0 266.75 191L161.5 318.5A52.5 52.5 0 0 0 155 373.75A44 44 0 0 0 194.75 400H405.25A44 44 0 0 0 445 373.75A52.5 52.5 0 0 0 438.5 318.5L333.25 191A43 43 0 0 0 300 175z"
+                            Fill="White"
+                            Stretch="Uniform"
+                            Visibility="{Binding ElementName=UpButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
+                    </Grid>
+                </Viewbox>
+            </controls:Button2>
+            <controls:Button2
+                x:Name="DownButton"
+                Grid.Row="2"
+                Height="0"
+                Margin="0,3"
+                Padding="0"
+                Background="Transparent"
+                BorderThickness="0"
+                Command="ScrollBar.PageDownCommand"
+                CornerRadius="3"
+                MouseDownBrush="Transparent"
+                MouseOverBrush="Transparent"
+                Opacity="0">
+                <Viewbox>
+                    <Grid>
+                        <Path
+                            Width="10"
+                            Height="10"
+                            Data="M405.25 200H194.75A44 44 0 0 0 155 225A52.5 52.5 0 0 0 161.5 280.25L266.75 407.75A44 44 0 0 0 333.25 407.75L438.5 280.25A52.5 52.5 0 0 0 445 225A44 44 0 0 0 405.25 200z"
+                            Fill="Gray"
+                            Stretch="Uniform" />
+                        <Path
+                            Width="10"
+                            Height="10"
+                            Data="M405.25 200H194.75A44 44 0 0 0 155 225A52.5 52.5 0 0 0 161.5 280.25L266.75 407.75A44 44 0 0 0 333.25 407.75L438.5 280.25A52.5 52.5 0 0 0 445 225A44 44 0 0 0 405.25 200z"
+                            Fill="White"
+                            Stretch="Uniform"
+                            Visibility="{Binding ElementName=DownButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
+                    </Grid>
+                </Viewbox>
+            </controls:Button2>
+            <Track
+                x:Name="PART_Track"
+                Grid.Row="1"
+                Width="2"
+                Focusable="false"
+                IsDirectionReversed="true">
+                <Track.Thumb>
+                    <Thumb
+                        x:Name="Thumb"
+                        Background="Gray"
+                        Style="{DynamicResource ScrollThumbs}" />
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton
+                        x:Name="PageUp"
+                        Command="ScrollBar.PageDownCommand"
+                        Focusable="false"
+                        Opacity="0" />
+                </Track.IncreaseRepeatButton>
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton
+                        x:Name="PageDown"
+                        Command="ScrollBar.PageUpCommand"
+                        Focusable="false"
+                        Opacity="0" />
+                </Track.DecreaseRepeatButton>
+            </Track>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger SourceName="GridRoot" Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                Storyboard.TargetName="PART_Track"
+                                Storyboard.TargetProperty="Width"
+                                To="9"
+                                Duration="0:0:0.1">
+                                <DoubleAnimation.EasingFunction>
+                                    <CircleEase />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                BeginTime="0:0:0.1"
+                                Storyboard.TargetName="UpButton"
+                                Storyboard.TargetProperty="Opacity"
+                                To="1"
+                                Duration="0:0:0.2" />
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                BeginTime="0:0:0.1"
+                                Storyboard.TargetName="DownButton"
+                                Storyboard.TargetProperty="Opacity"
+                                To="1"
+                                Duration="0:0:0.2" />
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                Storyboard.TargetName="UpButton"
+                                Storyboard.TargetProperty="Height"
+                                To="10"
+                                Duration="0:0:0.1" />
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                Storyboard.TargetName="DownButton"
+                                Storyboard.TargetProperty="Height"
+                                To="10"
+                                Duration="0:0:0.1" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                BeginTime="0:0:0.5"
+                                Storyboard.TargetName="PART_Track"
+                                Storyboard.TargetProperty="Width"
+                                To="2"
+                                Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction>
+                                    <CircleEase />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                BeginTime="0:0:0.4"
+                                Storyboard.TargetName="UpButton"
+                                Storyboard.TargetProperty="Opacity"
+                                To="0"
+                                Duration="0:0:0.2" />
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                BeginTime="0:0:0.4"
+                                Storyboard.TargetName="DownButton"
+                                Storyboard.TargetProperty="Opacity"
+                                To="0"
+                                Duration="0:0:0.2" />
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                BeginTime="0:0:0.6"
+                                Storyboard.TargetName="UpButton"
+                                Storyboard.TargetProperty="Height"
+                                To="0"
+                                Duration="0:0:0.2" />
+                            <DoubleAnimation
+                                AutoReverse="False"
+                                BeginTime="0:0:0.6"
+                                Storyboard.TargetName="DownButton"
+                                Storyboard.TargetProperty="Height"
+                                To="0"
+                                Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+                <Setter TargetName="Thumb" Property="Background" Value="DarkGray" />
+            </Trigger>
+            <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                <Setter TargetName="Thumb" Property="Background" Value="Gray" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="-90" />
+                    </Setter.Value>
+                </Setter>
+                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="-90" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Height" Value="7" />
+                <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <Style TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-        <Setter Property="Foreground" Value="{DynamicResource StatusTextBrush}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ScrollBar}">
-                    <Grid
-                        x:Name="GridRoot"
-                        Width="9"
-                        Background="{TemplateBinding Background}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <controls:Button2
-                            x:Name="UpButton"
-                            Margin="0,3"
-                            Padding="0"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Command="ScrollBar.PageUpCommand"
-                            CornerRadius="3"
-                            Opacity="0">
-                            <Viewbox>
-                                <Grid>
-                                    <Path
-                                        Width="10"
-                                        Height="10"
-                                        Data="M300 175A43 43 0 0 0 266.75 191L161.5 318.5A52.5 52.5 0 0 0 155 373.75A44 44 0 0 0 194.75 400H405.25A44 44 0 0 0 445 373.75A52.5 52.5 0 0 0 438.5 318.5L333.25 191A43 43 0 0 0 300 175z"
-                                        Fill="Gray"
-                                        Stretch="Uniform" />
-                                    <Path
-                                        Width="10"
-                                        Height="10"
-                                        Data="M300 175A43 43 0 0 0 266.75 191L161.5 318.5A52.5 52.5 0 0 0 155 373.75A44 44 0 0 0 194.75 400H405.25A44 44 0 0 0 445 373.75A52.5 52.5 0 0 0 438.5 318.5L333.25 191A43 43 0 0 0 300 175z"
-                                        Fill="White"
-                                        Stretch="Uniform"
-                                        Visibility="{Binding ElementName=UpButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
-                                </Grid>
-                            </Viewbox>
-                        </controls:Button2>
-                        <controls:Button2
-                            x:Name="DownButton"
-                            Grid.Row="2"
-                            Margin="0,3"
-                            Padding="0"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Command="ScrollBar.PageDownCommand"
-                            CornerRadius="3"
-                            Opacity="0">
-                            <Viewbox>
-                                <Grid>
-                                    <Path
-                                        Width="10"
-                                        Height="10"
-                                        Data="M405.25 200H194.75A44 44 0 0 0 155 225A52.5 52.5 0 0 0 161.5 280.25L266.75 407.75A44 44 0 0 0 333.25 407.75L438.5 280.25A52.5 52.5 0 0 0 445 225A44 44 0 0 0 405.25 200z"
-                                        Fill="Gray"
-                                        Stretch="Uniform" />
-                                    <Path
-                                        Width="10"
-                                        Height="10"
-                                        Data="M405.25 200H194.75A44 44 0 0 0 155 225A52.5 52.5 0 0 0 161.5 280.25L266.75 407.75A44 44 0 0 0 333.25 407.75L438.5 280.25A52.5 52.5 0 0 0 445 225A44 44 0 0 0 405.25 200z"
-                                        Fill="White"
-                                        Stretch="Uniform"
-                                        Visibility="{Binding ElementName=DownButton, Path=IsMouseOver, Converter={StaticResource VisibleIfTrueConverter}}" />
-                                </Grid>
-                            </Viewbox>
-                        </controls:Button2>
-                        <Track
-                            x:Name="PART_Track"
-                            Grid.Row="1"
-                            Width="2"
-                            Focusable="false"
-                            IsDirectionReversed="true">
-                            <Track.Thumb>
-                                <Thumb
-                                    x:Name="Thumb"
-                                    Background="{TemplateBinding Foreground}"
-                                    Style="{DynamicResource ScrollThumbs}" />
-                            </Track.Thumb>
-                            <Track.IncreaseRepeatButton>
-                                <RepeatButton
-                                    x:Name="PageUp"
-                                    Command="ScrollBar.PageDownCommand"
-                                    Focusable="false"
-                                    Opacity="0" />
-                            </Track.IncreaseRepeatButton>
-                            <Track.DecreaseRepeatButton>
-                                <RepeatButton
-                                    x:Name="PageDown"
-                                    Command="ScrollBar.PageUpCommand"
-                                    Focusable="false"
-                                    Opacity="0" />
-                            </Track.DecreaseRepeatButton>
-                        </Track>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger SourceName="GridRoot" Property="IsMouseOver" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                            AutoReverse="False"
-                                            Storyboard.TargetName="PART_Track"
-                                            Storyboard.TargetProperty="Width"
-                                            To="9"
-                                            Duration="0:0:0.1">
-                                            <DoubleAnimation.EasingFunction>
-                                                <CircleEase />
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                        <DoubleAnimation
-                                            AutoReverse="False"
-                                            BeginTime="0:0:0.1"
-                                            Storyboard.TargetName="UpButton"
-                                            Storyboard.TargetProperty="Opacity"
-                                            To="1"
-                                            Duration="0:0:0.2" />
-                                        <DoubleAnimation
-                                            AutoReverse="False"
-                                            BeginTime="0:0:0.1"
-                                            Storyboard.TargetName="DownButton"
-                                            Storyboard.TargetProperty="Opacity"
-                                            To="1"
-                                            Duration="0:0:0.2" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                            AutoReverse="False"
-                                            BeginTime="0:0:0.5"
-                                            Storyboard.TargetName="PART_Track"
-                                            Storyboard.TargetProperty="Width"
-                                            To="2"
-                                            Duration="0:0:0.2">
-                                            <DoubleAnimation.EasingFunction>
-                                                <CircleEase />
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                        <DoubleAnimation
-                                            AutoReverse="False"
-                                            BeginTime="0:0:0.4"
-                                            Storyboard.TargetName="UpButton"
-                                            Storyboard.TargetProperty="Opacity"
-                                            To="0"
-                                            Duration="0:0:0.2" />
-                                        <DoubleAnimation
-                                            AutoReverse="False"
-                                            BeginTime="0:0:0.4"
-                                            Storyboard.TargetName="DownButton"
-                                            Storyboard.TargetProperty="Opacity"
-                                            To="0"
-                                            Duration="0:0:0.2" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
-                            <Setter TargetName="Thumb" Property="Background" Value="DarkGray" />
-                        </Trigger>
-                        <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
-                            <Setter TargetName="Thumb" Property="Background" Value="Gray" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
-                        </Trigger>
-                        <Trigger Property="Orientation" Value="Horizontal">
-                            <Setter TargetName="GridRoot" Property="LayoutTransform">
-                                <Setter.Value>
-                                    <RotateTransform Angle="-90" />
-                                </Setter.Value>
-                            </Setter>
-                            <Setter TargetName="PART_Track" Property="LayoutTransform">
-                                <Setter.Value>
-                                    <RotateTransform Angle="-90" />
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="Width" Value="Auto" />
-                            <Setter Property="Height" Value="7" />
-                            <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
-                            <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
-                            <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Template" Value="{StaticResource RoundedScrollBarTemplate}" />
     </Style>
 
 </ResourceDictionary>

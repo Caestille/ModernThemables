@@ -34,20 +34,24 @@
     </ControlTemplate>
 
     <Style TargetType="{x:Type controls:ToggleButton2}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="MouseOverBrush" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
-        <Setter Property="MouseDownBrush" Value="{DynamicResource PrimaryControlMouseDownBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryControlBorderBrush}" />
-        <Setter Property="CheckedBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="Padding" Value="5,2" />
         <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
+        <Setter Property="MouseOverBrush" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
+        <Setter Property="MouseDownBrush" Value="{DynamicResource PrimaryControlMouseDownBrush}" />
+        <Setter Property="DisabledBackground" Value="{DynamicResource PrimaryControlDisabledBrush}" />
+        <Setter Property="DisabledForeground" Value="{DynamicResource SecondaryTextBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="CheckedBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template" Value="{StaticResource RoundedToggleButton2ControlTemplate}" />
     </Style>
 

@@ -9,7 +9,7 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="SliderRepeatButton2" TargetType="RepeatButton">
+    <Style x:Key="RoundedRangeSliderRepeatButtonDecrease" TargetType="RepeatButton">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="IsTabStop" Value="false" />
@@ -18,18 +18,16 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
                     <Border
-                        Height="4"
-                        Margin="7,-1,-10,0"
-                        Background="{DynamicResource SecondaryControlBrush}"
-                        BorderBrush="{DynamicResource SecondaryControlBrush}"
+                        Height="8"
+                        Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=InactiveBarBrush}"
                         BorderThickness="1"
-                        CornerRadius="1" />
+                        CornerRadius="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=BarCornerRadius}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <ControlTemplate x:Key="SliderTemplate" TargetType="{x:Type Slider}">
+    <ControlTemplate x:Key="RoundedRangeSliderLowerSlider" TargetType="{x:Type Slider}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -38,7 +36,7 @@
             </Grid.RowDefinitions>
             <Track x:Name="PART_Track" Grid.Row="1">
                 <Track.DecreaseRepeatButton>
-                    <RepeatButton Command="Slider.DecreaseLarge" Style="{StaticResource SliderRepeatButton2}" />
+                    <RepeatButton Command="Slider.DecreaseLarge" Style="{StaticResource RoundedRangeSliderRepeatButtonDecrease}" />
                 </Track.DecreaseRepeatButton>
                 <Track.Thumb>
                     <Thumb
@@ -50,7 +48,7 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="SliderTemplate2" TargetType="{x:Type Slider}">
+    <ControlTemplate x:Key="RoundedRangeSliderUpperSlider" TargetType="{x:Type Slider}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -59,7 +57,8 @@
             </Grid.RowDefinitions>
             <Track x:Name="PART_Track" Grid.Row="1">
                 <Track.IncreaseRepeatButton>
-                    <RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource SliderRepeatButton}" />
+                    <!-- From Slider.xaml template -->
+                    <RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource RoundedSliderRepeatButtonIncrease}" /> 
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
                     <Thumb
@@ -72,7 +71,21 @@
     </ControlTemplate>
 
     <Style TargetType="{x:Type controls:RangeSlider}">
-        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Template" Value="{StaticResource RoundedSlider2}" />
+        <Setter Property="ActiveBarBrush" Value="{DynamicResource ThemeBrush}" />
+        <Setter Property="InactiveBarBrush" Value="{DynamicResource SecondaryControlBrush}" />
+        <Setter Property="ThumbBrush" Value="{DynamicResource PrimaryControlBrush}" />
+        <Setter Property="ThumbBorderBrush" Value="{DynamicResource PrimaryBackgroundBrush}" />
+        <Setter Property="ThumbBorderThickness" Value="1" />
+        <Setter Property="ThumbCornerRadius" Value="6.5" />
+        <Setter Property="BarCornerRadius" Value="3" />
+        <Setter Property="ThumbMouseOverBrush" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
+        <Setter Property="ThumbMouseDownBrush" Value="{DynamicResource PrimaryControlMouseDownBrush}" />
+        <Setter Property="MinHeight" Value="21" />
+        <Setter Property="MinWidth" Value="104" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:RangeSlider}">
@@ -91,12 +104,11 @@
                                 x:Name="PART_MidRange"
                                 Grid.Row="1"
                                 Width="{TemplateBinding RangeWidth}"
-                                Height="5"
                                 Margin="{TemplateBinding RangeMargin}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 SnapsToDevicePixels="True"
-                                Style="{StaticResource SliderRepeatButton1}" />
+                                Style="{StaticResource RoundedSliderRepeatButtonDecrease}" />
 
                             <Slider
                                 x:Name="PART_LowerSlider"
@@ -106,7 +118,7 @@
                                 AutoToolTipPlacement="{TemplateBinding AutoToolTipPlacement}"
                                 AutoToolTipPrecision="{TemplateBinding AutoToolTipPrecision}"
                                 Focusable="False"
-                                Template="{StaticResource SliderTemplate}" />
+                                Template="{StaticResource RoundedRangeSliderLowerSlider}" />
 
                             <Slider
                                 x:Name="PART_HigherSlider"
@@ -116,14 +128,12 @@
                                 AutoToolTipPlacement="{TemplateBinding AutoToolTipPlacement}"
                                 AutoToolTipPrecision="{TemplateBinding AutoToolTipPrecision}"
                                 Focusable="False"
-                                Template="{StaticResource SliderTemplate2}" />
+                                Template="{StaticResource RoundedRangeSliderUpperSlider}" />
                         </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
-
 
 </ResourceDictionary>

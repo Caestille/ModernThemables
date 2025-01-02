@@ -8,7 +8,6 @@
     <ControlTemplate x:Key="RoundedListBoxControlTemplate" TargetType="{x:Type ListBox}">
         <Border
             x:Name="Bd"
-            Padding="5,3"
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
@@ -38,6 +37,7 @@
     </Style>
 
     <Style TargetType="{x:Type ListBox}">
+        <Setter Property="Padding" Value="5,3" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
         <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
