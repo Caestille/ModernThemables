@@ -178,7 +178,7 @@ namespace ModernThemables.Charting.Controls
 								if (bar == null) continue;
 								ret.Add(new InternalChartEntity(
 									currentX, 
-									(bar.Item1.YValue / maxHeight) * plotAreaHeight * 0.9d,
+									(bar.Item1.YValue / maxHeight) * plotAreaHeight / 1.1d,
 									bar.Item1,
 									bar.Item3,
 									bar.Item2) { Identifier = bar.Item1.Identifier });
