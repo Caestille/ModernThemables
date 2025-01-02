@@ -17,17 +17,6 @@ namespace ModernThemables.Controls
             typeof(DataGrid2),
             new PropertyMetadata(new CornerRadius(0)));
 
-        public Brush ColumnHeaderBackground
-        {
-            get => (Brush)GetValue(ColumnHeaderBackgroundProperty);
-            set => SetValue(ColumnHeaderBackgroundProperty, value);
-        }
-        public static readonly DependencyProperty ColumnHeaderBackgroundProperty = DependencyProperty.Register(
-            nameof(ColumnHeaderBackground),
-            typeof(Brush),
-            typeof(DataGrid2),
-            new PropertyMetadata(new SolidColorBrush(Colors.Black)));
-
         public Brush ColumnHeaderForeground
         {
             get => (Brush)GetValue(ColumnHeaderForegroundProperty);

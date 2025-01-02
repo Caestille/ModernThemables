@@ -37,6 +37,7 @@
                     VerticalAlignment="Center"
                     VerticalContentAlignment="Center"
                     Background="Transparent"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                     Focusable="false"
                     HorizontalScrollBarVisibility="Hidden"
                     TextElement.Foreground="{TemplateBinding Foreground}"
