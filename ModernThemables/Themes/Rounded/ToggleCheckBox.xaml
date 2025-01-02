@@ -16,7 +16,6 @@
                 x:Name="Border"
                 Width="30"
                 Height="14"
-                Margin="1,1,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Background="{DynamicResource PrimaryControlBrush}"
@@ -120,7 +119,8 @@
                 <Setter TargetName="HighlightCircle" Property="Background" Value="{DynamicResource ThemeMouseOverBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="HighlightCircle" Property="Background" Value="DarkGray" />
+                <Setter TargetName="HighlightCircle" Property="Background" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ThemeDisabledBrush}" />
             </Trigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>

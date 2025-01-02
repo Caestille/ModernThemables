@@ -149,7 +149,7 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
-                                        <animatedicons:AnimatedMenuIcon Margin="3,3,5,3" IsOpen="{TemplateBinding IsMenuOpen}" />
+                                        <animatedicons:AnimatedMenuIcon Margin="1,3,6,3" IsOpen="{TemplateBinding IsMenuOpen}" />
                                     </Grid>
                                 </controls:Button2>
                                 <controls:Button2
@@ -212,6 +212,7 @@
                                 <Grid>
                                     <ItemsControl
                                         x:Name="ItemsControl"
+                                        Margin="5,2"
                                         Focusable="False"
                                         ItemTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
                                         ItemsSource="{Binding Items, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
@@ -219,6 +220,7 @@
                                     <ItemsControl
                                         x:Name="ItemsControlSearch"
                                         Height="Auto"
+                                        Margin="5,2"
                                         VerticalAlignment="Top"
                                         Focusable="False"
                                         ItemTemplate="{Binding SearchItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
@@ -265,7 +267,7 @@
                                     Title="Settings"
                                     Margin="5,2"
                                     HorizontalAlignment="Stretch"
-                                    AccentBrush="{TemplateBinding AccentBrush}"
+                                    AccentBrush="Transparent"
                                     CanAddChild="False"
                                     CanDelete="False"
                                     CanOpen="True"
@@ -284,8 +286,17 @@
                                 </controls:HamburgerMenuItem>
                                 <ContentControl
                                     Grid.Row="1"
+                                    Margin="9,2"
                                     Content="{Binding SettingsVm, RelativeSource={RelativeSource TemplatedParent}}"
                                     ContentTemplate="{Binding SettingsTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Visibility="{Binding ShowSettings, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfTrueConverter}}" />
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Width="3"
+                                    Margin="5,10"
+                                    HorizontalAlignment="Left"
+                                    Background="{TemplateBinding AccentBrush}"
+                                    CornerRadius="1.5"
                                     Visibility="{Binding ShowSettings, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfTrueConverter}}" />
                             </Grid>
                         </Grid>

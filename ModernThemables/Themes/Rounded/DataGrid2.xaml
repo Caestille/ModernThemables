@@ -88,7 +88,6 @@
     <ControlTemplate x:Key="RoundedDataGridRowTemplate" TargetType="{x:Type DataGridRow}">
         <Border
             x:Name="Border"
-            Padding="0,2"
             Background="{TemplateBinding Background}">
             <DataGridCellsPresenter />
         </Border>
@@ -103,7 +102,7 @@
     <ControlTemplate x:Key="RoundedDataGridCellControlTemplate" TargetType="{x:Type DataGridCell}">
         <Border
             x:Name="Border"
-            Padding="7,0"
+            Padding="7,3"
             Background="{TemplateBinding Background}">
             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" />
         </Border>
@@ -133,18 +132,18 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Button
-                                    Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                                    Command="{x:Static DataGrid.SelectAllCommand}"
+                                    Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type controls:DataGrid2}}}"
+                                    Command="{x:Static controls:DataGrid2.SelectAllCommand}"
                                     Focusable="false"
                                     Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle,
-                                                                                  TypeInTargetAssembly={x:Type DataGrid}}}"
-                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                                                                  TypeInTargetAssembly={x:Type controls:DataGrid2}}}"
+                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static controls:DataGrid2.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type controls:DataGrid2}}}" />
                                 <DataGridColumnHeadersPresenter
                                     x:Name="PART_ColumnHeadersPresenter"
                                     Grid.Column="1"
                                     Grid.ColumnSpan="2"
                                     Margin="0,-1,-1,0"
-                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static controls:DataGrid2.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type controls:DataGrid2}}}" />
                                 <ScrollContentPresenter
                                     x:Name="PART_ScrollContentPresenter"
                                     Grid.Row="1"
@@ -161,7 +160,7 @@
                                     Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <Grid Grid.Row="2" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                        <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type controls:DataGrid2}}}" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <ScrollBar
@@ -207,7 +206,8 @@
         <Setter Property="Template" Value="{StaticResource RoundedDataGridCellControlTemplate}" />
     </Style>
 
-    <Style TargetType="{x:Type controls:DataGrid2}">
+    <Style BasedOn="{StaticResource ResourceKey={x:Type DataGrid}}" TargetType="{x:Type controls:DataGrid2}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="HorizontalGridLinesBrush" Value="Transparent" />
         <Setter Property="VerticalGridLinesBrush" Value="Transparent" />

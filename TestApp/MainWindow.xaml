@@ -57,13 +57,20 @@
                     <RadioButton Content="World" />
                 </StackPanel>
                 <StackPanel>
-                    <controls:Slider2 Minimum="0" Maximum="100" Value="30" />
-                    <controls:RangeSlider Minimum="0" Maximum="100" LowerValue="20" HigherValue="60" />
+                    <controls:Slider2
+                        Maximum="100"
+                        Minimum="0"
+                        Value="30" />
+                    <controls:RangeSlider
+                        HigherValue="60"
+                        LowerValue="20"
+                        Maximum="100"
+                        Minimum="0" />
                 </StackPanel>
                 <controls:SearchBox Margin="5" />
-                <controls:TextBox2 Text="Hello" Margin="5" />
+                <controls:TextBox2 Margin="5" Text="Hello" />
                 <controls:ToggleButton2 Margin="5">Hello</controls:ToggleButton2>
-                <CheckBox Style="{StaticResource ToggleCheckbox}" Margin="5">Hello</CheckBox>
+                <CheckBox Margin="5" Style="{StaticResource ToggleCheckbox}">Hello</CheckBox>
             </WrapPanel>
         </ContentControl>
         <controls:HamburgerMenu x:Name="Menu" BlurBackground="{Binding ElementName=WrappyLad}" />

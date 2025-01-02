@@ -27,6 +27,7 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="CornerRadius" Value="5" />
     </Style>
 
@@ -38,6 +39,7 @@
                         <controls:Button2
                             Width="Auto"
                             Height="Auto"
+                            Padding="0"
                             MinHeight="40"
                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                             VerticalAlignment="Top"
@@ -51,11 +53,10 @@
                             MouseDownBrush="{TemplateBinding MouseDownBrush}"
                             MouseOverBrush="{TemplateBinding MouseOverBrush}">
                             <Grid
-                                Margin="-6"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="7" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -199,13 +200,12 @@
                                                 <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                             </MultiBinding>
                                         </controls:Button2.Visibility>
-                                        <scalableicons:Icon Margin="2" Kind="Plus" />
+                                        <scalableicons:Icon Margin="2" Width="10" Height="10" Kind="Plus" />
                                     </controls:Button2>
                                     <!--#endregion-->
                                     <!--#region Delete button-->
                                     <controls:Button2
                                         Grid.Column="1"
-                                        Padding="3"
                                         Command="{Binding DeleteCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                         Style="{StaticResource MenuItemButtonStyle}"
                                         ToolTip="Delete">
@@ -216,7 +216,7 @@
                                                 <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                             </MultiBinding>
                                         </controls:Button2.Visibility>
-                                        <scalableicons:Icon Margin="1,0,0,0" Kind="Bin" />
+                                        <scalableicons:Icon Margin="1,0,0,0" Width="10" Height="10" Kind="Bin" />
                                     </controls:Button2>
                                     <!--#endregion-->
                                     <!--#region Drop down indicator-->
@@ -284,7 +284,7 @@
             </StackPanel>
             <Border
                 Width="3"
-                Margin="10"
+                Margin="0,10"
                 HorizontalAlignment="Left"
                 Background="{TemplateBinding AccentBrush}"
                 CornerRadius="1.5">
@@ -300,6 +300,7 @@
 
     <Style TargetType="{x:Type controls:HamburgerMenuItem}">
         <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+        <Setter Property="AccentBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
         <Setter Property="SelectedForeground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="SubtitleForeground" Value="{DynamicResource TertiaryTextBrush}" />
         <Setter Property="MouseOverBrush">

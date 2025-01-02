@@ -33,7 +33,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type controls:ToggleButton2}">
+    <Style BasedOn="{StaticResource ResourceKey={x:Type ToggleButton}}" TargetType="{x:Type controls:ToggleButton2}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

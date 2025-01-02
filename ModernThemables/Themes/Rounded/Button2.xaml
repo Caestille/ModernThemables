@@ -34,7 +34,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type controls:Button2}">
+    <Style BasedOn="{StaticResource ResourceKey={x:Type Button}}" TargetType="{x:Type controls:Button2}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

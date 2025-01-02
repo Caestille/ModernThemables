@@ -44,7 +44,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type controls:AutofillTextbox}">
+    <Style BasedOn="{StaticResource ResourceKey={x:Type TextBox}}" TargetType="{x:Type controls:AutofillTextbox}">
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="VerticalAlignment" Value="Top" />

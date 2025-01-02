@@ -150,7 +150,7 @@
         <Setter Property="Template" Value="{StaticResource RoundedCombobox2ItemControlTemplate}" />
     </Style>
 
-    <Style TargetType="{x:Type controls:ComboBox2}">
+    <Style BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}" TargetType="{x:Type controls:ComboBox2}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Setter Property="VerticalAlignment" Value="Top" />
