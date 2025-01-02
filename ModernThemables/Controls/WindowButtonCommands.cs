@@ -142,11 +142,6 @@ namespace ModernThemables.Controls
 			protected set => SetValue(ParentWindowPropertyKey, value);
 		}
 
-		static WindowButtonCommands()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowButtonCommands), new FrameworkPropertyMetadata(typeof(WindowButtonCommands)));
-		}
-
 		public WindowButtonCommands()
 		{
 			CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand, MinimizeWindow));

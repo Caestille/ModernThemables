@@ -66,10 +66,5 @@ namespace ModernThemables.Controls
             nameof(ContentBackground),
             typeof(Brush),
             typeof(ComboBox2));
-
-        static ComboBox2()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ComboBox2), new FrameworkPropertyMetadata(typeof(ComboBox2)));
-        }
     }
 }

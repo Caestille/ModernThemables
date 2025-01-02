@@ -10,11 +10,6 @@ namespace ModernThemables.Controls
         private const string PART_button = "PART_button";
 
         private Button2? button;
-
-        static SearchBox()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(SearchBox), new FrameworkPropertyMetadata(typeof(SearchBox)));
-        }
         
         public CornerRadius CornerRadius
         {

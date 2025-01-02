@@ -38,10 +38,5 @@ namespace ModernThemables.Controls
             typeof(Brush),
             typeof(DataGrid2),
             new PropertyMetadata(new SolidColorBrush(Colors.White)));
-
-        static DataGrid2()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DataGrid2), new FrameworkPropertyMetadata(typeof(DataGrid2)));
-        }
     }
 }

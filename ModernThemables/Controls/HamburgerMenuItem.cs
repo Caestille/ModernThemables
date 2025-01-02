@@ -13,11 +13,6 @@ namespace ModernThemables.Controls
     {
         readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
 
-        static HamburgerMenuItem()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(HamburgerMenuItem), new FrameworkPropertyMetadata(typeof(HamburgerMenuItem)));
-        }
-
         public HamburgerMenuItem()
         {
             InternalSelectCommand = new RelayCommand(Select);

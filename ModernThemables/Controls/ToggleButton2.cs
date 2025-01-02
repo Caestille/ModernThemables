@@ -65,10 +65,5 @@ namespace ModernThemables.Controls
             nameof(CornerRadius),
             typeof(CornerRadius),
             typeof(ToggleButton2));
-
-        static ToggleButton2()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButton2), new FrameworkPropertyMetadata(typeof(ToggleButton2)));
-        }
     }
 }

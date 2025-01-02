@@ -23,11 +23,6 @@ namespace ModernThemables.Controls
         private Button2? pinButton;
         private SearchBox? searchBox;
 
-        static HamburgerMenu()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(HamburgerMenu), new FrameworkPropertyMetadata(typeof(HamburgerMenu)));
-        }
-
         public HamburgerMenu()
         {
             ShowSettingsCommand = new RelayCommand(ToggleShowSettings);

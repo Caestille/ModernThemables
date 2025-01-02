@@ -115,11 +115,6 @@ namespace ModernThemables.Controls
 		private Border? PART_BlurDecorator { get; set; }
 		private VisualBrush BlurDecoratorBrush { get; set; }
 
-		static BlurHost()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(BlurHost), new FrameworkPropertyMetadata(typeof(BlurHost)));
-		}
-
 		public BlurHost()
 		{
 			Loaded += OnLoaded;

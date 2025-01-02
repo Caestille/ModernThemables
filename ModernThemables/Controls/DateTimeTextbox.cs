@@ -22,11 +22,6 @@ namespace ModernThemables.Controls
 
 		private DateTime? lastValue;
 
-		static DateTimeTextBox()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(DateTimeTextBox), new FrameworkPropertyMetadata(typeof(DateTimeTextBox)));
-		}
-
 		public DateTimeTextBox()
 		{
 			trigger = new RefreshTrigger(() => { CalculateDate(false); }, 100);

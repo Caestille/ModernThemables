@@ -59,10 +59,5 @@ namespace ModernThemables.Controls
             typeof(CornerRadius),
             typeof(Button2),
             new PropertyMetadata(new CornerRadius(0)));
-
-        static Button2()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Button2), new FrameworkPropertyMetadata(typeof(Button2)));
-        }
     }
 }

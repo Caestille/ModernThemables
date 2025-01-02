@@ -15,10 +15,5 @@ namespace ModernThemables.Controls
             typeof(CornerRadius),
             typeof(TextBox2),
             new PropertyMetadata(new CornerRadius(0)));
-
-        static TextBox2()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(TextBox2), new FrameworkPropertyMetadata(typeof(TextBox2)));
-        }
     }
 }

@@ -105,11 +105,6 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			typeof(ZoomHost),
 			new UIPropertyMetadata(0d, (s, e) => { (s as ZoomHost)!.Coordinator_MouseWheel(s, (s as ZoomHost)!.lastArgs); }));
 
-		static ZoomHost()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(ZoomHost), new FrameworkPropertyMetadata(typeof(ZoomHost)));
-		}
-
 		public ZoomHost()
 		{
 			Loaded += OnLoaded;

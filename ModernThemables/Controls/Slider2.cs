@@ -104,10 +104,5 @@ namespace ModernThemables.Controls
             typeof(CornerRadius),
             typeof(Slider2),
             new PropertyMetadata(new CornerRadius(0)));
-
-        static Slider2()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Slider2), new FrameworkPropertyMetadata(typeof(Slider2)));
-        }
     }
 }

@@ -25,11 +25,6 @@ namespace ModernThemables.Controls
 		private Slider? lowerSlider;
 		private Slider? higherSlider;
 
-		static RangeSlider()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(RangeSlider), new FrameworkPropertyMetadata(typeof(RangeSlider)));
-		}
-
 		public RangeSlider()
 		{
 			SizeChanged += RangeSlider_SizeChanged;

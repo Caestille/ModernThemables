@@ -14,11 +14,6 @@ namespace ModernThemables.Controls
 
 		public event EventHandler<Color>? ColourChanged;
 
-		static ColourPickerBox()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(ColourPickerBox), new FrameworkPropertyMetadata(typeof(ColourPickerBox)));
-		}
-
         public Color TemporaryColour
         {
             get => (Color)GetValue(TemporaryColourProperty);

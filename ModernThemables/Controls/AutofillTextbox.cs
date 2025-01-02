@@ -10,11 +10,6 @@ namespace ModernThemables.Controls
 {
 	public class AutofillTextbox : TextBox
 	{
-		static AutofillTextbox()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(AutofillTextbox), new FrameworkPropertyMetadata(typeof(AutofillTextbox)));
-		}
-
 		public AutofillTextbox()
 		{
 			
