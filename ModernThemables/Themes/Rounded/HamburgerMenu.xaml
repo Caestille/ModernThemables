@@ -293,7 +293,7 @@
                                 <Border
                                     Grid.RowSpan="2"
                                     Width="3"
-                                    Margin="5,10"
+                                    Margin="1,10"
                                     HorizontalAlignment="Left"
                                     Background="{TemplateBinding AccentBrush}"
                                     CornerRadius="1.5"
@@ -309,7 +309,7 @@
     <Style TargetType="{x:Type controls:HamburgerMenu}">
         <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBackgroundBrush}" />
-        <Setter Property="AccentBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
+        <Setter Property="AccentBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,0" />
         <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusStyle}" />

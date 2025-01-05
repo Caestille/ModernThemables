@@ -30,6 +30,10 @@
             <Trigger Property="IsChecked" Value="true">
                 <Setter TargetName="PART_border" Property="Background" Value="{Binding CheckedBrush, RelativeSource={RelativeSource TemplatedParent}}" />
             </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter TargetName="PART_border" Property="Background" Value="{Binding DisabledBackground, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{Binding DisabledForeground, RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 

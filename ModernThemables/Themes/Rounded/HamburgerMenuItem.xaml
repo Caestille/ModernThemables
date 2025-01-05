@@ -14,7 +14,6 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/InfoTooltipHorizontal.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-
     <Style
         x:Key="MenuItemButtonStyle"
         BasedOn="{StaticResource ResourceKey={x:Type controls:Button2}}"
@@ -290,7 +289,7 @@
             </StackPanel>
             <Border
                 Width="3"
-                Margin="0,10"
+                Margin="-4,10"
                 HorizontalAlignment="Left"
                 Background="{TemplateBinding AccentBrush}"
                 CornerRadius="1.5">
@@ -306,7 +305,7 @@
 
     <Style TargetType="{x:Type controls:HamburgerMenuItem}">
         <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
-        <Setter Property="AccentBrush" Value="{DynamicResource ThemeMouseOverBrush}" />
+        <Setter Property="AccentBrush" Value="{DynamicResource ThemeMouseDownBrush}" />
         <Setter Property="SelectedForeground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="SubtitleForeground" Value="{DynamicResource TertiaryTextBrush}" />
         <Setter Property="MouseOverBrush">
