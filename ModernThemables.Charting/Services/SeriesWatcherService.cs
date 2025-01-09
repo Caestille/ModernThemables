@@ -1,10 +1,10 @@
-﻿using ModernThemables.Charting.Interfaces;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-
-namespace ModernThemables.Charting.Services
+﻿namespace ModernThemables.Charting.Services
 {
+    using ModernThemables.Charting.Interfaces;
+    using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+
     public class SeriesWatcherService
 	{
 		private readonly Action<IList<ISeries>?, IList<ISeries>?, bool> onSeriesUpdated;
@@ -20,31 +20,31 @@ namespace ModernThemables.Charting.Services
 		{
 			if (newSeries == null)
 			{
-				foreach (var series in subscribedSeries)
+				foreach (var series in this.subscribedSeries)
 				{
-					series.PropertyChanged -= Series_PropertyChanged;
+					series.PropertyChanged -= this.Series_PropertyChanged;
 				}
 
 				return;
 			}
 
-			Subscribe(newSeries);
-			hasSetSeries = true;
+            this.Subscribe(newSeries);
+            this.hasSetSeries = true;
 
 			if (!newSeries.Any() /*|| !newSeries.Any(x => x.Values?.Any() ?? false)*/) return;
 
-			onSeriesUpdated(null, null, true);
+            this.onSeriesUpdated(null, null, true);
 		}
 
 		private void Subscribe(ObservableCollection<ISeries> series)
 		{
-			series.CollectionChanged += Series_CollectionChanged;
-			if (!hasSetSeries)
+			series.CollectionChanged += this.Series_CollectionChanged;
+			if (!this.hasSetSeries)
 			{
 				foreach (ISeries item in series)
 				{
-					item.PropertyChanged += Series_PropertyChanged;
-					subscribedSeries.Add(item);
+					item.PropertyChanged += this.Series_PropertyChanged;
+                    this.subscribedSeries.Add(item);
 				}
 			}
 		}
@@ -53,7 +53,7 @@ namespace ModernThemables.Charting.Services
 		{
 			if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
-				onSeriesUpdated(null, null, true);
+                this.onSeriesUpdated(null, null, true);
 				return;
 			}
 
@@ -63,9 +63,9 @@ namespace ModernThemables.Charting.Services
 			{
 				foreach (ISeries series in e.OldItems)
 				{
-					series.PropertyChanged -= Series_PropertyChanged;
+					series.PropertyChanged -= this.Series_PropertyChanged;
 					oldItems.Add(series);
-					subscribedSeries.Remove(series);
+                    this.subscribedSeries.Remove(series);
 				}
 			}
 
@@ -75,13 +75,13 @@ namespace ModernThemables.Charting.Services
 			{
 				foreach (ISeries series in e.NewItems)
 				{
-					series.PropertyChanged += Series_PropertyChanged;
+					series.PropertyChanged += this.Series_PropertyChanged;
 					newItems.Add(series);
-					subscribedSeries.Add(series);
+                    this.subscribedSeries.Add(series);
 				}
 			}
 
-			onSeriesUpdated(newItems, oldItems, false);
+            this.onSeriesUpdated(newItems, oldItems, false);
 		}
 
 		private void Series_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -89,15 +89,15 @@ namespace ModernThemables.Charting.Services
 			if (sender is ISeries series)
 			{
 				var list = new List<ISeries>() { series };
-				onSeriesUpdated(list, list, false);
+                this.onSeriesUpdated(list, list, false);
 			}
 		}
 
 		public void Dispose()
 		{
-			foreach (var series in subscribedSeries)
+			foreach (var series in this.subscribedSeries)
 			{
-				series.PropertyChanged -= Series_PropertyChanged;
+				series.PropertyChanged -= this.Series_PropertyChanged;
 			}
 		}
 	}

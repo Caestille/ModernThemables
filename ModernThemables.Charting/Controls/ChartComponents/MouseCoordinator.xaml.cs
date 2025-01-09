@@ -1,9 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-
-namespace ModernThemables.Charting.Controls.ChartComponents
+﻿namespace ModernThemables.Charting.Controls.ChartComponents
 {
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+
     /// <summary>
     /// Interaction logic for MouseCoordinator.xaml
     /// </summary>
@@ -29,8 +29,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double? MouseMoveThrottleMs
 		{
-			get => (double?)GetValue(MouseMoveThrottleMsProperty);
-			set => SetValue(MouseMoveThrottleMsProperty, value);
+			get => (double?)this.GetValue(MouseMoveThrottleMsProperty);
+			set => this.SetValue(MouseMoveThrottleMsProperty, value);
 		}
 		public static readonly DependencyProperty MouseMoveThrottleMsProperty = DependencyProperty.Register(
 			"MouseMoveThrottleMs",
@@ -40,7 +40,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public MouseCoordinator()
 		{
-			InitializeComponent();
+            this.InitializeComponent();
 		}
 
 		private static void OnSetThrottle(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -53,50 +53,50 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void MouseCaptureGrid_MouseMove(object sender, MouseEventArgs e)
 		{
-			lastArgs = e;
+            this.lastArgs = e;
 
 			if (e.RightButton != MouseButtonState.Pressed)
 			{
-				MouseCaptureGrid.ReleaseMouseCapture();
+                this.MouseCaptureGrid.ReleaseMouseCapture();
 			}
 
-			if (isRunning || (updateLimit != null && DateTime.Now - timeLastUpdated < updateLimit)) return;
+			if (this.isRunning || (this.updateLimit != null && DateTime.Now - this.timeLastUpdated < this.updateLimit)) return;
 
-			isRunning = true;
-			var mouseLoc = e.GetPosition(MouseCaptureGrid);
-			timeLastUpdated = DateTime.Now;
-			MouseMove?.Invoke(this, (mouseDown == MouseButton.Left, mouseDown == MouseButton.Right, mouseDownPoint, lastMouseMovePoint ?? mouseLoc, e));
-			lastMouseMovePoint = mouseLoc;
-			isRunning = false;
+            this.isRunning = true;
+			var mouseLoc = e.GetPosition(this.MouseCaptureGrid);
+            this.timeLastUpdated = DateTime.Now;
+			MouseMove?.Invoke(this, (this.mouseDown == MouseButton.Left, this.mouseDown == MouseButton.Right, this.mouseDownPoint, this.lastMouseMovePoint ?? mouseLoc, e));
+            this.lastMouseMovePoint = mouseLoc;
+            this.isRunning = false;
 		}
 
 		private void MouseCaptureGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
 		{
-			mouseDown = e.ChangedButton;
-			mouseDownPoint = e.GetPosition(MouseCaptureGrid);
+            this.mouseDown = e.ChangedButton;
+            this.mouseDownPoint = e.GetPosition(this.MouseCaptureGrid);
 		}
 
 		private void MouseCaptureGrid_PreviewMouseUp(object sender, MouseButtonEventArgs e)
 		{
-			mouseUpPoint = e.GetPosition(MouseCaptureGrid);
+            this.mouseUpPoint = e.GetPosition(this.MouseCaptureGrid);
 
-			if (mouseDown == MouseButton.Left)
+			if (this.mouseDown == MouseButton.Left)
 			{
-				if (mouseUpPoint == mouseDownPoint)
+				if (this.mouseUpPoint == this.mouseDownPoint)
 				{
-					PointClicked?.Invoke(this, mouseDownPoint.Value);
+					PointClicked?.Invoke(this, this.mouseDownPoint.Value);
 					e.Handled = true;
 				}
-				else if (mouseDownPoint != null && mouseUpPoint != null)
+				else if (this.mouseDownPoint != null && this.mouseUpPoint != null)
 				{
-					PointRangeSelected?.Invoke(this, (mouseDownPoint.Value, mouseUpPoint.Value));
+					PointRangeSelected?.Invoke(this, (this.mouseDownPoint.Value, this.mouseUpPoint.Value));
 					e.Handled = true;
 				}
 			}
 
-			mouseDown = null;
-			mouseDownPoint = null;
-			mouseUpPoint = null;
+            this.mouseDown = null;
+            this.mouseDownPoint = null;
+            this.mouseUpPoint = null;
 		}
 
 		private void MouseCaptureGrid_MouseDown(object sender, MouseButtonEventArgs e)

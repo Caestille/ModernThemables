@@ -1,18 +1,18 @@
-﻿using CoreUtilities.HelperClasses;
-using CoreUtilities.HelperClasses.Extensions;
-using CommunityToolkit.Mvvm.Input;
-using ModernThemables.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
+    using CoreUtilities.HelperClasses;
+    using CoreUtilities.HelperClasses.Extensions;
+    using CommunityToolkit.Mvvm.Input;
+    using ModernThemables.ViewModels;
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
+
     public class HamburgerMenu : Control
     {
         private const string PART_OpenButton = "PART_OpenButton";
@@ -25,13 +25,13 @@ namespace ModernThemables.Controls
 
         public HamburgerMenu()
         {
-            ShowSettingsCommand = new RelayCommand(ToggleShowSettings);
+            this.ShowSettingsCommand = new RelayCommand(this.ToggleShowSettings);
         }
 
         public DataTemplate ItemTemplate
         {
-            get => (DataTemplate)GetValue(ItemTemplateProperty);
-            set => SetValue(ItemTemplateProperty, value);
+            get => (DataTemplate)this.GetValue(ItemTemplateProperty);
+            set => this.SetValue(ItemTemplateProperty, value);
         }
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
             nameof(ItemTemplate),
@@ -41,8 +41,8 @@ namespace ModernThemables.Controls
 
         public DataTemplate SearchItemTemplate
         {
-            get => (DataTemplate)GetValue(SearchItemTemplateProperty);
-            set => SetValue(SearchItemTemplateProperty, value);
+            get => (DataTemplate)this.GetValue(SearchItemTemplateProperty);
+            set => this.SetValue(SearchItemTemplateProperty, value);
         }
         public static readonly DependencyProperty SearchItemTemplateProperty = DependencyProperty.Register(
             nameof(SearchItemTemplate),
@@ -52,8 +52,8 @@ namespace ModernThemables.Controls
 
         public Brush AccentBrush
         {
-            get => (Brush)GetValue(AccentBrushProperty);
-            set => SetValue(AccentBrushProperty, value);
+            get => (Brush)this.GetValue(AccentBrushProperty);
+            set => this.SetValue(AccentBrushProperty, value);
         }
         public static readonly DependencyProperty AccentBrushProperty = DependencyProperty.Register(
             nameof(AccentBrush),
@@ -63,8 +63,8 @@ namespace ModernThemables.Controls
 
         public IEnumerable<IHamburgerMenuItem> Items
         {
-            get => (IEnumerable<IHamburgerMenuItem>)GetValue(ItemsProperty);
-            set => SetValue(ItemsProperty, value);
+            get => (IEnumerable<IHamburgerMenuItem>)this.GetValue(ItemsProperty);
+            set => this.SetValue(ItemsProperty, value);
         }
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
             nameof(Items),
@@ -74,8 +74,8 @@ namespace ModernThemables.Controls
 
         public RangeObservableCollection<IHamburgerMenuItem> FilteredItems
         {
-            get => (RangeObservableCollection<IHamburgerMenuItem>)GetValue(FilteredItemsProperty);
-            set => SetValue(FilteredItemsProperty, value);
+            get => (RangeObservableCollection<IHamburgerMenuItem>)this.GetValue(FilteredItemsProperty);
+            set => this.SetValue(FilteredItemsProperty, value);
         }
         public static readonly DependencyProperty FilteredItemsProperty = DependencyProperty.Register(
             nameof(FilteredItems),
@@ -85,8 +85,8 @@ namespace ModernThemables.Controls
 
         public bool IsMenuOpen
         {
-            get => (bool)GetValue(IsMenuOpenProperty);
-            set => SetValue(IsMenuOpenProperty, value);
+            get => (bool)this.GetValue(IsMenuOpenProperty);
+            set => this.SetValue(IsMenuOpenProperty, value);
         }
         public static readonly DependencyProperty IsMenuOpenProperty = DependencyProperty.Register(
             nameof(IsMenuOpen),
@@ -96,8 +96,8 @@ namespace ModernThemables.Controls
 
         public bool IsMenuPinned
         {
-            get => (bool)GetValue(IsMenuPinnedProperty);
-            set => SetValue(IsMenuPinnedProperty, value);
+            get => (bool)this.GetValue(IsMenuPinnedProperty);
+            set => this.SetValue(IsMenuPinnedProperty, value);
         }
         public static readonly DependencyProperty IsMenuPinnedProperty = DependencyProperty.Register(
             nameof(IsMenuPinned),
@@ -107,8 +107,8 @@ namespace ModernThemables.Controls
 
         public string SearchText
         {
-            get => (string)GetValue(SearchTextProperty);
-            set => SetValue(SearchTextProperty, value);
+            get => (string)this.GetValue(SearchTextProperty);
+            set => this.SetValue(SearchTextProperty, value);
         }
         public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
             nameof(SearchText),
@@ -118,8 +118,8 @@ namespace ModernThemables.Controls
 
         public FrameworkElement BlurBackground
         {
-            get => (FrameworkElement)GetValue(BlurBackgroundProperty);
-            set => SetValue(BlurBackgroundProperty, value);
+            get => (FrameworkElement)this.GetValue(BlurBackgroundProperty);
+            set => this.SetValue(BlurBackgroundProperty, value);
         }
 
         public static readonly DependencyProperty BlurBackgroundProperty =
@@ -131,8 +131,8 @@ namespace ModernThemables.Controls
 
         public object SettingsVm
         {
-            get => GetValue(SettingsVmProperty);
-            set => SetValue(SettingsVmProperty, value);
+            get => this.GetValue(SettingsVmProperty);
+            set => this.SetValue(SettingsVmProperty, value);
         }
 
         public static readonly DependencyProperty SettingsVmProperty =
@@ -144,8 +144,8 @@ namespace ModernThemables.Controls
 
         public DataTemplate SettingsTemplate
         {
-            get => (DataTemplate)GetValue(SettingsTemplateProperty);
-            set => SetValue(SettingsTemplateProperty, value);
+            get => (DataTemplate)this.GetValue(SettingsTemplateProperty);
+            set => this.SetValue(SettingsTemplateProperty, value);
         }
 
         public static readonly DependencyProperty SettingsTemplateProperty =
@@ -157,8 +157,8 @@ namespace ModernThemables.Controls
 
         public bool ShowSettings
         {
-            get => (bool)GetValue(ShowSettingsProperty);
-            set => SetValue(ShowSettingsProperty, value);
+            get => (bool)this.GetValue(ShowSettingsProperty);
+            set => this.SetValue(ShowSettingsProperty, value);
         }
 
         public static readonly DependencyProperty ShowSettingsProperty =
@@ -170,8 +170,8 @@ namespace ModernThemables.Controls
 
         public ICommand ShowSettingsCommand
         {
-            get => (ICommand)GetValue(ShowSettingsCommandProperty);
-            set => SetValue(ShowSettingsCommandProperty, value);
+            get => (ICommand)this.GetValue(ShowSettingsCommandProperty);
+            set => this.SetValue(ShowSettingsCommandProperty, value);
         }
 
         public static readonly DependencyProperty ShowSettingsCommandProperty =
@@ -185,9 +185,9 @@ namespace ModernThemables.Controls
         {
             get
             {
-                if (Items == null) return new RangeObservableCollection<IHamburgerMenuItem>();
-                var result = new List<object>(Items);
-                Items.ToList().ForEach(x => result.AddRange(x.GetChildren(true)));
+                if (this.Items == null) return new RangeObservableCollection<IHamburgerMenuItem>();
+                var result = new List<object>(this.Items);
+                this.Items.ToList().ForEach(x => result.AddRange(x.GetChildren(true)));
                 return new RangeObservableCollection<IHamburgerMenuItem>(result.Cast<IHamburgerMenuItem>());
             }
         }
@@ -196,34 +196,34 @@ namespace ModernThemables.Controls
         {
             base.OnApplyTemplate();
 
-            if (openButton != null) openButton.Click -= OpenButton_Click;
-            if (Template.FindName(PART_OpenButton, this) is Button2 open) openButton = open;
-            if (openButton != null) openButton.Click += OpenButton_Click;
+            if (this.openButton != null) this.openButton.Click -= this.OpenButton_Click;
+            if (this.Template.FindName(PART_OpenButton, this) is Button2 open) this.openButton = open;
+            if (this.openButton != null) this.openButton.Click += this.OpenButton_Click;
 
-            if (pinButton != null) pinButton.Click -= PinButton_Click;
-            if (Template.FindName(PART_PinButton, this) is Button2 pin) pinButton = pin;
-            if (pinButton != null) pinButton.Click += PinButton_Click; ;
+            if (this.pinButton != null) this.pinButton.Click -= this.PinButton_Click;
+            if (this.Template.FindName(PART_PinButton, this) is Button2 pin) this.pinButton = pin;
+            if (this.pinButton != null) this.pinButton.Click += this.PinButton_Click; ;
 
-            if (searchBox != null) searchBox.TextChanged -= SearchBox_SearchTextChanged;
-            if (Template.FindName(PART_SearchBox, this) is SearchBox search) searchBox = search;
-            if (searchBox != null) searchBox.TextChanged += SearchBox_SearchTextChanged;
+            if (this.searchBox != null) this.searchBox.TextChanged -= this.SearchBox_SearchTextChanged;
+            if (this.Template.FindName(PART_SearchBox, this) is SearchBox search) this.searchBox = search;
+            if (this.searchBox != null) this.searchBox.TextChanged += this.SearchBox_SearchTextChanged;
         }
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
-            IsMenuOpen = !IsMenuOpen;
+            this.IsMenuOpen = !this.IsMenuOpen;
         }
 
         private void PinButton_Click(object sender, RoutedEventArgs e)
         {
-            IsMenuPinned = !IsMenuPinned;
+            this.IsMenuPinned = !this.IsMenuPinned;
         }
 
         private void SearchBox_SearchTextChanged(object? sender, TextChangedEventArgs e)
         {
-            SearchText = (e.OriginalSource as TextBox)!.Text;
-            FilteredItems = AllViewModels
-                .Where(x => x.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+            this.SearchText = (e.OriginalSource as TextBox)!.Text;
+            this.FilteredItems = this.AllViewModels
+                .Where(x => x.Name.Contains(this.SearchText, StringComparison.OrdinalIgnoreCase))
                 .ToRangeObservableCollection();
         }
 
@@ -248,8 +248,8 @@ namespace ModernThemables.Controls
 
         private void ToggleShowSettings()
         {
-            if (!IsMenuOpen) IsMenuOpen = true;
-            ShowSettings = !ShowSettings;
+            if (!this.IsMenuOpen) this.IsMenuOpen = true;
+            this.ShowSettings = !this.ShowSettings;
         }
     }
 }

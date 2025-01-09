@@ -1,15 +1,15 @@
-﻿using System.Windows.Controls;
-
-namespace ModernThemables.Charting.Controls.ChartComponents
+﻿namespace ModernThemables.Charting.Controls.ChartComponents
 {
-	/// <summary>
-	/// Interaction logic for TemplatedTooltip.xaml
-	/// </summary>
-	public partial class TemplatedTooltip : UserControl
+    using System.Windows.Controls;
+
+    /// <summary>
+    /// Interaction logic for TemplatedTooltip.xaml
+    /// </summary>
+    public partial class TemplatedTooltip : UserControl
 	{
 		public TemplatedTooltip()
 		{
-			InitializeComponent();
+            this.InitializeComponent();
 		}
 	}
 }

@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-
-namespace ModernThemables.Charting.Interfaces
+﻿namespace ModernThemables.Charting.Interfaces
 {
+    using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+
     /// <summary>
     /// Interface for a generic chart series.
     /// </summary>

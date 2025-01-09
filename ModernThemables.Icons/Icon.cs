@@ -1,7 +1,7 @@
-﻿using System.Windows;
-
-namespace ModernThemables.Icons
+﻿namespace ModernThemables.Icons
 {
+    using System.Windows;
+
     public class Icon : BaseIcon
     {
         /// <summary>
@@ -9,8 +9,8 @@ namespace ModernThemables.Icons
         /// </summary>
         public IconType Kind
         {
-            get => (IconType)GetValue(KindProperty);
-            set => SetValue(KindProperty, value);
+            get => (IconType)this.GetValue(KindProperty);
+            set => this.SetValue(KindProperty, value);
         }
 
         public static readonly DependencyProperty KindProperty = DependencyProperty.Register(
@@ -26,21 +26,21 @@ namespace ModernThemables.Icons
 
         public Icon() { }
 
-        internal override void SetKind<TKind>(TKind iconKind) => SetCurrentValue(KindProperty, iconKind);
+        internal override void SetKind<TKind>(TKind iconKind) => this.SetCurrentValue(KindProperty, iconKind);
 
         internal override void UpdateData()
         {
-            if (Kind != default)
+            if (this.Kind != default)
             {
                 (string, bool) data = ("", false);
-                IconDataFactory.DataIndex.Value?.TryGetValue(Kind, out data);
-                Data = data.Item1!;
-                YScale = data.Item2 ? -1 : 1;
+                IconDataFactory.DataIndex.Value?.TryGetValue(this.Kind, out data);
+                this.Data = data.Item1!;
+                this.YScale = data.Item2 ? -1 : 1;
             }
             else
             {
-                Data = "";
-                YScale = 1;
+                this.Data = "";
+                this.YScale = 1;
             }
         }
 

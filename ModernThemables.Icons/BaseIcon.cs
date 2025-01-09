@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace ModernThemables.Icons
+﻿namespace ModernThemables.Icons
 {
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+
     /// <summary>
     /// Class PackIconControlBase which is the base class for any PackIcon control.
     /// </summary>
@@ -23,8 +23,8 @@ namespace ModernThemables.Icons
         [TypeConverter(typeof(GeometryConverter))]
         public string Data
         {
-            get => (string)GetValue(DataProperty);
-            protected set => SetValue(DataPropertyKey, value);
+            get => (string)this.GetValue(DataProperty);
+            protected set => this.SetValue(DataPropertyKey, value);
         }
 
         private static readonly DependencyPropertyKey YScalePropertyKey
@@ -37,15 +37,15 @@ namespace ModernThemables.Icons
         /// </summary>
         public int YScale
         {
-            get => (int)GetValue(YScaleProperty);
-            protected set => SetValue(YScalePropertyKey, value);
+            get => (int)this.GetValue(YScaleProperty);
+            protected set => this.SetValue(YScalePropertyKey, value);
         }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            UpdateData();
+            this.UpdateData();
         }
 
         internal abstract void UpdateData();
@@ -72,8 +72,8 @@ namespace ModernThemables.Icons
         /// <value>The rotation.</value>
         public double RotationAngle
         {
-            get => (double)GetValue(RotationAngleProperty);
-            set => SetValue(RotationAngleProperty, value);
+            get => (double)this.GetValue(RotationAngleProperty);
+            set => this.SetValue(RotationAngleProperty, value);
         }
     }
 }

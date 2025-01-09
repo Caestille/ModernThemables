@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Markup;
-
-namespace ModernThemables.Icons
+﻿namespace ModernThemables.Icons
 {
+    using System;
+    using System.Windows.Markup;
+
     [MarkupExtensionReturnType(typeof(Icon))]
     public class IconExtension : BaseIconExtension
     {
@@ -12,7 +12,7 @@ namespace ModernThemables.Icons
 
         public IconExtension(IconType kind)
         {
-            Kind = kind;
+            this.Kind = kind;
         }
 
         [ConstructorArgument("kind")]
@@ -20,7 +20,7 @@ namespace ModernThemables.Icons
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return this.GetPackIcon<Icon, IconType>(Kind);
+            return this.GetPackIcon<Icon, IconType>(this.Kind);
         }
     }
 }

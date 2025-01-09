@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Markup;
-
-namespace ModernThemables.Icons
+﻿namespace ModernThemables.Icons
 {
+    using System;
+    using System.Windows.Markup;
+
     public interface IIconExtension
     {
         double Width { get; set; }
@@ -43,16 +43,16 @@ namespace ModernThemables.Icons
 
         public double Width
         {
-            get => width;
+            get => this.width;
             set
             {
-                if (Equals(width, value))
+                if (Equals(this.width, value))
                 {
                     return;
                 }
 
-                width = value;
-                WriteFieldChangedFlag(ChangedFieldFlags.Width, true);
+                this.width = value;
+                this.WriteFieldChangedFlag(ChangedFieldFlags.Width, true);
             }
         }
 
@@ -60,16 +60,16 @@ namespace ModernThemables.Icons
 
         public double Height
         {
-            get => height;
+            get => this.height;
             set
             {
-                if (Equals(height, value))
+                if (Equals(this.height, value))
                 {
                     return;
                 }
 
-                height = value;
-                WriteFieldChangedFlag(ChangedFieldFlags.Height, true);
+                this.height = value;
+                this.WriteFieldChangedFlag(ChangedFieldFlags.Height, true);
             }
         }
 
@@ -77,16 +77,16 @@ namespace ModernThemables.Icons
 
         public double RotationAngle
         {
-            get => rotationAngle;
+            get => this.rotationAngle;
             set
             {
-                if (Equals(rotationAngle, value))
+                if (Equals(this.rotationAngle, value))
                 {
                     return;
                 }
 
-                rotationAngle = value;
-                WriteFieldChangedFlag(ChangedFieldFlags.RotationAngle, true);
+                this.rotationAngle = value;
+                this.WriteFieldChangedFlag(ChangedFieldFlags.RotationAngle, true);
             }
         }
 
@@ -94,18 +94,18 @@ namespace ModernThemables.Icons
 
         internal bool IsFieldChanged(ChangedFieldFlags reqFlag)
         {
-            return (changedField & reqFlag) != 0;
+            return (this.changedField & reqFlag) != 0;
         }
 
         internal void WriteFieldChangedFlag(ChangedFieldFlags reqFlag, bool set)
         {
             if (set)
             {
-                changedField |= reqFlag;
+                this.changedField |= reqFlag;
             }
             else
             {
-                changedField &= (~reqFlag);
+                this.changedField &= (~reqFlag);
             }
         }
 

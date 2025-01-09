@@ -1,31 +1,31 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
+    using CommunityToolkit.Mvvm.Input;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
+
     public class HamburgerMenuItem : Control
     {
         readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
 
         public HamburgerMenuItem()
         {
-            InternalSelectCommand = new RelayCommand(Select);
-            if (StartOpen)
+            this.InternalSelectCommand = new RelayCommand(this.Select);
+            if (this.StartOpen)
             {
-                IsOpen = true;
+                this.IsOpen = true;
             }
         }
 
         public Brush SelectedForeground
         {
-            get => (Brush)GetValue(SelectedForegroundProperty);
-            set => SetValue(SelectedForegroundProperty, value);
+            get => (Brush)this.GetValue(SelectedForegroundProperty);
+            set => this.SetValue(SelectedForegroundProperty, value);
         }
         public static readonly DependencyProperty SelectedForegroundProperty = DependencyProperty.Register(
             nameof(SelectedForeground),
@@ -35,8 +35,8 @@ namespace ModernThemables.Controls
 
         public Brush SubtitleForeground
         {
-            get => (Brush)GetValue(SubtitleForegroundProperty);
-            set => SetValue(SubtitleForegroundProperty, value);
+            get => (Brush)this.GetValue(SubtitleForegroundProperty);
+            set => this.SetValue(SubtitleForegroundProperty, value);
         }
         public static readonly DependencyProperty SubtitleForegroundProperty = DependencyProperty.Register(
             nameof(SubtitleForeground),
@@ -46,8 +46,8 @@ namespace ModernThemables.Controls
 
         public Brush MouseOverBrush
         {
-            get => (Brush)GetValue(MouseOverBrushProperty);
-            set => SetValue(MouseOverBrushProperty, value);
+            get => (Brush)this.GetValue(MouseOverBrushProperty);
+            set => this.SetValue(MouseOverBrushProperty, value);
         }
         public static readonly DependencyProperty MouseOverBrushProperty = DependencyProperty.Register(
             nameof(MouseOverBrush),
@@ -57,8 +57,8 @@ namespace ModernThemables.Controls
 
         public Brush MouseDownBrush
         {
-            get => (Brush)GetValue(MouseDownBrushProperty);
-            set => SetValue(MouseDownBrushProperty, value);
+            get => (Brush)this.GetValue(MouseDownBrushProperty);
+            set => this.SetValue(MouseDownBrushProperty, value);
         }
         public static readonly DependencyProperty MouseDownBrushProperty = DependencyProperty.Register(
             nameof(MouseDownBrush),
@@ -67,8 +67,8 @@ namespace ModernThemables.Controls
 
         public Brush AccentBrush
         {
-            get => (Brush)GetValue(AccentBrushProperty);
-            set => SetValue(AccentBrushProperty, value);
+            get => (Brush)this.GetValue(AccentBrushProperty);
+            set => this.SetValue(AccentBrushProperty, value);
         }
         public static readonly DependencyProperty AccentBrushProperty = DependencyProperty.Register(
             nameof(AccentBrush),
@@ -78,8 +78,8 @@ namespace ModernThemables.Controls
 
         public DataTemplate IconTemplate
         {
-            get => (DataTemplate)GetValue(IconTemplateProperty);
-            set => SetValue(IconTemplateProperty, value);
+            get => (DataTemplate)this.GetValue(IconTemplateProperty);
+            set => this.SetValue(IconTemplateProperty, value);
         }
         public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.Register(
             nameof(IconTemplate),
@@ -89,8 +89,8 @@ namespace ModernThemables.Controls
 
         public DataTemplate ChildItemTemplate
         {
-            get => (DataTemplate)GetValue(ChildItemTemplateProperty);
-            set => SetValue(ChildItemTemplateProperty, value);
+            get => (DataTemplate)this.GetValue(ChildItemTemplateProperty);
+            set => this.SetValue(ChildItemTemplateProperty, value);
         }
         public static readonly DependencyProperty ChildItemTemplateProperty = DependencyProperty.Register(
             nameof(ChildItemTemplate),
@@ -100,8 +100,8 @@ namespace ModernThemables.Controls
 
         public DataTemplate ChildItemsTemplate
         {
-            get => (DataTemplate)GetValue(ChildItemsTemplateProperty);
-            set => SetValue(ChildItemsTemplateProperty, value);
+            get => (DataTemplate)this.GetValue(ChildItemsTemplateProperty);
+            set => this.SetValue(ChildItemsTemplateProperty, value);
         }
         public static readonly DependencyProperty ChildItemsTemplateProperty = DependencyProperty.Register(
             nameof(ChildItemsTemplate),
@@ -111,8 +111,8 @@ namespace ModernThemables.Controls
 
         public object Icon
         {
-            get => GetValue(IconProperty);
-            set => SetValue(IconProperty, value);
+            get => this.GetValue(IconProperty);
+            set => this.SetValue(IconProperty, value);
         }
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
             nameof(Icon),
@@ -122,8 +122,8 @@ namespace ModernThemables.Controls
 
         public DataTemplate TitleTemplate
         {
-            get => (DataTemplate)GetValue(TitleTemplateProperty);
-            set => SetValue(TitleTemplateProperty, value);
+            get => (DataTemplate)this.GetValue(TitleTemplateProperty);
+            set => this.SetValue(TitleTemplateProperty, value);
         }
         public static readonly DependencyProperty TitleTemplateProperty = DependencyProperty.Register(
             nameof(TitleTemplate),
@@ -133,8 +133,8 @@ namespace ModernThemables.Controls
 
         public string Title
         {
-            get => (string)GetValue(TitleProperty);
-            set => SetValue(TitleProperty, value);
+            get => (string)this.GetValue(TitleProperty);
+            set => this.SetValue(TitleProperty, value);
         }
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             nameof(Title),
@@ -144,8 +144,8 @@ namespace ModernThemables.Controls
 
         public DataTemplate SubTitleTemplate
         {
-            get => (DataTemplate)GetValue(SubTitleTemplateProperty);
-            set => SetValue(SubTitleTemplateProperty, value);
+            get => (DataTemplate)this.GetValue(SubTitleTemplateProperty);
+            set => this.SetValue(SubTitleTemplateProperty, value);
         }
         public static readonly DependencyProperty SubTitleTemplateProperty = DependencyProperty.Register(
             nameof(SubTitleTemplate),
@@ -155,8 +155,8 @@ namespace ModernThemables.Controls
 
         public string SubTitle
         {
-            get => (string)GetValue(SubTitleProperty);
-            set => SetValue(SubTitleProperty, value);
+            get => (string)this.GetValue(SubTitleProperty);
+            set => this.SetValue(SubTitleProperty, value);
         }
         public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(
             nameof(SubTitle),
@@ -166,8 +166,8 @@ namespace ModernThemables.Controls
 
         public bool IsOpen
         {
-            get => (bool)GetValue(IsOpenProperty);
-            set => SetValue(IsOpenProperty, value);
+            get => (bool)this.GetValue(IsOpenProperty);
+            set => this.SetValue(IsOpenProperty, value);
         }
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
             nameof(IsOpen),
@@ -177,8 +177,8 @@ namespace ModernThemables.Controls
 
         public bool StartOpen
         {
-            get => (bool)GetValue(StartOpenProperty);
-            set => SetValue(StartOpenProperty, value);
+            get => (bool)this.GetValue(StartOpenProperty);
+            set => this.SetValue(StartOpenProperty, value);
         }
         public static readonly DependencyProperty StartOpenProperty = DependencyProperty.Register(
             nameof(StartOpen),
@@ -188,8 +188,8 @@ namespace ModernThemables.Controls
 
         public bool ShowOpenIndicator
         {
-            get => (bool)GetValue(ShowOpenIndicatorProperty);
-            set => SetValue(ShowOpenIndicatorProperty, value);
+            get => (bool)this.GetValue(ShowOpenIndicatorProperty);
+            set => this.SetValue(ShowOpenIndicatorProperty, value);
         }
         public static readonly DependencyProperty ShowOpenIndicatorProperty = DependencyProperty.Register(
             nameof(ShowOpenIndicator),
@@ -199,8 +199,8 @@ namespace ModernThemables.Controls
 
         public bool IsSelected
         {
-            get => (bool)GetValue(IsSelectedProperty);
-            set => SetValue(IsSelectedProperty, value);
+            get => (bool)this.GetValue(IsSelectedProperty);
+            set => this.SetValue(IsSelectedProperty, value);
         }
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             nameof(IsSelected),
@@ -210,8 +210,8 @@ namespace ModernThemables.Controls
 
         public bool IsContainingMenuOpen
         {
-            get => (bool)GetValue(IsContainingMenuOpenProperty);
-            set => SetValue(IsContainingMenuOpenProperty, value);
+            get => (bool)this.GetValue(IsContainingMenuOpenProperty);
+            set => this.SetValue(IsContainingMenuOpenProperty, value);
         }
         public static readonly DependencyProperty IsContainingMenuOpenProperty = DependencyProperty.Register(
             nameof(IsContainingMenuOpen),
@@ -221,8 +221,8 @@ namespace ModernThemables.Controls
 
         public bool ReserveIconSpace
         {
-            get => (bool)GetValue(ReserveIconSpaceProperty);
-            set => SetValue(ReserveIconSpaceProperty, value);
+            get => (bool)this.GetValue(ReserveIconSpaceProperty);
+            set => this.SetValue(ReserveIconSpaceProperty, value);
         }
         public static readonly DependencyProperty ReserveIconSpaceProperty = DependencyProperty.Register(
             nameof(ReserveIconSpace),
@@ -232,8 +232,8 @@ namespace ModernThemables.Controls
 
         public IEnumerable<object> ChildItems
         {
-            get => (IEnumerable<object>)GetValue(ChildItemsProperty);
-            set => SetValue(ChildItemsProperty, value);
+            get => (IEnumerable<object>)this.GetValue(ChildItemsProperty);
+            set => this.SetValue(ChildItemsProperty, value);
         }
         public static readonly DependencyProperty ChildItemsProperty = DependencyProperty.Register(
             nameof(ChildItems),
@@ -243,8 +243,8 @@ namespace ModernThemables.Controls
 
         public bool CanAddChild
         {
-            get => (bool)GetValue(CanAddChildProperty);
-            set => SetValue(CanAddChildProperty, value);
+            get => (bool)this.GetValue(CanAddChildProperty);
+            set => this.SetValue(CanAddChildProperty, value);
         }
         public static readonly DependencyProperty CanAddChildProperty = DependencyProperty.Register(
             nameof(CanAddChild),
@@ -254,8 +254,8 @@ namespace ModernThemables.Controls
 
         public bool CanDelete
         {
-            get => (bool)GetValue(CanDeleteProperty);
-            set => SetValue(CanDeleteProperty, value);
+            get => (bool)this.GetValue(CanDeleteProperty);
+            set => this.SetValue(CanDeleteProperty, value);
         }
         public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(
             nameof(CanDelete),
@@ -265,8 +265,8 @@ namespace ModernThemables.Controls
 
         public bool CanOpen
         {
-            get => (bool)GetValue(CanOpenProperty);
-            set => SetValue(CanOpenProperty, value);
+            get => (bool)this.GetValue(CanOpenProperty);
+            set => this.SetValue(CanOpenProperty, value);
         }
         public static readonly DependencyProperty CanOpenProperty = DependencyProperty.Register(
             nameof(CanOpen),
@@ -276,8 +276,8 @@ namespace ModernThemables.Controls
 
         public ICommand AddChildCommand
         {
-            get => (ICommand)GetValue(AddChildCommandProperty);
-            set => SetValue(AddChildCommandProperty, value);
+            get => (ICommand)this.GetValue(AddChildCommandProperty);
+            set => this.SetValue(AddChildCommandProperty, value);
         }
         public static readonly DependencyProperty AddChildCommandProperty = DependencyProperty.Register(
             nameof(AddChildCommand),
@@ -287,8 +287,8 @@ namespace ModernThemables.Controls
 
         public ICommand DeleteCommand
         {
-            get => (ICommand)GetValue(DeleteCommandProperty);
-            set => SetValue(DeleteCommandProperty, value);
+            get => (ICommand)this.GetValue(DeleteCommandProperty);
+            set => this.SetValue(DeleteCommandProperty, value);
         }
         public static readonly DependencyProperty DeleteCommandProperty = DependencyProperty.Register(
             nameof(DeleteCommand),
@@ -298,8 +298,8 @@ namespace ModernThemables.Controls
 
         public ICommand SelectCommand
         {
-            get => (ICommand)GetValue(SelectCommandProperty);
-            set => SetValue(SelectCommandProperty, value);
+            get => (ICommand)this.GetValue(SelectCommandProperty);
+            set => this.SetValue(SelectCommandProperty, value);
         }
         public static readonly DependencyProperty SelectCommandProperty = DependencyProperty.Register(
             nameof(SelectCommand),
@@ -309,8 +309,8 @@ namespace ModernThemables.Controls
 
         internal ICommand InternalSelectCommand
         {
-            get => (ICommand)GetValue(InternalSelectCommandProperty);
-            set => SetValue(InternalSelectCommandProperty, value);
+            get => (ICommand)this.GetValue(InternalSelectCommandProperty);
+            set => this.SetValue(InternalSelectCommandProperty, value);
         }
         public static readonly DependencyProperty InternalSelectCommandProperty = DependencyProperty.Register(
             nameof(InternalSelectCommand),
@@ -329,15 +329,15 @@ namespace ModernThemables.Controls
 
         private void Select()
         {
-            if (ChildItems.Any() && CanOpen)
+            if (this.ChildItems.Any() && this.CanOpen)
             {
-                IsOpen = !IsOpen;
+                this.IsOpen = !this.IsOpen;
                 return;
             }
 
-            if (SelectCommand != null)
+            if (this.SelectCommand != null)
             {
-                SelectCommand.Execute(this);
+                this.SelectCommand.Execute(this);
             }
         }
     }

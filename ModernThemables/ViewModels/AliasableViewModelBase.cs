@@ -1,9 +1,9 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Windows.Input;
-
-namespace ModernThemables.ViewModels
+﻿namespace ModernThemables.ViewModels
 {
+    using CommunityToolkit.Mvvm.Input;
+    using System;
+    using System.Windows.Input;
+
     public class AliasableViewModelBase : AliasableViewModelBase<GenericViewModelBase>
 	{
 		public AliasableViewModelBase(string name, string alias, Func<GenericViewModelBase>? createChild = null) : base(name, alias, createChild) { }
@@ -13,24 +13,24 @@ namespace ModernThemables.ViewModels
 	{
 		private string? previousAlias;
 
-		public ICommand EditAliasCommand => new RelayCommand(EditAlias);
-		public ICommand AliasEditorKeyDownCommand => new RelayCommand<object>(NameEditorKeyDown);
+		public ICommand EditAliasCommand => new RelayCommand(this.EditAlias);
+		public ICommand AliasEditorKeyDownCommand => new RelayCommand<object>(this.NameEditorKeyDown);
 
 		private bool isEditingAlias;
 		public bool IsEditingAlias
 		{
-			get => isEditingAlias;
-			set => SetProperty(ref isEditingAlias, value);
+			get => this.isEditingAlias;
+			set => this.SetProperty(ref this.isEditingAlias, value);
 		}
 
 		private string? alias;
 		public string? Alias
 		{
-			get => alias;
-			set => SetProperty(ref alias, value);
+			get => this.alias;
+			set => this.SetProperty(ref this.alias, value);
 		}
 
-		public override string Name => string.IsNullOrWhiteSpace(Alias) ? base.Name : Alias;
+		public override string Name => string.IsNullOrWhiteSpace(this.Alias) ? base.Name : this.Alias;
 
 		public string OriginalName => base.Name;
 
@@ -38,19 +38,19 @@ namespace ModernThemables.ViewModels
 			string name, string alias, Func<TChild>? createChild = null)
 			: base(name, createChild)
 		{
-			Alias = alias;
+            this.Alias = alias;
 		}
 
 		protected virtual void OnCommitAliasUpdate()
 		{
-			OnPropertyChanged(nameof(Name));
+            this.OnPropertyChanged(nameof(this.Name));
 		}
 
 		private void EditAlias()
 		{
-			IsEditingAlias = !IsEditingAlias;
-			previousAlias = Alias;
-			if (IsEditingAlias) Alias = Name;
+            this.IsEditingAlias = !this.IsEditingAlias;
+            this.previousAlias = this.Alias;
+			if (this.IsEditingAlias) this.Alias = this.Name;
 		}
 
 		private void NameEditorKeyDown(object? args)
@@ -59,14 +59,14 @@ namespace ModernThemables.ViewModels
 			{
 				if (e.Key == Key.Escape)
 				{
-					Alias = previousAlias;
+                    this.Alias = this.previousAlias;
 				}
 				else
 				{
-					OnCommitAliasUpdate();
+                    this.OnCommitAliasUpdate();
 				}
 
-				IsEditingAlias = false;
+                this.IsEditingAlias = false;
 			}
 		}
 	}

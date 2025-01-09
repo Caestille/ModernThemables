@@ -1,15 +1,15 @@
-﻿using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
-
-namespace ModernThemables.Converters
+﻿namespace ModernThemables.Converters
 {
-	/// <summary>
-	/// Creates a geometry group which matches the size of an input but with rounded corners.
-	/// </summary>
-	public class RoundedGeometryGroupConverter : IMultiValueConverter
+    using System;
+    using System.Globalization;
+    using System.Windows;
+    using System.Windows.Data;
+    using System.Windows.Media;
+
+    /// <summary>
+    /// Creates a geometry group which matches the size of an input but with rounded corners.
+    /// </summary>
+    public class RoundedGeometryGroupConverter : IMultiValueConverter
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{

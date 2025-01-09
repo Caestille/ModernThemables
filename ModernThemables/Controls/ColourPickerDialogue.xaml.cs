@@ -1,21 +1,21 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	/// <summary>
-	/// Interaction logic for ColourPickerDialogue.xaml
-	/// </summary>
-	public partial class ColourPickerDialogue : Window2
+    using System;
+    using System.Windows;
+    using System.Windows.Media;
+
+    /// <summary>
+    /// Interaction logic for ColourPickerDialogue.xaml
+    /// </summary>
+    public partial class ColourPickerDialogue : Window2
 	{
 		private Color initialColour;
 		private readonly Action<Color>? colourChangedCallback;
 
 		public Color Colour
 		{
-			get => (Color)GetValue(ColourProperty);
-			set => SetValue(ColourProperty, value);
+			get => (Color)this.GetValue(ColourProperty);
+			set => this.SetValue(ColourProperty, value);
 		}
 		public static readonly DependencyProperty ColourProperty = DependencyProperty.Register(
 			nameof(Colour),
@@ -25,11 +25,11 @@ namespace ModernThemables.Controls
 
 		public ColourPickerDialogue(Color inputColour, Action<Color>? colourChangedCallback)
 		{
-			InitializeComponent();
-			initialColour = inputColour;
+            this.InitializeComponent();
+            this.initialColour = inputColour;
 			this.colourChangedCallback = colourChangedCallback;
 			this.ColourPickerControl.colourChangedCallback = colourChangedCallback;
-			Colour = inputColour;
+            this.Colour = inputColour;
 		}
 
 		private static void OnColourSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -42,14 +42,14 @@ namespace ModernThemables.Controls
 
 		private void OkButton_Click(object sender, RoutedEventArgs e)
 		{
-			Colour = ColourPickerControl.Colour;
-			DialogResult = true;
+            this.Colour = this.ColourPickerControl.Colour;
+            this.DialogResult = true;
 		}
 
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (colourChangedCallback != null) colourChangedCallback(initialColour);
-			DialogResult = false;
+			if (this.colourChangedCallback != null) this.colourChangedCallback(this.initialColour);
+            this.DialogResult = false;
 		}
 	}
 }

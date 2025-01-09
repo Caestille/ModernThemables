@@ -1,7 +1,7 @@
-﻿using ModernThemables.Charting.Interfaces;
-
-namespace ModernThemables.Charting.Models.BarChart
+﻿namespace ModernThemables.Charting.Models.BarChart
 {
+    using ModernThemables.Charting.Interfaces;
+
     public class LabelledBar : IChartEntity
     {
         /// <inheritdoc />
@@ -24,9 +24,9 @@ namespace ModernThemables.Charting.Models.BarChart
 
         public LabelledBar(double value, string label, int position)
         {
-            Name = label;
-            XValue = position;
-            YValue = value;
+            this.Name = label;
+            this.XValue = position;
+            this.YValue = value;
         }
 
         /// <inheritdoc />

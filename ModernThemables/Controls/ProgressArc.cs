@@ -1,16 +1,16 @@
-﻿using System;
-using System.Windows.Shapes;
-using System.Windows.Media;
-using System.Windows;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	public class ProgressArc : Shape
+    using System;
+    using System.Windows.Shapes;
+    using System.Windows.Media;
+    using System.Windows;
+
+    public class ProgressArc : Shape
 	{
 		public double Radius
         {
-            get => (double)GetValue(RadiusProperty);
-            set => SetValue(RadiusProperty, value);
+            get => (double)this.GetValue(RadiusProperty);
+            set => this.SetValue(RadiusProperty, value);
         }
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
 			nameof(Radius),
@@ -22,8 +22,8 @@ namespace ModernThemables.Controls
 
 		public bool IsIndeterminate
         {
-            get => (bool)GetValue(IsIndeterminateProperty);
-            set => SetValue(IsIndeterminateProperty, value);
+            get => (bool)this.GetValue(IsIndeterminateProperty);
+            set => this.SetValue(IsIndeterminateProperty, value);
         }
         public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
 			nameof(IsIndeterminate),
@@ -35,8 +35,8 @@ namespace ModernThemables.Controls
 
 		public bool RoundedEnd
         {
-            get => (bool)GetValue(RoundedEndProperty);
-            set => SetValue(RoundedEndProperty, value);
+            get => (bool)this.GetValue(RoundedEndProperty);
+            set => this.SetValue(RoundedEndProperty, value);
         }
         public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
 			nameof(RoundedEnd),
@@ -48,8 +48,8 @@ namespace ModernThemables.Controls
 
 		public double InnerRadiusFraction
         {
-            get => (double)GetValue(InnerRadiusProperty);
-            set => SetValue(InnerRadiusProperty, value);
+            get => (double)this.GetValue(InnerRadiusProperty);
+            set => this.SetValue(InnerRadiusProperty, value);
         }
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
 			nameof(InnerRadiusFraction),
@@ -61,8 +61,8 @@ namespace ModernThemables.Controls
 
 		public double RotationAngle
         {
-            get => (double)GetValue(RotationAngleProperty);
-            set => SetValue(RotationAngleProperty, value);
+            get => (double)this.GetValue(RotationAngleProperty);
+            set => this.SetValue(RotationAngleProperty, value);
         }
         public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
 			nameof(RotationAngle),
@@ -74,8 +74,8 @@ namespace ModernThemables.Controls
 
 		public double CentreX
         {
-            get => (double)GetValue(CentreXProperty);
-            set => SetValue(CentreXProperty, value);
+            get => (double)this.GetValue(CentreXProperty);
+            set => this.SetValue(CentreXProperty, value);
         }
         public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
 			nameof(CentreX),
@@ -87,8 +87,8 @@ namespace ModernThemables.Controls
 
 		public double CentreY
         {
-            get => (double)GetValue(CentreYProperty);
-            set => SetValue(CentreYProperty, value);
+            get => (double)this.GetValue(CentreYProperty);
+            set => this.SetValue(CentreYProperty, value);
         }
         public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
 			nameof(CentreY),
@@ -100,8 +100,8 @@ namespace ModernThemables.Controls
 
 		public double Percentage
         {
-            get => (double)GetValue(PercentageProperty);
-            set => SetValue(PercentageProperty, value);
+            get => (double)this.GetValue(PercentageProperty);
+            set => this.SetValue(PercentageProperty, value);
         }
         public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
 			nameof(Percentage),
@@ -120,7 +120,7 @@ namespace ModernThemables.Controls
 
 				using (StreamGeometryContext context = geometry.Open())
 				{
-					DrawGeometry(context);
+                    this.DrawGeometry(context);
 				}
 
 				// Freeze the geometry for performance benefits
@@ -132,44 +132,44 @@ namespace ModernThemables.Controls
 
 		private void DrawGeometry(StreamGeometryContext context)
 		{
-			if (Percentage == 100) Percentage = 99.9999;
+			if (this.Percentage == 100) this.Percentage = 99.9999;
 
-			var innerRadius = InnerRadiusFraction * Radius;
-			var endArcRadius = (Radius - innerRadius) / 2;
+			var innerRadius = this.InnerRadiusFraction * this.Radius;
+			var endArcRadius = (this.Radius - innerRadius) / 2;
 
-			var allowRound = (IsIndeterminate || (Percentage < 99.9999 && !IsIndeterminate)) && InnerRadiusFraction >= 0.4;
+			var allowRound = (this.IsIndeterminate || (this.Percentage < 99.9999 && !this.IsIndeterminate)) && this.InnerRadiusFraction >= 0.4;
 
 			// Prevents circular ends overlapping and drawing weirdly
 			// Not accurate as this is trig rather than circular arc but I cba, sozzles
-			var overlapArcAngle = allowRound ? Math.Atan(endArcRadius / (Radius - endArcRadius)) * 180 / Math.PI : 0;
+			var overlapArcAngle = allowRound ? Math.Atan(endArcRadius / (this.Radius - endArcRadius)) * 180 / Math.PI : 0;
 
-			Point innerArcStartPoint = ComputeCartesianCoordinate(RotationAngle + overlapArcAngle, innerRadius);
-			innerArcStartPoint.Offset(CentreX, CentreY);
+			Point innerArcStartPoint = this.ComputeCartesianCoordinate(this.RotationAngle + overlapArcAngle, innerRadius);
+			innerArcStartPoint.Offset(this.CentreX, this.CentreY);
 
-			Point innerArcEndPoint = ComputeCartesianCoordinate(RotationAngle + (Percentage * 360 / 100) - overlapArcAngle, innerRadius);
-			innerArcEndPoint.Offset(CentreX, CentreY);
+			Point innerArcEndPoint = this.ComputeCartesianCoordinate(this.RotationAngle + (this.Percentage * 360 / 100) - overlapArcAngle, innerRadius);
+			innerArcEndPoint.Offset(this.CentreX, this.CentreY);
 
-			Point outerArcStartPoint = ComputeCartesianCoordinate(RotationAngle + overlapArcAngle, Radius);
-			outerArcStartPoint.Offset(CentreX, CentreY);
+			Point outerArcStartPoint = this.ComputeCartesianCoordinate(this.RotationAngle + overlapArcAngle, this.Radius);
+			outerArcStartPoint.Offset(this.CentreX, this.CentreY);
 
-			Point outerArcEndPoint = ComputeCartesianCoordinate(RotationAngle + (Percentage * 360 / 100) - overlapArcAngle, Radius);
-			outerArcEndPoint.Offset(CentreX, CentreY);
+			Point outerArcEndPoint = this.ComputeCartesianCoordinate(this.RotationAngle + (this.Percentage * 360 / 100) - overlapArcAngle, this.Radius);
+			outerArcEndPoint.Offset(this.CentreX, this.CentreY);
 
-			bool largeArc = (Percentage * 360 / 100) - (allowRound ? 2 * overlapArcAngle : 0) > 180;
+			bool largeArc = (this.Percentage * 360 / 100) - (allowRound ? 2 * overlapArcAngle : 0) > 180;
 
-			Size outerArcSize = new Size(Radius, Radius);
+			Size outerArcSize = new Size(this.Radius, this.Radius);
 			Size innerArcSize = new Size(innerRadius, innerRadius);
 
 			Size startArcSize = new Size(endArcRadius, endArcRadius);
 			Size endArcSize = new Size(endArcRadius, endArcRadius);
 
 			context.BeginFigure(innerArcStartPoint, true, true);
-			if (RoundedEnd && allowRound)
+			if (this.RoundedEnd && allowRound)
 				context.ArcTo(outerArcStartPoint, startArcSize, 0, true, SweepDirection.Clockwise, true, true);
 			else
 				context.LineTo(outerArcStartPoint, true, true);
 			context.ArcTo(outerArcEndPoint, outerArcSize, 0, largeArc, SweepDirection.Clockwise, true, true);
-			if (RoundedEnd && allowRound)
+			if (this.RoundedEnd && allowRound)
 				context.ArcTo(innerArcEndPoint, endArcSize, 0, true, SweepDirection.Clockwise, true, true);
 			else
 				context.LineTo(innerArcEndPoint, true, true);

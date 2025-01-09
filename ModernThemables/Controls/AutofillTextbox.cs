@@ -1,14 +1,14 @@
-﻿using System.Windows.Controls;
-using System.Windows;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System;
-using System.Windows.Input;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	public class AutofillTextbox : TextBox
+    using System.Windows.Controls;
+    using System.Windows;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System;
+    using System.Windows.Input;
+    using System.Windows.Media;
+
+    public class AutofillTextbox : TextBox
 	{
 		public AutofillTextbox()
 		{
@@ -17,8 +17,8 @@ namespace ModernThemables.Controls
 
 		public ObservableCollection<string> AutofillOptions
 		{
-			get => (ObservableCollection<string>)GetValue(AutofillOptionsProperty);
-			set => SetValue(AutofillOptionsProperty, value);
+			get => (ObservableCollection<string>)this.GetValue(AutofillOptionsProperty);
+			set => this.SetValue(AutofillOptionsProperty, value);
 		}
 
 		public static readonly DependencyProperty AutofillOptionsProperty = DependencyProperty.Register(
@@ -29,8 +29,8 @@ namespace ModernThemables.Controls
 
 		public string SuggestionText
 		{
-			get => (string)GetValue(SuggestionTextProperty);
-			set => SetValue(SuggestionTextProperty, value);
+			get => (string)this.GetValue(SuggestionTextProperty);
+			set => this.SetValue(SuggestionTextProperty, value);
 		}
 
 		public static readonly DependencyProperty SuggestionTextProperty = DependencyProperty.Register(
@@ -41,8 +41,8 @@ namespace ModernThemables.Controls
 
         public CornerRadius CornerRadius
         {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
+            get => (CornerRadius)this.GetValue(CornerRadiusProperty);
+            set => this.SetValue(CornerRadiusProperty, value);
         }
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             nameof(CornerRadius),
@@ -52,8 +52,8 @@ namespace ModernThemables.Controls
 
         public Brush WatermarkForeground
         {
-            get => (Brush)GetValue(WatermarkForegroundProperty);
-            set => SetValue(WatermarkForegroundProperty, value);
+            get => (Brush)this.GetValue(WatermarkForegroundProperty);
+            set => this.SetValue(WatermarkForegroundProperty, value);
         }
         public static readonly DependencyProperty WatermarkForegroundProperty = DependencyProperty.Register(
             nameof(WatermarkForeground),
@@ -62,31 +62,31 @@ namespace ModernThemables.Controls
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
-			if (e.Key == Key.Tab && !string.IsNullOrWhiteSpace(SuggestionText))
+			if (e.Key == Key.Tab && !string.IsNullOrWhiteSpace(this.SuggestionText))
 			{
-				Text = SuggestionText;
-				SelectionStart = Text.Length;
-				SelectionLength = 0;
-				SuggestionText = string.Empty;
+                this.Text = this.SuggestionText;
+                this.SelectionStart = this.Text.Length;
+                this.SelectionLength = 0;
+                this.SuggestionText = string.Empty;
 				e.Handled = true;
 			}
 			else if (e.Key == Key.Escape)
 			{
-				SuggestionText = string.Empty;
+                this.SuggestionText = string.Empty;
 				e.Handled = true;
 			}
-			else if (e.Key == Key.Up && AutofillOptions.Contains(SuggestionText))
+			else if (e.Key == Key.Up && this.AutofillOptions.Contains(this.SuggestionText))
 			{
-				var index = AutofillOptions.IndexOf(SuggestionText) - 1;
-				if (index == -1) index = AutofillOptions.Count - 1;
-				SuggestionText = AutofillOptions[index];
+				var index = this.AutofillOptions.IndexOf(this.SuggestionText) - 1;
+				if (index == -1) index = this.AutofillOptions.Count - 1;
+                this.SuggestionText = this.AutofillOptions[index];
                 e.Handled = true;
 			}
-			else if (e.Key == Key.Down && AutofillOptions.Contains(SuggestionText))
+			else if (e.Key == Key.Down && this.AutofillOptions.Contains(this.SuggestionText))
             {
-                var index = AutofillOptions.IndexOf(SuggestionText) + 1;
-                if (index == AutofillOptions.Count) index = 0;
-                SuggestionText = AutofillOptions[index];
+                var index = this.AutofillOptions.IndexOf(this.SuggestionText) + 1;
+                if (index == this.AutofillOptions.Count) index = 0;
+                this.SuggestionText = this.AutofillOptions[index];
                 e.Handled = true;
             }
             base.OnPreviewKeyDown(e);
@@ -96,12 +96,12 @@ namespace ModernThemables.Controls
 		{
 			base.OnTextChanged(e);
 
-			if (AutofillOptions == null || !AutofillOptions.Any())
+			if (this.AutofillOptions == null || !this.AutofillOptions.Any())
 			{
 				return;
 			}
 
-			SuggestionText = string.IsNullOrWhiteSpace(Text) ? string.Empty : AutofillOptions.FirstOrDefault(x => x.StartsWith(Text, StringComparison.OrdinalIgnoreCase)) ?? string.Empty;
+            this.SuggestionText = string.IsNullOrWhiteSpace(this.Text) ? string.Empty : this.AutofillOptions.FirstOrDefault(x => x.StartsWith(this.Text, StringComparison.OrdinalIgnoreCase)) ?? string.Empty;
 		}
 
 		public override void OnApplyTemplate()

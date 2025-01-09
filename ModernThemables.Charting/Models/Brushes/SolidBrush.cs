@@ -1,9 +1,9 @@
-﻿using ModernThemables.Charting.Interfaces;
-using System.Windows;
-using System.Windows.Media;
-
-namespace ModernThemables.Charting.Models.Brushes
+﻿namespace ModernThemables.Charting.Models.Brushes
 {
+    using ModernThemables.Charting.Interfaces;
+    using System.Windows;
+    using System.Windows.Media;
+
     /// <summary>
     /// A brush with a single color.
     /// </summary>
@@ -22,7 +22,7 @@ namespace ModernThemables.Charting.Models.Brushes
         public SolidBrush(Color colour)
         {
             this.colour = colour;
-            Application.Current.Dispatcher.Invoke(() => { CoreBrush = new SolidColorBrush(colour); });
+            Application.Current.Dispatcher.Invoke(() => { this.CoreBrush = new SolidColorBrush(colour); });
         }
 
         /// <inheritdoc />
@@ -31,7 +31,7 @@ namespace ModernThemables.Charting.Models.Brushes
         /// <inheritdoc />
         public Color ColourAtPoint(double x, double y)
         {
-            return colour;
+            return this.colour;
         }
     }
 }

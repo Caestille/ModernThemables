@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using ModernThemables.Charting.Interfaces;
-
-namespace ModernThemables.Charting.ViewModels.PieChart
+﻿namespace ModernThemables.Charting.ViewModels.PieChart
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using ModernThemables.Charting.Interfaces;
+
     /// <summary>
     /// An internal representation of a chart point for rendering the actual series with.
     /// </summary>
@@ -14,8 +14,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public string? Name
         {
-            get => name;
-            set => SetProperty(ref name, value);
+            get => this.name;
+            set => this.SetProperty(ref this.name, value);
         }
 
         private double percent;
@@ -24,8 +24,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public double Percent
         {
-            get => percent;
-            set => SetProperty(ref percent, value);
+            get => this.percent;
+            set => this.SetProperty(ref this.percent, value);
         }
 
         private double val;
@@ -34,8 +34,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public double Value
         {
-            get => val;
-            set => SetProperty(ref val, value);
+            get => this.val;
+            set => this.SetProperty(ref this.val, value);
         }
 
         private double startAngle;
@@ -44,8 +44,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public double StartAngle
         {
-            get => startAngle;
-            set => SetProperty(ref startAngle, value);
+            get => this.startAngle;
+            set => this.SetProperty(ref this.startAngle, value);
         }
 
         private IChartBrush? stroke;
@@ -54,8 +54,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public IChartBrush? Stroke
         {
-            get => stroke;
-            set => SetProperty(ref stroke, value);
+            get => this.stroke;
+            set => this.SetProperty(ref this.stroke, value);
         }
 
         private IChartBrush? fill;
@@ -64,8 +64,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public IChartBrush? Fill
         {
-            get => fill;
-            set => SetProperty(ref fill, value);
+            get => this.fill;
+            set => this.SetProperty(ref this.fill, value);
         }
 
         private Guid identifier;
@@ -74,8 +74,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public Guid Identifier
         {
-            get => identifier;
-            set => SetProperty(ref identifier, value);
+            get => this.identifier;
+            set => this.SetProperty(ref this.identifier, value);
         }
 
         private bool resizeTrigger;
@@ -85,8 +85,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public bool ResizeTrigger
         {
-            get => resizeTrigger;
-            set => SetProperty(ref resizeTrigger, value);
+            get => this.resizeTrigger;
+            set => this.SetProperty(ref this.resizeTrigger, value);
         }
 
         private bool isMouseOver;
@@ -95,8 +95,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public bool IsMouseOver
         {
-            get => isMouseOver;
-            set => SetProperty(ref isMouseOver, value);
+            get => this.isMouseOver;
+            set => this.SetProperty(ref this.isMouseOver, value);
         }
 
         /// <summary>
@@ -110,13 +110,13 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// <param name="fill">The wedge fill.</param>
         public InternalPieWedgeViewModel(string name, Guid identifier, double percent, double value, double startAngle, IChartBrush? stroke, IChartBrush? fill)
         {
-            Name = name;
-            Identifier = identifier;
-            Percent = percent;
-            Value = value;
-            StartAngle = startAngle;
-            Stroke = stroke;
-            Fill = fill;
+            this.Name = name;
+            this.Identifier = identifier;
+            this.Percent = percent;
+            this.Value = value;
+            this.StartAngle = startAngle;
+            this.Stroke = stroke;
+            this.Fill = fill;
         }
     }
 }

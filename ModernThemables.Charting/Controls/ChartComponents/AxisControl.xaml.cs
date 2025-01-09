@@ -1,13 +1,13 @@
-﻿using ModernThemables.Charting.Models;
-using System.Windows;
-using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using ModernThemables.Charting.Services;
-using System.Windows.Input;
-using CoreUtilities.Converters;
-
-namespace ModernThemables.Charting.Controls.ChartComponents
+﻿namespace ModernThemables.Charting.Controls.ChartComponents
 {
+    using ModernThemables.Charting.Models;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Collections.ObjectModel;
+    using ModernThemables.Charting.Services;
+    using System.Windows.Input;
+    using CoreUtilities.Converters;
+
     /// <summary>
     /// Interaction logic for AxisControl.xaml
     /// </summary>
@@ -15,8 +15,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 	{
 		public Orientation Orientation
 		{
-			get => (Orientation)GetValue(OrientationProperty);
-			set => SetValue(OrientationProperty, value);
+			get => (Orientation)this.GetValue(OrientationProperty);
+			set => this.SetValue(OrientationProperty, value);
 		}
 		public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
 			"Orientation",
@@ -26,8 +26,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double LabelRotation
 		{
-			get => (double)GetValue(LabelRotationProperty);
-			set => SetValue(LabelRotationProperty, value);
+			get => (double)this.GetValue(LabelRotationProperty);
+			set => this.SetValue(LabelRotationProperty, value);
 		}
 		public static readonly DependencyProperty LabelRotationProperty = DependencyProperty.Register(
 			"LabelRotation",
@@ -37,8 +37,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool ShowDividers
 		{
-			get => (bool)GetValue(ShowDividersProperty);
-			set => SetValue(ShowDividersProperty, value);
+			get => (bool)this.GetValue(ShowDividersProperty);
+			set => this.SetValue(ShowDividersProperty, value);
 		}
 		public static readonly DependencyProperty ShowDividersProperty = DependencyProperty.Register(
 			"ShowDividers",
@@ -48,8 +48,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool ShowIndicators
 		{
-			get => (bool)GetValue(ShowIndicatorsProperty);
-			set => SetValue(ShowIndicatorsProperty, value);
+			get => (bool)this.GetValue(ShowIndicatorsProperty);
+			set => this.SetValue(ShowIndicatorsProperty, value);
 		}
 		public static readonly DependencyProperty ShowIndicatorsProperty = DependencyProperty.Register(
 			"ShowIndicators",
@@ -64,8 +64,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private double DividerWidth
 		{
-			get => (double)GetValue(DividerWidthtProperty);
-			set => SetValue(DividerWidthtProperty, value);
+			get => (double)this.GetValue(DividerWidthtProperty);
+			set => this.SetValue(DividerWidthtProperty, value);
 		}
 		public static readonly DependencyProperty DividerWidthtProperty = DependencyProperty.Register(
 			"DividerWidth",
@@ -75,8 +75,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private double DividerHeight
 		{
-			get => (double)GetValue(DividerHeightProperty);
-			set => SetValue(DividerHeightProperty, value);
+			get => (double)this.GetValue(DividerHeightProperty);
+			set => this.SetValue(DividerHeightProperty, value);
 		}
 		public static readonly DependencyProperty DividerHeightProperty = DependencyProperty.Register(
 			"DividerHeight",
@@ -86,8 +86,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double DividerOffset
 		{
-			get => (double)GetValue(DividerOffsetProperty);
-			set => SetValue(DividerOffsetProperty, value);
+			get => (double)this.GetValue(DividerOffsetProperty);
+			set => this.SetValue(DividerOffsetProperty, value);
 		}
 		public static readonly DependencyProperty DividerOffsetProperty = DependencyProperty.Register(
 			"DividerOffset",
@@ -102,8 +102,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private Thickness DividerBorderThickness
 		{
-			get => (Thickness)GetValue(DividerBorderThicknessProperty);
-			set => SetValue(DividerBorderThicknessProperty, value);
+			get => (Thickness)this.GetValue(DividerBorderThicknessProperty);
+			set => this.SetValue(DividerBorderThicknessProperty, value);
 		}
 		public static readonly DependencyProperty DividerBorderThicknessProperty = DependencyProperty.Register(
 			"DividerBorderThickness",
@@ -113,8 +113,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private string MarginString
 		{
-			get => (string)GetValue(MarginStringProperty);
-			set => SetValue(MarginStringProperty, value);
+			get => (string)this.GetValue(MarginStringProperty);
+			set => this.SetValue(MarginStringProperty, value);
 		}
 		public static readonly DependencyProperty MarginStringProperty = DependencyProperty.Register(
 			"MarginString",
@@ -124,8 +124,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private HorizontalAlignment DividerAlignment
 		{
-			get => (HorizontalAlignment)GetValue(DividerAlignmentProperty);
-			set => SetValue(DividerAlignmentProperty, value);
+			get => (HorizontalAlignment)this.GetValue(DividerAlignmentProperty);
+			set => this.SetValue(DividerAlignmentProperty, value);
 		}
 		public static readonly DependencyProperty DividerAlignmentProperty = DependencyProperty.Register(
 			"DividerAlignment",
@@ -135,8 +135,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private VerticalAlignment Alignment
 		{
-			get => (VerticalAlignment)GetValue(AlignmentProperty);
-			set => SetValue(AlignmentProperty, value);
+			get => (VerticalAlignment)this.GetValue(AlignmentProperty);
+			set => this.SetValue(AlignmentProperty, value);
 		}
 		public static readonly DependencyProperty AlignmentProperty = DependencyProperty.Register(
 			"Alignment",
@@ -146,8 +146,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public ObservableCollection<AxisLabel> Labels
 		{
-			get => (ObservableCollection<AxisLabel>)GetValue(LabelsProperty);
-			set => SetValue(LabelsProperty, value);
+			get => (ObservableCollection<AxisLabel>)this.GetValue(LabelsProperty);
+			set => this.SetValue(LabelsProperty, value);
 		}
 		public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
 			"Labels",
@@ -157,8 +157,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public MouseCoordinator Coordinator
 		{
-			get => (MouseCoordinator)GetValue(MouseCoordinatorProperty);
-			set => SetValue(MouseCoordinatorProperty, value);
+			get => (MouseCoordinator)this.GetValue(MouseCoordinatorProperty);
+			set => this.SetValue(MouseCoordinatorProperty, value);
 		}
 		public static readonly DependencyProperty MouseCoordinatorProperty = DependencyProperty.Register(
 			"MouseCoordinator",
@@ -168,18 +168,18 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public AxisControl()
 		{
-			InitializeComponent();
-			MainItemsControl.SizeChanged += MainItemsControl_SizeChanged;
-			Loaded += AxisControl_Loaded;
+            this.InitializeComponent();
+            this.MainItemsControl.SizeChanged += this.MainItemsControl_SizeChanged;
+			Loaded += this.AxisControl_Loaded;
 		}
 
 		private void AxisControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
 			{
-				Coordinator = coordinator;
+                this.Coordinator = coordinator;
 			}
-			Loaded -= AxisControl_Loaded;
+			Loaded -= this.AxisControl_Loaded;
 		}
 
 		private void MainItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -262,16 +262,16 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args) e)
 		{
-			if (!ShowIndicators) return;
+			if (!this.ShowIndicators) return;
 
-			var mouseLoc = e.args.GetPosition(Coordinator);
-			var axisLength = Orientation == Orientation.Horizontal ? Grid.ActualWidth : Grid.ActualHeight;
-			var axisFrac = Orientation == Orientation.Horizontal
+			var mouseLoc = e.args.GetPosition(this.Coordinator);
+			var axisLength = this.Orientation == Orientation.Horizontal ? this.Grid.ActualWidth : this.Grid.ActualHeight;
+			var axisFrac = this.Orientation == Orientation.Horizontal
 				? mouseLoc.X / axisLength
 				: 1 - (mouseLoc.Y / axisLength);
-			AxisLabel? labelMin = Labels.FirstOrDefault(x => x.Location == Labels.Min(y => y.Location));
+			AxisLabel? labelMin = this.Labels.FirstOrDefault(x => x.Location == this.Labels.Min(y => y.Location));
 			var minFrac = (labelMin?.Location ?? 0) / axisLength;
-			AxisLabel? labelMax = Labels.FirstOrDefault(x => x.Location == Labels.Max(y => y.Location));
+			AxisLabel? labelMax = this.Labels.FirstOrDefault(x => x.Location == this.Labels.Max(y => y.Location));
 			var maxFrac = (labelMax?.Location ?? 0) / axisLength;
 			var fullRange = (labelMax?.Value - labelMin?.Value) / (maxFrac - minFrac);
 
@@ -282,20 +282,20 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 			var value = min + axisFrac * (max - min);
 
-			ValueLabel.Text = (Labels.First().IndicatorFormatter ?? Labels.First().ValueFormatter)(value ?? 0);
-			ValueDisplay.Margin = Orientation == Orientation.Horizontal
-				? new Thickness(axisFrac * Grid.ActualWidth - (ValueDisplay.ActualWidth / 2), 4, -100, -100)
-				: new Thickness(-5, (1 - axisFrac) * Grid.ActualHeight - 9, -100, 0);
+            this.ValueLabel.Text = (this.Labels.First().IndicatorFormatter ?? this.Labels.First().ValueFormatter)(value ?? 0);
+            this.ValueDisplay.Margin = this.Orientation == Orientation.Horizontal
+				? new Thickness(axisFrac * this.Grid.ActualWidth - (this.ValueDisplay.ActualWidth / 2), 4, -100, -100)
+				: new Thickness(-5, (1 - axisFrac) * this.Grid.ActualHeight - 9, -100, 0);
 		}
 
 		private void Coordinator_MouseLeave(object sender, MouseEventArgs e)
 		{
-			if (ValueDisplay.Visibility == Visibility.Visible) ValueDisplay.Visibility = Visibility.Collapsed;
+			if (this.ValueDisplay.Visibility == Visibility.Visible) this.ValueDisplay.Visibility = Visibility.Collapsed;
 		}
 
 		private void Coordinator_MouseEnter(object sender, MouseEventArgs e)
 		{
-			if (ShowIndicators && ValueDisplay.Visibility == Visibility.Collapsed) ValueDisplay.Visibility = Visibility.Visible;
+			if (this.ShowIndicators && this.ValueDisplay.Visibility == Visibility.Collapsed) this.ValueDisplay.Visibility = Visibility.Visible;
 		}
 	}
 }

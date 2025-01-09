@@ -1,15 +1,15 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	public partial class CircularProgressBar : UserControl
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+
+    public partial class CircularProgressBar : UserControl
 	{
 		public double Percentage
 		{
-			get => (double)GetValue(PercentageProperty);
-			set => SetValue(PercentageProperty, value);
+			get => (double)this.GetValue(PercentageProperty);
+			set => this.SetValue(PercentageProperty, value);
 		}
 
 		public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
@@ -19,8 +19,8 @@ namespace ModernThemables.Controls
 			new PropertyMetadata(0d, OnSetPercentage));
 		public double StrokeWidthFraction
 		{
-			get => (double)GetValue(StrokeWidthFractionProperty);
-			set => SetValue(StrokeWidthFractionProperty, value);
+			get => (double)this.GetValue(StrokeWidthFractionProperty);
+			set => this.SetValue(StrokeWidthFractionProperty, value);
 		}
 
 		public static readonly DependencyProperty StrokeWidthFractionProperty = DependencyProperty.Register(
@@ -31,8 +31,8 @@ namespace ModernThemables.Controls
 
 		public bool RoundedEnd
         {
-            get => (bool)GetValue(RoundedEndProperty);
-            set => SetValue(RoundedEndProperty, value);
+            get => (bool)this.GetValue(RoundedEndProperty);
+            set => this.SetValue(RoundedEndProperty, value);
         }
         public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
 			nameof(RoundedEnd),
@@ -44,8 +44,8 @@ namespace ModernThemables.Controls
 
 		public bool IsIndeterminate
 		{
-			get => (bool)GetValue(IsIndeterminateProperty);
-			set => SetValue(IsIndeterminateProperty, value);
+			get => (bool)this.GetValue(IsIndeterminateProperty);
+			set => this.SetValue(IsIndeterminateProperty, value);
 		}
 
 		public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
@@ -56,7 +56,7 @@ namespace ModernThemables.Controls
 
 		public CircularProgressBar()
 		{
-			InitializeComponent();
+            this.InitializeComponent();
 		}
 
 		private static void OnSetPercentage(DependencyObject sender, DependencyPropertyChangedEventArgs e)

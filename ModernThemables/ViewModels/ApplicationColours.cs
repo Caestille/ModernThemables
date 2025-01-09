@@ -1,9 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows.Media;
-
-namespace ModernThemables.ViewModels
+﻿namespace ModernThemables.ViewModels
 {
-	public partial class ThemingControlViewModel : ObservableObject
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using System.Windows.Media;
+
+    public partial class ThemingControlViewModel : ObservableObject
     {
         private static readonly Color PrimaryBackgroundColourLight = MonoColour(255);
 		private static readonly Color PrimaryBackgroundColourDark = MonoColour(10);

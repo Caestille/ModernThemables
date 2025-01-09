@@ -1,15 +1,15 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	public class Slider2 : Slider
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+
+    public class Slider2 : Slider
     {
         public Brush ThumbBrush
         {
-            get => (Brush)GetValue(ThumbBrushProperty);
-            set => SetValue(ThumbBrushProperty, value);
+            get => (Brush)this.GetValue(ThumbBrushProperty);
+            set => this.SetValue(ThumbBrushProperty, value);
         }
         public static readonly DependencyProperty ThumbBrushProperty = DependencyProperty.Register(
             nameof(ThumbBrush),
@@ -19,8 +19,8 @@ namespace ModernThemables.Controls
 
         public Brush ThumbMouseOverBrush
         {
-            get => (Brush)GetValue(ThumbMouseOverBrushProperty);
-            set => SetValue(ThumbMouseOverBrushProperty, value);
+            get => (Brush)this.GetValue(ThumbMouseOverBrushProperty);
+            set => this.SetValue(ThumbMouseOverBrushProperty, value);
         }
         public static readonly DependencyProperty ThumbMouseOverBrushProperty = DependencyProperty.Register(
             nameof(ThumbMouseOverBrush),
@@ -30,8 +30,8 @@ namespace ModernThemables.Controls
 
         public Brush ThumbMouseDownBrush
         {
-            get => (Brush)GetValue(ThumbMouseDownBrushProperty);
-            set => SetValue(ThumbMouseDownBrushProperty, value);
+            get => (Brush)this.GetValue(ThumbMouseDownBrushProperty);
+            set => this.SetValue(ThumbMouseDownBrushProperty, value);
         }
         public static readonly DependencyProperty ThumbMouseDownBrushProperty = DependencyProperty.Register(
             nameof(ThumbMouseDownBrush),
@@ -41,8 +41,8 @@ namespace ModernThemables.Controls
 
         public Brush ThumbBorderBrush
         {
-            get => (Brush)GetValue(ThumbBorderBrushProperty);
-            set => SetValue(ThumbBorderBrushProperty, value);
+            get => (Brush)this.GetValue(ThumbBorderBrushProperty);
+            set => this.SetValue(ThumbBorderBrushProperty, value);
         }
         public static readonly DependencyProperty ThumbBorderBrushProperty = DependencyProperty.Register(
             nameof(ThumbBorderBrush),
@@ -52,8 +52,8 @@ namespace ModernThemables.Controls
 
         public int ThumbBorderThickness
         {
-            get => (int)GetValue(ThumbBorderThicknessProperty);
-            set => SetValue(ThumbBorderThicknessProperty, value);
+            get => (int)this.GetValue(ThumbBorderThicknessProperty);
+            set => this.SetValue(ThumbBorderThicknessProperty, value);
         }
         public static readonly DependencyProperty ThumbBorderThicknessProperty = DependencyProperty.Register(
             nameof(ThumbBorderThickness),
@@ -63,8 +63,8 @@ namespace ModernThemables.Controls
 
         public Brush ActiveBarBrush
         {
-            get => (Brush)GetValue(ActiveBarBrushProperty);
-            set => SetValue(ActiveBarBrushProperty, value);
+            get => (Brush)this.GetValue(ActiveBarBrushProperty);
+            set => this.SetValue(ActiveBarBrushProperty, value);
         }
         public static readonly DependencyProperty ActiveBarBrushProperty = DependencyProperty.Register(
             nameof(ActiveBarBrush),
@@ -74,8 +74,8 @@ namespace ModernThemables.Controls
 
         public Brush InactiveBarBrush
         {
-            get => (Brush)GetValue(InactiveBarBrushProperty);
-            set => SetValue(InactiveBarBrushProperty, value);
+            get => (Brush)this.GetValue(InactiveBarBrushProperty);
+            set => this.SetValue(InactiveBarBrushProperty, value);
         }
         public static readonly DependencyProperty InactiveBarBrushProperty = DependencyProperty.Register(
             nameof(InactiveBarBrush),
@@ -85,8 +85,8 @@ namespace ModernThemables.Controls
 
         public CornerRadius ThumbCornerRadius
         {
-            get => (CornerRadius)GetValue(ThumbCornerRadiusProperty);
-            set => SetValue(ThumbCornerRadiusProperty, value);
+            get => (CornerRadius)this.GetValue(ThumbCornerRadiusProperty);
+            set => this.SetValue(ThumbCornerRadiusProperty, value);
         }
         public static readonly DependencyProperty ThumbCornerRadiusProperty = DependencyProperty.Register(
             nameof(ThumbCornerRadius),
@@ -96,8 +96,8 @@ namespace ModernThemables.Controls
 
         public CornerRadius BarCornerRadius
         {
-            get => (CornerRadius)GetValue(BarCornerRadiusProperty);
-            set => SetValue(BarCornerRadiusProperty, value);
+            get => (CornerRadius)this.GetValue(BarCornerRadiusProperty);
+            set => this.SetValue(BarCornerRadiusProperty, value);
         }
         public static readonly DependencyProperty BarCornerRadiusProperty = DependencyProperty.Register(
             nameof(BarCornerRadius),

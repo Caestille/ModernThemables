@@ -1,19 +1,19 @@
-﻿using ModernThemables.Charting.ViewModels;
-using System.Collections.ObjectModel;
-using System.Windows;
-using ModernThemables.Charting.Models;
-using ModernThemables.Charting.Interfaces;
-
-namespace ModernThemables.Charting.Controls
+﻿namespace ModernThemables.Charting.Controls
 {
+    using ModernThemables.Charting.ViewModels;
+    using System.Collections.ObjectModel;
+    using System.Windows;
+    using ModernThemables.Charting.Models;
+    using ModernThemables.Charting.Interfaces;
+
     public partial class BarChart // .DependencyProperties
 	{
 		#region Public properties
 
 		public ObservableCollection<ISeries> Series
 		{
-			get => (ObservableCollection<ISeries>)GetValue(SeriesProperty);
-			set => SetValue(SeriesProperty, value);
+			get => (ObservableCollection<ISeries>)this.GetValue(SeriesProperty);
+			set => this.SetValue(SeriesProperty, value);
 		}
 		public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
 			"Series",
@@ -23,8 +23,8 @@ namespace ModernThemables.Charting.Controls
 
 		public Func<object, string> YAxisFormatter
 		{
-			get => (Func<object, string>)GetValue(YAxisFormatterProperty);
-			set => SetValue(YAxisFormatterProperty, value);
+			get => (Func<object, string>)this.GetValue(YAxisFormatterProperty);
+			set => this.SetValue(YAxisFormatterProperty, value);
 		}
 		public static readonly DependencyProperty YAxisFormatterProperty = DependencyProperty.Register(
 			"YAxisFormatter",
@@ -34,8 +34,8 @@ namespace ModernThemables.Charting.Controls
 
 		public Func<object, bool> YAxisLabelIdentifier
 		{
-			get => (Func<object, bool>)GetValue(YAxisLabelIdentifierProperty);
-			set => SetValue(YAxisLabelIdentifierProperty, value);
+			get => (Func<object, bool>)this.GetValue(YAxisLabelIdentifierProperty);
+			set => this.SetValue(YAxisLabelIdentifierProperty, value);
 		}
 		public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
 			"YAxisLabelIdentifier",
@@ -45,8 +45,8 @@ namespace ModernThemables.Charting.Controls
 
 		public bool ShowXSeparatorLines
 		{
-			get => (bool)GetValue(ShowXSeparatorLinesProperty);
-			set => SetValue(ShowXSeparatorLinesProperty, value);
+			get => (bool)this.GetValue(ShowXSeparatorLinesProperty);
+			set => this.SetValue(ShowXSeparatorLinesProperty, value);
 		}
 		public static readonly DependencyProperty ShowXSeparatorLinesProperty = DependencyProperty.Register(
 			"ShowXSeparatorLines",
@@ -56,8 +56,8 @@ namespace ModernThemables.Charting.Controls
 
 		public bool ShowYSeparatorLines
 		{
-			get => (bool)GetValue(ShowYSeparatorLinesProperty);
-			set => SetValue(ShowYSeparatorLinesProperty, value);
+			get => (bool)this.GetValue(ShowYSeparatorLinesProperty);
+			set => this.SetValue(ShowYSeparatorLinesProperty, value);
 		}
 		public static readonly DependencyProperty ShowYSeparatorLinesProperty = DependencyProperty.Register(
 			"ShowYSeparatorLines",
@@ -67,8 +67,8 @@ namespace ModernThemables.Charting.Controls
 
 		public DataTemplate TooltipTemplate
 		{
-			get => (DataTemplate)GetValue(TooltipTemplateProperty);
-			set => SetValue(TooltipTemplateProperty, value);
+			get => (DataTemplate)this.GetValue(TooltipTemplateProperty);
+			set => this.SetValue(TooltipTemplateProperty, value);
 		}
 		public static readonly DependencyProperty TooltipTemplateProperty = DependencyProperty.Register(
 			"TooltipTemplate",
@@ -78,8 +78,8 @@ namespace ModernThemables.Charting.Controls
 
 		public DataTemplate LegendTemplate
 		{
-			get => (DataTemplate)GetValue(LegendTemplateProperty);
-			set => SetValue(LegendTemplateProperty, value);
+			get => (DataTemplate)this.GetValue(LegendTemplateProperty);
+			set => this.SetValue(LegendTemplateProperty, value);
 		}
 		public static readonly DependencyProperty LegendTemplateProperty = DependencyProperty.Register(
 			"LegendTemplate",
@@ -89,8 +89,8 @@ namespace ModernThemables.Charting.Controls
 
 		public LegendLocation LegendLocation
 		{
-			get => (LegendLocation)GetValue(LegendLocationProperty);
-			set => SetValue(LegendLocationProperty, value);
+			get => (LegendLocation)this.GetValue(LegendLocationProperty);
+			set => this.SetValue(LegendLocationProperty, value);
 		}
 		public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
 			"LegendLocation",
@@ -100,8 +100,8 @@ namespace ModernThemables.Charting.Controls
 
 		public TooltipLocation TooltipLocation
 		{
-			get => (TooltipLocation)GetValue(TooltipLocationProperty);
-			set => SetValue(TooltipLocationProperty, value);
+			get => (TooltipLocation)this.GetValue(TooltipLocationProperty);
+			set => this.SetValue(TooltipLocationProperty, value);
 		}
 		public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
 			"TooltipLocation",
@@ -111,8 +111,8 @@ namespace ModernThemables.Charting.Controls
 
 		public double TooltipOpacity
 		{
-			get => (double)GetValue(TooltipOpacityProperty);
-			set => SetValue(TooltipOpacityProperty, value);
+			get => (double)this.GetValue(TooltipOpacityProperty);
+			set => this.SetValue(TooltipOpacityProperty, value);
 		}
 		public static readonly DependencyProperty TooltipOpacityProperty = DependencyProperty.Register(
 			"TooltipOpacity",
@@ -122,8 +122,8 @@ namespace ModernThemables.Charting.Controls
 
 		public double BarCornerRadiusFraction
 		{
-			get => (double)GetValue(BarCornerRadiusFractionProperty);
-			set => SetValue(BarCornerRadiusFractionProperty, value);
+			get => (double)this.GetValue(BarCornerRadiusFractionProperty);
+			set => this.SetValue(BarCornerRadiusFractionProperty, value);
 		}
 		public static readonly DependencyProperty BarCornerRadiusFractionProperty = DependencyProperty.Register(
 			"BarCornerRadiusFraction",
@@ -133,8 +133,8 @@ namespace ModernThemables.Charting.Controls
 
 		public double BarGroupSeparationPixels
 		{
-			get => (double)GetValue(BarGroupSeparationPixelsProperty);
-			set => SetValue(BarGroupSeparationPixelsProperty, value);
+			get => (double)this.GetValue(BarGroupSeparationPixelsProperty);
+			set => this.SetValue(BarGroupSeparationPixelsProperty, value);
 		}
 		public static readonly DependencyProperty BarGroupSeparationPixelsProperty = DependencyProperty.Register(
 			"BarGroupSeparationPixels",
@@ -144,8 +144,8 @@ namespace ModernThemables.Charting.Controls
 
 		public double BarSeparationPixels
 		{
-			get => (double)GetValue(BarSeparationPixelsProperty);
-			set => SetValue(BarSeparationPixelsProperty, value);
+			get => (double)this.GetValue(BarSeparationPixelsProperty);
+			set => this.SetValue(BarSeparationPixelsProperty, value);
 		}
 		public static readonly DependencyProperty BarSeparationPixelsProperty = DependencyProperty.Register(
 			"BarSeparationPixels",
@@ -155,8 +155,8 @@ namespace ModernThemables.Charting.Controls
 
 		public double XAxisLabelRotation
 		{
-			get => (double)GetValue(XAxisLabelRotationProperty);
-			set => SetValue(XAxisLabelRotationProperty, value);
+			get => (double)this.GetValue(XAxisLabelRotationProperty);
+			set => this.SetValue(XAxisLabelRotationProperty, value);
 		}
 		public static readonly DependencyProperty XAxisLabelRotationProperty = DependencyProperty.Register(
 			"XAxisLabelRotation",
@@ -170,8 +170,8 @@ namespace ModernThemables.Charting.Controls
 
 		private ObservableCollection<InternalChartEntity> InternalSeries
 		{
-			get => (ObservableCollection<InternalChartEntity>)GetValue(InternalSeriesProperty);
-			set => SetValue(InternalSeriesProperty, value);
+			get => (ObservableCollection<InternalChartEntity>)this.GetValue(InternalSeriesProperty);
+			set => this.SetValue(InternalSeriesProperty, value);
 		}
 		public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
 			"InternalSeries",
@@ -181,8 +181,8 @@ namespace ModernThemables.Charting.Controls
 
 		private ObservableCollection<AxisLabel> XAxisLabels
 		{
-			get => (ObservableCollection<AxisLabel>)GetValue(XAxisLabelsProperty);
-			set => SetValue(XAxisLabelsProperty, value);
+			get => (ObservableCollection<AxisLabel>)this.GetValue(XAxisLabelsProperty);
+			set => this.SetValue(XAxisLabelsProperty, value);
 		}
 		public static readonly DependencyProperty XAxisLabelsProperty = DependencyProperty.Register(
 			"XAxisLabels",
@@ -192,8 +192,8 @@ namespace ModernThemables.Charting.Controls
 
 		private ObservableCollection<AxisLabel> YAxisLabels
 		{
-			get => (ObservableCollection<AxisLabel>)GetValue(YAxisLabelsProperty);
-			set => SetValue(YAxisLabelsProperty, value);
+			get => (ObservableCollection<AxisLabel>)this.GetValue(YAxisLabelsProperty);
+			set => this.SetValue(YAxisLabelsProperty, value);
 		}
 		public static readonly DependencyProperty YAxisLabelsProperty = DependencyProperty.Register(
 			"YAxisLabels",
@@ -203,8 +203,8 @@ namespace ModernThemables.Charting.Controls
 
 		private double BarWidth
 		{
-			get => (double)GetValue(BarWidthProperty);
-			set => SetValue(BarWidthProperty, value);
+			get => (double)this.GetValue(BarWidthProperty);
+			set => this.SetValue(BarWidthProperty, value);
 		}
 		public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
 			"BarWidth",
@@ -214,8 +214,8 @@ namespace ModernThemables.Charting.Controls
 
 		private double GroupWidth
 		{
-			get => (double)GetValue(GroupWidthProperty);
-			set => SetValue(GroupWidthProperty, value);
+			get => (double)this.GetValue(GroupWidthProperty);
+			set => this.SetValue(GroupWidthProperty, value);
 		}
 		public static readonly DependencyProperty GroupWidthProperty = DependencyProperty.Register(
 			"GroupWidth",
@@ -225,8 +225,8 @@ namespace ModernThemables.Charting.Controls
 
 		private CornerRadius BarCornerRadius
 		{
-			get => (CornerRadius)GetValue(BarCornerRadiusProperty);
-			set => SetValue(BarCornerRadiusProperty, value);
+			get => (CornerRadius)this.GetValue(BarCornerRadiusProperty);
+			set => this.SetValue(BarCornerRadiusProperty, value);
 		}
 		public static readonly DependencyProperty BarCornerRadiusProperty = DependencyProperty.Register(
 			"BarCornerRadius",
@@ -236,8 +236,8 @@ namespace ModernThemables.Charting.Controls
 
 		private Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
 		{
-			get => (Func<Point, IEnumerable<TooltipViewModel>>)GetValue(TooltipGetterFuncProperty);
-			set => SetValue(TooltipGetterFuncProperty, value);
+			get => (Func<Point, IEnumerable<TooltipViewModel>>)this.GetValue(TooltipGetterFuncProperty);
+			set => this.SetValue(TooltipGetterFuncProperty, value);
 		}
 		public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
 			"TooltipGetterFunc",

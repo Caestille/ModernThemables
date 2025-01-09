@@ -1,20 +1,20 @@
-﻿using CoreUtilities.HelperClasses.Extensions;
-using CoreUtilities.Services;
-using System.Collections.Concurrent;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using ModernThemables.Charting.ViewModels.PieChart;
-using ModernThemables.Charting.Converters;
-using ModernThemables.Charting.Models;
-using ModernThemables.Charting.Models.Brushes;
-using ModernThemables.Charting.Interfaces;
-using ModernThemables.Charting.ViewModels;
-using ModernThemables.Charting.Services;
-
-namespace ModernThemables.Charting.Controls
+﻿namespace ModernThemables.Charting.Controls
 {
+    using CoreUtilities.HelperClasses.Extensions;
+    using CoreUtilities.Services;
+    using System.Collections.Concurrent;
+    using System.Collections.ObjectModel;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using ModernThemables.Charting.ViewModels.PieChart;
+    using ModernThemables.Charting.Converters;
+    using ModernThemables.Charting.Models;
+    using ModernThemables.Charting.Models.Brushes;
+    using ModernThemables.Charting.Interfaces;
+    using ModernThemables.Charting.ViewModels;
+    using ModernThemables.Charting.Services;
+
     /// <summary>
     /// Interaction logic for PieChart.xaml
     /// </summary>
@@ -25,7 +25,7 @@ namespace ModernThemables.Charting.Controls
 		private readonly SeriesWatcherService seriesWatcher;
 
 		private IEnumerable<InternalPieWedgeViewModel> allWedges
-			=> InternalSeries.Aggregate(new List<InternalPieWedgeViewModel>(), (list, series) => { list.AddRange(series.Wedges); return list; });
+			=> this.InternalSeries.Aggregate(new List<InternalPieWedgeViewModel>(), (list, series) => { list.AddRange(series.Wedges); return list; });
 
 		private readonly BlockingCollection<Action> renderQueue;
 		private bool renderInProgress;
@@ -35,36 +35,36 @@ namespace ModernThemables.Charting.Controls
 
 		public PieChart()
 		{
-			InitializeComponent();
-			Loaded += PieChart_Loaded;
+            this.InitializeComponent();
+			Loaded += this.PieChart_Loaded;
 
-			seriesWatcher = new SeriesWatcherService(QueueRenderChart);
+            this.seriesWatcher = new SeriesWatcherService(this.QueueRenderChart);
 
-			renderQueue = new BlockingCollection<Action>();
-			renderThread = new Thread(new ThreadStart(() =>
+            this.renderQueue = new BlockingCollection<Action>();
+            this.renderThread = new Thread(new ThreadStart(() =>
 			{
-				while (runRenderThread)
+				while (this.runRenderThread)
 				{
-					while (renderInProgress)
+					while (this.renderInProgress)
 					{
 						Thread.Sleep(1);
 					}
-					if (renderQueue.Any())
-						renderQueue.Take().Invoke();
+					if (this.renderQueue.Count != 0)
+                        this.renderQueue.Take().Invoke();
 					Thread.Sleep(1);
 				}
 			}));
-			renderThread.Start();
+            this.renderThread.Start();
 
-			TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((mouseLoc) =>
+            this.TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((mouseLoc) =>
 			{
 				var tooltipPoints = new List<TooltipViewModel>();
 
-				var centreX = PieCentreRadiusConverter.ConvertLocally(SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreX);
-				var centreY = PieCentreRadiusConverter.ConvertLocally(SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreY);
-				var radius = PieCentreRadiusConverter.ConvertLocally(SeriesItemsControl.ActualWidth, SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.Radius);
+				var centreX = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreX);
+				var centreY = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreY);
+				var radius = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.Radius);
 
-				mouseLoc = new Point(mouseLoc.X -= SeriesItemsControl.ActualWidth / 2 - radius / 0.9, mouseLoc.Y);
+				mouseLoc = new Point(mouseLoc.X -= this.SeriesItemsControl.ActualWidth / 2 - radius / 0.9, mouseLoc.Y);
 
 				var hypLength = Math.Sqrt(
 					Math.Pow(Math.Abs(mouseLoc.X - centreX), 2)
@@ -72,13 +72,13 @@ namespace ModernThemables.Charting.Controls
 
 				if (hypLength > radius)
 				{
-					foreach (var wedge in allWedges) wedge.IsMouseOver = false;
+					foreach (var wedge in this.allWedges) wedge.IsMouseOver = false;
 					return new List<TooltipViewModel>();
 				}
 
-				var angle = GetMouseAngleFromPoint(mouseLoc, new Point(centreX, centreY));
+				var angle = this.GetMouseAngleFromPoint(mouseLoc, new Point(centreX, centreY));
 
-				foreach (var series in InternalSeries)
+				foreach (var series in this.InternalSeries)
 				{
 					foreach (var wedge in series.Wedges)
 					{
@@ -90,7 +90,7 @@ namespace ModernThemables.Charting.Controls
 								wedge.IsMouseOver = true;
 							}
 
-							var matchingSeries = Series.FirstOrDefault(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
+							var matchingSeries = this.Series.FirstOrDefault(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
                             if (matchingSeries == null) continue;
 							var matchingWedge = matchingSeries.Values.First(x => x.Identifier == wedge.Identifier);
 							var formattedValue = matchingSeries.ValueFormatter != null
@@ -101,13 +101,13 @@ namespace ModernThemables.Charting.Controls
 							var x = 0d;
 							var y = 0d;
 
-							if (TooltipLocation == TooltipLocation.Points)
+							if (this.TooltipLocation == TooltipLocation.Points)
 							{
 								var centreAngle = wedge.StartAngle + wedge.Percent / 2 * 360 / 100;
 								var angleRad = (Math.PI / 180.0) * (centreAngle - 90);
 								x = radius * Math.Cos(angleRad);
 								y = radius * Math.Sin(angleRad);
-								x = x + (SeriesItemsControl.ActualWidth / 2);
+								x = x + (this.SeriesItemsControl.ActualWidth / 2);
 								y = y + centreY - 20;
 							}
 
@@ -124,7 +124,7 @@ namespace ModernThemables.Charting.Controls
 				return tooltipPoints;
 			});
 
-			resizeTrigger = new RefreshTrigger(() => QueueRenderChart(null, null, true), 100);
+            this.resizeTrigger = new RefreshTrigger(() => this.QueueRenderChart(null, null, true), 100);
 		}
 
 		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -153,25 +153,25 @@ namespace ModernThemables.Charting.Controls
 		private void QueueRenderChart(
 			IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
 		{
-			renderQueue.Add(RenderChart);
+            this.renderQueue.Add(this.RenderChart);
 		}
 
 		private void RenderChart()
 		{
 			Application.Current.Dispatcher.Invoke(async () =>
 			{
-                if (Series == null)
+                if (this.Series == null)
                 {
                     return;
                 }
 
-				renderInProgress = true;
+                this.renderInProgress = true;
 
 				var newSeries = new List<InternalPieSeriesViewModel>();
 
-				foreach (var series in Series.Where(x => x.Values != null && x.Values.Any()))
+				foreach (var series in this.Series.Where(x => x.Values != null && x.Values.Any()))
 				{
-					var wedges = await GetWedgesForSeries(series);
+					var wedges = await this.GetWedgesForSeries(series);
 
 					newSeries.Add(new InternalPieSeriesViewModel(
 						series.Name,
@@ -180,9 +180,9 @@ namespace ModernThemables.Charting.Controls
 					if (!series.Values.Any()) continue;
 				}
 
-				InternalSeries = new ObservableCollection<InternalPieSeriesViewModel>(newSeries);
+                this.InternalSeries = new ObservableCollection<InternalPieSeriesViewModel>(newSeries);
 
-				foreach (var series in InternalSeries)
+				foreach (var series in this.InternalSeries)
 				{
 					foreach (var wedge in series.Wedges)
 					{
@@ -190,7 +190,7 @@ namespace ModernThemables.Charting.Controls
 					}
 				}
 
-				renderInProgress = false;
+                this.renderInProgress = false;
 			});
 		}
 
@@ -236,7 +236,7 @@ namespace ModernThemables.Charting.Controls
 
 		private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
 		{
-			foreach (var series in InternalSeries)
+			foreach (var series in this.InternalSeries)
 			{
 				foreach (var wedge in series.Wedges)
 				{
@@ -283,18 +283,18 @@ namespace ModernThemables.Charting.Controls
 
 		private void PieChart_Loaded(object sender, RoutedEventArgs e)
 		{
-			Loaded -= PieChart_Loaded;
-			Application.Current.Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+			Loaded -= this.PieChart_Loaded;
+			Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
 			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
-			Coordinator.MouseLeave += MouseCaptureGrid_MouseLeave;
+            this.Coordinator.MouseLeave += this.MouseCaptureGrid_MouseLeave;
 		}
 
 		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
 		{
-			resizeTrigger.Stop();
-			runRenderThread = false;
-			seriesWatcher.Dispose();
-			Coordinator.MouseLeave -= MouseCaptureGrid_MouseLeave;
+            this.resizeTrigger.Stop();
+            this.runRenderThread = false;
+            this.seriesWatcher.Dispose();
+            this.Coordinator.MouseLeave -= this.MouseCaptureGrid_MouseLeave;
 		}
 	}
 }

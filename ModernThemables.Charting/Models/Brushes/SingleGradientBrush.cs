@@ -1,10 +1,10 @@
-﻿using CoreUtilities.HelperClasses.Extensions;
-using ModernThemables.Charting.Interfaces;
-using System.Windows;
-using System.Windows.Media;
-
-namespace ModernThemables.Charting.Models.Brushes
+﻿namespace ModernThemables.Charting.Models.Brushes
 {
+    using CoreUtilities.HelperClasses.Extensions;
+    using ModernThemables.Charting.Interfaces;
+    using System.Windows;
+    using System.Windows.Media;
+
     /// <summary>
     /// A brush with a gradient between two <see cref="Color"/>s from top to bottom.
     /// <see cref="Reevaluate(double, double, double, double, double, double)"/> adjusts the midpoint of this gradient.
@@ -37,7 +37,7 @@ namespace ModernThemables.Charting.Models.Brushes
                     new GradientStop(topColour, 0),
                     new GradientStop(bottomColour, 1.0)
                 };
-                CoreBrush = new LinearGradientBrush(collection, angle: 90);
+                this.CoreBrush = new LinearGradientBrush(collection, angle: 90);
             });
         }
 
@@ -49,32 +49,32 @@ namespace ModernThemables.Charting.Models.Brushes
 
             GradientStopCollection collection = new()
             {
-                new GradientStop(topColour, 0),
-                new GradientStop(bottomColour, 1.0)
+                new GradientStop(this.topColour, 0),
+                new GradientStop(this.bottomColour, 1.0)
             };
 
-            CoreBrush = new LinearGradientBrush(collection, angle: 90);
+            this.CoreBrush = new LinearGradientBrush(collection, angle: 90);
         }
 
         /// <inheritdoc />
         public Color ColourAtPoint(double x, double y)
         {
-            if (y >= yMax)
+            if (y >= this.yMax)
             {
-                return topColour;
+                return this.topColour;
             }
-            else if (y < yMax && y > yMin)
+            else if (y < this.yMax && y > this.yMin)
             {
-                var ratio = (double)(1 - (y - yMin) / (yMax - yMin));
-                return topColour.Combine(bottomColour, ratio);
+                var ratio = (double)(1 - (y - this.yMin) / (this.yMax - this.yMin));
+                return this.topColour.Combine(this.bottomColour, ratio);
             }
-            else if (y <= yMin)
+            else if (y <= this.yMin)
             {
-                return bottomColour;
+                return this.bottomColour;
             }
             else
             {
-                return topColour;
+                return this.topColour;
             }
         }
     }

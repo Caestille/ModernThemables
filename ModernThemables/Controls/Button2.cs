@@ -1,17 +1,17 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	public class Button2 : Button
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+
+    public class Button2 : Button
     {
         readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
 
         public Brush MouseOverBrush
         {
-            get => (Brush)GetValue(MouseOverBrushProperty);
-            set => SetValue(MouseOverBrushProperty, value);
+            get => (Brush)this.GetValue(MouseOverBrushProperty);
+            set => this.SetValue(MouseOverBrushProperty, value);
         }
         public static readonly DependencyProperty MouseOverBrushProperty = DependencyProperty.Register(
             nameof(MouseOverBrush),
@@ -21,8 +21,8 @@ namespace ModernThemables.Controls
 
         public Brush MouseDownBrush
         {
-            get => (Brush)GetValue(MouseDownBrushProperty);
-            set => SetValue(MouseDownBrushProperty, value);
+            get => (Brush)this.GetValue(MouseDownBrushProperty);
+            set => this.SetValue(MouseDownBrushProperty, value);
         }
         public static readonly DependencyProperty MouseDownBrushProperty = DependencyProperty.Register(
             nameof(MouseDownBrush),
@@ -31,8 +31,8 @@ namespace ModernThemables.Controls
 
         public Brush DisabledBackground
         {
-            get => (Brush)GetValue(DisabledBackgroundProperty);
-            set => SetValue(DisabledBackgroundProperty, value);
+            get => (Brush)this.GetValue(DisabledBackgroundProperty);
+            set => this.SetValue(DisabledBackgroundProperty, value);
         }
         public static readonly DependencyProperty DisabledBackgroundProperty = DependencyProperty.Register(
             nameof(DisabledBackground),
@@ -41,8 +41,8 @@ namespace ModernThemables.Controls
 
         public Brush DisabledForeground
         {
-            get => (Brush)GetValue(DisabledForegroundProperty);
-            set => SetValue(DisabledForegroundProperty, value);
+            get => (Brush)this.GetValue(DisabledForegroundProperty);
+            set => this.SetValue(DisabledForegroundProperty, value);
         }
         public static readonly DependencyProperty DisabledForegroundProperty = DependencyProperty.Register(
             nameof(DisabledForeground),
@@ -51,8 +51,8 @@ namespace ModernThemables.Controls
 
         public CornerRadius CornerRadius
         {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
+            get => (CornerRadius)this.GetValue(CornerRadiusProperty);
+            set => this.SetValue(CornerRadiusProperty, value);
         }
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             nameof(CornerRadius),

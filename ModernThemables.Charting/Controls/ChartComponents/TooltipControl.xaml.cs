@@ -1,13 +1,13 @@
-﻿using ModernThemables.Charting.Models;
-using System.Windows;
-using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using ModernThemables.Charting.ViewModels;
-using ModernThemables.Charting.Services;
-
-namespace ModernThemables.Charting.Controls.ChartComponents
+﻿namespace ModernThemables.Charting.Controls.ChartComponents
 {
+    using ModernThemables.Charting.Models;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Collections.ObjectModel;
+    using System.Windows.Input;
+    using ModernThemables.Charting.ViewModels;
+    using ModernThemables.Charting.Services;
+
     /// <summary>
     /// Interaction logic for TooltipControl.xaml
     /// </summary>
@@ -20,8 +20,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private bool ShowPointIndicators
 		{
-			get => (bool)GetValue(ShowPointIndicatorsProperty);
-			set => SetValue(ShowPointIndicatorsProperty, value);
+			get => (bool)this.GetValue(ShowPointIndicatorsProperty);
+			set => this.SetValue(ShowPointIndicatorsProperty, value);
 		}
 		public static readonly DependencyProperty ShowPointIndicatorsProperty = DependencyProperty.Register(
 			"ShowPointIndicators",
@@ -31,8 +31,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private bool ShowTooltip
 		{
-			get => (bool)GetValue(ShowTooltipProperty);
-			set => SetValue(ShowTooltipProperty, value);
+			get => (bool)this.GetValue(ShowTooltipProperty);
+			set => this.SetValue(ShowTooltipProperty, value);
 		}
 		public static readonly DependencyProperty ShowTooltipProperty = DependencyProperty.Register(
 			"ShowTooltip",
@@ -42,8 +42,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool? ForceCrosshairs
 		{
-			get => (bool?)GetValue(ForceCrosshairsProperty);
-			set => SetValue(ForceCrosshairsProperty, value);
+			get => (bool?)this.GetValue(ForceCrosshairsProperty);
+			set => this.SetValue(ForceCrosshairsProperty, value);
 		}
 		public static readonly DependencyProperty ForceCrosshairsProperty = DependencyProperty.Register(
 			"ForceCrosshairs",
@@ -53,8 +53,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool? ForceTooltip
 		{
-			get => (bool?)GetValue(ForceTooltipProperty);
-			set => SetValue(ForceTooltipProperty, value);
+			get => (bool?)this.GetValue(ForceTooltipProperty);
+			set => this.SetValue(ForceTooltipProperty, value);
 		}
 		public static readonly DependencyProperty ForceTooltipProperty = DependencyProperty.Register(
 			"ForceTooltip",
@@ -64,8 +64,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool IsMouseOverThis
 		{
-			get => (bool)GetValue(IsMouseOverThisProperty);
-			private set => SetValue(IsMouseOverThisProperty, value);
+			get => (bool)this.GetValue(IsMouseOverThisProperty);
+			private set => this.SetValue(IsMouseOverThisProperty, value);
 		}
 		public static readonly DependencyProperty IsMouseOverThisProperty = DependencyProperty.Register(
 			"IsMouseOverThis",
@@ -75,8 +75,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool PointClicked
 		{
-			get => (bool)GetValue(PointClickedProperty);
-			private set => SetValue(PointClickedProperty, value);
+			get => (bool)this.GetValue(PointClickedProperty);
+			private set => this.SetValue(PointClickedProperty, value);
 		}
 		public static readonly DependencyProperty PointClickedProperty = DependencyProperty.Register(
 			"PointClicked",
@@ -86,8 +86,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool? ForcePointIndicators
 		{
-			get => (bool?)GetValue(PointIndicatorsProperty);
-			set => SetValue(PointIndicatorsProperty, value);
+			get => (bool?)this.GetValue(PointIndicatorsProperty);
+			set => this.SetValue(PointIndicatorsProperty, value);
 		}
 		public static readonly DependencyProperty PointIndicatorsProperty = DependencyProperty.Register(
 			"PointIndicators",
@@ -97,8 +97,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private bool ShowCrosshairs
 		{
-			get => (bool)GetValue(ShowCrosshairsProperty);
-			set => SetValue(ShowCrosshairsProperty, value);
+			get => (bool)this.GetValue(ShowCrosshairsProperty);
+			set => this.SetValue(ShowCrosshairsProperty, value);
 		}
 		public static readonly DependencyProperty ShowCrosshairsProperty = DependencyProperty.Register(
 			"ShowCrosshairs",
@@ -108,8 +108,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool AllowSelection
 		{
-			get => (bool)GetValue(AllowSelectionProperty);
-			set => SetValue(AllowSelectionProperty, value);
+			get => (bool)this.GetValue(AllowSelectionProperty);
+			set => this.SetValue(AllowSelectionProperty, value);
 		}
 		public static readonly DependencyProperty AllowSelectionProperty = DependencyProperty.Register(
 			"AllowSelection",
@@ -119,8 +119,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool ForceTooltipTop
 		{
-			get => (bool)GetValue(ForceTooltipTopProperty);
-			set => SetValue(ForceTooltipTopProperty, value);
+			get => (bool)this.GetValue(ForceTooltipTopProperty);
+			set => this.SetValue(ForceTooltipTopProperty, value);
 		}
 		public static readonly DependencyProperty ForceTooltipTopProperty = DependencyProperty.Register(
 			"ForceTooltipTop",
@@ -130,8 +130,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double TooltipOffsetX
 		{
-			get => (double)GetValue(TooltipOffsetXProperty);
-			set => SetValue(TooltipOffsetXProperty, value);
+			get => (double)this.GetValue(TooltipOffsetXProperty);
+			set => this.SetValue(TooltipOffsetXProperty, value);
 		}
 		public static readonly DependencyProperty TooltipOffsetXProperty = DependencyProperty.Register(
 			"TooltipOffsetX",
@@ -141,8 +141,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double TooltipOffsetY
 		{
-			get => (double)GetValue(TooltipOffsetYProperty);
-			set => SetValue(TooltipOffsetYProperty, value);
+			get => (double)this.GetValue(TooltipOffsetYProperty);
+			set => this.SetValue(TooltipOffsetYProperty, value);
 		}
 		public static readonly DependencyProperty TooltipOffsetYProperty = DependencyProperty.Register(
 			"TooltipOffsetY",
@@ -152,8 +152,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double TooltipOpacity
 		{
-			get => (double)GetValue(TooltipOpacityProperty);
-			set => SetValue(TooltipOpacityProperty, value);
+			get => (double)this.GetValue(TooltipOpacityProperty);
+			set => this.SetValue(TooltipOpacityProperty, value);
 		}
 		public static readonly DependencyProperty TooltipOpacityProperty = DependencyProperty.Register(
 			"TooltipOpacity",
@@ -163,8 +163,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool InvertY
 		{
-			get => (bool)GetValue(InvertYProperty);
-			set => SetValue(InvertYProperty, value);
+			get => (bool)this.GetValue(InvertYProperty);
+			set => this.SetValue(InvertYProperty, value);
 		}
 		public static readonly DependencyProperty InvertYProperty = DependencyProperty.Register(
 			"InvertY",
@@ -174,8 +174,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private ObservableCollection<TooltipViewModel> TooltipPoints
 		{
-			get => (ObservableCollection<TooltipViewModel>)GetValue(TooltipPointsProperty);
-			set => SetValue(TooltipPointsProperty, value);
+			get => (ObservableCollection<TooltipViewModel>)this.GetValue(TooltipPointsProperty);
+			set => this.SetValue(TooltipPointsProperty, value);
 		}
 		public static readonly DependencyProperty TooltipPointsProperty = DependencyProperty.Register(
 			"TooltipPoints",
@@ -185,8 +185,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public TooltipLocation TooltipLocation
 		{
-			get => (TooltipLocation)GetValue(TooltipLocationProperty);
-			set => SetValue(TooltipLocationProperty, value);
+			get => (TooltipLocation)this.GetValue(TooltipLocationProperty);
+			set => this.SetValue(TooltipLocationProperty, value);
 		}
 		public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
 			"TooltipLocation",
@@ -196,8 +196,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
 		{
-			get => (Func<Point, IEnumerable<TooltipViewModel>>)GetValue(TooltipGetterFuncProperty);
-			set => SetValue(TooltipGetterFuncProperty, value);
+			get => (Func<Point, IEnumerable<TooltipViewModel>>)this.GetValue(TooltipGetterFuncProperty);
+			set => this.SetValue(TooltipGetterFuncProperty, value);
 		}
 		public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
 			"TooltipGetterFunc",
@@ -207,8 +207,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private bool IsTooltipByCursor
 		{
-			get => (bool)GetValue(IsTooltipByCursorProperty);
-			set => SetValue(IsTooltipByCursorProperty, value);
+			get => (bool)this.GetValue(IsTooltipByCursorProperty);
+			set => this.SetValue(IsTooltipByCursorProperty, value);
 		}
 		public static readonly DependencyProperty IsTooltipByCursorProperty = DependencyProperty.Register(
 			"IsTooltipByCursor",
@@ -218,8 +218,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private bool IsUserSelectingRange
 		{
-			get => (bool)GetValue(IsUserSelectingRangeProperty);
-			set => SetValue(IsUserSelectingRangeProperty, value);
+			get => (bool)this.GetValue(IsUserSelectingRangeProperty);
+			set => this.SetValue(IsUserSelectingRangeProperty, value);
 		}
 		public static readonly DependencyProperty IsUserSelectingRangeProperty = DependencyProperty.Register(
 			"IsUserSelectingRange",
@@ -229,8 +229,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public MouseCoordinator Coordinator
 		{
-			get => (MouseCoordinator)GetValue(MouseCoordinatorProperty);
-			set => SetValue(MouseCoordinatorProperty, value);
+			get => (MouseCoordinator)this.GetValue(MouseCoordinatorProperty);
+			set => this.SetValue(MouseCoordinatorProperty, value);
 		}
 		public static readonly DependencyProperty MouseCoordinatorProperty = DependencyProperty.Register(
 			"MouseCoordinator",
@@ -240,19 +240,19 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public TooltipControl()
 		{
-			InitializeComponent();
+            this.InitializeComponent();
 
-			Loaded += TooltipControl_Loaded;
+			Loaded += this.TooltipControl_Loaded;
 
-			NameScope.SetNameScope(CM, NameScope.GetNameScope(this));
+			NameScope.SetNameScope(this.CM, NameScope.GetNameScope(this));
 		}
 
 		private void TooltipControl_Loaded(object sender, RoutedEventArgs e)
 		{
-			Loaded -= TooltipControl_Loaded;
+			Loaded -= this.TooltipControl_Loaded;
 			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
 			{
-				Coordinator = coordinator;
+                this.Coordinator = coordinator;
 			}
 			else
 			{
@@ -275,26 +275,26 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_PreviewMouseUp(object sender, MouseButtonEventArgs e)
 		{
-			if (e.ChangedButton == MouseButton.Right && !isUserPanning)
+			if (e.ChangedButton == MouseButton.Right && !this.isUserPanning)
 			{
-				CM.IsOpen = true;
+                this.CM.IsOpen = true;
 			}
 		}
 
 		private void Coordinator_PointRangeSelected(object? sender, (Point lowerValue, Point upperValue) e)
 		{
-			IsUserSelectingRange = false;
+            this.IsUserSelectingRange = false;
 		}
 
 		private void Coordinator_PointClicked(object? sender, Point e)
 		{
-			PointClicked = true;
-			PointClicked = false;
+            this.PointClicked = true;
+            this.PointClicked = false;
 		}
 
 		private void Coordinator_MouseLeave(object sender, MouseEventArgs e)
 		{
-			IsMouseOverThis = false;
+            this.IsMouseOverThis = false;
 		}
 
 		private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -336,79 +336,79 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args) e)
 		{
-			IsMouseOverThis = true;
-			var mouseLoc = e.args.GetPosition(Grid);
-			isUserPanning = e.isUserPanning;
+            this.IsMouseOverThis = true;
+			var mouseLoc = e.args.GetPosition(this.Grid);
+            this.isUserPanning = e.isUserPanning;
 
-			if (isUserPanning)
+			if (this.isUserPanning)
 			{
-				IsMouseOverThis = false;
+                this.IsMouseOverThis = false;
 				return;
 			}
 
             #region Crosshairs
-			if (ShowCrosshairs)
+			if (this.ShowCrosshairs)
 			{
-				// Move crosshairs
-				XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
-				YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
+                // Move crosshairs
+                this.XCrosshair.Margin = new Thickness(0, mouseLoc.Y, 0, 0);
+                this.YCrosshair.Margin = new Thickness(mouseLoc.X, 0, 0, 0);
 			}
             #endregion
 
             #region Selected range
-			if (AllowSelection && e.isUserDragging && e.lowerSelection != null)
+			if (this.AllowSelection && e.isUserDragging && e.lowerSelection != null)
 			{
-				IsUserSelectingRange = true;
+                this.IsUserSelectingRange = true;
 				var negative = mouseLoc.X < e.lowerSelection.Value.X;
-				var margin = SelectionRangeBorder.Margin;
+				var margin = this.SelectionRangeBorder.Margin;
 				margin.Left = negative ? mouseLoc.X : e.lowerSelection.Value.X;
-				SelectionRangeBorder.Margin = margin;
-				SelectionRangeBorder.Width = negative
+                this.SelectionRangeBorder.Margin = margin;
+                this.SelectionRangeBorder.Width = negative
 					? Math.Max(e.lowerSelection.Value.X - mouseLoc.X, 0)
 					: Math.Max(mouseLoc.X - e.lowerSelection.Value.X, 0);
 			}
 			else
 			{
-				IsUserSelectingRange = false;
+                this.IsUserSelectingRange = false;
 			}
             #endregion
 
             #region Tooltip
-			if ((ShowTooltip || ShowPointIndicators) && TooltipGetterFunc != null)
+			if ((this.ShowTooltip || this.ShowPointIndicators) && this.TooltipGetterFunc != null)
 			{
-				TooltipPoints = new ObservableCollection<TooltipViewModel>(TooltipGetterFunc(mouseLoc));
+                this.TooltipPoints = new ObservableCollection<TooltipViewModel>(this.TooltipGetterFunc(mouseLoc));
 
-				if (TooltipPoints.Any())
+				if (this.TooltipPoints.Any())
 				{
-					TooltipPoints.First(x => x.LocationY - mouseLoc.Y == TooltipPoints.Min(y => y.LocationY - mouseLoc.Y)).IsNearest = true;
+                    this.TooltipPoints.First(x => x.LocationY - mouseLoc.Y == this.TooltipPoints.Min(y => y.LocationY - mouseLoc.Y)).IsNearest = true;
 
-					foreach (var point in TooltipPoints)
+					foreach (var point in this.TooltipPoints)
 					{
 						point.ResizeTrigger = true;
 					}
 
-					if (ShowTooltip && TooltipLocation == TooltipLocation.Cursor)
+					if (this.ShowTooltip && this.TooltipLocation == TooltipLocation.Cursor)
 					{
 						// Get tooltip position variables
-						if (!tooltipLeft && (ActualWidth - mouseLoc.X) < (TooltipsByCursor.ActualWidth + 10))
-							tooltipLeft = true;
-						if (tooltipLeft && (mouseLoc.X) < (TooltipsByCursor.ActualWidth + 5))
-							tooltipLeft = false;
-						if (!tooltipTop && (ActualHeight - mouseLoc.Y) < (TooltipsByCursor.ActualHeight + 10))
-							tooltipTop = true;
-						if (tooltipTop && (mouseLoc.Y) < (TooltipsByCursor.ActualHeight + 5))
-							tooltipTop = false;
+						if (!this.tooltipLeft && (this.ActualWidth - mouseLoc.X) < (this.TooltipsByCursor.ActualWidth + 10))
+                            this.tooltipLeft = true;
+						if (this.tooltipLeft && (mouseLoc.X) < (this.TooltipsByCursor.ActualWidth + 5))
+                            this.tooltipLeft = false;
+						if (!this.tooltipTop && (this.ActualHeight - mouseLoc.Y) < (this.TooltipsByCursor.ActualHeight + 10))
+                            this.tooltipTop = true;
+						if (this.tooltipTop && (mouseLoc.Y) < (this.TooltipsByCursor.ActualHeight + 5))
+                            this.tooltipTop = false;
 
-						TooltipsByCursor.Margin = new Thickness(
-							!tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - TooltipsByCursor.ActualWidth - 5,
-							!tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - TooltipsByCursor.ActualHeight - 5,
+                        this.TooltipsByCursor.Margin = new Thickness(
+							!this.tooltipLeft ? mouseLoc.X + 5 : mouseLoc.X - this.TooltipsByCursor.ActualWidth - 5,
+							!this.tooltipTop ? mouseLoc.Y + 5 : mouseLoc.Y - this.TooltipsByCursor.ActualHeight - 5,
 							0, 0);
 					}
 				}
 			}
 			else
 			{
-				TooltipPoints.Clear();
+                this.TooltipPoints.Clear();
 			}
             #endregion
 		}

@@ -1,10 +1,10 @@
-﻿using CoreUtilities.HelperClasses.Extensions;
-using ModernThemables.Charting.Interfaces;
-using System.Windows;
-using System.Windows.Media;
-
-namespace ModernThemables.Charting.Models.Brushes
+﻿namespace ModernThemables.Charting.Models.Brushes
 {
+    using CoreUtilities.HelperClasses.Extensions;
+    using ModernThemables.Charting.Interfaces;
+    using System.Windows;
+    using System.Windows.Media;
+
     /// <summary>
     /// A brush with 4 <see cref="Color"/>s across its vertical span.
     /// <see cref="Reevaluate(double, double, double, double, double, double)"/> Adjusts the crossing over point
@@ -35,7 +35,7 @@ namespace ModernThemables.Charting.Models.Brushes
         /// <param name="bottomColour">The <see cref="Color"/> at the bottom of the brush.</param>
         public MultiGradientBrush(Color topColour, Color topCentreColour, Color bottomCentreColour, Color bottomColour)
         {
-            Application.Current.Dispatcher.Invoke(() => { CoreBrush = new LinearGradientBrush(); });
+            Application.Current.Dispatcher.Invoke(() => { this.CoreBrush = new LinearGradientBrush(); });
             this.topColour = topColour;
             this.bottomColour = bottomColour;
             this.topCentreColour = topCentreColour;
@@ -54,40 +54,40 @@ namespace ModernThemables.Charting.Models.Brushes
 
             GradientStopCollection collection = new()
             {
-                new GradientStop(topColour, 0),
-                new GradientStop(topCentreColour, ratio),
-                new GradientStop(bottomCentreColour, ratio),
-                new GradientStop(bottomColour, 1.0)
+                new GradientStop(this.topColour, 0),
+                new GradientStop(this.topCentreColour, ratio),
+                new GradientStop(this.bottomCentreColour, ratio),
+                new GradientStop(this.bottomColour, 1.0)
             };
 
             Application.Current.Dispatcher.Invoke(
-                () => { CoreBrush = new LinearGradientBrush(collection, angle: 90); });
+                () => { this.CoreBrush = new LinearGradientBrush(collection, angle: 90); });
         }
 
         /// <inheritdoc />
         public Color ColourAtPoint(double x, double y)
         {
-            if (y >= yMax)
+            if (y >= this.yMax)
             {
-                return topColour;
+                return this.topColour;
             }
-            else if (y < yMax && y >= yCentre)
+            else if (y < this.yMax && y >= this.yCentre)
             {
-                var ratio = (double)(1 - (y - yCentre) / (yMax - yCentre));
-                return topColour.Combine(topCentreColour, ratio);
+                var ratio = (double)(1 - (y - this.yCentre) / (this.yMax - this.yCentre));
+                return this.topColour.Combine(this.topCentreColour, ratio);
             }
-            else if (y > yMin && y <= yCentre)
+            else if (y > this.yMin && y <= this.yCentre)
             {
-                var ratio = (double)(1 - (y - yMin) / (yCentre - yMin));
-                return bottomColour.Combine(bottomCentreColour, ratio);
+                var ratio = (double)(1 - (y - this.yMin) / (this.yCentre - this.yMin));
+                return this.bottomColour.Combine(this.bottomCentreColour, ratio);
             }
-            else if (y <= yMin)
+            else if (y <= this.yMin)
             {
-                return bottomColour;
+                return this.bottomColour;
             }
             else
             {
-                return topColour;
+                return this.topColour;
             }
         }
     }

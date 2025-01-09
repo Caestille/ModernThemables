@@ -1,23 +1,21 @@
-﻿using ModernThemables.Services;
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
+    using ModernThemables.Services;
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+
     public class ColourPickerBox : Control
 	{
 		private const string PART_button = "PART_button";
 
 		private Button2? button;
 
-		public event EventHandler<Color>? ColourChanged;
-
         public Color TemporaryColour
         {
-            get => (Color)GetValue(TemporaryColourProperty);
-            set => SetValue(TemporaryColourProperty, value);
+            get => (Color)this.GetValue(TemporaryColourProperty);
+            set => this.SetValue(TemporaryColourProperty, value);
         }
 
         public static readonly DependencyProperty TemporaryColourProperty =
@@ -29,8 +27,8 @@ namespace ModernThemables.Controls
 
         public CornerRadius CornerRadius
         {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
+            get => (CornerRadius)this.GetValue(CornerRadiusProperty);
+            set => this.SetValue(CornerRadiusProperty, value);
         }
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             nameof(CornerRadius),
@@ -42,19 +40,19 @@ namespace ModernThemables.Controls
 		{
 			base.OnApplyTemplate();
 
-			if (button != null)
+			if (this.button != null)
 			{
-				button.Click -= Button_Click;
+                this.button.Click -= this.Button_Click;
 			}
 
-			if (Template.FindName(PART_button, this) is Button2 bt)
+			if (this.Template.FindName(PART_button, this) is Button2 bt)
 			{
-				button = bt;
+                this.button = bt;
 			}
 
-			if (button != null)
+			if (this.button != null)
 			{
-				button.Click += Button_Click;
+                this.button.Click += this.Button_Click;
 			}
 			else
 			{
@@ -64,10 +62,10 @@ namespace ModernThemables.Controls
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-            Background = new SolidColorBrush(
+            this.Background = new SolidColorBrush(
                 new DialogueService().ShowColourPickerDialogue(
-                    (Background as SolidColorBrush)!.Color,
-                    colour => TemporaryColour = colour));
+                    (this.Background as SolidColorBrush)!.Color,
+                    colour => this.TemporaryColour = colour));
 		}
     }
 }

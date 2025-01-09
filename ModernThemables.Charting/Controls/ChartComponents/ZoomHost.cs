@@ -1,9 +1,9 @@
-﻿using ModernThemables.Charting.Services;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace ModernThemables.Charting.Controls.ChartComponents
+﻿namespace ModernThemables.Charting.Controls.ChartComponents
 {
+    using ModernThemables.Charting.Services;
+    using System.Windows;
+    using System.Windows.Controls;
+
     public class ZoomHost : ContentControl
 	{
 		private double currentZoomLevel = 1;
@@ -18,8 +18,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double PanOffsetFraction
 		{
-			get => (double)GetValue(PanOffsetFractionProperty);
-			private set => SetValue(PanOffsetFractionProperty, value);
+			get => (double)this.GetValue(PanOffsetFractionProperty);
+			private set => this.SetValue(PanOffsetFractionProperty, value);
 		}
 		public static readonly DependencyProperty PanOffsetFractionProperty = DependencyProperty.Register(
 			nameof(PanOffsetFraction),
@@ -29,8 +29,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double LeftFraction
 		{
-			get => (double)GetValue(LeftFractionProperty);
-			private set => SetValue(LeftFractionProperty, value);
+			get => (double)this.GetValue(LeftFractionProperty);
+			private set => this.SetValue(LeftFractionProperty, value);
 		}
 		public static readonly DependencyProperty LeftFractionProperty = DependencyProperty.Register(
 			nameof(LeftFraction),
@@ -40,8 +40,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double RightFraction
 		{
-			get => (double)GetValue(RightFractionProperty);
-			private set => SetValue(RightFractionProperty, value);
+			get => (double)this.GetValue(RightFractionProperty);
+			private set => this.SetValue(RightFractionProperty, value);
 		}
 		public static readonly DependencyProperty RightFractionProperty = DependencyProperty.Register(
 			nameof(RightFraction),
@@ -51,8 +51,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double BottomFraction
 		{
-			get => (double)GetValue(BottomFractionProperty);
-			private set => SetValue(BottomFractionProperty, value);
+			get => (double)this.GetValue(BottomFractionProperty);
+			private set => this.SetValue(BottomFractionProperty, value);
 		}
 		public static readonly DependencyProperty BottomFractionProperty = DependencyProperty.Register(
 			nameof(BottomFraction),
@@ -62,8 +62,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double TopFraction
 		{
-			get => (double)GetValue(TopFractionProperty);
-			private set => SetValue(TopFractionProperty, value);
+			get => (double)this.GetValue(TopFractionProperty);
+			private set => this.SetValue(TopFractionProperty, value);
 		}
 		public static readonly DependencyProperty TopFractionProperty = DependencyProperty.Register(
 			nameof(TopFraction),
@@ -73,8 +73,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public bool IsZoomed
 		{
-			get => (bool)GetValue(IsZoomedProperty);
-			set => SetValue(IsZoomedProperty, value);
+			get => (bool)this.GetValue(IsZoomedProperty);
+			set => this.SetValue(IsZoomedProperty, value);
 		}
 		public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
 			nameof(IsZoomed),
@@ -84,8 +84,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public Func<(double minFrac, double maxFrac)> GetDataHeightPixelsInBounds
 		{
-			get => (Func<(double minFrac, double maxFrac)>)GetValue(GetDataHeightPixelsInBoundsProperty);
-			set => SetValue(GetDataHeightPixelsInBoundsProperty, value);
+			get => (Func<(double minFrac, double maxFrac)>)this.GetValue(GetDataHeightPixelsInBoundsProperty);
+			set => this.SetValue(GetDataHeightPixelsInBoundsProperty, value);
 		}
 		public static readonly DependencyProperty GetDataHeightPixelsInBoundsProperty = DependencyProperty.Register(
 			nameof(GetDataHeightPixelsInBounds),
@@ -95,8 +95,8 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public double YPaddingFrac
 		{
-			get => (double)GetValue(YPaddingFracProperty);
-			set => SetValue(YPaddingFracProperty, value);
+			get => (double)this.GetValue(YPaddingFracProperty);
+			set => this.SetValue(YPaddingFracProperty, value);
 		}
 		public static readonly DependencyProperty YPaddingFracProperty = DependencyProperty.Register(
 			"YPaddingFrac",
@@ -106,44 +106,44 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 
 		public ZoomHost()
 		{
-			Loaded += OnLoaded;
+			Loaded += this.OnLoaded;
 		}
 
 		public void ResetZoom()
 		{
-			if (currentCoordinator == null) return;
+			if (this.currentCoordinator == null) return;
 
-			currentZoomLevel = 1;
-			PanOffsetFraction = 0;
-			xMin = 0;
-			xMax = currentCoordinator.ActualWidth;
-			LeftFraction = 0;
-			RightFraction = 0;
-			IsZoomed = false;
+            this.currentZoomLevel = 1;
+            this.PanOffsetFraction = 0;
+            this.xMin = 0;
+            this.xMax = this.currentCoordinator.ActualWidth;
+            this.LeftFraction = 0;
+            this.RightFraction = 0;
+            this.IsZoomed = false;
 
-			var diffs = GetTopBottomDiff();
+			var diffs = this.GetTopBottomDiff();
 
-			Margin = new Thickness(0, double.IsNaN(diffs.top) ? 0 : -diffs.top, 0, double.IsNaN(diffs.bottom) ? 0 : -diffs.bottom);
+            this.Margin = new Thickness(0, double.IsNaN(diffs.top) ? 0 : -diffs.top, 0, double.IsNaN(diffs.bottom) ? 0 : -diffs.bottom);
 
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}
 
 		public new void InvalidateArrange()
 		{
-			if (currentCoordinator == null) return;
+			if (this.currentCoordinator == null) return;
 
-			DoZoom(1, 0.5, PanOffsetFraction * currentCoordinator.ActualWidth);
+            this.DoZoom(1, 0.5, this.PanOffsetFraction * this.currentCoordinator.ActualWidth);
 			base.InvalidateArrange();
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
-			Loaded -= OnLoaded;
+			Loaded -= this.OnLoaded;
 			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator) && coordinator != null)
 			{
-				currentCoordinator = coordinator;
-				coordinator.MouseWheel += Coordinator_MouseWheel;
-				coordinator.MouseMove += Coordinator_MouseMove;
+                this.currentCoordinator = coordinator;
+				coordinator.MouseWheel += this.Coordinator_MouseWheel;
+				coordinator.MouseMove += this.Coordinator_MouseMove;
 			}
 			else
 			{
@@ -152,73 +152,73 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 #endif
             }
 
-			ResetZoom();
+            this.ResetZoom();
 		}
 
 		private void Coordinator_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs? e)
 		{
-			if (currentCoordinator == null) return;
-			lastArgs = e;
+			if (this.currentCoordinator == null) return;
+            this.lastArgs = e;
 
 			var zoomStep = e == null ? 1d : e.Delta > 0 ? 0.9d : 1d / 0.9d;
-			var panOffset = PanOffsetFraction * currentCoordinator.ActualWidth;
-			var zoomCentre = e == null ? 0.5 : (e.GetPosition(currentCoordinator).X + panOffset) / currentCoordinator.ActualWidth;
+			var panOffset = this.PanOffsetFraction * this.currentCoordinator.ActualWidth;
+			var zoomCentre = e == null ? 0.5 : (e.GetPosition(this.currentCoordinator).X + panOffset) / this.currentCoordinator.ActualWidth;
 
-			DoZoom(zoomStep, zoomCentre, panOffset);
+            this.DoZoom(zoomStep, zoomCentre, panOffset);
 		}
 
 		private void DoZoom(double zoomStep, double zoomCentre, double panOffset)
 		{
-			if (currentCoordinator == null) return;
-			if (xMax == 0)
+			if (this.currentCoordinator == null) return;
+			if (this.xMax == 0)
 			{
-				xMax = ActualWidth;
+                this.xMax = this.ActualWidth;
 			}
 
-			currentZoomLevel /= zoomStep;
-			if (Math.Round(currentZoomLevel, 1) == 1)
+            this.currentZoomLevel /= zoomStep;
+			if (Math.Round(this.currentZoomLevel, 1) == 1)
 			{
-				ResetZoom();
+                this.ResetZoom();
 			}
 			else
 			{
-				var currXRange = xMax - xMin;
+				var currXRange = this.xMax - this.xMin;
 				var newXRange = currXRange * zoomStep;
 				var xDiff = currXRange - newXRange;
 
-				xMin = xMin + xDiff * zoomCentre;
-				xMax = xMax - xDiff * (1 - zoomCentre);
+                this.xMin = this.xMin + xDiff * zoomCentre;
+                this.xMax = this.xMax - xDiff * (1 - zoomCentre);
 
-				LeftFraction = xMin / currentCoordinator.ActualWidth;
-				RightFraction = (currentCoordinator.ActualWidth - xMax) / currentCoordinator.ActualWidth;
+                this.LeftFraction = this.xMin / this.currentCoordinator.ActualWidth;
+                this.RightFraction = (this.currentCoordinator.ActualWidth - this.xMax) / this.currentCoordinator.ActualWidth;
 
-				var leftDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * LeftFraction;
-				var rightDiff = (currentCoordinator.ActualWidth * currentZoomLevel) * RightFraction;
+				var leftDiff = (this.currentCoordinator.ActualWidth * this.currentZoomLevel) * this.LeftFraction;
+				var rightDiff = (this.currentCoordinator.ActualWidth * this.currentZoomLevel) * this.RightFraction;
 
-				var diffs = GetTopBottomDiff();
+				var diffs = this.GetTopBottomDiff();
 
-				Margin = new Thickness(-leftDiff - panOffset, -diffs.top, -rightDiff + panOffset, -diffs.bottom);
+                this.Margin = new Thickness(-leftDiff - panOffset, -diffs.top, -rightDiff + panOffset, -diffs.bottom);
 			}
 
-			IsZoomed = currentZoomLevel != 1 || PanOffsetFraction != 0;
+            this.IsZoomed = this.currentZoomLevel != 1 || this.PanOffsetFraction != 0;
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}
 
 		private (double top, double bottom) GetTopBottomDiff()
 		{
-			if (currentCoordinator == null) return (0, 0);
-			var dataHeightPx = GetDataHeightPixelsInBounds != null 
-			    ? GetDataHeightPixelsInBounds()
-                : (0, currentCoordinator.ActualHeight);
+			if (this.currentCoordinator == null) return (0, 0);
+			var dataHeightPx = this.GetDataHeightPixelsInBounds != null 
+			    ? this.GetDataHeightPixelsInBounds()
+                : (0, this.currentCoordinator.ActualHeight);
 			var dataRange = dataHeightPx.Item2 - dataHeightPx.Item1;
-            var buffer = dataRange * YPaddingFrac;
-			TopFraction = (dataHeightPx.Item1 - buffer) / currentCoordinator.ActualHeight;
-            BottomFraction = 1 - ((dataHeightPx.Item2 + buffer) / currentCoordinator.ActualHeight);
+            var buffer = dataRange * this.YPaddingFrac;
+            this.TopFraction = (dataHeightPx.Item1 - buffer) / this.currentCoordinator.ActualHeight;
+            this.BottomFraction = 1 - ((dataHeightPx.Item2 + buffer) / this.currentCoordinator.ActualHeight);
 
-			var newHeight = currentCoordinator.ActualHeight / (1 - (TopFraction + BottomFraction));
+			var newHeight = this.currentCoordinator.ActualHeight / (1 - (this.TopFraction + this.BottomFraction));
 
-			var topDiff = newHeight * TopFraction;
-			var bottomDiff = newHeight * BottomFraction;
+			var topDiff = newHeight * this.TopFraction;
+			var bottomDiff = newHeight * this.BottomFraction;
 
 			return (topDiff, bottomDiff);
 		}
@@ -231,18 +231,18 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			Point lastMousePoint,
 			System.Windows.Input.MouseEventArgs args) e)
 		{
-			if (currentCoordinator == null) return;
+			if (this.currentCoordinator == null) return;
 			if (e.isUserPanning)
 			{
-				var prevOffset = PanOffsetFraction * currentCoordinator.ActualWidth;
-				PanOffsetFraction = PanOffsetFraction + (e.lastMousePoint.X - e.args.GetPosition(currentCoordinator).X) / currentCoordinator.ActualWidth;
-				var panOffset = PanOffsetFraction * currentCoordinator.ActualWidth;
+				var prevOffset = this.PanOffsetFraction * this.currentCoordinator.ActualWidth;
+                this.PanOffsetFraction = this.PanOffsetFraction + (e.lastMousePoint.X - e.args.GetPosition(this.currentCoordinator).X) / this.currentCoordinator.ActualWidth;
+				var panOffset = this.PanOffsetFraction * this.currentCoordinator.ActualWidth;
 
-				var diffs = GetTopBottomDiff();
+				var diffs = this.GetTopBottomDiff();
 
-				Margin = new Thickness(Margin.Left + prevOffset - panOffset, -diffs.top, Margin.Right - prevOffset + panOffset, -diffs.bottom);
+                this.Margin = new Thickness(this.Margin.Left + prevOffset - panOffset, -diffs.top, this.Margin.Right - prevOffset + panOffset, -diffs.bottom);
 
-				IsZoomed = currentZoomLevel != 1 || PanOffsetFraction != 0;
+                this.IsZoomed = this.currentZoomLevel != 1 || this.PanOffsetFraction != 0;
 				ZoomChanged?.Invoke(this, EventArgs.Empty);
 			}
 		}

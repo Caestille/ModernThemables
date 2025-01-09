@@ -1,18 +1,18 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Windows;
-using System.Windows.Data;
-
-namespace ModernThemables.Converters
+﻿namespace ModernThemables.Converters
 {
-	/// <summary>
-	/// Given a <see cref="double"/> value, returns a <see cref="Thickness"/> which is that value across all edges,
-	/// unless a converter parameter of the format
-	/// [left multiplier]-[top multiplier]-[right multiplier]-[bottom multiplier] is supplied, in which case the value
-	/// is multipled by the multiplier for the respective edge.
-	/// </summary>
-	public class MultiBindingDoubleToBorderThicknessConverter : IMultiValueConverter
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Data;
+
+    /// <summary>
+    /// Given a <see cref="double"/> value, returns a <see cref="Thickness"/> which is that value across all edges,
+    /// unless a converter parameter of the format
+    /// [left multiplier]-[top multiplier]-[right multiplier]-[bottom multiplier] is supplied, in which case the value
+    /// is multipled by the multiplier for the respective edge.
+    /// </summary>
+    public class MultiBindingDoubleToBorderThicknessConverter : IMultiValueConverter
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{

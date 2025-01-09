@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using ModernThemables.Charting.Interfaces;
-
-namespace ModernThemables.Charting.Models
+﻿namespace ModernThemables.Charting.Models
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using ModernThemables.Charting.Interfaces;
+
     /// <summary>
     /// An object describing the zoom state for a chart.
     /// </summary>
@@ -50,20 +50,20 @@ namespace ModernThemables.Charting.Models
         /// <param name="expandY">Whether the expand the Y points by the <paramref name="yBuffer"/> fraction.</param>
         public ZoomState(double xMin, double xMax, double yMin, double yMax, double xOffset, double yBuffer, bool expandY = true)
         {
-            XMin = xMin;
-            XMax = xMax;
+            this.XMin = xMin;
+            this.XMax = xMax;
             if (expandY)
             {
                 var yRange = yMax - yMin;
-                YMin = yMin - yRange * yBuffer;
-                YMax = yMax + yRange * yBuffer;
+                this.YMin = yMin - yRange * yBuffer;
+                this.YMax = yMax + yRange * yBuffer;
             }
             else
             {
-                YMin = yMin;
-                YMax = yMax;
+                this.YMin = yMin;
+                this.YMax = yMax;
             }
-            XOffset = xOffset;
+            this.XOffset = xOffset;
 		}
 
 		/// <summary>
@@ -74,7 +74,7 @@ namespace ModernThemables.Charting.Models
 		/// </returns>
 		public bool IsPointInBounds(IChartEntity chartPoint)
 		{
-            return IsPointInBounds(chartPoint.XValue, chartPoint.YValue);
+            return this.IsPointInBounds(chartPoint.XValue, chartPoint.YValue);
 		}
 
 		/// <summary>
@@ -86,7 +86,7 @@ namespace ModernThemables.Charting.Models
 		/// </returns>
 		public bool IsPointInBounds(double x, double y)
         {
-            return x <= XMax && x >= XMin && y <= YMax && y >= YMin;
+            return x <= this.XMax && x >= this.XMin && y <= this.YMax && y >= this.YMin;
         }
     }
 }

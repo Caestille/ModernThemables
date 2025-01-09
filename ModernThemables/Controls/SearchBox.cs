@@ -1,10 +1,10 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+
     public class SearchBox : TextBox
     {
         private const string PART_button = "PART_button";
@@ -13,8 +13,8 @@ namespace ModernThemables.Controls
         
         public CornerRadius CornerRadius
         {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
+            get => (CornerRadius)this.GetValue(CornerRadiusProperty);
+            set => this.SetValue(CornerRadiusProperty, value);
         }
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             nameof(CornerRadius),
@@ -24,8 +24,8 @@ namespace ModernThemables.Controls
 
         public Brush WatermarkForeground
         {
-            get => (Brush)GetValue(WatermarkForegroundProperty);
-            set => SetValue(WatermarkForegroundProperty, value);
+            get => (Brush)this.GetValue(WatermarkForegroundProperty);
+            set => this.SetValue(WatermarkForegroundProperty, value);
         }
         public static readonly DependencyProperty WatermarkForegroundProperty = DependencyProperty.Register(
             nameof(WatermarkForeground),
@@ -36,19 +36,19 @@ namespace ModernThemables.Controls
         {
             base.OnApplyTemplate();
 
-            if (button != null)
+            if (this.button != null)
             {
-                button.Click -= Button_Click;
+                this.button.Click -= this.Button_Click;
             }
 
-            if (Template.FindName(PART_button, this) is Button2 bt)
+            if (this.Template.FindName(PART_button, this) is Button2 bt)
             {
-                button = bt;
+                this.button = bt;
             }
 
-            if (button != null)
+            if (this.button != null)
             {
-                button.Click += Button_Click;
+                this.button.Click += this.Button_Click;
             }
             else
             {
@@ -58,7 +58,7 @@ namespace ModernThemables.Controls
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Text = string.Empty;
+            this.Text = string.Empty;
         }
     }
 }

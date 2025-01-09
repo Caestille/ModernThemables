@@ -1,16 +1,16 @@
-﻿using System;
-using System.Windows.Controls;
-using System.Windows.Input;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	public partial class ThemingControl : UserControl
+    using System;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+
+    public partial class ThemingControl : UserControl
 	{
 		public event EventHandler? InternalRequestClose;
 
 		public ThemingControl()
 		{
-			InitializeComponent();
+            this.InitializeComponent();
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e)
@@ -23,7 +23,7 @@ namespace ModernThemables.Controls
 
 		public void FocusOnOpen()
 		{
-			SyncCheckbox.Focus();
+            this.SyncCheckbox.Focus();
 		}
 	}
 }

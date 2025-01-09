@@ -1,14 +1,14 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	public class TextBox2 : TextBox
+    using System.Windows;
+    using System.Windows.Controls;
+
+    public class TextBox2 : TextBox
     {
         public CornerRadius CornerRadius
         {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
+            get => (CornerRadius)this.GetValue(CornerRadiusProperty);
+            set => this.SetValue(CornerRadiusProperty, value);
         }
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             nameof(CornerRadius),

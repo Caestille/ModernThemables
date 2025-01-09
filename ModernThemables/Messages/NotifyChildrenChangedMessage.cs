@@ -1,14 +1,14 @@
-﻿using ModernThemables.ViewModels;
-
-namespace ModernThemables.Messages
+﻿namespace ModernThemables.Messages
 {
-	public class NotifyChildrenChangedMessage
+    using ModernThemables.ViewModels;
+
+    public class NotifyChildrenChangedMessage
 	{
 		public GenericViewModelBase Sender { get; private set; }
 
 		public NotifyChildrenChangedMessage(GenericViewModelBase sender)
 		{
-			Sender = sender;
+            this.Sender = sender;
 		}
 	}
 
@@ -18,7 +18,7 @@ namespace ModernThemables.Messages
 
 		public NotifyChildrenChangedMessage(ViewModelBase<TChild> sender)
 		{
-			Sender = sender;
+            this.Sender = sender;
 		}
 	}
 }

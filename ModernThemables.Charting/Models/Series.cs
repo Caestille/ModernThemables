@@ -1,10 +1,10 @@
-﻿using ModernThemables.Charting.Interfaces;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-
-namespace ModernThemables.Charting.Models
+﻿namespace ModernThemables.Charting.Models
 {
+    using ModernThemables.Charting.Interfaces;
+    using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+
     /// <summary>
     /// Generic series.
     /// </summary>
@@ -35,16 +35,16 @@ namespace ModernThemables.Charting.Models
 		/// <inheritdoc />
 		public ObservableCollection<IChartEntity> Values
 		{
-			get => values;
+			get => this.values;
 			set
 			{
-				if (values != null)
+				if (this.values != null)
 				{
-					values.CollectionChanged -= Values_CollectionChanged;
+                    this.values.CollectionChanged -= this.Values_CollectionChanged;
 				}
-				values = value;
-				values.CollectionChanged += Values_CollectionChanged;
-				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Values)));
+                this.values = value;
+                this.values.CollectionChanged += this.Values_CollectionChanged;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Values)));
 			}
 		}
 

@@ -1,12 +1,12 @@
-﻿using ModernThemables.Charting.Controls;
-using ModernThemables.Charting.Controls.ChartComponents;
-using ModernThemables.Charting.Models;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace ModernThemables.Charting.Services
+﻿namespace ModernThemables.Charting.Services
 {
+    using ModernThemables.Charting.Controls;
+    using ModernThemables.Charting.Controls.ChartComponents;
+    using ModernThemables.Charting.Models;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+
     public static class ChartHelper
 	{
 		public static (int row, int column, Visibility visibility, Thickness margin, Orientation orientation) GetLegendProperties(LegendLocation legendLocation)

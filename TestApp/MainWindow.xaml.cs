@@ -1,8 +1,8 @@
-﻿using ModernThemables.Controls;
-using ModernThemables.ViewModels;
-
-namespace TestApp
+﻿namespace TestApp
 {
+    using ModernThemables.Controls;
+    using ModernThemables.ViewModels;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -12,8 +12,8 @@ namespace TestApp
         {
             public DgDataVm(string name, double value)
             {
-                Name = name;
-                Value = value;
+                this.Name = name;
+                this.Value = value;
             }
 
             public string Name { get; set; }
@@ -30,7 +30,7 @@ namespace TestApp
 
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this.DataGrid.ItemsSource = new List<DgDataVm>() { new DgDataVm("Hello World", 42), new DgDataVm("I am test data", 69) };
 

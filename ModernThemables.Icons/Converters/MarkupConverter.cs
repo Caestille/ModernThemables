@@ -1,11 +1,11 @@
-using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Markup;
-
 namespace ModernThemables.Icons.Converters
 {
+    using System;
+    using System.Globalization;
+    using System.Windows;
+    using System.Windows.Data;
+    using System.Windows.Markup;
+
     /// <summary>
     /// MarkupConverter is a MarkupExtension which can be used for IValueConverter.
     /// </summary>
@@ -43,7 +43,7 @@ namespace ModernThemables.Icons.Converters
         {
             try
             {
-                return Convert(value, targetType, parameter, culture);
+                return this.Convert(value, targetType, parameter, culture);
             }
             catch
             {
@@ -56,7 +56,7 @@ namespace ModernThemables.Icons.Converters
         {
             try
             {
-                return ConvertBack(value, targetType, parameter, culture);
+                return this.ConvertBack(value, targetType, parameter, culture);
             }
             catch
             {

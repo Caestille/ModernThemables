@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using ModernThemables.Charting.Interfaces;
-
-namespace ModernThemables.Charting.ViewModels
+﻿namespace ModernThemables.Charting.ViewModels
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using ModernThemables.Charting.Interfaces;
+
     /// <summary>
     /// An internal representation of a chart point for rendering the actual series with.
     /// </summary>
@@ -41,8 +41,8 @@ namespace ModernThemables.Charting.ViewModels
         private bool isMouseOver;
         public bool IsMouseOver
         {
-            get => isMouseOver;
-            set => SetProperty(ref isMouseOver, value);
+            get => this.isMouseOver;
+            set => this.SetProperty(ref this.isMouseOver, value);
         }
 
         /// <summary>
@@ -53,9 +53,9 @@ namespace ModernThemables.Charting.ViewModels
         /// <param name="backingPoint">The actual, unscaled point this represents.</param>
         public InternalChartEntity(double x, double y, IChartEntity backingPoint)
         {
-            X = x;
-            Y = y;
-            BackingPoint = backingPoint;
+            this.X = x;
+            this.Y = y;
+            this.BackingPoint = backingPoint;
         }
 
         /// <summary>
@@ -68,11 +68,11 @@ namespace ModernThemables.Charting.ViewModels
         /// <param name="fill">The <see cref="IChartBrush"/> entity fill.</param>
         public InternalChartEntity(double x, double y, IChartEntity backingPoint, IChartBrush? stroke, IChartBrush? fill)
         {
-            X = x;
-            Y = y;
-            BackingPoint = backingPoint;
-            Stroke = stroke;
-            Fill = fill;
+            this.X = x;
+            this.Y = y;
+            this.BackingPoint = backingPoint;
+            this.Stroke = stroke;
+            this.Fill = fill;
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ModernThemables.Icons
+﻿namespace ModernThemables.Icons
 {
+    using System;
+    using System.Collections.Generic;
+
     public static class IconDataFactory
     {
         public static Lazy<IDictionary<IconType, (string, bool)>> DataIndex { get; }

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Windows.Media;
-using System.Globalization;
-using System.Windows.Data;
-
-namespace ModernThemables.Converters
+﻿namespace ModernThemables.Converters
 {
-	/// <summary>
-	/// For a given <see cref="Color"/>, and <see cref="string"/> parameter dictating the component of the colour to
-	/// return (e.g.: 'R', 'G', 'B'), returns the desired component as a string. In reverse the latest of each component is
-	/// cached and the resulting colour returned.
-	/// </summary>
-	public class ColourRgbTextConverter : IValueConverter
+    using System;
+    using System.Windows.Media;
+    using System.Globalization;
+    using System.Windows.Data;
+
+    /// <summary>
+    /// For a given <see cref="Color"/>, and <see cref="string"/> parameter dictating the component of the colour to
+    /// return (e.g.: 'R', 'G', 'B'), returns the desired component as a string. In reverse the latest of each component is
+    /// cached and the resulting colour returned.
+    /// </summary>
+    public class ColourRgbTextConverter : IValueConverter
 	{
 		private byte r;
 		private byte g;
@@ -23,14 +23,14 @@ namespace ModernThemables.Converters
 			switch (toReturn)
 			{
 				case "R":
-					r = colour.R;
-					return r.ToString();
+                    this.r = colour.R;
+					return this.r.ToString();
 				case "G":
-					g = colour.G;
-					return g.ToString();
+                    this.g = colour.G;
+					return this.g.ToString();
 				case "B":
-					b = colour.B;
-					return b.ToString();
+                    this.b = colour.B;
+					return this.b.ToString();
 			}
 
 			return "0";
@@ -43,17 +43,17 @@ namespace ModernThemables.Converters
 			switch (toReturn)
 			{
 				case "R":
-					r = byte.Parse(component);
+                    this.r = byte.Parse(component);
 					break;
 				case "G":
-					g = byte.Parse(component);
+                    this.g = byte.Parse(component);
 					break;
 				case "B":
-					b = byte.Parse(component);
+                    this.b = byte.Parse(component);
 					break;
 			}
 
-			return Color.FromArgb(255, r, g, b);
+			return Color.FromArgb(255, this.r, this.g, this.b);
 		}
 	}
 }

@@ -1,15 +1,15 @@
-﻿using System.Windows.Shapes;
-using System.Windows.Media;
-using System.Windows;
-
-namespace ModernThemables.Charting.Models.PieChart
+﻿namespace ModernThemables.Charting.Models.PieChart
 {
+    using System.Windows.Shapes;
+    using System.Windows.Media;
+    using System.Windows;
+
     public class PieArc : Shape
     {
         public double Radius
         {
-            get => (double)GetValue(RadiusProperty);
-            set => SetValue(RadiusProperty, value);
+            get => (double)this.GetValue(RadiusProperty);
+            set => this.SetValue(RadiusProperty, value);
         }
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
             "Radius",
@@ -21,8 +21,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
 		public bool IsIndeterminate
         {
-            get => (bool)GetValue(IsIndeterminateProperty);
-            set => SetValue(IsIndeterminateProperty, value);
+            get => (bool)this.GetValue(IsIndeterminateProperty);
+            set => this.SetValue(IsIndeterminateProperty, value);
         }
         public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
 			"IsIndeterminate",
@@ -34,8 +34,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
 		public double PushOut
         {
-            get => (double)GetValue(PushOutProperty);
-            set => SetValue(PushOutProperty, value);
+            get => (double)this.GetValue(PushOutProperty);
+            set => this.SetValue(PushOutProperty, value);
         }
         public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
             "PushOut",
@@ -47,8 +47,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double InnerRadiusFraction
         {
-            get => (double)GetValue(InnerRadiusProperty);
-            set => SetValue(InnerRadiusProperty, value);
+            get => (double)this.GetValue(InnerRadiusProperty);
+            set => this.SetValue(InnerRadiusProperty, value);
         }
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
             "InnerRadiusFraction",
@@ -60,8 +60,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double RotationAngle
         {
-            get => (double)GetValue(RotationAngleProperty);
-            set => SetValue(RotationAngleProperty, value);
+            get => (double)this.GetValue(RotationAngleProperty);
+            set => this.SetValue(RotationAngleProperty, value);
         }
         public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
             "RotationAngle",
@@ -73,8 +73,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double CentreX
         {
-            get => (double)GetValue(CentreXProperty);
-            set => SetValue(CentreXProperty, value);
+            get => (double)this.GetValue(CentreXProperty);
+            set => this.SetValue(CentreXProperty, value);
         }
         public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
             "CentreX",
@@ -86,8 +86,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double CentreY
         {
-            get => (double)GetValue(CentreYProperty);
-            set => SetValue(CentreYProperty, value);
+            get => (double)this.GetValue(CentreYProperty);
+            set => this.SetValue(CentreYProperty, value);
         }
         public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
             "CentreY",
@@ -99,8 +99,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double Percentage
         {
-            get => (double)GetValue(PercentageProperty);
-            set => SetValue(PercentageProperty, value);
+            get => (double)this.GetValue(PercentageProperty);
+            set => this.SetValue(PercentageProperty, value);
         }
         public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
             "Percentage",
@@ -111,8 +111,8 @@ namespace ModernThemables.Charting.Models.PieChart
 
         public double PieceValue
         {
-            get => (double)GetValue(PieceValueProperty);
-            set => SetValue(PieceValueProperty, value);
+            get => (double)this.GetValue(PieceValueProperty);
+            set => this.SetValue(PieceValueProperty, value);
         }
         public static readonly DependencyProperty PieceValueProperty = DependencyProperty.Register(
             "PieceValue",
@@ -130,7 +130,7 @@ namespace ModernThemables.Charting.Models.PieChart
 
                 using (StreamGeometryContext context = geometry.Open())
                 {
-                    DrawGeometry(context);
+                    this.DrawGeometry(context);
                 }
 
                 // Freeze the geometry for performance benefits
@@ -142,36 +142,36 @@ namespace ModernThemables.Charting.Models.PieChart
 
         private void DrawGeometry(StreamGeometryContext context)
         {
-            Point startPoint = new Point(CentreX, CentreY);
+            Point startPoint = new Point(this.CentreX, this.CentreY);
 
-            if (Percentage == 100) Percentage = 99.9999;
+            if (this.Percentage == 100) this.Percentage = 99.9999;
 
-            var innerRadius = InnerRadiusFraction * Radius;
+            var innerRadius = this.InnerRadiusFraction * this.Radius;
 
-            Point innerArcStartPoint = ComputeCartesianCoordinate(RotationAngle, innerRadius);
-            innerArcStartPoint.Offset(CentreX, CentreY);
+            Point innerArcStartPoint = this.ComputeCartesianCoordinate(this.RotationAngle, innerRadius);
+            innerArcStartPoint.Offset(this.CentreX, this.CentreY);
 
-            Point innerArcEndPoint = ComputeCartesianCoordinate(RotationAngle + Percentage * 360 / 100, innerRadius);
-            innerArcEndPoint.Offset(CentreX, CentreY);
+            Point innerArcEndPoint = this.ComputeCartesianCoordinate(this.RotationAngle + this.Percentage * 360 / 100, innerRadius);
+            innerArcEndPoint.Offset(this.CentreX, this.CentreY);
 
-            Point outerArcStartPoint = ComputeCartesianCoordinate(RotationAngle, Radius);
-            outerArcStartPoint.Offset(CentreX, CentreY);
+            Point outerArcStartPoint = this.ComputeCartesianCoordinate(this.RotationAngle, this.Radius);
+            outerArcStartPoint.Offset(this.CentreX, this.CentreY);
 
-            Point outerArcEndPoint = ComputeCartesianCoordinate(RotationAngle + Percentage * 360 / 100, Radius);
-            outerArcEndPoint.Offset(CentreX, CentreY);
+            Point outerArcEndPoint = this.ComputeCartesianCoordinate(this.RotationAngle + this.Percentage * 360 / 100, this.Radius);
+            outerArcEndPoint.Offset(this.CentreX, this.CentreY);
 
-            bool largeArc = Percentage > 50;
+            bool largeArc = this.Percentage > 50;
 
-            if (PushOut > 0)
+            if (this.PushOut > 0)
             {
-                Point offset = ComputeCartesianCoordinate(RotationAngle + Percentage * 360 / 100 / 2, PushOut);
+                Point offset = this.ComputeCartesianCoordinate(this.RotationAngle + this.Percentage * 360 / 100 / 2, this.PushOut);
                 innerArcStartPoint.Offset(offset.X, offset.Y);
                 innerArcEndPoint.Offset(offset.X, offset.Y);
                 outerArcStartPoint.Offset(offset.X, offset.Y);
                 outerArcEndPoint.Offset(offset.X, offset.Y);
             }
 
-            Size outerArcSize = new Size(Radius, Radius);
+            Size outerArcSize = new Size(this.Radius, this.Radius);
             Size innerArcSize = new Size(innerRadius, innerRadius);
 
             context.BeginFigure(innerArcStartPoint, true, true);

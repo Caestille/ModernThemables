@@ -1,7 +1,7 @@
-﻿using ModernThemables.Charting.Interfaces;
-
-namespace ModernThemables.Charting.Models.CartesianChart
+﻿namespace ModernThemables.Charting.Models.CartesianChart
 {
+    using ModernThemables.Charting.Interfaces;
+
     /// <summary>
     /// A point representing a <see cref="double"/> in the Y axis and a <see cref="System.DateTime"/> on the X axis.
     /// </summary>
@@ -21,10 +21,10 @@ namespace ModernThemables.Charting.Models.CartesianChart
         public double Value { get; }
 
         /// <inheritdoc />
-        public double XValue => new TimeSpan(DateTime.Ticks).TotalDays;
+        public double XValue => new TimeSpan(this.DateTime.Ticks).TotalDays;
 
         /// <inheritdoc />
-        public double YValue => Value;
+        public double YValue => this.Value;
 
         /// <inheritdoc />
         public IChartBrush Stroke => throw new NotImplementedException();
@@ -46,20 +46,20 @@ namespace ModernThemables.Charting.Models.CartesianChart
         /// <param name="value">The input <see cref="double"/> Y axis value.</param>
         public DateTimePoint(DateTime dateTime, double value)
         {
-            DateTime = dateTime;
-            Value = value;
+            this.DateTime = dateTime;
+            this.Value = value;
         }
 
         /// <inheritdoc />
         public object XValueToImplementation()
         {
-            return new DateTime(TimeSpan.FromDays(XValue).Ticks);
+            return new DateTime(TimeSpan.FromDays(this.XValue).Ticks);
         }
 
         /// <inheritdoc />
         public object YValueToImplementation()
         {
-            return YValue;
+            return this.YValue;
         }
 
         /// <inheritdoc />

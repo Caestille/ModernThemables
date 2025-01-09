@@ -1,8 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-
-namespace ModernThemables.Icons.AnimatedIcons
+﻿namespace ModernThemables.Icons.AnimatedIcons
 {
+    using System.Windows;
+    using System.Windows.Controls;
+
     public class AnimatedMenuIcon : Control
     {
         static AnimatedMenuIcon()
@@ -18,8 +18,8 @@ namespace ModernThemables.Icons.AnimatedIcons
 
         public bool IsOpen
         {
-            get => (bool)GetValue(IsOpenProperty);
-            set => SetValue(IsOpenProperty, value);
+            get => (bool)this.GetValue(IsOpenProperty);
+            set => this.SetValue(IsOpenProperty, value);
         }
     }
 }

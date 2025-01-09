@@ -1,11 +1,11 @@
-﻿using System;
-using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Media;
-
-namespace ModernThemables.Converters
+﻿namespace ModernThemables.Converters
 {
-	public class BrushToColourConverter : IValueConverter
+    using System;
+    using System.Globalization;
+    using System.Windows.Data;
+    using System.Windows.Media;
+
+    public class BrushToColourConverter : IValueConverter
 	{
 
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

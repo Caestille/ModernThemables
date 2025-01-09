@@ -1,9 +1,9 @@
-﻿using System;
-using System.Globalization;
-using System.Windows;
-
-namespace ModernThemables.Icons.Converters
+﻿namespace ModernThemables.Icons.Converters
 {
+    using System;
+    using System.Globalization;
+    using System.Windows;
+
     public class DataTypeValueConverter : MarkupConverter
     {
         private static DataTypeValueConverter? _instance;

@@ -1,15 +1,15 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	public class DataGrid2 : DataGrid
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+
+    public class DataGrid2 : DataGrid
     {
         public CornerRadius CornerRadius
         {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
+            get => (CornerRadius)this.GetValue(CornerRadiusProperty);
+            set => this.SetValue(CornerRadiusProperty, value);
         }
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             nameof(CornerRadius),
@@ -19,8 +19,8 @@ namespace ModernThemables.Controls
 
         public Brush ColumnHeaderForeground
         {
-            get => (Brush)GetValue(ColumnHeaderForegroundProperty);
-            set => SetValue(ColumnHeaderForegroundProperty, value);
+            get => (Brush)this.GetValue(ColumnHeaderForegroundProperty);
+            set => this.SetValue(ColumnHeaderForegroundProperty, value);
         }
         public static readonly DependencyProperty ColumnHeaderForegroundProperty = DependencyProperty.Register(
             nameof(ColumnHeaderForeground),

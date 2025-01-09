@@ -39,11 +39,11 @@
 		/// <param name="indicatorFormatter">The formatter to format a value into a value to display on the indicator.</param>
 		public AxisLabel(double value, double location, Func<double, string> valueFormatter, Func<double, string>? indicatorFormatter = null)
 		{
-			Value = value;
-			Location = location;
-			ValueFormatter = valueFormatter;
-			IndicatorFormatter = indicatorFormatter;
-			FormattedValue = valueFormatter(value);
+            this.Value = value;
+            this.Location = location;
+            this.ValueFormatter = valueFormatter;
+            this.IndicatorFormatter = indicatorFormatter;
+            this.FormattedValue = valueFormatter(value);
 		}
 	}
 }

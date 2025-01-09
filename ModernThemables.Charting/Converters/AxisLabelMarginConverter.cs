@@ -1,12 +1,12 @@
-﻿using CoreUtilities.Converters;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
-
-namespace ModernThemables.Charting.Converters
+﻿namespace ModernThemables.Charting.Converters
 {
+    using CoreUtilities.Converters;
+    using System.Globalization;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+    using System.Windows.Media;
+
     /// <summary>
     /// Sets the margin for a textblock on an axis
     /// </summary>

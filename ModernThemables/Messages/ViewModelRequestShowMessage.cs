@@ -1,8 +1,8 @@
-﻿using ModernThemables.ViewModels;
-
-namespace ModernThemables.Messages
+﻿namespace ModernThemables.Messages
 {
-	public class ViewModelRequestShowMessage
+    using ModernThemables.ViewModels;
+
+    public class ViewModelRequestShowMessage
     {
         public GenericViewModelBase Sender { get; protected set; }
 
@@ -10,8 +10,8 @@ namespace ModernThemables.Messages
 
 		public ViewModelRequestShowMessage(GenericViewModelBase viewModelToShow, GenericViewModelBase sender)
 		{
-			ViewModel = viewModelToShow;
-            Sender = sender;
+            this.ViewModel = viewModelToShow;
+            this.Sender = sender;
         }
 	}
 
@@ -23,8 +23,8 @@ namespace ModernThemables.Messages
 
 		public ViewModelRequestShowMessage(T viewModelToShow, GenericViewModelBase sender)
 		{
-			ViewModel = viewModelToShow;
-            Sender = sender;
+            this.ViewModel = viewModelToShow;
+            this.Sender = sender;
         }
 	}
 }

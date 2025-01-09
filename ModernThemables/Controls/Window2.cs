@@ -1,27 +1,27 @@
-﻿using System;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Automation;
-using System.Windows.Automation.Peers;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Controls.Primitives;
-using Windows.Win32;
-using Windows.Win32.Foundation;
-using ControlzEx;
-using ControlzEx.Native;
-using MahApps.Metro.Automation.Peers;
-using MahApps.Metro.Controls;
-using System.Collections;
-using ModernThemables.ViewModels;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	/// <summary>
-	/// An extended Window class.
-	/// </summary>
-	[TemplatePart(Name = PART_Icon, Type = typeof(UIElement))]
+    using System;
+    using System.Reflection;
+    using System.Windows;
+    using System.Windows.Automation;
+    using System.Windows.Automation.Peers;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Controls.Primitives;
+    using Windows.Win32;
+    using Windows.Win32.Foundation;
+    using ControlzEx;
+    using ControlzEx.Native;
+    using MahApps.Metro.Automation.Peers;
+    using MahApps.Metro.Controls;
+    using System.Collections;
+    using ModernThemables.ViewModels;
+
+    /// <summary>
+    /// An extended Window class.
+    /// </summary>
+    [TemplatePart(Name = PART_Icon, Type = typeof(UIElement))]
 	[TemplatePart(Name = PART_TitleBar, Type = typeof(UIElement))]
 	[TemplatePart(Name = PART_WindowTitleBackground, Type = typeof(UIElement))]
 	[TemplatePart(Name = PART_Content, Type = typeof(MetroContentControl))]
@@ -60,8 +60,8 @@ namespace ModernThemables.Controls
 
 		public bool ShowThemingMenu
 		{
-			get => (bool)GetValue(ShowThemingMenuProperty);
-			set => SetValue(ShowThemingMenuProperty, value);
+			get => (bool)this.GetValue(ShowThemingMenuProperty);
+			set => this.SetValue(ShowThemingMenuProperty, value);
 		}
 		public static readonly DependencyProperty ShowThemingMenuProperty = DependencyProperty.Register(
 			nameof(ShowThemingMenu),
@@ -70,8 +70,8 @@ namespace ModernThemables.Controls
 			new PropertyMetadata(false));
         public bool IsTransparentHeader
         {
-            get => (bool)GetValue(IsTransparentHeaderProperty);
-            set => SetValue(IsTransparentHeaderProperty, value);
+            get => (bool)this.GetValue(IsTransparentHeaderProperty);
+            set => this.SetValue(IsTransparentHeaderProperty, value);
         }
         public static readonly DependencyProperty IsTransparentHeaderProperty = DependencyProperty.Register(
             nameof(IsTransparentHeader),
@@ -81,8 +81,8 @@ namespace ModernThemables.Controls
 
         public bool ShowIcon
 		{
-			get => (bool)GetValue(ShowIconProperty);
-			set => SetValue(ShowIconProperty, value);
+			get => (bool)this.GetValue(ShowIconProperty);
+			set => this.SetValue(ShowIconProperty, value);
 		}
 		public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
 			nameof(ShowIcon),
@@ -101,8 +101,8 @@ namespace ModernThemables.Controls
 
 		public EdgeMode IconEdgeMode
 		{
-			get => (EdgeMode)GetValue(IconEdgeModeProperty);
-			set => SetValue(IconEdgeModeProperty, value);
+			get => (EdgeMode)this.GetValue(IconEdgeModeProperty);
+			set => this.SetValue(IconEdgeModeProperty, value);
 		}
 		public static readonly DependencyProperty IconEdgeModeProperty = DependencyProperty.Register(
 			nameof(IconEdgeMode),
@@ -112,8 +112,8 @@ namespace ModernThemables.Controls
 
 		public BitmapScalingMode IconBitmapScalingMode
 		{
-			get => (BitmapScalingMode)GetValue(IconBitmapScalingModeProperty);
-			set => SetValue(IconBitmapScalingModeProperty, value);
+			get => (BitmapScalingMode)this.GetValue(IconBitmapScalingModeProperty);
+			set => this.SetValue(IconBitmapScalingModeProperty, value);
 		}
 		public static readonly DependencyProperty IconBitmapScalingModeProperty = DependencyProperty.Register(
 			nameof(IconBitmapScalingMode),
@@ -123,8 +123,8 @@ namespace ModernThemables.Controls
 
 		public MultiFrameImageMode IconScalingMode
 		{
-			get => (MultiFrameImageMode)GetValue(IconScalingModeProperty);
-			set => SetValue(IconScalingModeProperty, value);
+			get => (MultiFrameImageMode)this.GetValue(IconScalingModeProperty);
+			set => this.SetValue(IconScalingModeProperty, value);
 		}
 		public static readonly DependencyProperty IconScalingModeProperty = DependencyProperty.Register(
 			nameof(IconScalingMode),
@@ -134,8 +134,8 @@ namespace ModernThemables.Controls
 
 		public bool ShowTitleBar
 		{
-			get => (bool)GetValue(ShowTitleBarProperty);
-			set => SetValue(ShowTitleBarProperty, value);
+			get => (bool)this.GetValue(ShowTitleBarProperty);
+			set => this.SetValue(ShowTitleBarProperty, value);
 		}
 		public static readonly DependencyProperty ShowTitleBarProperty = DependencyProperty.Register(
 			nameof(ShowTitleBar),
@@ -145,8 +145,8 @@ namespace ModernThemables.Controls
 
 		public bool ShowSystemMenu
 		{
-			get => (bool)GetValue(ShowSystemMenuProperty);
-			set => SetValue(ShowSystemMenuProperty, value);
+			get => (bool)this.GetValue(ShowSystemMenuProperty);
+			set => this.SetValue(ShowSystemMenuProperty, value);
 		}
 		public static readonly DependencyProperty ShowSystemMenuProperty = DependencyProperty.Register(
 			nameof(ShowSystemMenu),
@@ -156,8 +156,8 @@ namespace ModernThemables.Controls
 
 		public bool ShowSystemMenuOnRightClick
 		{
-			get => (bool)GetValue(ShowSystemMenuOnRightClickProperty);
-			set => SetValue(ShowSystemMenuOnRightClickProperty, value);
+			get => (bool)this.GetValue(ShowSystemMenuOnRightClickProperty);
+			set => this.SetValue(ShowSystemMenuOnRightClickProperty, value);
 		}
 		public static readonly DependencyProperty ShowSystemMenuOnRightClickProperty = DependencyProperty.Register(
 			nameof(ShowSystemMenuOnRightClick),
@@ -167,8 +167,8 @@ namespace ModernThemables.Controls
 
 		public int TitleBarHeight
 		{
-			get => (int)GetValue(TitleBarHeightProperty);
-			set => SetValue(TitleBarHeightProperty, value);
+			get => (int)this.GetValue(TitleBarHeightProperty);
+			set => this.SetValue(TitleBarHeightProperty, value);
 		}
 		public static readonly DependencyProperty TitleBarHeightProperty = DependencyProperty.Register(
 			nameof(TitleBarHeight),
@@ -186,8 +186,8 @@ namespace ModernThemables.Controls
 
 		public HorizontalAlignment TitleAlignment
 		{
-			get => (HorizontalAlignment)GetValue(TitleAlignmentProperty);
-			set => SetValue(TitleAlignmentProperty, value);
+			get => (HorizontalAlignment)this.GetValue(TitleAlignmentProperty);
+			set => this.SetValue(TitleAlignmentProperty, value);
 		}
 		public static readonly DependencyProperty TitleAlignmentProperty = DependencyProperty.Register(
 			nameof(TitleAlignment),
@@ -211,8 +211,8 @@ namespace ModernThemables.Controls
 
 		public Brush? TitleForeground
 		{
-			get => (Brush?)GetValue(TitleForegroundProperty);
-			set => SetValue(TitleForegroundProperty, value);
+			get => (Brush?)this.GetValue(TitleForegroundProperty);
+			set => this.SetValue(TitleForegroundProperty, value);
 		}
 		public static readonly DependencyProperty TitleForegroundProperty = DependencyProperty.Register(
 			nameof(TitleForeground),
@@ -221,8 +221,8 @@ namespace ModernThemables.Controls
 
 		public Brush? NonActiveTitleForeground
 		{
-			get => (Brush?)GetValue(NonActiveTitleForegroundProperty);
-			set => SetValue(NonActiveTitleForegroundProperty, value);
+			get => (Brush?)this.GetValue(NonActiveTitleForegroundProperty);
+			set => this.SetValue(NonActiveTitleForegroundProperty, value);
 		}
 		public static readonly DependencyProperty NonActiveTitleForegroundProperty = DependencyProperty.Register(
 			nameof(NonActiveTitleForeground),
@@ -231,8 +231,8 @@ namespace ModernThemables.Controls
 
 		public DataTemplate? TitleTemplate
 		{
-			get => (DataTemplate?)GetValue(TitleTemplateProperty);
-			set => SetValue(TitleTemplateProperty, value);
+			get => (DataTemplate?)this.GetValue(TitleTemplateProperty);
+			set => this.SetValue(TitleTemplateProperty, value);
 		}
 		public static readonly DependencyProperty TitleTemplateProperty = DependencyProperty.Register(
 			nameof(TitleTemplate),
@@ -242,8 +242,8 @@ namespace ModernThemables.Controls
 
         public DataTemplate? TransparentTitleTemplate
         {
-            get => (DataTemplate?)GetValue(TransparentTitleTemplateProperty);
-            set => SetValue(TransparentTitleTemplateProperty, value);
+            get => (DataTemplate?)this.GetValue(TransparentTitleTemplateProperty);
+            set => this.SetValue(TransparentTitleTemplateProperty, value);
         }
         public static readonly DependencyProperty TransparentTitleTemplateProperty = DependencyProperty.Register(
             nameof(TransparentTitleTemplate),
@@ -253,8 +253,8 @@ namespace ModernThemables.Controls
 
         public Brush WindowTitleBrush
 		{
-			get => (Brush)GetValue(WindowTitleBrushProperty);
-			set => SetValue(WindowTitleBrushProperty, value);
+			get => (Brush)this.GetValue(WindowTitleBrushProperty);
+			set => this.SetValue(WindowTitleBrushProperty, value);
 		}
 		public static readonly DependencyProperty WindowTitleBrushProperty = DependencyProperty.Register(
 			nameof(WindowTitleBrush),
@@ -264,8 +264,8 @@ namespace ModernThemables.Controls
 
 		public Brush NonActiveWindowTitleBrush
 		{
-			get => (Brush)GetValue(NonActiveWindowTitleBrushProperty);
-			set => SetValue(NonActiveWindowTitleBrushProperty, value);
+			get => (Brush)this.GetValue(NonActiveWindowTitleBrushProperty);
+			set => this.SetValue(NonActiveWindowTitleBrushProperty, value);
 		}
 		public static readonly DependencyProperty NonActiveWindowTitleBrushProperty = DependencyProperty.Register(
 			nameof(NonActiveWindowTitleBrush),
@@ -275,8 +275,8 @@ namespace ModernThemables.Controls
 
 		public Brush NonActiveBorderBrush
 		{
-			get => (Brush)GetValue(NonActiveBorderBrushProperty);
-			set => SetValue(NonActiveBorderBrushProperty, value);
+			get => (Brush)this.GetValue(NonActiveBorderBrushProperty);
+			set => this.SetValue(NonActiveBorderBrushProperty, value);
 		}
 		public static readonly DependencyProperty NonActiveBorderBrushProperty = DependencyProperty.Register(
 			nameof(NonActiveBorderBrush),
@@ -286,8 +286,8 @@ namespace ModernThemables.Controls
 
 		public DataTemplate? IconTemplate
 		{
-			get => (DataTemplate?)GetValue(IconTemplateProperty);
-			set => SetValue(IconTemplateProperty, value);
+			get => (DataTemplate?)this.GetValue(IconTemplateProperty);
+			set => this.SetValue(IconTemplateProperty, value);
 		}
 		public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.Register(
 			nameof(IconTemplate),
@@ -303,8 +303,8 @@ namespace ModernThemables.Controls
 
 		public WindowCommands? LeftWindowCommands
 		{
-			get => (WindowCommands?)GetValue(LeftWindowCommandsProperty);
-			set => SetValue(LeftWindowCommandsProperty, value);
+			get => (WindowCommands?)this.GetValue(LeftWindowCommandsProperty);
+			set => this.SetValue(LeftWindowCommandsProperty, value);
 		}
 		public static readonly DependencyProperty LeftWindowCommandsProperty = DependencyProperty.Register(
 			nameof(LeftWindowCommands),
@@ -324,8 +324,8 @@ namespace ModernThemables.Controls
 
 		public WindowCommands? RightWindowCommands
 		{
-			get => (WindowCommands?)GetValue(RightWindowCommandsProperty);
-			set => SetValue(RightWindowCommandsProperty, value);
+			get => (WindowCommands?)this.GetValue(RightWindowCommandsProperty);
+			set => this.SetValue(RightWindowCommandsProperty, value);
 		}
 
 		public static readonly DependencyProperty RightWindowCommandsProperty = DependencyProperty.Register(
@@ -346,8 +346,8 @@ namespace ModernThemables.Controls
 
 		public WindowButtonCommands? WindowButtonCommands
 		{
-			get => (WindowButtonCommands?)GetValue(WindowButtonCommandsProperty);
-			set => SetValue(WindowButtonCommandsProperty, value);
+			get => (WindowButtonCommands?)this.GetValue(WindowButtonCommandsProperty);
+			set => this.SetValue(WindowButtonCommandsProperty, value);
 		}
 		public static readonly DependencyProperty WindowButtonCommandsProperty = DependencyProperty.Register(
 			nameof(WindowButtonCommands),
@@ -365,8 +365,8 @@ namespace ModernThemables.Controls
 
 		public bool IsWindowDraggable
 		{
-			get => (bool)GetValue(IsWindowDraggableProperty);
-			set => SetValue(IsWindowDraggableProperty, value);
+			get => (bool)this.GetValue(IsWindowDraggableProperty);
+			set => this.SetValue(IsWindowDraggableProperty, value);
 		}
 		public static readonly DependencyProperty IsWindowDraggableProperty = DependencyProperty.Register(
 			nameof(IsWindowDraggable),
@@ -380,24 +380,24 @@ namespace ModernThemables.Controls
 			{
 				// cheat, make a list with all logical content and return the enumerator
 				ArrayList children = new ArrayList();
-				if (Content != null)
+				if (this.Content != null)
 				{
-					children.Add(Content);
+					children.Add(this.Content);
 				}
 
-				if (LeftWindowCommands != null)
+				if (this.LeftWindowCommands != null)
 				{
-					children.Add(LeftWindowCommands);
+					children.Add(this.LeftWindowCommands);
 				}
 
-				if (RightWindowCommands != null)
+				if (this.RightWindowCommands != null)
 				{
-					children.Add(RightWindowCommands);
+					children.Add(this.RightWindowCommands);
 				}
 
-				if (WindowButtonCommands != null)
+				if (this.WindowButtonCommands != null)
 				{
-					children.Add(WindowButtonCommands);
+					children.Add(this.WindowButtonCommands);
 				}
 
 				return children.GetEnumerator();
@@ -425,98 +425,98 @@ namespace ModernThemables.Controls
 
 		public Window2()
         {
-            themeVm.TransparentHeaderChanged += (sender, e) =>
+            this.themeVm.TransparentHeaderChanged += (sender, e) =>
             {
                 Application.Current.Dispatcher.Invoke(() => {
-                    IsTransparentHeader = e;
-                    titleBarBackground.Visibility = e ? Visibility.Hidden : Visibility.Visible;
-                    WindowButtonCommands.Foreground = e
+                    this.IsTransparentHeader = e;
+                    this.titleBarBackground.Visibility = e ? Visibility.Hidden : Visibility.Visible;
+                    this.WindowButtonCommands.Foreground = e
                         ? Application.Current.Resources["PrimaryTextBrush"] as SolidColorBrush
                         : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
                 });
 
             };
-            themeVm.IsDarkChanged += (sender, e) =>
+            this.themeVm.IsDarkChanged += (sender, e) =>
             {
-                Application.Current.Dispatcher.Invoke(() => { 
-                    WindowButtonCommands.Foreground = themeVm.IsTransparentHeader
+                Application.Current.Dispatcher.Invoke(() => {
+                    this.WindowButtonCommands.Foreground = this.themeVm.IsTransparentHeader
                         ? Application.Current.Resources["PrimaryTextBrush"] as SolidColorBrush
                         : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
                 });
 
             };
-            DataContextChanged += Window2_DataContextChanged;
+            DataContextChanged += this.Window2_DataContextChanged;
 		}
 
 		private void UpdateIconVisibility()
 		{
-			var isVisible = (Icon is not null || IconTemplate is not null)
-							&& (!ShowTitleBar || (ShowTitleBar));
-			icon?.SetCurrentValue(VisibilityProperty, isVisible ? Visibility.Visible : Visibility.Collapsed);
+			var isVisible = (this.Icon is not null || this.IconTemplate is not null)
+							&& (!this.ShowTitleBar || (this.ShowTitleBar));
+            this.icon?.SetCurrentValue(VisibilityProperty, isVisible ? Visibility.Visible : Visibility.Collapsed);
 		}
 
 		private void UpdateTitleBarElementsVisibility()
 		{
-			UpdateIconVisibility();
+            this.UpdateIconVisibility();
 
-			var newVisibility = TitleBarHeight > 0 && ShowTitleBar ? Visibility.Visible : Visibility.Collapsed;
+			var newVisibility = this.TitleBarHeight > 0 && this.ShowTitleBar ? Visibility.Visible : Visibility.Collapsed;
 
-			titleBar?.SetCurrentValue(VisibilityProperty, newVisibility);
-            if (titleBarBackground != null)
+            this.titleBar?.SetCurrentValue(VisibilityProperty, newVisibility);
+            if (this.titleBarBackground != null)
             {
-                titleBarBackground.SetCurrentValue(VisibilityProperty, newVisibility);
-                titleBarBackground.Visibility = themeVm.IsTransparentHeader ? Visibility.Hidden : Visibility.Visible;
+                this.titleBarBackground.SetCurrentValue(VisibilityProperty, newVisibility);
+                this.titleBarBackground.Visibility = this.themeVm.IsTransparentHeader ? Visibility.Hidden : Visibility.Visible;
             }
-            IsTransparentHeader = themeVm.IsTransparentHeader;
-            if (WindowButtonCommands != null)
+            this.IsTransparentHeader = this.themeVm.IsTransparentHeader;
+            if (this.WindowButtonCommands != null)
             {
-                WindowButtonCommands.Foreground = themeVm.IsTransparentHeader
+                this.WindowButtonCommands.Foreground = this.themeVm.IsTransparentHeader
                     ? Application.Current.Resources["PrimaryTextBrush"] as SolidColorBrush
                     : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
             }
 
-            SetWindowEvents();
+            this.SetWindowEvents();
 		}
 
 		private void Window2_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			// MahApps add these controls to the window with AddLogicalChild method.
 			// This has the side effect that the DataContext doesn't update, so do this now here.
-			if (LeftWindowCommands != null)
+			if (this.LeftWindowCommands != null)
 			{
-				LeftWindowCommands.DataContext = DataContext;
+                this.LeftWindowCommands.DataContext = this.DataContext;
 			}
 
-			if (RightWindowCommands != null)
+			if (this.RightWindowCommands != null)
 			{
-				RightWindowCommands.DataContext = DataContext;
+                this.RightWindowCommands.DataContext = this.DataContext;
 			}
 
-			if (WindowButtonCommands != null)
+			if (this.WindowButtonCommands != null)
 			{
-				WindowButtonCommands.DataContext = DataContext;
+                this.WindowButtonCommands.DataContext = this.DataContext;
 			}
 		}
 
 		private void Window2_SizeChanged(object sender, RoutedEventArgs e)
 		{
 			// this all works only for centered title
-			if (TitleAlignment != HorizontalAlignment.Center
-				|| titleBar is null)
+			if (this.TitleAlignment != HorizontalAlignment.Center
+				|| this.titleBar is null)
 			{
 				return;
 			}
 
 			// Half of this Window2
-			var halfDistance = ActualWidth / 2;
+			var halfDistance = this.ActualWidth / 2;
 			// Distance between center and left/right
-			var margin = (Thickness)titleBar.GetValue(MarginProperty);
-			var distanceToCenter = (titleBar.DesiredSize.Width - margin.Left - margin.Right) / 2;
+			var margin = (Thickness)this.titleBar.GetValue(MarginProperty);
+			var distanceToCenter = (this.titleBar.DesiredSize.Width - margin.Left - margin.Right) / 2;
 
-			var iconWidth = icon?.ActualWidth ?? 0;
-			var leftWindowCommandsWidth = LeftWindowCommands?.ActualWidth ?? 0;
-			var rightWindowCommandsWidth = RightWindowCommands?.ActualWidth ?? 0;
-			var windowButtonCommandsWith = WindowButtonCommands?.ActualWidth ?? 0;
+			var iconWidth = this.icon?.ActualWidth ?? 0;
+			var leftWindowCommandsWidth = this.LeftWindowCommands?.ActualWidth ?? 0;
+			var rightWindowCommandsWidth = this.RightWindowCommands?.ActualWidth ?? 0;
+			var windowButtonCommandsWith = this.WindowButtonCommands?.ActualWidth ?? 0;
 
 			// Distance between right edge from LeftWindowCommands to left window side
 			var distanceFromLeft = iconWidth + leftWindowCommandsWidth;
@@ -529,15 +529,15 @@ namespace ModernThemables.Controls
 			var dRight = distanceFromRight + distanceToCenter + horizontalMargin;
 			if ((dLeft < halfDistance) && (dRight < halfDistance))
 			{
-				titleBar.SetCurrentValue(MarginProperty, default(Thickness));
-				Grid.SetColumn(titleBar, 0);
-				Grid.SetColumnSpan(titleBar, 3);
+                this.titleBar.SetCurrentValue(MarginProperty, default(Thickness));
+				Grid.SetColumn(this.titleBar, 0);
+				Grid.SetColumnSpan(this.titleBar, 3);
 			}
 			else
 			{
-				titleBar.SetCurrentValue(MarginProperty, new Thickness(leftWindowCommandsWidth, 0, rightWindowCommandsWidth, 0));
-				Grid.SetColumn(titleBar, 1);
-				Grid.SetColumnSpan(titleBar, 1);
+                this.titleBar.SetCurrentValue(MarginProperty, new Thickness(leftWindowCommandsWidth, 0, rightWindowCommandsWidth, 0));
+				Grid.SetColumn(this.titleBar, 1);
+				Grid.SetColumnSpan(this.titleBar, 1);
 			}
 		}
 
@@ -564,25 +564,25 @@ namespace ModernThemables.Controls
 		{
 			base.OnApplyTemplate();
 
-			SettingsCloseButton = GetTemplateChild(PART_SettingsCloseButton) as Button;
-			SettingsCloseRegion = GetTemplateChild(PART_SettingsCloseRegion) as Button;
-			ThemingMenu = GetTemplateChild(PART_ThemingMenu) as ThemingControl;
-			ThemingMenu.DataContext = themeVm;
+            this.SettingsCloseButton = this.GetTemplateChild(PART_SettingsCloseButton) as Button;
+            this.SettingsCloseRegion = this.GetTemplateChild(PART_SettingsCloseRegion) as Button;
+            this.ThemingMenu = this.GetTemplateChild(PART_ThemingMenu) as ThemingControl;
+            this.ThemingMenu.DataContext = this.themeVm;
 
-			LeftWindowCommands ??= new WindowCommands();
-			RightWindowCommands ??= new WindowCommands();
-			WindowButtonCommands ??= new WindowButtonCommands();
+            this.LeftWindowCommands ??= new WindowCommands();
+            this.RightWindowCommands ??= new WindowCommands();
+            this.WindowButtonCommands ??= new WindowButtonCommands();
 
-			//this.LeftWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
-			//this.RightWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
-			WindowButtonCommands.SetValue(WindowButtonCommands.ParentWindowPropertyKey, this);
+            //this.LeftWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
+            //this.RightWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
+            this.WindowButtonCommands.SetValue(WindowButtonCommands.ParentWindowPropertyKey, this);
 
-			icon = GetTemplateChild(PART_Icon) as FrameworkElement;
-			titleBar = GetTemplateChild(PART_TitleBar) as UIElement;
-			titleBarBackground = GetTemplateChild(PART_WindowTitleBackground) as UIElement;
-            windowTitleThumb = GetTemplateChild(PART_WindowTitleThumb) as Thumb;
+            this.icon = this.GetTemplateChild(PART_Icon) as FrameworkElement;
+            this.titleBar = this.GetTemplateChild(PART_TitleBar) as UIElement;
+            this.titleBarBackground = this.GetTemplateChild(PART_WindowTitleBackground) as UIElement;
+            this.windowTitleThumb = this.GetTemplateChild(PART_WindowTitleThumb) as Thumb;
 
-			UpdateTitleBarElementsVisibility();
+            this.UpdateTitleBarElementsVisibility();
 		}
 
 		/// <summary>
@@ -597,7 +597,7 @@ namespace ModernThemables.Controls
 		{
 			get
 			{
-				VerifyAccess();
+                this.VerifyAccess();
 				var value = typeof(Window)
 					.GetProperty("CriticalHandle", BindingFlags.NonPublic | BindingFlags.Instance)?
 					.GetValue(this, new object[0]) 
@@ -608,104 +608,104 @@ namespace ModernThemables.Controls
 
 		private void ClearWindowEvents()
 		{
-			if (windowTitleThumb != null)
+			if (this.windowTitleThumb != null)
 			{
-				windowTitleThumb.PreviewMouseLeftButtonUp -= WindowTitleThumbOnPreviewMouseLeftButtonUp;
-				windowTitleThumb.DragDelta -= WindowTitleThumbMoveOnDragDelta;
-				windowTitleThumb.MouseDoubleClick -= WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
-				windowTitleThumb.MouseRightButtonUp -= WindowTitleThumbSystemMenuOnMouseRightButtonUp;
+                this.windowTitleThumb.PreviewMouseLeftButtonUp -= this.WindowTitleThumbOnPreviewMouseLeftButtonUp;
+                this.windowTitleThumb.DragDelta -= this.WindowTitleThumbMoveOnDragDelta;
+                this.windowTitleThumb.MouseDoubleClick -= this.WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
+                this.windowTitleThumb.MouseRightButtonUp -= this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
 			}
 
-			if (titleBar is IMetroThumb thumbContentControl)
+			if (this.titleBar is IMetroThumb thumbContentControl)
 			{
-				thumbContentControl.PreviewMouseLeftButtonUp -= WindowTitleThumbOnPreviewMouseLeftButtonUp;
-				thumbContentControl.DragDelta -= WindowTitleThumbMoveOnDragDelta;
-				thumbContentControl.MouseDoubleClick -= WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
-				thumbContentControl.MouseRightButtonUp -= WindowTitleThumbSystemMenuOnMouseRightButtonUp;
+				thumbContentControl.PreviewMouseLeftButtonUp -= this.WindowTitleThumbOnPreviewMouseLeftButtonUp;
+				thumbContentControl.DragDelta -= this.WindowTitleThumbMoveOnDragDelta;
+				thumbContentControl.MouseDoubleClick -= this.WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
+				thumbContentControl.MouseRightButtonUp -= this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
 			}
 
-			if (icon != null)
+			if (this.icon != null)
 			{
-				icon.PreviewMouseLeftButtonUp -= WindowTitleThumbSystemMenuOnMouseRightButtonUp;
+                this.icon.PreviewMouseLeftButtonUp -= this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
 			}
 
-			if (WindowButtonCommands != null)
+			if (this.WindowButtonCommands != null)
 			{
-				WindowButtonCommands.ToggleThemeingMenu -= ToggleShowThemingMenu;
-				WindowButtonCommands.MaximisingWindow -= OnMaximise;
-				WindowButtonCommands.MaximisedWindow -= OnMaximised;
+                this.WindowButtonCommands.ToggleThemeingMenu -= this.ToggleShowThemingMenu;
+                this.WindowButtonCommands.MaximisingWindow -= this.OnMaximise;
+                this.WindowButtonCommands.MaximisedWindow -= this.OnMaximised;
 			}
 
-			if (SettingsCloseButton != null)
+			if (this.SettingsCloseButton != null)
 			{
-				SettingsCloseButton.Click -= CloseThemingMenu;
+                this.SettingsCloseButton.Click -= this.CloseThemingMenu;
 			}
 
-			if (SettingsCloseRegion != null)
+			if (this.SettingsCloseRegion != null)
 			{
-				SettingsCloseRegion.Click -= CloseThemingMenu;
+                this.SettingsCloseRegion.Click -= this.CloseThemingMenu;
 			}
 
-			if (ThemingMenu != null)
+			if (this.ThemingMenu != null)
 			{
-				ThemingMenu.InternalRequestClose -= ThemingMenu_InternalRequestClose;
+                this.ThemingMenu.InternalRequestClose -= this.ThemingMenu_InternalRequestClose;
 			}
 
-			SizeChanged -= Window2_SizeChanged;
+			SizeChanged -= this.Window2_SizeChanged;
 		}
 
 		private void SetWindowEvents()
 		{
-			// clear all event handlers first
-			ClearWindowEvents();
+            // clear all event handlers first
+            this.ClearWindowEvents();
 
-			if (titleBar is IMetroThumb thumbContentControl)
+			if (this.titleBar is IMetroThumb thumbContentControl)
 			{
-				thumbContentControl.PreviewMouseLeftButtonUp += WindowTitleThumbOnPreviewMouseLeftButtonUp;
-				thumbContentControl.DragDelta += WindowTitleThumbMoveOnDragDelta;
-				thumbContentControl.MouseDoubleClick += WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
-				thumbContentControl.MouseRightButtonUp += WindowTitleThumbSystemMenuOnMouseRightButtonUp;
+				thumbContentControl.PreviewMouseLeftButtonUp += this.WindowTitleThumbOnPreviewMouseLeftButtonUp;
+				thumbContentControl.DragDelta += this.WindowTitleThumbMoveOnDragDelta;
+				thumbContentControl.MouseDoubleClick += this.WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
+				thumbContentControl.MouseRightButtonUp += this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
 			}
 
-			if (windowTitleThumb != null)
+			if (this.windowTitleThumb != null)
 			{
-				windowTitleThumb.PreviewMouseLeftButtonUp += WindowTitleThumbOnPreviewMouseLeftButtonUp;
-				windowTitleThumb.DragDelta += WindowTitleThumbMoveOnDragDelta;
-				windowTitleThumb.MouseDoubleClick += WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
-				windowTitleThumb.MouseRightButtonUp += WindowTitleThumbSystemMenuOnMouseRightButtonUp;
+                this.windowTitleThumb.PreviewMouseLeftButtonUp += this.WindowTitleThumbOnPreviewMouseLeftButtonUp;
+                this.windowTitleThumb.DragDelta += this.WindowTitleThumbMoveOnDragDelta;
+                this.windowTitleThumb.MouseDoubleClick += this.WindowTitleThumbChangeWindowStateOnMouseDoubleClick;
+                this.windowTitleThumb.MouseRightButtonUp += this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
 			}
 
-			if (icon != null)
+			if (this.icon != null)
 			{
-				icon.PreviewMouseLeftButtonUp += WindowTitleThumbSystemMenuOnMouseRightButtonUp;
+                this.icon.PreviewMouseLeftButtonUp += this.WindowTitleThumbSystemMenuOnMouseRightButtonUp;
 			}
 
-			if (WindowButtonCommands != null)
+			if (this.WindowButtonCommands != null)
 			{
-				WindowButtonCommands.ToggleThemeingMenu += ToggleShowThemingMenu;
-				WindowButtonCommands.MaximisingWindow += OnMaximise;
-				WindowButtonCommands.MaximisedWindow += OnMaximised;
+                this.WindowButtonCommands.ToggleThemeingMenu += this.ToggleShowThemingMenu;
+                this.WindowButtonCommands.MaximisingWindow += this.OnMaximise;
+                this.WindowButtonCommands.MaximisedWindow += this.OnMaximised;
 			}
 
-			if (SettingsCloseButton != null)
+			if (this.SettingsCloseButton != null)
 			{
-				SettingsCloseButton.Click += CloseThemingMenu;
+                this.SettingsCloseButton.Click += this.CloseThemingMenu;
 			}
 
-			if (SettingsCloseRegion != null)
+			if (this.SettingsCloseRegion != null)
 			{
-				SettingsCloseRegion.Click += CloseThemingMenu;
+                this.SettingsCloseRegion.Click += this.CloseThemingMenu;
 			}
 
-			if (ThemingMenu != null)
+			if (this.ThemingMenu != null)
 			{
-				ThemingMenu.InternalRequestClose += ThemingMenu_InternalRequestClose;
+                this.ThemingMenu.InternalRequestClose += this.ThemingMenu_InternalRequestClose;
 			}
 
 			// handle size if we have a Grid for the title (e.g. clean window have a centered title)
-			if (titleBar != null && TitleAlignment == HorizontalAlignment.Center)
+			if (this.titleBar != null && this.TitleAlignment == HorizontalAlignment.Center)
 			{
-				SizeChanged += Window2_SizeChanged;
+				SizeChanged += this.Window2_SizeChanged;
 			}
 		}
 
@@ -731,35 +731,35 @@ namespace ModernThemables.Controls
 
 		private void ToggleShowThemingMenu(object sender, WindowEventHandlerArgs e)
 		{
-			ShowThemingMenu = !ShowThemingMenu;
-			if (ShowThemingMenu && ThemingMenu != null)
+            this.ShowThemingMenu = !this.ShowThemingMenu;
+			if (this.ShowThemingMenu && this.ThemingMenu != null)
 			{
-				ThemingMenu.FocusOnOpen();
+                this.ThemingMenu.FocusOnOpen();
 			}
 		}
 
 		private void OnMaximise(object sender, WindowEventHandlerArgs e)
 		{
-			GlowColor = null;
+            this.GlowColor = null;
 		}
 
 		private void OnMaximised(object sender, WindowEventHandlerArgs e)
 		{
-			SetResourceReference(GlowColorProperty, "ThemeBrush.Color");
+            this.SetResourceReference(GlowColorProperty, "ThemeBrush.Color");
 		}
 
 		private void CloseThemingMenu(object? sender, RoutedEventArgs? e)
 		{
-			ShowThemingMenu = false;
-			if (WindowButtonCommands != null)
+            this.ShowThemingMenu = false;
+			if (this.WindowButtonCommands != null)
 			{
-				WindowButtonCommands.IsThemingMenuVisible = false;
+                this.WindowButtonCommands.IsThemingMenuVisible = false;
 			}
 		}
 
 		private void ThemingMenu_InternalRequestClose(object? sender, EventArgs e)
 		{
-			CloseThemingMenu(sender, null);
+            this.CloseThemingMenu(sender, null);
 		}
 
 		internal static void DoWindowTitleThumbOnPreviewMouseLeftButtonUp(Window2 window, MouseButtonEventArgs mouseButtonEventArgs)

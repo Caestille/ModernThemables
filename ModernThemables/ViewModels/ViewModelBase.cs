@@ -1,13 +1,13 @@
-﻿using CoreUtilities.HelperClasses;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using System.Windows.Input;
-using System;
-using ModernThemables.Messages;
-using System.Collections.Generic;
-
-namespace ModernThemables.ViewModels
+﻿namespace ModernThemables.ViewModels
 {
+    using CoreUtilities.HelperClasses;
+    using CommunityToolkit.Mvvm.Input;
+    using CommunityToolkit.Mvvm.Messaging;
+    using System.Windows.Input;
+    using System;
+    using ModernThemables.Messages;
+    using System.Collections.Generic;
+
     public class ViewModelBase : ViewModelBase<GenericViewModelBase>
 	{
 		public ViewModelBase(string name) : base(name) { }
@@ -15,63 +15,63 @@ namespace ModernThemables.ViewModels
 
     public class ViewModelBase<TChild> : GenericViewModelBase where TChild : GenericViewModelBase
     {
-        public ICommand AddChildCommand => new RelayCommand(() => AddChild());
+        public ICommand AddChildCommand => new RelayCommand(() => this.AddChild());
 
         private readonly Func<TChild>? createChildFunc;
 
         private RangeObservableCollection<TChild> childViewModels = new();
         public RangeObservableCollection<TChild> ChildViewModels
         {
-            get => childViewModels;
-            set => SetProperty(ref childViewModels, value);
+            get => this.childViewModels;
+            set => this.SetProperty(ref this.childViewModels, value);
         }
 
         public ViewModelBase(string name, Func<TChild>? createChild = null)
             : base(name)
         {
-            createChildFunc = createChild;
-            BindMessages();
+            this.createChildFunc = createChild;
+            this.BindMessages();
         }
 
         protected virtual void BindMessages()
         {
-            Messenger.Register<ViewModelRequestShowMessage>(this, (sender, message) =>
+            this.Messenger.Register<ViewModelRequestShowMessage>(this, (sender, message) =>
             {
                 if (message.ViewModel == this)
-                    OnRequestShowReceived(message);
-                else if (IsSelected)
-                    IsSelected = false;
+                    this.OnRequestShowReceived(message);
+                else if (this.IsSelected)
+                    this.IsSelected = false;
             });
 
-            Messenger.Register<ViewModelRequestDeleteMessage>(this, (sender, message) =>
+            this.Messenger.Register<ViewModelRequestDeleteMessage>(this, (sender, message) =>
             {
-                OnRequestDeleteReceived(message);
+                this.OnRequestDeleteReceived(message);
             });
         }
 
         protected virtual void OnRequestShowReceived(ViewModelRequestShowMessage message)
         {
-            if (IsSelected && message.ViewModel != this)
+            if (this.IsSelected && message.ViewModel != this)
             {
-                IsSelected = false;
+                this.IsSelected = false;
             }
         }
 
 		protected virtual void OnRequestDeleteReceived(ViewModelRequestDeleteMessage message)
 		{
-			if (message.ViewModel is TChild child && ChildViewModels.Contains(child))
+			if (message.ViewModel is TChild child && this.ChildViewModels.Contains(child))
 			{
                 child.OnDelete();
-				ChildViewModels.Remove(child);
+                this.ChildViewModels.Remove(child);
 
-				OnPropertyChanged(nameof(ChildViewModels));
-				OnChildrenChanged();
+                this.OnPropertyChanged(nameof(this.ChildViewModels));
+                this.OnChildrenChanged();
 			}
 		}
 
 		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "", int? index = null)
 		{
-			var viewModel = viewModelToAdd ?? (createChildFunc != null ? createChildFunc() : null);
+			var viewModel = viewModelToAdd ?? (this.createChildFunc != null ? this.createChildFunc() : null);
 			if (viewModel is null)
 			{
 				return;
@@ -84,27 +84,27 @@ namespace ModernThemables.ViewModels
 
             if (index == null)
             {
-                ChildViewModels.Add(viewModel);
+                this.ChildViewModels.Add(viewModel);
             }
             else
             {
-                ChildViewModels.Insert(index.Value, viewModel);
+                this.ChildViewModels.Insert(index.Value, viewModel);
             }
 
-            OnPropertyChanged(nameof(ChildViewModels));
-			OnChildrenChanged();
+            this.OnPropertyChanged(nameof(this.ChildViewModels));
+            this.OnChildrenChanged();
 		}
 
 		public override List<object> GetChildren(bool recurse = false)
 		{
             var result = new List<object>();
-			result.AddRange(ChildViewModels);
+			result.AddRange(this.ChildViewModels);
 
             if (!recurse)
                 return result;
 
 
-            foreach (var childVm in ChildViewModels)
+            foreach (var childVm in this.ChildViewModels)
 			{
                 result.AddRange(childVm.GetChildren(true));
 			}

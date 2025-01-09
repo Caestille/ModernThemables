@@ -1,7 +1,7 @@
-﻿using System.Windows;
-
-namespace TestApp
+﻿namespace TestApp
 {
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

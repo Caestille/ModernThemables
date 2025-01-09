@@ -1,9 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows;
-using System.Windows.Media;
-
-namespace ModernThemables.Charting.ViewModels
+﻿namespace ModernThemables.Charting.ViewModels
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using System.Windows;
+    using System.Windows.Media;
+
     /// <summary>
     /// A view model represnting a tooltip aligned to a point on a chart.
     /// </summary>
@@ -56,8 +56,8 @@ namespace ModernThemables.Charting.ViewModels
 		/// </summary>
 		public bool ResizeTrigger
 		{
-			get => resizeTrigger;
-			set => SetProperty(ref resizeTrigger, value);
+			get => this.resizeTrigger;
+			set => this.SetProperty(ref this.resizeTrigger, value);
 		}
 
 		/// <summary>
@@ -74,12 +74,12 @@ namespace ModernThemables.Charting.ViewModels
             string secondaryValue,
             string tertiaryValue)
         {
-			LocationX = point.X;
-			LocationY = point.Y;
-            Fill = fill;
-            PrimaryValue = primaryValue;
-			SecondaryValue = secondaryValue;
-			TertiaryValue = tertiaryValue;
+            this.LocationX = point.X;
+            this.LocationY = point.Y;
+            this.Fill = fill;
+            this.PrimaryValue = primaryValue;
+            this.SecondaryValue = secondaryValue;
+            this.TertiaryValue = tertiaryValue;
 		}
 
 		public TooltipViewModel(
@@ -90,12 +90,12 @@ namespace ModernThemables.Charting.ViewModels
 			string secondaryValue,
 			string tertiaryValue)
 		{
-			LocationX = locationX;
-			LocationY = locationY;
-			Fill = fill;
-			PrimaryValue = primaryValue;
-			SecondaryValue = secondaryValue;
-			TertiaryValue = tertiaryValue;
+            this.LocationX = locationX;
+            this.LocationY = locationY;
+            this.Fill = fill;
+            this.PrimaryValue = primaryValue;
+            this.SecondaryValue = secondaryValue;
+            this.TertiaryValue = tertiaryValue;
 		}
 	}
 }

@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
-
-namespace ModernThemables.Charting.ViewModels.PieChart
+﻿namespace ModernThemables.Charting.ViewModels.PieChart
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// A view model for an internal representation of a series used by the <see cref="CartesianChart"/>.
     /// </summary>
@@ -15,8 +15,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
         /// </summary>
         public ObservableCollection<InternalPieWedgeViewModel> Wedges
         {
-            get => wedges;
-            set => SetProperty(ref wedges, value);
+            get => this.wedges;
+            set => this.SetProperty(ref this.wedges, value);
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace ModernThemables.Charting.ViewModels.PieChart
             string name,
             ObservableCollection<InternalPieWedgeViewModel> wedges)
         {
-            Name = name;
-            Wedges = wedges;
+            this.Name = name;
+            this.Wedges = wedges;
         }
     }
 }

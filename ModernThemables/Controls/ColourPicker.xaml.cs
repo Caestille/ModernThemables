@@ -1,16 +1,16 @@
-﻿using CoreUtilities.HelperClasses.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
+    using CoreUtilities.HelperClasses.Extensions;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
+
     /// <summary>
     /// Interaction logic for ColourPicker.xaml
     /// </summary>
@@ -24,8 +24,8 @@ namespace ModernThemables.Controls
 
         public Color Colour
         {
-            get => (Color)GetValue(ColourProperty);
-            set => SetValue(ColourProperty, value);
+            get => (Color)this.GetValue(ColourProperty);
+            set => this.SetValue(ColourProperty, value);
         }
         public static readonly DependencyProperty ColourProperty = DependencyProperty.Register(
             nameof(Colour),
@@ -46,8 +46,8 @@ namespace ModernThemables.Controls
 
         public string Html
         {
-            get => (string)GetValue(HtmlProperty);
-            set => SetValue(HtmlProperty, value);
+            get => (string)this.GetValue(HtmlProperty);
+            set => this.SetValue(HtmlProperty, value);
         }
         public static readonly DependencyProperty HtmlProperty = DependencyProperty.Register(
             nameof(Html),
@@ -95,27 +95,27 @@ namespace ModernThemables.Controls
 
         public ColourPicker()
         {
-            InitializeComponent();
-            Loaded += ColourPicker_Loaded;
+            this.InitializeComponent();
+            Loaded += this.ColourPicker_Loaded;
         }
 
         private async void ColourPicker_Loaded(object sender, RoutedEventArgs e)
         {
-            var point = await GetPointAtColour(Colour);
+            var point = await this.GetPointAtColour(this.Colour);
             if (point.X != -1 && point.Y != -1)
             {
-                AdjustSelectedColourCursor((int)point.X, (int)point.Y);
+                this.AdjustSelectedColourCursor((int)point.X, (int)point.Y);
             }
-            Loaded -= ColourPicker_Loaded;
+            Loaded -= this.ColourPicker_Loaded;
         }
 
         public Color? GetColorAt(int x, int y)
         {
-            x = (int)Math.Min(Math.Max(x, 1), ColourSelectionBorder.ActualWidth);
-            y = (int)Math.Min(Math.Max(y, 1), ColourSelectionBorder.ActualHeight);
+            x = (int)Math.Min(Math.Max(x, 1), this.ColourSelectionBorder.ActualWidth);
+            y = (int)Math.Min(Math.Max(y, 1), this.ColourSelectionBorder.ActualHeight);
 
-            var horizFrac = x / ColourSelectionBorder.ActualWidth;
-            var vertFrac = (float)(((y / ColourSelectionBorder.ActualHeight) - 0.5) * 2);
+            var horizFrac = x / this.ColourSelectionBorder.ActualWidth;
+            var vertFrac = (float)(((y / this.ColourSelectionBorder.ActualHeight) - 0.5) * 2);
 
             var leftColour = horizontalColourStops.Where(x => x.Value <= horizFrac)
                 .DefaultIfEmpty(new KeyValuePair<Color, double>(Colors.Red, 0)).Last();
@@ -133,13 +133,13 @@ namespace ModernThemables.Controls
         {
             return await Task.Run(() =>
             {
-                cts.Cancel();
-                cts = new CancellationTokenSource();
+                this.cts.Cancel();
+                this.cts = new CancellationTokenSource();
                 var iter = 200;
                 var threshold = 10;
 
-                int width = (int)ColourSelectionBorder.ActualWidth;
-                int height = (int)ColourSelectionBorder.ActualHeight;
+                int width = (int)this.ColourSelectionBorder.ActualWidth;
+                int height = (int)this.ColourSelectionBorder.ActualHeight;
                 var xStep = width / iter;
                 var yStep = height / iter;
                 int xPos = 0;
@@ -149,13 +149,13 @@ namespace ModernThemables.Controls
                     var doBreak = false;
                     for (int j = 0; j < iter; j++)
                     {
-                        if (cts.IsCancellationRequested)
+                        if (this.cts.IsCancellationRequested)
                         {
                             return new Point(-1, -1);
                         }
                         xPos = xStep * i;
                         yPos = yStep * j;
-                        var sampled = GetColorAt(xPos, yPos);
+                        var sampled = this.GetColorAt(xPos, yPos);
                         if (sampled.HasValue && sampled.Value.ColoursAreClose(colour, threshold))
                         {
                             doBreak = true;
@@ -174,36 +174,36 @@ namespace ModernThemables.Controls
 
         private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            isMouseDown = true;
+            this.isMouseDown = true;
         }
 
         private void Border_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            isMouseDown = false;
+            this.isMouseDown = false;
         }
 
         private async void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (isMouseDown) return;
+            if (this.isMouseDown) return;
 
-            var point = await GetPointAtColour(Colour);
+            var point = await this.GetPointAtColour(this.Colour);
             if (point.X != -1 && point.Y != -1)
             {
-                AdjustSelectedColourCursor((int)point.X, (int)point.Y);
+                this.AdjustSelectedColourCursor((int)point.X, (int)point.Y);
             }
-            if (colourChangedCallback != null) colourChangedCallback(Colour);
+            if (this.colourChangedCallback != null) this.colourChangedCallback(this.Colour);
         }
 
         private void ColourSelectionBorder_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var borderCursor = e.GetPosition(ColourSelectionBorder);
+            var borderCursor = e.GetPosition(this.ColourSelectionBorder);
             borderCursor = new Point(
-                Math.Max(Math.Min(borderCursor.X, ColourSelectionBorder.Width), 0),
-                Math.Max(Math.Min(borderCursor.Y, ColourSelectionBorder.Height), 0));
-            AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
-            var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
-            Colour = c ?? Colour;
-            if (colourChangedCallback != null) colourChangedCallback(Colour);
+                Math.Max(Math.Min(borderCursor.X, this.ColourSelectionBorder.Width), 0),
+                Math.Max(Math.Min(borderCursor.Y, this.ColourSelectionBorder.Height), 0));
+            this.AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
+            var c = this.GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
+            this.Colour = c ?? this.Colour;
+            if (this.colourChangedCallback != null) this.colourChangedCallback(this.Colour);
         }
 
         private void ColourSelectionBorder_MouseLeave(object sender, MouseEventArgs e)
@@ -213,23 +213,23 @@ namespace ModernThemables.Controls
 
         private void AdjustSelectedColourCursor(int x, int y)
         {
-            SelectedColourBorder.Margin = new Thickness(Math.Max(x - 5, -5), Math.Max(y - 5, -5), 0, 0);
+            this.SelectedColourBorder.Margin = new Thickness(Math.Max(x - 5, -5), Math.Max(y - 5, -5), 0, 0);
         }
 
         private void root_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!isMouseDown) return;
+            if (!this.isMouseDown) return;
 
-            var borderCursor = e.GetPosition(ColourSelectionBorder);
+            var borderCursor = e.GetPosition(this.ColourSelectionBorder);
             borderCursor = new Point(
-                Math.Max(Math.Min(borderCursor.X, ColourSelectionBorder.Width), 0),
-                Math.Max(Math.Min(borderCursor.Y, ColourSelectionBorder.Height), 0));
-            AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
+                Math.Max(Math.Min(borderCursor.X, this.ColourSelectionBorder.Width), 0),
+                Math.Max(Math.Min(borderCursor.Y, this.ColourSelectionBorder.Height), 0));
+            this.AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
 
-            var cursor = PointToScreen(e.GetPosition(this));
-            var c = GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
-            Colour = c ?? Colour;
-            if (colourChangedCallback != null) colourChangedCallback(Colour);
+            var cursor = this.PointToScreen(e.GetPosition(this));
+            var c = this.GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
+            this.Colour = c ?? this.Colour;
+            if (this.colourChangedCallback != null) this.colourChangedCallback(this.Colour);
         }
     }
 }

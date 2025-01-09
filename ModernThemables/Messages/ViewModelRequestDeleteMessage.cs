@@ -1,14 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace ModernThemables.Messages
+﻿namespace ModernThemables.Messages
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
+
     public class ViewModelRequestDeleteMessage
     {
         public ObservableObject ViewModel { get; set; }
 
         public ViewModelRequestDeleteMessage(ObservableObject viewModelToDelete)
         {
-            ViewModel = viewModelToDelete;
+            this.ViewModel = viewModelToDelete;
         }
     }
 
@@ -18,7 +18,7 @@ namespace ModernThemables.Messages
 
         public ViewModelRequestDeleteMessage(ObservableObject viewModelToDelete)
         {
-            ViewModel = viewModelToDelete;
+            this.ViewModel = viewModelToDelete;
         }
     }
 }

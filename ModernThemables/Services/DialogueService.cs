@@ -1,26 +1,26 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Media;
-using ModernThemables.Controls;
-using CoreUtilities.Interfaces.Dialogues;
-using System.Windows.Controls;
-
-namespace ModernThemables.Services
+﻿namespace ModernThemables.Services
 {
-	/// <summary>
-	/// A service for initialising and managing various dialogues.
-	/// </summary>
-	public class DialogueService : IDialogueService
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using Microsoft.Win32;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Media;
+    using ModernThemables.Controls;
+    using CoreUtilities.Interfaces.Dialogues;
+    using System.Windows.Controls;
+
+    /// <summary>
+    /// A service for initialising and managing various dialogues.
+    /// </summary>
+    public class DialogueService : IDialogueService
 	{
 		private readonly Dictionary<Type, Type> registeredViews = new();
 
 		/// <inheritdoc />
 		public void RegisterViewForViewModel(Type viewType, Type vmType)
 		{
-			registeredViews[vmType] = viewType;
+            this.registeredViews[vmType] = viewType;
 		}
 
 		/// <inheritdoc />
@@ -39,7 +39,7 @@ namespace ModernThemables.Services
 			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
 			{
 				DataType = dataContext.GetType(),
-				VisualTree = new FrameworkElementFactory(registeredViews[dataContext.GetType()]),
+				VisualTree = new FrameworkElementFactory(this.registeredViews[dataContext.GetType()]),
 			});
 			window.Content = new ContentControl() { Content = (ObservableObject)dataContext };
 			if (dialogueSize == null)
@@ -77,7 +77,7 @@ namespace ModernThemables.Services
 			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
 			{
 				DataType = dataContext.GetType(),
-				VisualTree = new FrameworkElementFactory(registeredViews[dataContext.GetType()]),
+				VisualTree = new FrameworkElementFactory(this.registeredViews[dataContext.GetType()]),
 			});
 			window.Content = new ContentControl() { Content = (ObservableObject)dataContext };
 			if (dialogueSize == null)

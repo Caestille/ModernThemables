@@ -1,17 +1,17 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
-
-namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls
 {
-	public class BlurHost : ContentControl
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    using System.Windows.Media.Effects;
+
+    public class BlurHost : ContentControl
 	{
 		public FrameworkElement BlurBackground
 		{
-			get => (FrameworkElement)GetValue(BlurBackgroundProperty);
-			set => SetValue(BlurBackgroundProperty, value);
+			get => (FrameworkElement)this.GetValue(BlurBackgroundProperty);
+			set => this.SetValue(BlurBackgroundProperty, value);
 		}
 
 		public static readonly DependencyProperty BlurBackgroundProperty =
@@ -23,8 +23,8 @@ namespace ModernThemables.Controls
 
 		public double OffsetX
 		{
-			get => (double)GetValue(OffsetXProperty);
-			set => SetValue(OffsetXProperty, value);
+			get => (double)this.GetValue(OffsetXProperty);
+			set => this.SetValue(OffsetXProperty, value);
 		}
 
 		public static readonly DependencyProperty OffsetXProperty =
@@ -36,8 +36,8 @@ namespace ModernThemables.Controls
 
 		public double OffsetY
 		{
-			get => (double)GetValue(OffsetYProperty);
-			set => SetValue(OffsetYProperty, value);
+			get => (double)this.GetValue(OffsetYProperty);
+			set => this.SetValue(OffsetYProperty, value);
 		}
 
 		public static readonly DependencyProperty OffsetYProperty =
@@ -49,8 +49,8 @@ namespace ModernThemables.Controls
 
 		public double BlurRadius
 		{
-			get => (double)GetValue(BlurRadiusProperty);
-			set => SetValue(BlurRadiusProperty, value);
+			get => (double)this.GetValue(BlurRadiusProperty);
+			set => this.SetValue(BlurRadiusProperty, value);
 		}
 
 		public static readonly DependencyProperty BlurRadiusProperty =
@@ -62,8 +62,8 @@ namespace ModernThemables.Controls
 
 		public double BlurOpacity
 		{
-			get => (double)GetValue(BlurOpacityProperty);
-			set => SetValue(BlurOpacityProperty, value);
+			get => (double)this.GetValue(BlurOpacityProperty);
+			set => this.SetValue(BlurOpacityProperty, value);
 		}
 
 		public static readonly DependencyProperty BlurOpacityProperty =
@@ -75,8 +75,8 @@ namespace ModernThemables.Controls
 
 		public bool PreventResample
 		{
-			get => (bool)GetValue(PreventResampleProperty);
-			set => SetValue(PreventResampleProperty, value);
+			get => (bool)this.GetValue(PreventResampleProperty);
+			set => this.SetValue(PreventResampleProperty, value);
 		}
 
 		public static readonly DependencyProperty PreventResampleProperty =
@@ -88,8 +88,8 @@ namespace ModernThemables.Controls
 
 		public bool BlurEnabled
 		{
-			get => (bool)GetValue(BlurEnabledProperty);
-			set => SetValue(BlurEnabledProperty, value);
+			get => (bool)this.GetValue(BlurEnabledProperty);
+			set => this.SetValue(BlurEnabledProperty, value);
 		}
 
 		public static readonly DependencyProperty BlurEnabledProperty =
@@ -101,8 +101,8 @@ namespace ModernThemables.Controls
 
 		public object RedrawTrigger
 		{
-			get => GetValue(RedrawTriggerProperty);
-			set => SetValue(RedrawTriggerProperty, value);
+			get => this.GetValue(RedrawTriggerProperty);
+			set => this.SetValue(RedrawTriggerProperty, value);
 		}
 
 		public static readonly DependencyProperty RedrawTriggerProperty =
@@ -117,70 +117,70 @@ namespace ModernThemables.Controls
 
 		public BlurHost()
 		{
-			Loaded += OnLoaded;
+			Loaded += this.OnLoaded;
 
-			BlurDecoratorBrush = new VisualBrush()
+            this.BlurDecoratorBrush = new VisualBrush()
 			{
 				ViewboxUnits = BrushMappingMode.Absolute,
-				Opacity = BlurOpacity
+				Opacity = this.BlurOpacity
 			};
 		}
 
 		public void DrawBlurredElementBackground()
 		{
-			if (!BlurEnabled)
+			if (!this.BlurEnabled)
 				return;
 
-			if (!TryFindVisualRootContainer(this, out var blurHostContainer) 
-				|| !TryFindVisualRootContainer(BlurBackground, out var backgroundContainer))
+			if (!this.TryFindVisualRootContainer(this, out var blurHostContainer) 
+				|| !this.TryFindVisualRootContainer(this.BlurBackground, out var backgroundContainer))
 			{
 				return;
 			}
 
-			Rect blurHostBounds = TransformToVisual(blurHostContainer)
-				.TransformBounds(new Rect(RenderSize));
-            Rect backgroundBounds = BlurBackground.TransformToVisual(backgroundContainer)
-				.TransformBounds(new Rect(BlurBackground.RenderSize));
+			Rect blurHostBounds = this.TransformToVisual(blurHostContainer)
+				.TransformBounds(new Rect(this.RenderSize));
+            Rect backgroundBounds = this.BlurBackground.TransformToVisual(backgroundContainer)
+				.TransformBounds(new Rect(this.BlurBackground.RenderSize));
 
 			var transform = backgroundContainer?.TransformToVisual(blurHostContainer).Transform(new Point(0, 0)) ?? new Point();
 
-            var viewBox = new Rect(Math.Max(blurHostBounds.Left - transform.X, 0) + OffsetX, Math.Max(blurHostBounds.Top - transform.Y, 0) + OffsetY, blurHostBounds.Width, blurHostBounds.Height);
+            var viewBox = new Rect(Math.Max(blurHostBounds.Left - transform.X, 0) + this.OffsetX, Math.Max(blurHostBounds.Top - transform.Y, 0) + this.OffsetY, blurHostBounds.Width, blurHostBounds.Height);
 
-			BlurDecoratorBrush.Viewbox = viewBox;
+            this.BlurDecoratorBrush.Viewbox = viewBox;
 
-            BlurDecoratorBrush.Opacity = BlurOpacity;
+            this.BlurDecoratorBrush.Opacity = this.BlurOpacity;
         }
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
-			if (TryFindVisualRootContainer(this, out var rootContainer) && rootContainer != null)
+			if (this.TryFindVisualRootContainer(this, out var rootContainer) && rootContainer != null)
 			{
-				rootContainer.SizeChanged += OnRootContainerElementResized;
+				rootContainer.SizeChanged += this.OnRootContainerElementResized;
 			}
 
-			DrawBlurredElementBackground();
+            this.DrawBlurredElementBackground();
 		}
 
 		public override void OnApplyTemplate()
 		{
-			if (!BlurEnabled)
+			if (!this.BlurEnabled)
 				return;
 
 			base.OnApplyTemplate();
-			if (GetTemplateChild("PART_BlurDecorator") is Border border)
+			if (this.GetTemplateChild("PART_BlurDecorator") is Border border)
 			{
-                PART_BlurDecorator = border;
+                this.PART_BlurDecorator = border;
             }
 
-			if (PART_BlurDecorator != null)
+			if (this.PART_BlurDecorator != null)
 			{
-				PART_BlurDecorator.Effect = new BlurEffect()
+                this.PART_BlurDecorator.Effect = new BlurEffect()
 				{
-					Radius = BlurRadius,
+					Radius = this.BlurRadius,
 					KernelType = KernelType.Gaussian,
 					RenderingBias = RenderingBias.Performance
 				};
-				PART_BlurDecorator.Background = BlurDecoratorBrush;
+                this.PART_BlurDecorator.Background = this.BlurDecoratorBrush;
 			}
 			else
 			{
@@ -220,11 +220,11 @@ namespace ModernThemables.Controls
 
 		private void OnRootContainerElementResized(object sender, SizeChangedEventArgs e)
 		{
-			if (!BlurEnabled)
+			if (!this.BlurEnabled)
 				return;
 
-			if (!PreventResample)
-				DrawBlurredElementBackground();
+			if (!this.PreventResample)
+                this.DrawBlurredElementBackground();
 		}
 
 		private bool TryFindVisualRootContainer(DependencyObject child, out FrameworkElement? rootContainerElement)
@@ -250,7 +250,7 @@ namespace ModernThemables.Controls
 
 			if (parent is not Window && parent is not ContentControl)
 			{
-				return TryFindVisualRootContainer(parent, out rootContainerElement);
+				return this.TryFindVisualRootContainer(parent, out rootContainerElement);
 			}
 
 			rootContainerElement = parent as FrameworkElement;

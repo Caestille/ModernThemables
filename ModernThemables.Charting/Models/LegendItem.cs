@@ -1,7 +1,7 @@
-﻿using ModernThemables.Charting.Interfaces;
-
-namespace ModernThemables.Charting.Models
+﻿namespace ModernThemables.Charting.Models
 {
+    using ModernThemables.Charting.Interfaces;
+
     /// <summary>
     /// A model for a item in a plot legend.
     /// </summary>
@@ -30,9 +30,9 @@ namespace ModernThemables.Charting.Models
 		/// <param name="fill">The fill colour of the display element of the legend item.</param>
 		public LegendItem(string value, IChartBrush stroke, IChartBrush fill)
         {
-            Value = value;
-            Stroke = stroke;
-            Fill = fill;
+            this.Value = value;
+            this.Stroke = stroke;
+            this.Fill = fill;
         }
     }
 }

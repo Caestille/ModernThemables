@@ -1,8 +1,8 @@
-﻿using System.Globalization;
-using System.Windows.Data;
-
-namespace ModernThemables.Charting.Converters
+﻿namespace ModernThemables.Charting.Converters
 {
+    using System.Globalization;
+    using System.Windows.Data;
+
     /// <summary>
     /// Moves all but the first series up by the height of their container to make them appear to overlap when using
     /// an items control that would stack them vertically.

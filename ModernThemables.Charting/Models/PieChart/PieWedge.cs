@@ -1,7 +1,7 @@
-﻿using ModernThemables.Charting.Interfaces;
-
-namespace ModernThemables.Charting.Models.PieChart
+﻿namespace ModernThemables.Charting.Models.PieChart
 {
+    using ModernThemables.Charting.Interfaces;
+
     /// <summary>
     /// A point representing a wedge on a pie chart with a <see cref="string"/> name and <see cref="double"/> value
     /// </summary>
@@ -15,7 +15,7 @@ namespace ModernThemables.Charting.Models.PieChart
         /// <summary>
         /// The value of the pie wedge.
         /// </summary>
-        public double Value => XValue;
+        public double Value => this.XValue;
 
         /// <inheritdoc />
         public IChartBrush Stroke { get; }
@@ -40,10 +40,10 @@ namespace ModernThemables.Charting.Models.PieChart
         /// <param name="fill">The wedge fill.</param>
         public PieWedge(string name, double value, IChartBrush stroke, IChartBrush fill)
         {
-            Name = name;
-            XValue = value;
-            Stroke = stroke;
-            Fill = fill;
+            this.Name = name;
+            this.XValue = value;
+            this.Stroke = stroke;
+            this.Fill = fill;
         }
 
         /// <inheritdoc />

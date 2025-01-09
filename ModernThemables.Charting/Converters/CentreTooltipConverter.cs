@@ -1,9 +1,9 @@
-﻿using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-
-namespace ModernThemables.Charting.Converters
+﻿namespace ModernThemables.Charting.Converters
 {
+    using System.Globalization;
+    using System.Windows;
+    using System.Windows.Data;
+
     /// <summary>
     /// Finds the centre point of a tooltip.
     /// </summary>

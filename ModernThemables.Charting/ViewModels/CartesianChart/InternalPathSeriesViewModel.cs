@@ -1,11 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using ModernThemables.Charting.Interfaces;
-using System.Text;
-using System.Windows;
-using System.Windows.Shapes;
-
-namespace ModernThemables.Charting.ViewModels.CartesianChart
+﻿namespace ModernThemables.Charting.ViewModels.CartesianChart
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using ModernThemables.Charting.Interfaces;
+    using System.Text;
+    using System.Windows;
+    using System.Windows.Shapes;
+
     /// <summary>
     /// A view model for an internal representation of a series used by the <see cref="CartesianChart"/>.
     /// </summary>
@@ -29,13 +29,13 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 		/// <summary>
 		/// The string used the render the series line using a <see cref="Path"/>.
 		/// </summary>
-		public string PathStrokeData => $"M{topLeft.X - leftMargin},{topLeft.Y - topMargin} {pathStrokeData} M{bottomRight.X + rightMargin},{bottomRight.Y + bottomMargin}";
+		public string PathStrokeData => $"M{this.topLeft.X - this.leftMargin},{this.topLeft.Y - this.topMargin} {this.pathStrokeData} M{this.bottomRight.X + this.rightMargin},{this.bottomRight.Y + this.bottomMargin}";
 
 		/// <summary>
 		/// The string used the render the series fill using a <see cref="Path"/>. Due to how paths render a fill, this
 		/// may not be identical to the <see cref="PathStrokeData"/>.
 		/// </summary>
-		public string PathFillData => $"M{topLeft.X - leftMargin},{topLeft.Y - topMargin} {pathFillData} M{bottomRight.X + rightMargin},{bottomRight.Y + bottomMargin}";
+		public string PathFillData => $"M{this.topLeft.X - this.leftMargin},{this.topLeft.Y - this.topMargin} {this.pathFillData} M{this.bottomRight.X + this.rightMargin},{this.bottomRight.Y + this.bottomMargin}";
 
 		/// <summary>
 		/// The <see cref="IChartBrush"/> the path stroke uses to colour itself.
@@ -72,26 +72,26 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 			IChartBrush? stroke,
 			IChartBrush? fill)
 		{
-			Name = name;
-			Identifier = guid;
-			Data = data;
-			Stroke = stroke;
-			Fill = fill;
+            this.Name = name;
+            this.Identifier = guid;
+            this.Data = data;
+            this.Stroke = stroke;
+            this.Fill = fill;
 
 			if (!data.Any()) return;
 
-			pathStrokeData = ConvertDataToPath(data);
-			pathFillData = ConvertPathForFill(pathStrokeData);
+            this.pathStrokeData = this.ConvertDataToPath(data);
+            this.pathFillData = this.ConvertPathForFill(this.pathStrokeData);
 		}
 
 		public void SetMargins(double topMargin, double bottomMargin, double leftMargin, double rightMargin)
 		{
-			this.topMargin = topMargin * (bottomRight.Y - topLeft.Y);
-			this.bottomMargin = bottomMargin * (bottomRight.Y - topLeft.Y);
-			this.leftMargin = leftMargin * (bottomRight.X - topLeft.X);
-			this.rightMargin = rightMargin * (bottomRight.X - topLeft.X);
-			OnPropertyChanged(nameof(PathStrokeData));
-			OnPropertyChanged(nameof(PathFillData));
+			this.topMargin = topMargin * (this.bottomRight.Y - this.topLeft.Y);
+			this.bottomMargin = bottomMargin * (this.bottomRight.Y - this.topLeft.Y);
+			this.leftMargin = leftMargin * (this.bottomRight.X - this.topLeft.X);
+			this.rightMargin = rightMargin * (this.bottomRight.X - this.topLeft.X);
+            this.OnPropertyChanged(nameof(this.PathStrokeData));
+            this.OnPropertyChanged(nameof(this.PathFillData));
 		}
 
 		/// <summary>
@@ -123,11 +123,11 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 			var translatedX = cursor.X / xZoom;
 			var translatedY = cursor.Y / yZoom;
 
-			var nearestPoint = Data.FirstOrDefault(
-				x => Math.Abs(x.X - translatedX) == Data.Min(x => Math.Abs(x.X - translatedX)));
+			var nearestPoint = this.Data.FirstOrDefault(
+				x => Math.Abs(x.X - translatedX) == this.Data.Min(x => Math.Abs(x.X - translatedX)));
 			if (nearestPoint == null) return null;
 
-			var hoveredChartPoints = Data.Where(x => x.X == nearestPoint.X);
+			var hoveredChartPoints = this.Data.Where(x => x.X == nearestPoint.X);
 			var hoveredChartPoint = hoveredChartPoints.Count() > 1
 				? hoveredChartPoints.First(
 					x => Math.Abs(x.Y - translatedY) == hoveredChartPoints.Min(x => Math.Abs(x.Y - translatedY)))
@@ -145,7 +145,7 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 		/// <param name="data">The new data.</param>
 		public void UpdatePoints(IEnumerable<InternalChartEntity> data)
 		{
-			Data = data;
+            this.Data = data;
 		}
 
 		/// <summary>
@@ -162,14 +162,14 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 			var xZoom = zoomWidth / dataWidth;
 			var translatedX = mouseX / xZoom;
 
-			return translatedX <= Data.Max(x => x.X)
-				&& translatedX >= Data.Min(x => x.X);
+			return translatedX <= this.Data.Max(x => x.X)
+				&& translatedX >= this.Data.Min(x => x.X);
 		}
 
 		private string ConvertDataToPath(IEnumerable<InternalChartEntity> data)
 		{
-			topLeft = new Point(data.Min(x => x.X), data.Min(x => x.Y));
-			bottomRight = new Point(data.Max(x => x.X), data.Max(x => x.Y));
+            this.topLeft = new Point(data.Min(x => x.X), data.Min(x => x.Y));
+            this.bottomRight = new Point(data.Max(x => x.X), data.Max(x => x.Y));
 
 			var sb = new StringBuilder();
 			var pointType = "M";
@@ -183,15 +183,15 @@ namespace ModernThemables.Charting.ViewModels.CartesianChart
 
 		private string ConvertPathForFill(string strokePath)
 		{
-			var dataMin = Data.Min(x => x.BackingPoint.YValue);
-			var dataMax = Data.Max(x => x.BackingPoint.YValue);
+			var dataMin = this.Data.Min(x => x.BackingPoint.YValue);
+			var dataMax = this.Data.Max(x => x.BackingPoint.YValue);
 			var dataRange = dataMax - dataMin;
 			var zero = Math.Min(Math.Max(0d, dataMin), dataMax);
 			var ratio = (double)(1 - (zero - dataMin) / dataRange);
-			var min = Data.Min(x => x.Y);
-			var max = Data.Max(x => x.Y);
+			var min = this.Data.Min(x => x.Y);
+			var max = this.Data.Max(x => x.Y);
 			var zeroPoint = min + ratio * (max - min);
-			return $"M{Data.First().X} {zeroPoint} {strokePath.Replace("M", "L")} L{Data.Last().X} {zeroPoint}";
+			return $"M{this.Data.First().X} {zeroPoint} {strokePath.Replace("M", "L")} L{this.Data.Last().X} {zeroPoint}";
 		}
 	}
 }
