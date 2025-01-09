@@ -53,7 +53,7 @@
             nameof(Html),
             typeof(string),
             typeof(ColourPicker),
-            new UIPropertyMetadata("", OnHtmlSet));
+            new UIPropertyMetadata(string.Empty, OnHtmlSet));
 
         private static void OnHtmlSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {

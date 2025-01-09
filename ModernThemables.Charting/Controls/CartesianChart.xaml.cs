@@ -76,7 +76,7 @@
 						? x.series.Stroke.ColourAtPoint(
 							x.point.BackingPoint.XValue, x.point.BackingPoint.YValue)
 						: Colors.Red),
-					"", "", "")
+					string.Empty, string.Empty, string.Empty)
 					{
 						TooltipTemplate = this.TooltipTemplate,
 						TemplatedContent = this.TooltipContentGetter != null

@@ -150,35 +150,35 @@
 		{
             this.registryService.SetSetting(ColourModeSettingName, this.isDarkMode ? darkModeKey : lightModeKey);
 
-			Application.Current.Resources[nameof(PrimaryBackgroundColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(PrimaryBackgroundColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? PrimaryBackgroundColourDark : PrimaryBackgroundColourLight);
-			Application.Current.Resources[nameof(SecondaryBackgroundColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(SecondaryBackgroundColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? SecondaryBackgroundColourDark : SecondaryBackgroundColourLight);
-			Application.Current.Resources[nameof(PrimaryTextColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(PrimaryTextColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? PrimaryTextColourDark : PrimaryTextColourLight);
-			Application.Current.Resources[nameof(SecondaryTextColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(SecondaryTextColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? SecondaryTextColourDark : SecondaryTextColourLight);
-			Application.Current.Resources[nameof(TertiaryTextColorLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(TertiaryTextColorLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? TertiaryTextColourDark : TertiaryTextColorLight);
-			Application.Current.Resources[nameof(PrimaryControlColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(PrimaryControlColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? PrimaryControlColourDark : PrimaryControlColourLight);
-			Application.Current.Resources[nameof(SecondaryControlColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(SecondaryControlColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? SecondaryControlColourDark : SecondaryControlColourLight);
-			Application.Current.Resources[nameof(PrimaryControlMouseOverBrushLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(PrimaryControlMouseOverBrushLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? PrimaryControlMouseOverBrushDark : PrimaryControlMouseOverBrushLight);
-			Application.Current.Resources[nameof(SecondaryControlMouseOverBrushLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(SecondaryControlMouseOverBrushLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? SecondaryControlMouseOverBrushDark : SecondaryControlMouseOverBrushLight);
-			Application.Current.Resources[nameof(PrimaryControlMouseDownBrushLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(PrimaryControlMouseDownBrushLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? PrimaryControlMouseDownBrushDark : PrimaryControlMouseDownBrushLight);
-			Application.Current.Resources[nameof(SecondaryControlMouseDownBrushLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(SecondaryControlMouseDownBrushLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? SecondaryControlMouseDownBrushDark : SecondaryControlMouseDownBrushLight);
-			Application.Current.Resources[nameof(PrimaryControlBorderColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(PrimaryControlBorderColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? PrimaryControlBorderColourDark : PrimaryControlBorderColourLight);
-			Application.Current.Resources[nameof(SecondaryControlBorderColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(SecondaryControlBorderColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? SecondaryControlBorderColourDark : SecondaryControlBorderColourLight);
-			Application.Current.Resources[nameof(PrimaryControlDisabledColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(PrimaryControlDisabledColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? PrimaryControlDisabledColourDark : PrimaryControlDisabledColourLight);
-			Application.Current.Resources[nameof(SecondaryControlDisabledColourLight).Replace("Colour", "Brush").Replace("Light", "")]
+			Application.Current.Resources[nameof(SecondaryControlDisabledColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
 				= new SolidColorBrush(this.isDarkMode ? SecondaryControlDisabledColourDark : SecondaryControlDisabledColourLight);
 		}
 

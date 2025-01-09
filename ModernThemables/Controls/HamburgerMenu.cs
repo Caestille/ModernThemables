@@ -240,7 +240,7 @@
 
                     if (this_.searchBox != null)
                     {
-                        this_.searchBox.Text = "";
+                        this_.searchBox.Text = string.Empty;
                     }
                 }
             }

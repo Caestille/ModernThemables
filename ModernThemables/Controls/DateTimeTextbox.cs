@@ -18,7 +18,7 @@
 		private bool isKeyboardUpdate = false;
 		private bool blockRecalculateOnce;
 
-		private readonly List<string> skipCharacters = new() { "", " ", ":", "/" };
+		private readonly List<string> skipCharacters = new() { string.Empty, " ", ":", "/" };
 
 		private DateTime? lastValue;
 
@@ -100,7 +100,7 @@
 			if (_this != null)
 			{
 				_this.blockRecalculateOnce = true;
-				_this.Text = _this.DateTime.HasValue ? _this.DateTime.Value.ToString(_this.Format) : "";
+				_this.Text = _this.DateTime.HasValue ? _this.DateTime.Value.ToString(_this.Format) : string.Empty;
 			}
 		}
 
@@ -130,7 +130,7 @@
 				}
 				else if (e.NewValue == null && _this != null && !_this.isKeyboardUpdate)
 				{
-					_this.Text = string.Join("", _this.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
+					_this.Text = string.Join(string.Empty, _this.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
 				}
 			}
 		}
@@ -145,7 +145,7 @@
 			PreviewKeyDown += this.TextKeyDown;
             this.Text = this.DateTime.HasValue 
 				? this.DateTime.Value.ToString(this.Format)
-				: string.Join("", this.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
+				: string.Join(string.Empty, this.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
 
 			if (this.DateTime != null)
 			{
@@ -205,7 +205,7 @@
 		private void TextKeyDown(object sender, KeyEventArgs e)
 		{
 			string text = this.Text == string.Empty
-				? string.Join("", this.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'))
+				? string.Join(string.Empty, this.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'))
 				: this.Text;
 			int selectStart = this.SelectionStart;
 			bool setStart = false;
@@ -252,7 +252,7 @@
 				{
 					case Key.Back:
 						var toDelete = this.Text.Substring(this.SelectionStart, this.SelectionLength);
-						var updated = Regex.Replace(toDelete, "[0-9]", "");
+						var updated = Regex.Replace(toDelete, "[0-9]", string.Empty);
 						text = $"{text.Substring(0, this.SelectionStart)}{updated}{text.Substring(this.SelectionStart + this.SelectionLength, text.Length - this.SelectionStart - this.SelectionLength)}";
 						selectStart = this.SelectionStart;
 						while (this.skipCharacters.Contains(this.GetNextCharacter(selectStart)))
@@ -265,7 +265,7 @@
 						break;
 					case Key.Delete:
 						var toDelete2 = this.Text.Substring(this.SelectionStart, this.SelectionLength);
-						var updated2 = Regex.Replace(toDelete2, "[0-9]", "");
+						var updated2 = Regex.Replace(toDelete2, "[0-9]", string.Empty);
 						text = $"{text.Substring(0, this.SelectionStart)}{updated2}{text.Substring(this.SelectionStart + this.SelectionLength, text.Length - this.SelectionStart - this.SelectionLength)}";
 						selectStart = this.SelectionStart + this.SelectionLength;
                         this.SelectionLength = 0;
@@ -276,7 +276,7 @@
 						if (Regex.IsMatch(key, "D[0-9]"))
 						{
 							var toDelete3 = this.Text.Substring(this.SelectionStart, this.SelectionLength);
-							var updated3 = Regex.Replace(toDelete3, "[0-9a-zA-Z]+", "");
+							var updated3 = Regex.Replace(toDelete3, "[0-9a-zA-Z]+", string.Empty);
 							text = $"{text.Substring(0, this.SelectionStart)}{updated3}{text.Substring(this.SelectionStart + this.SelectionLength, text.Length - this.SelectionStart - this.SelectionLength)}";
 							selectStart = this.SelectionStart;
 							setStart = true;

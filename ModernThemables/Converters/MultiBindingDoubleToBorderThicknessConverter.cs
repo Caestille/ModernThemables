@@ -16,7 +16,7 @@
 	{
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
-			var weightingsString = "";
+			var weightingsString = string.Empty;
 
 			if (values[0] is double inValue
 				&& ((values.Count() > 1 && values[1] is string weightings) || parameter is string weightings2))
@@ -25,7 +25,7 @@
 					? (string)values[1]
 					: parameter != null 
 						? (string)parameter 
-						: "";
+						: string.Empty;
 
 				if (!string.IsNullOrEmpty(weightingsString))
 				{

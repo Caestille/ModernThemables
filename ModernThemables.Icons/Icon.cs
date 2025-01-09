@@ -32,14 +32,14 @@
         {
             if (this.Kind != default)
             {
-                (string, bool) data = ("", false);
+                (string, bool) data = (string.Empty, false);
                 IconDataFactory.DataIndex.Value?.TryGetValue(this.Kind, out data);
                 this.Data = data.Item1!;
                 this.YScale = data.Item2 ? -1 : 1;
             }
             else
             {
-                this.Data = "";
+                this.Data = string.Empty;
                 this.YScale = 1;
             }
         }
