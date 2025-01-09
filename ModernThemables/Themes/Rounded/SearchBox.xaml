@@ -34,10 +34,10 @@
                 <ScrollViewer
                     x:Name="PART_ContentHost"
                     Grid.Column="1"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                     VerticalAlignment="Center"
                     VerticalContentAlignment="Center"
                     Background="Transparent"
-                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                     Focusable="false"
                     HorizontalScrollBarVisibility="Hidden"
                     TextElement.Foreground="{TemplateBinding Foreground}"
@@ -86,7 +86,6 @@
                 <controls:Button2
                     x:Name="PART_button"
                     Grid.Column="2"
-                    Cursor="Arrow"
                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                     Margin="10,2,3,2"
                     Padding="1"
@@ -97,6 +96,7 @@
                     Background="Transparent"
                     BorderThickness="0"
                     CornerRadius="3"
+                    Cursor="Arrow"
                     Foreground="{DynamicResource SecondaryTextBrush}"
                     MouseOverBrush="{DynamicResource PrimaryControlMouseOverBrush}">
                     <scalableicons:Icon

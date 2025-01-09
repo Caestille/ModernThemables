@@ -1,6 +1,6 @@
 ﻿using CoreUtilities.HelperClasses;
 using CoreUtilities.HelperClasses.Extensions;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using ModernThemables.ViewModels;
 using System;
 using System.Collections.Generic;

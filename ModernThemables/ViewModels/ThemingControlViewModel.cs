@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,7 +10,7 @@ using CoreUtilities.Services.RegistryInteraction;
 using System.Timers;
 using CoreUtilities.HelperClasses.Extensions;
 using CoreUtilities.Interfaces.Dialogues;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using ModernThemables.Services;
 

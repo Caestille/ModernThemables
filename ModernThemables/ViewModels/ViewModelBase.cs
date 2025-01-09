@@ -1,6 +1,6 @@
 ﻿using CoreUtilities.HelperClasses;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 using System;
 using ModernThemables.Messages;
