@@ -252,7 +252,7 @@
 			Loaded -= this.TooltipControl_Loaded;
 			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
 			{
-                this.Coordinator = coordinator;
+                this.Coordinator = coordinator!;
 			}
 			else
 			{

@@ -177,8 +177,9 @@
 		{
 			if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
 			{
-                this.Coordinator = coordinator;
+                this.Coordinator = coordinator!;
 			}
+
 			Loaded -= this.AxisControl_Loaded;
 		}
 

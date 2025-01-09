@@ -35,7 +35,7 @@
 		public string OriginalName => base.Name;
 
 		public AliasableViewModelBase(
-			string name, string alias, Func<TChild>? createChild = null)
+			string name, string? alias, Func<TChild>? createChild = null)
 			: base(name, createChild)
 		{
             this.Alias = alias;

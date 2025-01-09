@@ -22,7 +22,7 @@
         /// <summary>
         /// The series name for the legend.
         /// </summary>
-        public string Name { get; }
+        public string? Name { get; }
 
         /// <summary>
         /// Initialises a new <see cref="InternalPieSeriesViewModel"/>.
@@ -30,7 +30,7 @@
         /// <param name="name">The series name.</param>
         /// <param name="wedges">The data this series represents.</param>
         public InternalPieSeriesViewModel(
-            string name,
+            string? name,
             ObservableCollection<InternalPieWedgeViewModel> wedges)
         {
             this.Name = name;

@@ -55,7 +55,7 @@
 		/// <summary>
 		/// The series name for the legend.
 		/// </summary>
-		public string Name { get; }
+		public string? Name { get; }
 
 		/// <summary>
 		/// Initialises a new <see cref="InternalPathSeriesViewModel"/>.
@@ -66,7 +66,7 @@
 		/// <param name="stroke">The <see cref="IChartBrush"/> path stroke.</param>
 		/// <param name="fill">The <see cref="IChartBrush"/> path fill.</param>
 		public InternalPathSeriesViewModel(
-			string name,
+			string? name,
 			Guid guid,
 			IEnumerable<InternalChartEntity> data,
 			IChartBrush? stroke,
