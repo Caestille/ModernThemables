@@ -34,7 +34,7 @@
             ObservableCollection<InternalPieWedgeViewModel> wedges)
         {
             this.Name = name;
-            this.Wedges = wedges;
+            this.wedges = wedges;
         }
     }
 }

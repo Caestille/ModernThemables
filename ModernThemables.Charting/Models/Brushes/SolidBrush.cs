@@ -10,7 +10,7 @@
     public sealed class SolidBrush : IChartBrush
     {
         /// <inheritdoc />
-        public Brush CoreBrush { get; private set; }
+        public Brush? CoreBrush { get; private set; }
 
         private Color colour;
 

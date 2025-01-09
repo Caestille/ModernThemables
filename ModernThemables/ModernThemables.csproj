@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU</Platforms>
+    <NoWarn>NU1902;NU1903;NU1904</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,9 +22,5 @@
     <ProjectReference Include="..\..\CoreUtilities\CoreUtilities.csproj" />
     <ProjectReference Include="..\ModernThemables.Icons\ModernThemables.Icons.csproj" />
   </ItemGroup>
-
-	<ItemGroup>
-		<None Include="..\..\CoreUtilities\CoreUtilities\.editorconfig" />
-	</ItemGroup>
 
 </Project>

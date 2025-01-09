@@ -13,7 +13,7 @@
     public sealed class MultiGradientBrush : IChartBrush
     {
         /// <inheritdoc />
-        public Brush CoreBrush { get; private set; }
+        public Brush? CoreBrush { get; private set; }
 
         private Color topColour;
         private Color bottomColour;

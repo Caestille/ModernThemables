@@ -429,21 +429,31 @@
             {
                 Application.Current.Dispatcher.Invoke(() => {
                     this.IsTransparentHeader = e;
-                    this.titleBarBackground.Visibility = e ? Visibility.Hidden : Visibility.Visible;
-                    this.WindowButtonCommands.Foreground = e
-                        ? Application.Current.Resources["PrimaryTextBrush"] as SolidColorBrush
-                        : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
+                    if (this.titleBarBackground != null)
+                    {
+                        this.titleBarBackground.Visibility = e ? Visibility.Hidden : Visibility.Visible;
+                    }
+
+                    if (this.WindowButtonCommands != null)
+                    {
+                        this.WindowButtonCommands.Foreground = e
+                            ? Application.Current.Resources["PrimaryTextBrush"] as SolidColorBrush
+                            : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
+                    }
                 });
 
             };
             this.themeVm.IsDarkChanged += (sender, e) =>
             {
-                Application.Current.Dispatcher.Invoke(() => {
-                    this.WindowButtonCommands.Foreground = this.themeVm.IsTransparentHeader
-                        ? Application.Current.Resources["PrimaryTextBrush"] as SolidColorBrush
-                        : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
-                });
-
+                if (this.WindowButtonCommands != null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        this.WindowButtonCommands.Foreground = this.themeVm.IsTransparentHeader
+                            ? Application.Current.Resources["PrimaryTextBrush"] as SolidColorBrush
+                            : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
+                    });
+                }
             };
             DataContextChanged += this.Window2_DataContextChanged;
 		}
@@ -567,7 +577,7 @@
             this.SettingsCloseButton = this.GetTemplateChild(PART_SettingsCloseButton) as Button;
             this.SettingsCloseRegion = this.GetTemplateChild(PART_SettingsCloseRegion) as Button;
             this.ThemingMenu = this.GetTemplateChild(PART_ThemingMenu) as ThemingControl;
-            this.ThemingMenu.DataContext = this.themeVm;
+            this.ThemingMenu!.DataContext = this.themeVm;
 
             this.LeftWindowCommands ??= new WindowCommands();
             this.RightWindowCommands ??= new WindowCommands();

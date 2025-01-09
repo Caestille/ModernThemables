@@ -10,7 +10,7 @@
         /// <summary>
         /// The underlying <see cref="Brush"/>.
         /// </summary>
-        Brush CoreBrush { get; }
+        Brush? CoreBrush { get; }
 
         /// <summary>
         /// As the brush can be non-constant, called when desired to re-evaluate the brush properties from the given

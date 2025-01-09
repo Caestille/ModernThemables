@@ -1,6 +1,8 @@
 ﻿namespace ModernThemables.Charting.Models.BarChart
 {
     using ModernThemables.Charting.Interfaces;
+    using ModernThemables.Charting.Models.Brushes;
+    using System.Windows.Media;
 
     public class LabelledBar : IChartEntity
     {
@@ -27,6 +29,8 @@
             this.Name = label;
             this.XValue = position;
             this.YValue = value;
+            this.Stroke = new SolidBrush(Colors.Transparent);
+            this.Fill = new SolidBrush(Colors.Transparent);
         }
 
         /// <inheritdoc />
