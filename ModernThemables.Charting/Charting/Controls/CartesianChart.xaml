@@ -15,7 +15,7 @@
             <StackPanel />
         </ItemsPanelTemplate>
     </UserControl.Resources>
-    <Grid SizeChanged="Grid_SizeChanged">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -63,6 +63,7 @@
                     ClipToBounds="True">
                     <chartcomponents:ZoomHost
                         x:Name="Zoom"
+                        SizeChanged="Grid_SizeChanged"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         IsZoomed="{Binding ElementName=root, Path=IsZoomed, Mode=OneWayToSource}"

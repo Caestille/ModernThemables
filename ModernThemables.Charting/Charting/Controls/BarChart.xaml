@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="root"
     mc:Ignorable="d">
-    <Grid SizeChanged="Grid_SizeChanged">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -63,6 +63,7 @@
                 <chartComponents:GridControl
                     Margin="-1"
                     Foreground="{DynamicResource TertiaryTextBrush}"
+                    SizeChanged="Grid_SizeChanged"
                     Visibility="{Binding ElementName=root, Path=ShowYSeparatorLines, Converter={StaticResource VisibleIfTrueConverter}}"
                     YLabels="{Binding YAxisLabels, ElementName=root}" />
                 <ItemsControl

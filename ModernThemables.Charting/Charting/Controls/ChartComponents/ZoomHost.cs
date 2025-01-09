@@ -122,7 +122,7 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			RightFraction = 0;
 			IsZoomed = false;
 
-			var diffs = GetTopBottomDiff(true);
+			var diffs = GetTopBottomDiff();
 
 			Margin = new Thickness(0, double.IsNaN(diffs.top) ? 0 : -diffs.top, 0, double.IsNaN(diffs.bottom) ? 0 : -diffs.bottom);
 
@@ -205,15 +205,16 @@ namespace ModernThemables.Charting.Controls.ChartComponents
 			ZoomChanged?.Invoke(this, EventArgs.Empty);
 		}
 
-		private (double top, double bottom) GetTopBottomDiff(bool isReset = false)
+		private (double top, double bottom) GetTopBottomDiff()
 		{
 			if (currentCoordinator == null) return (0, 0);
-			var dataHeightPx = GetDataHeightPixelsInBounds != null && !isReset
-					? GetDataHeightPixelsInBounds() : (currentCoordinator.ActualHeight, 0);
+			var dataHeightPx = GetDataHeightPixelsInBounds != null 
+			    ? GetDataHeightPixelsInBounds()
+                : (0, currentCoordinator.ActualHeight);
 			var dataRange = dataHeightPx.Item2 - dataHeightPx.Item1;
-			var buffer = dataRange * YPaddingFrac;
-			BottomFraction = 1 - (dataHeightPx.Item1 - buffer) / currentCoordinator.ActualHeight;
-			TopFraction = (dataHeightPx.Item2 + buffer) / currentCoordinator.ActualHeight;
+            var buffer = dataRange * YPaddingFrac;
+			TopFraction = (dataHeightPx.Item1 - buffer) / currentCoordinator.ActualHeight;
+            BottomFraction = 1 - ((dataHeightPx.Item2 + buffer) / currentCoordinator.ActualHeight);
 
 			var newHeight = currentCoordinator.ActualHeight / (1 - (TopFraction + BottomFraction));
 

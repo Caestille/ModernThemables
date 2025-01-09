@@ -11,7 +11,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="RoundedSearchBoxTemplate" TargetType="{x:Type controls:SearchBox}">
-        <Grid>
+        <Grid Cursor="IBeam">
             <Border
                 x:Name="Border"
                 Background="{TemplateBinding Background}"
@@ -86,6 +86,7 @@
                 <controls:Button2
                     x:Name="PART_button"
                     Grid.Column="2"
+                    Cursor="Arrow"
                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                     Margin="10,2,3,2"
                     Padding="1"

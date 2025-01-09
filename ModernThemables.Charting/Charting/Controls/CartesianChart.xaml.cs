@@ -122,9 +122,9 @@ namespace ModernThemables.Charting.Controls
 				var range = max - min;
 				var boundedXMax = max - Zoom.RightFraction * range + Zoom.PanOffsetFraction * range * Coordinator.ActualWidth / Zoom.ActualWidth;
 				var boundedXMin = min + Zoom.LeftFraction * range + Zoom.PanOffsetFraction * range * Coordinator.ActualWidth / Zoom.ActualWidth;
-				var pointsInRange = allPoints.Where(x => x.X > boundedXMin && x.X < boundedXMax);
-				var boundedYMax = pointsInRange.Any() ? pointsInRange.Min(x => x.Y) : allPoints.Min(x => x.Y);
-				var boundedYMin = pointsInRange.Any() ? pointsInRange.Max(x => x.Y) : allPoints.Max(x => x.Y);
+				var pointsInRange = allPoints.Where(x => x.X >= boundedXMin && x.X <= boundedXMax);
+				var boundedYMax = pointsInRange.Any() ? pointsInRange.Max(x => x.Y) : allPoints.Max(x => x.Y);
+				var boundedYMin = pointsInRange.Any() ? pointsInRange.Min(x => x.Y) : allPoints.Min(x => x.Y);
 				return (boundedYMin, boundedYMax);
 			});
 
