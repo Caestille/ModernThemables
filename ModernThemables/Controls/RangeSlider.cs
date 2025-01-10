@@ -238,8 +238,8 @@
 
             var pos = e.GetPosition(this.midRange);
 
-            var newMin = this.LowerValue + pos.X - this.midRangeMouseDownPoint.X;
-            var newMax = this.HigherValue + pos.X - this.midRangeMouseDownPoint.X;
+            var newMin = this.LowerValue + ((pos.X - this.midRangeMouseDownPoint.X) / this.ActualWidth) * (this.Maximum - this.Minimum);
+            var newMax = this.HigherValue + ((pos.X - this.midRangeMouseDownPoint.X) / this.ActualWidth) * (this.Maximum - this.Minimum);
 
             if (newMin >= this.Minimum && newMax <= this.Maximum)
             {
@@ -252,9 +252,8 @@
 
         #region Methods
 
-        private void AdjustView(bool isHigherValueChanged = false)
+        private void AdjustView()
 		{
-			//Coerce values to make them consistent.
 			var cv = this.GetCoercedValues();
 
 			double actualWidth = this.ActualWidth;
