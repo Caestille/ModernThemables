@@ -44,12 +44,19 @@
 				foreach (ISeries item in series)
 				{
 					item.PropertyChanged += this.Series_PropertyChanged;
+                    item.CollectionChanged += this.Series_ValuesChanged;
+                    item.Values.CollectionChanged += this.Series_ValuesChanged;
                     this.subscribedSeries.Add(item);
 				}
 			}
 		}
 
-		private void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        private void Series_ValuesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.onSeriesUpdated(null, null, true);
+        }
+
+        private void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
@@ -64,7 +71,9 @@
 				foreach (ISeries series in e.OldItems)
 				{
 					series.PropertyChanged -= this.Series_PropertyChanged;
-					oldItems.Add(series);
+                    series.CollectionChanged -= this.Series_ValuesChanged;
+                    series.Values.CollectionChanged -= this.Series_ValuesChanged;
+                    oldItems.Add(series);
                     this.subscribedSeries.Remove(series);
 				}
 			}
@@ -76,7 +85,9 @@
 				foreach (ISeries series in e.NewItems)
 				{
 					series.PropertyChanged += this.Series_PropertyChanged;
-					newItems.Add(series);
+                    series.CollectionChanged += this.Series_ValuesChanged;
+                    series.Values.CollectionChanged += this.Series_ValuesChanged;
+                    newItems.Add(series);
                     this.subscribedSeries.Add(series);
 				}
 			}

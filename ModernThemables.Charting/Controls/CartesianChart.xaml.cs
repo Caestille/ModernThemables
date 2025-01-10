@@ -55,13 +55,18 @@
 			{
 				while (this.runRenderThread)
 				{
-					while (this.renderInProgress)
-					{
-						Thread.Sleep(1);
-					}
+					while (this.renderInProgress) Thread.Sleep(1);
+
+                    var sw = Stopwatch.StartNew();
 					if (this.renderQueue.Count != 0)
                         this.renderQueue.Take().Invoke();
-					Thread.Sleep(1);
+
+                    while (this.renderQueue.Count != 0)
+                        _ = this.renderQueue.Take();
+
+                    sw.Stop();
+
+                    Thread.Sleep((int)Math.Max(0, 16 - sw.ElapsedMilliseconds));
 				}
 			}));
             this.renderThread.Start();
@@ -187,7 +192,8 @@
 					? this.Series ?? new ObservableCollection<ISeries>()
 					: addedSeries ?? new List<ISeries>())
 				{
-					if (series.Values == null || !series.Values.Any()) continue;
+                    var clonedValues = series.Values?.Clone();
+					if (clonedValues == null || !clonedValues.Any()) continue;
 
 					var points = this.GetPointsForSeries(series);
 
@@ -206,10 +212,10 @@
 							? matchingSeries != null ? matchingSeries.Fill : series.Fill
 							: series.Fill), true));
 
-					if (!series.Values.Any()) continue;
+					if (!clonedValues.Any()) continue;
 
-					var seriesYMin = series.Values.Min(z => z.YValue);
-					var seriesYMax = series.Values.Max(z => z.YValue);
+					var seriesYMin = clonedValues.Min(z => z.YValue);
+					var seriesYMax = clonedValues.Max(z => z.YValue);
 
 					series.Stroke?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
 					series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
@@ -225,13 +231,14 @@
 					if (matchingSeries == null) continue;
 					series.UpdatePoints(this.GetPointsForSeries(matchingSeries));
 
-					if (!matchingSeries.Values.Any()) continue;
+                    var cloned = matchingSeries.Values.Clone();
+					if (!cloned.Any()) continue;
 
-					var seriesYMax = matchingSeries.Values.Max(x => x.YValue);
-					var seriesYMin = matchingSeries.Values.Min(x => x.YValue);
+					var seriesYMax = cloned.Max(x => x.YValue);
+					var seriesYMin = cloned.Min(x => x.YValue);
 					var seriesYRange = seriesYMax - seriesYMin;
-					var seriesXMax = matchingSeries.Values.Max(x => x.XValue);
-					var seriesXMin = matchingSeries.Values.Min(x => x.XValue);
+					var seriesXMax = cloned.Max(x => x.XValue);
+					var seriesXMin = cloned.Min(x => x.XValue);
 					var seriesXRange = seriesXMax - seriesXMin;
 
 					var topMargin = ((yMax - seriesYMax) / seriesYRange);
@@ -367,7 +374,7 @@
 			var yRange = this.dataYMax - yMin;
 			
 			List<InternalChartEntity> points = new();
-			foreach (var point in series.Values)
+			foreach (var point in series.Values.Clone())
 			{
 				double x = (double)(point.XValue - xMin) / (double)xRange * (double)this.plotAreaWidth;
 				double y = this.plotAreaHeight - (point.YValue - yMin) / yRange * this.plotAreaHeight;
@@ -416,18 +423,18 @@
 
 		private double SafeMinMax(bool isMin, Func<IChartEntity, double> valueGetter)
 		{
-			if (isMin)
-			{
-				return this.Series != null && this.Series.Where(x => x.Values?.Any() ?? false).Any()
-					? this.Series.Where(x => x.Values.Any()).SelectMany(x => x.Values).Min(y => valueGetter(y))
-					: 0;
-			}
-			else
-			{
-				return this.Series != null && this.Series.Where(x => x.Values?.Any() ?? false).Any()
-					? this.Series.Where(x => x.Values?.Any() ?? false).SelectMany(x => x.Values).Max(y => valueGetter(y))
-					: 0;
-			}
+            if (this.Series is null) return 0;
+
+            var cloned = this.Series.Where(x => x.Values?.Any() ?? false).Select(x => x.Values.Clone()).ToList();
+            if (!cloned.Any()) return 0;
+
+            var all = cloned.SelectMany(x => x).ToList();
+
+            if (!all.Any()) return 0;
+
+            return isMin
+                ? all.Min(y => valueGetter(y))
+                : all.Max(y => valueGetter(y));
 		}
 
 		#endregion

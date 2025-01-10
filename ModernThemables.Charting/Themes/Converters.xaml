@@ -10,5 +10,11 @@
     <chartConverters:PieCentrererConverter x:Key="PieCentrererConverter" />
     <chartConverters:AxisLabelMarginConverter x:Key="AxisLabelMarginConverter" />
     <chartConverters:PointHighlightMarginConverter x:Key="PointHighlightMarginConverter" />
+    <chartConverters:MultiBindingDoubleToBorderThicknessConverter x:Key="MultiBindingDoubleToBorderThicknessConverter" />
+    <chartConverters:MultiBoolAndConverter x:Key="MultiBoolAndConverter" />
+    <chartConverters:MultiBoolAndToVisibilityConverter x:Key="MultiBoolAndToVisibilityConverter" />
+    <chartConverters:MultiBoolOrConverter x:Key="MultiBoolOrConverter" />
+    <chartConverters:MultiBoolOrToVisibilityConverter x:Key="MultiBoolOrToVisibilityConverter" />
+    <chartConverters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />
 
 </ResourceDictionary>
