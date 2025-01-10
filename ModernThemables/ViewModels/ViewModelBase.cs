@@ -69,7 +69,7 @@
 			}
 		}
 
-		public virtual void AddChild(TChild? viewModelToAdd = null, string name = string.Empty, int? index = null)
+		public virtual void AddChild(TChild? viewModelToAdd = null, string name = "", int? index = null)
 		{
 			var viewModel = viewModelToAdd ?? (this.createChildFunc != null ? this.createChildFunc() : null);
 			if (viewModel is null)
