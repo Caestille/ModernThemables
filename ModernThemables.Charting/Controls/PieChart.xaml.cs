@@ -1,300 +1,323 @@
-﻿namespace ModernThemables.Charting.Controls
+﻿namespace ModernThemables.Charting.Controls;
+
+using CoreUtilities.Services;
+using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using ModernThemables.Charting.ViewModels.PieChart;
+using ModernThemables.Charting.Converters;
+using ModernThemables.Charting.Models;
+using ModernThemables.Charting.Models.Brushes;
+using ModernThemables.Charting.Interfaces;
+using ModernThemables.Charting.ViewModels;
+using ModernThemables.Charting.Services;
+using CoreUtilities.Helpers.Extensions;
+
+/// <summary>
+/// Interaction logic for PieChart.xaml
+/// </summary>
+public partial class PieChart : UserControl
 {
-    using CoreUtilities.HelperClasses.Extensions;
-    using CoreUtilities.Services;
-    using System.Collections.Concurrent;
-    using System.Collections.ObjectModel;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Input;
-    using ModernThemables.Charting.ViewModels.PieChart;
-    using ModernThemables.Charting.Converters;
-    using ModernThemables.Charting.Models;
-    using ModernThemables.Charting.Models.Brushes;
-    using ModernThemables.Charting.Interfaces;
-    using ModernThemables.Charting.ViewModels;
-    using ModernThemables.Charting.Services;
+    private readonly RefreshTrigger resizeTrigger;
 
-    /// <summary>
-    /// Interaction logic for PieChart.xaml
-    /// </summary>
-    public partial class PieChart : UserControl
-	{
-		private readonly RefreshTrigger resizeTrigger;
+    private readonly SeriesWatcherService seriesWatcher;
 
-		private readonly SeriesWatcherService seriesWatcher;
+    private IEnumerable<InternalPieWedgeViewModel> allWedges
+        => this.InternalSeries.Aggregate(new List<InternalPieWedgeViewModel>(), (list, series) => { list.AddRange(series.Wedges); return list; });
 
-		private IEnumerable<InternalPieWedgeViewModel> allWedges
-			=> this.InternalSeries.Aggregate(new List<InternalPieWedgeViewModel>(), (list, series) => { list.AddRange(series.Wedges); return list; });
+    private readonly BlockingCollection<Action> renderQueue;
+    private bool renderInProgress;
 
-		private readonly BlockingCollection<Action> renderQueue;
-		private bool renderInProgress;
+    private readonly Thread renderThread;
+    private bool runRenderThread = true;
 
-		private readonly Thread renderThread;
-		private bool runRenderThread = true;
+    public PieChart()
+    {
+        this.InitializeComponent();
+        Loaded += this.PieChart_Loaded;
 
-		public PieChart()
-		{
-            this.InitializeComponent();
-			Loaded += this.PieChart_Loaded;
+        this.seriesWatcher = new SeriesWatcherService(this.QueueRenderChart);
 
-            this.seriesWatcher = new SeriesWatcherService(this.QueueRenderChart);
-
-            this.renderQueue = new BlockingCollection<Action>();
-            this.renderThread = new Thread(new ThreadStart(() =>
-			{
-				while (this.runRenderThread)
-				{
-					while (this.renderInProgress)
-					{
-						Thread.Sleep(1);
-					}
-					if (this.renderQueue.Count != 0)
-                        this.renderQueue.Take().Invoke();
-					Thread.Sleep(1);
-				}
-			}));
-            this.renderThread.Start();
-
-            this.TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((mouseLoc) =>
-			{
-				var tooltipPoints = new List<TooltipViewModel>();
-
-				var centreX = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreX);
-				var centreY = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreY);
-				var radius = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.Radius);
-
-				mouseLoc = new Point(mouseLoc.X -= this.SeriesItemsControl.ActualWidth / 2 - radius / 0.9, mouseLoc.Y);
-
-				var hypLength = Math.Sqrt(
-					Math.Pow(Math.Abs(mouseLoc.X - centreX), 2)
-					+ Math.Pow(Math.Abs(mouseLoc.Y - centreY), 2));
-
-				if (hypLength > radius)
-				{
-					foreach (var wedge in this.allWedges) wedge.IsMouseOver = false;
-					return new List<TooltipViewModel>();
-				}
-
-				var angle = this.GetMouseAngleFromPoint(mouseLoc, new Point(centreX, centreY));
-
-				foreach (var series in this.InternalSeries)
-				{
-					foreach (var wedge in series.Wedges)
-					{
-						if (angle > wedge.StartAngle
-							&& angle < wedge.StartAngle + wedge.Percent * 360d / 100d)
-						{
-							if (!wedge.IsMouseOver)
-							{
-								wedge.IsMouseOver = true;
-							}
-
-							var matchingSeries = this.Series.FirstOrDefault(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
-                            if (matchingSeries == null) continue;
-							var matchingWedge = matchingSeries.Values.First(x => x.Identifier == wedge.Identifier);
-							var formattedValue = matchingSeries.ValueFormatter != null
-								? matchingSeries.ValueFormatter(matchingWedge)
-								: matchingWedge.XValue.ToString();
-							var formattedPercent = $"{Math.Round(wedge.Percent, 1)} %";
-
-							var x = 0d;
-							var y = 0d;
-
-							if (this.TooltipLocation == TooltipLocation.Points)
-							{
-								var centreAngle = wedge.StartAngle + wedge.Percent / 2 * 360 / 100;
-								var angleRad = (Math.PI / 180.0) * (centreAngle - 90);
-								x = radius * Math.Cos(angleRad);
-								y = radius * Math.Sin(angleRad);
-								x = x + (this.SeriesItemsControl.ActualWidth / 2);
-								y = y + centreY - 20;
-							}
-
-							var tooltip = new TooltipViewModel(x, y, wedge?.Fill?.CoreBrush, formattedValue, matchingWedge.Name, formattedPercent);
-							tooltipPoints.Add(tooltip);
-						}
-						else if (wedge.IsMouseOver)
-						{
-							wedge.IsMouseOver = false;
-						}
-					}
-				}
-
-				return tooltipPoints;
-			});
-
-            this.resizeTrigger = new RefreshTrigger(() => this.QueueRenderChart(null, null, true), 100);
-		}
-
-		private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not PieChart chart) return;
-
-			var properties = ChartHelper.GetLegendProperties(chart.LegendLocation);
-
-			chart.LegendGrid.SetValue(Grid.RowProperty, properties.row);
-			chart.LegendGrid.SetValue(Grid.ColumnProperty, properties.column);
-			chart.LegendGrid.Visibility = properties.visibility;
-			chart.LegendGrid.Margin = properties.margin;
-			chart.LegendGrid.Orientation = properties.orientation;
-
-			await Task.Delay(1);
-			chart.QueueRenderChart(null, null, true);
-		}
-
-		private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (sender is not PieChart chart) return;
-
-			chart.seriesWatcher.ProvideSeries(chart.Series);
-		}
-
-		private void QueueRenderChart(
-			IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
-		{
-            this.renderQueue.Add(this.RenderChart);
-		}
-
-		private void RenderChart()
-		{
-			Application.Current.Dispatcher.Invoke(async () =>
-			{
-                if (this.Series == null)
+        this.renderQueue = new BlockingCollection<Action>();
+        this.renderThread = new Thread(new ThreadStart(() =>
+        {
+            while (this.runRenderThread)
+            {
+                while (this.renderInProgress)
                 {
-                    return;
+                    Thread.Sleep(1);
+                }
+                if (this.renderQueue.Count != 0)
+                {
+                    this.renderQueue.Take().Invoke();
                 }
 
-                this.renderInProgress = true;
+                Thread.Sleep(1);
+            }
+        }));
+        this.renderThread.Start();
 
-				var newSeries = new List<InternalPieSeriesViewModel>();
+        this.TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((mouseLoc) =>
+        {
+            var tooltipPoints = new List<TooltipViewModel>();
 
-				foreach (var series in this.Series.Where(x => x.Values != null && x.Values.Any()))
-				{
-					var wedges = await this.GetWedgesForSeries(series);
+            var centreX = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreX);
+            var centreY = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreY);
+            var radius = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.Radius);
 
-					newSeries.Add(new InternalPieSeriesViewModel(
-						series.Name,
-						new ObservableCollection<InternalPieWedgeViewModel>(wedges)));
+            mouseLoc = new Point(mouseLoc.X -= this.SeriesItemsControl.ActualWidth / 2 - radius / 0.9, mouseLoc.Y);
 
-					if (!series.Values.Any()) continue;
-				}
+            var hypLength = Math.Sqrt(
+                Math.Pow(Math.Abs(mouseLoc.X - centreX), 2)
+                + Math.Pow(Math.Abs(mouseLoc.Y - centreY), 2));
 
-                this.InternalSeries = new ObservableCollection<InternalPieSeriesViewModel>(newSeries);
+            if (hypLength > radius)
+            {
+                foreach (var wedge in this.allWedges)
+                {
+                    wedge.IsMouseOver = false;
+                }
 
-				foreach (var series in this.InternalSeries)
-				{
-					foreach (var wedge in series.Wedges)
-					{
-						wedge.ResizeTrigger = !wedge.ResizeTrigger;
-					}
-				}
+                return new List<TooltipViewModel>();
+            }
 
-                this.renderInProgress = false;
-			});
-		}
+            var angle = this.GetMouseAngleFromPoint(mouseLoc, new Point(centreX, centreY));
 
-		#region Calculations		
+            foreach (var series in this.InternalSeries)
+            {
+                foreach (var wedge in series.Wedges)
+                {
+                    if (angle > wedge.StartAngle
+                        && angle < wedge.StartAngle + wedge.Percent * 360d / 100d)
+                    {
+                        if (!wedge.IsMouseOver)
+                        {
+                            wedge.IsMouseOver = true;
+                        }
 
-		private async Task<List<InternalPieWedgeViewModel>> GetWedgesForSeries(ISeries? series)
-		{
-			return await Task.Run(() => { 
-				var convertedSeries = new List<InternalPieWedgeViewModel>();
+                        var matchingSeries = this.Series.FirstOrDefault(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
+                        if (matchingSeries == null)
+                        {
+                            continue;
+                        }
 
-				if (series == null) return convertedSeries;
+                        var matchingWedge = matchingSeries.Values.First(x => x.Identifier == wedge.Identifier);
+                        var formattedValue = matchingSeries.ValueFormatter != null
+                            ? matchingSeries.ValueFormatter(matchingWedge)
+                            : matchingWedge.XValue.ToString();
+                        var formattedPercent = $"{Math.Round(wedge.Percent, 1)} %";
 
-				var sum = series.Values.Sum(x => x.XValue);
-				var angleSum = 0d;
+                        var x = 0d;
+                        var y = 0d;
 
-				foreach (var wedge in series.Values)
-				{
-					InternalPieWedgeViewModel? matchingWedge = null;
+                        if (this.TooltipLocation == TooltipLocation.Points)
+                        {
+                            var centreAngle = wedge.StartAngle + wedge.Percent / 2 * 360 / 100;
+                            var angleRad = (Math.PI / 180.0) * (centreAngle - 90);
+                            x = radius * Math.Cos(angleRad);
+                            y = radius * Math.Sin(angleRad);
+                            x = x + (this.SeriesItemsControl.ActualWidth / 2);
+                            y = y + centreY - 20;
+                        }
 
-					convertedSeries.Add(new InternalPieWedgeViewModel(
-						wedge.Name,
-						wedge.Identifier,
-						wedge.XValue / sum * 100,
-						wedge.XValue,
-						angleSum / sum * 360,
-						matchingWedge != null
-							? matchingWedge.Stroke
-							: wedge.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
-						matchingWedge != null
-							? matchingWedge.Fill
-							: wedge.Fill ?? new SolidBrush(ColorExtensions.RandomColour(50))));
+                        var tooltip = new TooltipViewModel(x, y, wedge?.Fill?.CoreBrush, formattedValue, matchingWedge.Name, formattedPercent);
+                        tooltipPoints.Add(tooltip);
+                    }
+                    else if (wedge.IsMouseOver)
+                    {
+                        wedge.IsMouseOver = false;
+                    }
+                }
+            }
 
-					angleSum += wedge.XValue;
-				}
+            return tooltipPoints;
+        });
 
-				return convertedSeries;
-			});
-		}
+        this.resizeTrigger = new RefreshTrigger(() => this.QueueRenderChart(null, null, true), 100);
+    }
 
-		#endregion
+    private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (sender is not PieChart chart)
+        {
+            return;
+        }
 
-		#region Mouse events
+        var properties = ChartHelper.GetLegendProperties(chart.LegendLocation);
 
-		private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
-		{
-			foreach (var series in this.InternalSeries)
-			{
-				foreach (var wedge in series.Wedges)
-				{
-					wedge.IsMouseOver = false;
-				}
-			}
-		}
+        chart.LegendGrid.SetValue(Grid.RowProperty, properties.row);
+        chart.LegendGrid.SetValue(Grid.ColumnProperty, properties.column);
+        chart.LegendGrid.Visibility = properties.visibility;
+        chart.LegendGrid.Margin = properties.margin;
+        chart.LegendGrid.Orientation = properties.orientation;
 
-		#endregion
+        await Task.Delay(1);
+        chart.QueueRenderChart(null, null, true);
+    }
 
-		private double GetMouseAngleFromPoint(Point mouseLoc, Point point)
-		{
-			var hypLength = Math.Sqrt(
-				Math.Pow(Math.Abs(mouseLoc.X - point.X), 2)
-				+ Math.Pow(Math.Abs(mouseLoc.Y - point.Y), 2));
+    private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (sender is not PieChart chart)
+        {
+            return;
+        }
 
-			var oppLength = Math.Abs(mouseLoc.X - point.X);
-			var angle = Math.Asin(oppLength / hypLength) * 180 / Math.PI;
+        chart.seriesWatcher.ProvideSeries(chart.Series);
+    }
 
-			if (mouseLoc.X <= point.X && mouseLoc.Y <= point.Y)
-			{
-				angle = 360 - angle;
-			}
+    private void QueueRenderChart(
+        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
+    {
+        this.renderQueue.Add(this.RenderChart);
+    }
 
-			if (mouseLoc.Y > point.Y)
-			{
-				if (mouseLoc.X <= point.X)
-				{
-					angle = 180 + angle;
-				}
-				else
-				{
-					angle = 180 - angle;
-				}
-			}
+    private void RenderChart()
+    {
+        Application.Current.Dispatcher.Invoke(async () =>
+        {
+            if (this.Series == null)
+            {
+                return;
+            }
 
-			return angle;
-		}
+            this.renderInProgress = true;
 
-		private void YAxisItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			//ignoreNextMouseMove = true;
-		}
+            var newSeries = new List<InternalPieSeriesViewModel>();
 
-		private void PieChart_Loaded(object sender, RoutedEventArgs e)
-		{
-			Loaded -= this.PieChart_Loaded;
-			Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
-			OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
-            this.Coordinator.MouseLeave += this.MouseCaptureGrid_MouseLeave;
-		}
+            foreach (var series in this.Series.Where(x => x.Values != null && x.Values.Any()))
+            {
+                var wedges = await this.GetWedgesForSeries(series);
 
-		private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
-		{
-            this.resizeTrigger.Stop();
-            this.runRenderThread = false;
-            this.seriesWatcher.Dispose();
-            this.Coordinator.MouseLeave -= this.MouseCaptureGrid_MouseLeave;
-		}
-	}
+                newSeries.Add(new InternalPieSeriesViewModel(
+                    series.Name,
+                    new ObservableCollection<InternalPieWedgeViewModel>(wedges)));
+
+                if (!series.Values.Any())
+                {
+                    continue;
+                }
+            }
+
+            this.InternalSeries = new ObservableCollection<InternalPieSeriesViewModel>(newSeries);
+
+            foreach (var series in this.InternalSeries)
+            {
+                foreach (var wedge in series.Wedges)
+                {
+                    wedge.ResizeTrigger = !wedge.ResizeTrigger;
+                }
+            }
+
+            this.renderInProgress = false;
+        });
+    }
+
+    #region Calculations		
+
+    private async Task<List<InternalPieWedgeViewModel>> GetWedgesForSeries(ISeries? series)
+    {
+        return await Task.Run(() =>
+        {
+            var convertedSeries = new List<InternalPieWedgeViewModel>();
+
+            if (series == null)
+            {
+                return convertedSeries;
+            }
+
+            var sum = series.Values.Sum(x => x.XValue);
+            var angleSum = 0d;
+
+            foreach (var wedge in series.Values)
+            {
+                InternalPieWedgeViewModel? matchingWedge = null;
+
+                convertedSeries.Add(new InternalPieWedgeViewModel(
+                    wedge.Name,
+                    wedge.Identifier,
+                    wedge.XValue / sum * 100,
+                    wedge.XValue,
+                    angleSum / sum * 360,
+                    matchingWedge != null
+                        ? matchingWedge.Stroke
+                        : wedge.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
+                    matchingWedge != null
+                        ? matchingWedge.Fill
+                        : wedge.Fill ?? new SolidBrush(ColorExtensions.RandomColour(50))));
+
+                angleSum += wedge.XValue;
+            }
+
+            return convertedSeries;
+        });
+    }
+
+    #endregion
+
+    #region Mouse events
+
+    private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
+    {
+        foreach (var series in this.InternalSeries)
+        {
+            foreach (var wedge in series.Wedges)
+            {
+                wedge.IsMouseOver = false;
+            }
+        }
+    }
+
+    #endregion
+
+    private double GetMouseAngleFromPoint(Point mouseLoc, Point point)
+    {
+        var hypLength = Math.Sqrt(
+            Math.Pow(Math.Abs(mouseLoc.X - point.X), 2)
+            + Math.Pow(Math.Abs(mouseLoc.Y - point.Y), 2));
+
+        var oppLength = Math.Abs(mouseLoc.X - point.X);
+        var angle = Math.Asin(oppLength / hypLength) * 180 / Math.PI;
+
+        if (mouseLoc.X <= point.X && mouseLoc.Y <= point.Y)
+        {
+            angle = 360 - angle;
+        }
+
+        if (mouseLoc.Y > point.Y)
+        {
+            if (mouseLoc.X <= point.X)
+            {
+                angle = 180 + angle;
+            }
+            else
+            {
+                angle = 180 - angle;
+            }
+        }
+
+        return angle;
+    }
+
+    private void YAxisItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        //ignoreNextMouseMove = true;
+    }
+
+    private void PieChart_Loaded(object sender, RoutedEventArgs e)
+    {
+        Loaded -= this.PieChart_Loaded;
+        Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
+        OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
+        this.Coordinator.MouseLeave += this.MouseCaptureGrid_MouseLeave;
+    }
+
+    private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
+    {
+        this.resizeTrigger.Stop();
+        this.runRenderThread = false;
+        this.seriesWatcher.Dispose();
+        this.Coordinator.MouseLeave -= this.MouseCaptureGrid_MouseLeave;
+    }
 }

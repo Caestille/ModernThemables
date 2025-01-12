@@ -1,73 +1,75 @@
-﻿namespace ModernThemables.ViewModels
+﻿namespace ModernThemables.ViewModels;
+
+using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Windows.Input;
+
+public class AliasableViewModelBase : AliasableViewModelBase<GenericViewModelBase>
 {
-    using CommunityToolkit.Mvvm.Input;
-    using System;
-    using System.Windows.Input;
+    public AliasableViewModelBase(string name, string alias, Func<GenericViewModelBase>? createChild = null) : base(name, alias, createChild) { }
+}
 
-    public class AliasableViewModelBase : AliasableViewModelBase<GenericViewModelBase>
-	{
-		public AliasableViewModelBase(string name, string alias, Func<GenericViewModelBase>? createChild = null) : base(name, alias, createChild) { }
-	}
+public class AliasableViewModelBase<TChild> : ViewModelBase<TChild> where TChild : GenericViewModelBase
+{
+    private string? previousAlias;
 
-	public class AliasableViewModelBase<TChild> : ViewModelBase<TChild> where TChild : GenericViewModelBase
-	{
-		private string? previousAlias;
+    public ICommand EditAliasCommand => new RelayCommand(this.EditAlias);
+    public ICommand AliasEditorKeyDownCommand => new RelayCommand<object>(this.NameEditorKeyDown);
 
-		public ICommand EditAliasCommand => new RelayCommand(this.EditAlias);
-		public ICommand AliasEditorKeyDownCommand => new RelayCommand<object>(this.NameEditorKeyDown);
+    private bool isEditingAlias;
+    public bool IsEditingAlias
+    {
+        get => this.isEditingAlias;
+        set => this.SetProperty(ref this.isEditingAlias, value);
+    }
 
-		private bool isEditingAlias;
-		public bool IsEditingAlias
-		{
-			get => this.isEditingAlias;
-			set => this.SetProperty(ref this.isEditingAlias, value);
-		}
+    private string? alias;
+    public string? Alias
+    {
+        get => this.alias;
+        set => this.SetProperty(ref this.alias, value);
+    }
 
-		private string? alias;
-		public string? Alias
-		{
-			get => this.alias;
-			set => this.SetProperty(ref this.alias, value);
-		}
+    public override string Name => string.IsNullOrWhiteSpace(this.Alias) ? base.Name : this.Alias;
 
-		public override string Name => string.IsNullOrWhiteSpace(this.Alias) ? base.Name : this.Alias;
+    public string OriginalName => base.Name;
 
-		public string OriginalName => base.Name;
+    public AliasableViewModelBase(
+        string name, string? alias, Func<TChild>? createChild = null)
+        : base(name, createChild)
+    {
+        this.Alias = alias;
+    }
 
-		public AliasableViewModelBase(
-			string name, string? alias, Func<TChild>? createChild = null)
-			: base(name, createChild)
-		{
-            this.Alias = alias;
-		}
+    protected virtual void OnCommitAliasUpdate()
+    {
+        this.OnPropertyChanged(nameof(this.Name));
+    }
 
-		protected virtual void OnCommitAliasUpdate()
-		{
-            this.OnPropertyChanged(nameof(this.Name));
-		}
+    private void EditAlias()
+    {
+        this.IsEditingAlias = !this.IsEditingAlias;
+        this.previousAlias = this.Alias;
+        if (this.IsEditingAlias)
+        {
+            this.Alias = this.Name;
+        }
+    }
 
-		private void EditAlias()
-		{
-            this.IsEditingAlias = !this.IsEditingAlias;
-            this.previousAlias = this.Alias;
-			if (this.IsEditingAlias) this.Alias = this.Name;
-		}
+    private void NameEditorKeyDown(object? args)
+    {
+        if (args != null && args is KeyEventArgs e && (e.Key == Key.Enter || e.Key == Key.Escape))
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.Alias = this.previousAlias;
+            }
+            else
+            {
+                this.OnCommitAliasUpdate();
+            }
 
-		private void NameEditorKeyDown(object? args)
-		{
-			if (args != null && args is KeyEventArgs e && (e.Key == Key.Enter || e.Key == Key.Escape))
-			{
-				if (e.Key == Key.Escape)
-				{
-                    this.Alias = this.previousAlias;
-				}
-				else
-				{
-                    this.OnCommitAliasUpdate();
-				}
-
-                this.IsEditingAlias = false;
-			}
-		}
-	}
+            this.IsEditingAlias = false;
+        }
+    }
 }

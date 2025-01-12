@@ -1,37 +1,36 @@
-﻿namespace ModernThemables.Charting.Models.Brushes
+﻿namespace ModernThemables.Charting.Models.Brushes;
+
+using ModernThemables.Charting.Interfaces;
+using System.Windows;
+using System.Windows.Media;
+
+/// <summary>
+/// A brush with a single color.
+/// </summary>
+public sealed class SolidBrush : IChartBrush
 {
-    using ModernThemables.Charting.Interfaces;
-    using System.Windows;
-    using System.Windows.Media;
+    /// <inheritdoc />
+    public Brush? CoreBrush { get; private set; }
+
+    private Color colour;
 
     /// <summary>
-    /// A brush with a single color.
+    /// Initialises a new <see cref="SolidBrush"/> with a given <see cref="Color"/> which is the colour of the
+    /// entire brush.
     /// </summary>
-    public sealed class SolidBrush : IChartBrush
+    /// <param name="colour">The brush <see cref="Color"/>.</param>
+    public SolidBrush(Color colour)
     {
-        /// <inheritdoc />
-        public Brush? CoreBrush { get; private set; }
+        this.colour = colour;
+        Application.Current.Dispatcher.Invoke(() => { this.CoreBrush = new SolidColorBrush(colour); });
+    }
 
-        private Color colour;
+    /// <inheritdoc />
+    public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre) { }
 
-        /// <summary>
-        /// Initialises a new <see cref="SolidBrush"/> with a given <see cref="Color"/> which is the colour of the
-        /// entire brush.
-        /// </summary>
-        /// <param name="colour">The brush <see cref="Color"/>.</param>
-        public SolidBrush(Color colour)
-        {
-            this.colour = colour;
-            Application.Current.Dispatcher.Invoke(() => { this.CoreBrush = new SolidColorBrush(colour); });
-        }
-
-        /// <inheritdoc />
-        public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre) { }
-
-        /// <inheritdoc />
-        public Color ColourAtPoint(double x, double y)
-        {
-            return this.colour;
-        }
+    /// <inheritdoc />
+    public Color ColourAtPoint(double x, double y)
+    {
+        return this.colour;
     }
 }

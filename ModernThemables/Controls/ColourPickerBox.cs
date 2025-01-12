@@ -1,71 +1,70 @@
-﻿namespace ModernThemables.Controls
+﻿namespace ModernThemables.Controls;
+
+using ModernThemables.Services;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+
+public class ColourPickerBox : Control
 {
-    using ModernThemables.Services;
-    using System;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Media;
+    private const string PART_button = "PART_button";
 
-    public class ColourPickerBox : Control
-	{
-		private const string PART_button = "PART_button";
+    private Button2? button;
 
-		private Button2? button;
+    public Color TemporaryColour
+    {
+        get => (Color)this.GetValue(TemporaryColourProperty);
+        set => this.SetValue(TemporaryColourProperty, value);
+    }
 
-        public Color TemporaryColour
-        {
-            get => (Color)this.GetValue(TemporaryColourProperty);
-            set => this.SetValue(TemporaryColourProperty, value);
-        }
-
-        public static readonly DependencyProperty TemporaryColourProperty =
-            DependencyProperty.Register(
-                nameof(TemporaryColour),
-                typeof(Color),
-                typeof(ColourPickerBox),
-                new FrameworkPropertyMetadata(Colors.Black));
-
-        public CornerRadius CornerRadius
-        {
-            get => (CornerRadius)this.GetValue(CornerRadiusProperty);
-            set => this.SetValue(CornerRadiusProperty, value);
-        }
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            nameof(CornerRadius),
-            typeof(CornerRadius),
+    public static readonly DependencyProperty TemporaryColourProperty =
+        DependencyProperty.Register(
+            nameof(TemporaryColour),
+            typeof(Color),
             typeof(ColourPickerBox),
-            new PropertyMetadata(new CornerRadius(0)));
+            new FrameworkPropertyMetadata(Colors.Black));
 
-        public override void OnApplyTemplate()
-		{
-			base.OnApplyTemplate();
+    public CornerRadius CornerRadius
+    {
+        get => (CornerRadius)this.GetValue(CornerRadiusProperty);
+        set => this.SetValue(CornerRadiusProperty, value);
+    }
+    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        nameof(CornerRadius),
+        typeof(CornerRadius),
+        typeof(ColourPickerBox),
+        new PropertyMetadata(new CornerRadius(0)));
 
-			if (this.button != null)
-			{
-                this.button.Click -= this.Button_Click;
-			}
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
 
-			if (this.Template.FindName(PART_button, this) is Button2 bt)
-			{
-                this.button = bt;
-			}
+        if (this.button != null)
+        {
+            this.button.Click -= this.Button_Click;
+        }
 
-			if (this.button != null)
-			{
-                this.button.Click += this.Button_Click;
-			}
-			else
-			{
-				throw new InvalidOperationException("Template missing rquired UI elements");
-			}
-		}
+        if (this.Template.FindName(PART_button, this) is Button2 bt)
+        {
+            this.button = bt;
+        }
 
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-            this.Background = new SolidColorBrush(
-                new DialogueService().ShowColourPickerDialogue(
-                    (this.Background as SolidColorBrush)!.Color,
-                    colour => this.TemporaryColour = colour));
-		}
+        if (this.button != null)
+        {
+            this.button.Click += this.Button_Click;
+        }
+        else
+        {
+            throw new InvalidOperationException("Template missing rquired UI elements");
+        }
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        this.Background = new SolidColorBrush(
+            new DialogueService().ShowColourPickerDialogue(
+                (this.Background as SolidColorBrush)!.Color,
+                colour => this.TemporaryColour = colour));
     }
 }

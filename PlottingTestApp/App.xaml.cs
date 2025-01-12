@@ -2,17 +2,15 @@
 // Copyright (c) Mercedes-Benz Grand Prix Limited. All rights reserved.
 // </copyright>
 
-namespace PlottingTestApp
+namespace PlottingTestApp;
+
+using System.Configuration;
+using System.Data;
+using System.Windows;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
-    using System.Configuration;
-    using System.Data;
-    using System.Windows;
-
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
-    {
-    }
-
 }

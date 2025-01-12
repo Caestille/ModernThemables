@@ -1,7 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:helperclasses="clr-namespace:CoreUtilities.HelperClasses;assembly=CoreUtilities">
+    xmlns:wpf="clr-namespace:CoreUtilities.Helpers.WPF;assembly=CoreUtilities">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
@@ -13,5 +13,5 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/WindowButtonCommands.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <helperclasses:BindingProxy x:Key="proxy" Data="{Binding}" />
+    <wpf:BindingProxy x:Key="proxy" Data="{Binding}" />
 </ResourceDictionary>

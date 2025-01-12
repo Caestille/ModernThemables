@@ -1,40 +1,39 @@
-﻿namespace ModernThemables.Charting.Controls.ChartComponents
+﻿namespace ModernThemables.Charting.Controls.ChartComponents;
+
+using ModernThemables.Charting.Models;
+using System.Windows;
+using System.Windows.Controls;
+using System.Collections.ObjectModel;
+
+/// <summary>
+/// Interaction logic for GridControl.xaml
+/// </summary>
+public partial class GridControl : UserControl
 {
-    using ModernThemables.Charting.Models;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Collections.ObjectModel;
+    public ObservableCollection<AxisLabel> XLabels
+    {
+        get => (ObservableCollection<AxisLabel>)this.GetValue(XLabelsProperty);
+        set => this.SetValue(XLabelsProperty, value);
+    }
+    public static readonly DependencyProperty XLabelsProperty = DependencyProperty.Register(
+        "XLabels",
+        typeof(ObservableCollection<AxisLabel>),
+        typeof(GridControl),
+        new UIPropertyMetadata(null));
 
-    /// <summary>
-    /// Interaction logic for GridControl.xaml
-    /// </summary>
-    public partial class GridControl : UserControl
-	{
-		public ObservableCollection<AxisLabel> XLabels
-		{
-			get => (ObservableCollection<AxisLabel>)this.GetValue(XLabelsProperty);
-			set => this.SetValue(XLabelsProperty, value);
-		}
-		public static readonly DependencyProperty XLabelsProperty = DependencyProperty.Register(
-			"XLabels",
-			typeof(ObservableCollection<AxisLabel>),
-			typeof(GridControl),
-			new UIPropertyMetadata(null));
+    public ObservableCollection<AxisLabel> YLabels
+    {
+        get => (ObservableCollection<AxisLabel>)this.GetValue(YLabelsProperty);
+        set => this.SetValue(YLabelsProperty, value);
+    }
+    public static readonly DependencyProperty YLabelsProperty = DependencyProperty.Register(
+        "YLabels",
+        typeof(ObservableCollection<AxisLabel>),
+        typeof(GridControl),
+        new UIPropertyMetadata(null));
 
-		public ObservableCollection<AxisLabel> YLabels
-		{
-			get => (ObservableCollection<AxisLabel>)this.GetValue(YLabelsProperty);
-			set => this.SetValue(YLabelsProperty, value);
-		}
-		public static readonly DependencyProperty YLabelsProperty = DependencyProperty.Register(
-			"YLabels",
-			typeof(ObservableCollection<AxisLabel>),
-			typeof(GridControl),
-			new UIPropertyMetadata(null));
-
-		public GridControl()
-		{
-            this.InitializeComponent();
-		}
-	}
+    public GridControl()
+    {
+        this.InitializeComponent();
+    }
 }

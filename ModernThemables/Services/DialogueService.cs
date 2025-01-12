@@ -1,134 +1,133 @@
-﻿namespace ModernThemables.Services
+﻿namespace ModernThemables.Services;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
+using ModernThemables.Controls;
+using CoreUtilities.Interfaces.Dialogues;
+using System.Windows.Controls;
+
+/// <summary>
+/// A service for initialising and managing various dialogues.
+/// </summary>
+public class DialogueService : IDialogueService
 {
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using Microsoft.Win32;
-    using System;
-    using System.Collections.Generic;
-    using System.Windows;
-    using System.Windows.Media;
-    using ModernThemables.Controls;
-    using CoreUtilities.Interfaces.Dialogues;
-    using System.Windows.Controls;
+    private readonly Dictionary<Type, Type> registeredViews = new();
 
-    /// <summary>
-    /// A service for initialising and managing various dialogues.
-    /// </summary>
-    public class DialogueService : IDialogueService
-	{
-		private readonly Dictionary<Type, Type> registeredViews = new();
+    /// <inheritdoc />
+    public void RegisterViewForViewModel(Type viewType, Type vmType)
+    {
+        this.registeredViews[vmType] = viewType;
+    }
 
-		/// <inheritdoc />
-		public void RegisterViewForViewModel(Type viewType, Type vmType)
-		{
-            this.registeredViews[vmType] = viewType;
-		}
+    /// <inheritdoc />
+    public void ShowCustomDialogue(object dataContext, Size? dialogueSize = null)
+    {
+        var window = new Window2();
+        window.UseLayoutRounding = true;
+        window.SnapsToDevicePixels = true;
+        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        window.Owner = Application.Current.MainWindow;
+        window.FontFamily = window.Owner.FontFamily;
+        window.FontSize = window.Owner.FontSize;
+        window.Icon = window.Owner.Icon;
+        window.HorizontalContentAlignment = HorizontalAlignment.Center;
+        window.VerticalContentAlignment = VerticalAlignment.Center;
+        window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
+        {
+            DataType = dataContext.GetType(),
+            VisualTree = new FrameworkElementFactory(this.registeredViews[dataContext.GetType()]),
+        });
+        window.Content = new ContentControl() { Content = (ObservableObject)dataContext };
+        if (dialogueSize == null)
+        {
+            window.SizeToContent = SizeToContent.WidthAndHeight;
+        }
+        else
+        {
+            window.Width = dialogueSize.Value.Width;
+            window.Height = dialogueSize.Value.Height;
+        }
+        window.WindowStyle = WindowStyle.ToolWindow;
+        RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
+        RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
 
-		/// <inheritdoc />
-		public void ShowCustomDialogue(object dataContext, Size? dialogueSize = null)
-		{
-			var window = new Window2();
-			window.UseLayoutRounding = true;
-			window.SnapsToDevicePixels = true;
-			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-			window.Owner = Application.Current.MainWindow;
-			window.FontFamily = window.Owner.FontFamily;
-			window.FontSize = window.Owner.FontSize;
-			window.Icon = window.Owner.Icon;
-			window.HorizontalContentAlignment = HorizontalAlignment.Center;
-			window.VerticalContentAlignment = VerticalAlignment.Center;
-			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
-			{
-				DataType = dataContext.GetType(),
-				VisualTree = new FrameworkElementFactory(this.registeredViews[dataContext.GetType()]),
-			});
-			window.Content = new ContentControl() { Content = (ObservableObject)dataContext };
-			if (dialogueSize == null)
-			{
-				window.SizeToContent = SizeToContent.WidthAndHeight;
-			}
-			else
-			{
-				window.Width = dialogueSize.Value.Width;
-				window.Height = dialogueSize.Value.Height;
-			}
-			window.WindowStyle = WindowStyle.ToolWindow;
-			RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
-			RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
+        window.ShowDialog();
+    }
 
-			window.ShowDialog();
-		}
+    /// <inheritdoc />
+    public void ShowBorderlessCustomDialogue(object dataContext, Size? dialogueSize = null)
+    {
+        var window = new Window();
+        window.WindowStyle = WindowStyle.None;
+        window.AllowsTransparency = true;
+        window.Background = new SolidColorBrush(Colors.Transparent);
+        window.UseLayoutRounding = true;
+        window.SnapsToDevicePixels = true;
+        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        window.Owner = Application.Current.MainWindow;
+        window.FontFamily = window.Owner.FontFamily;
+        window.FontSize = window.Owner.FontSize;
+        window.Icon = window.Owner.Icon;
+        window.HorizontalContentAlignment = HorizontalAlignment.Center;
+        window.VerticalContentAlignment = VerticalAlignment.Center;
+        window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
+        {
+            DataType = dataContext.GetType(),
+            VisualTree = new FrameworkElementFactory(this.registeredViews[dataContext.GetType()]),
+        });
+        window.Content = new ContentControl() { Content = (ObservableObject)dataContext };
+        if (dialogueSize == null)
+        {
+            window.SizeToContent = SizeToContent.WidthAndHeight;
+        }
+        else
+        {
+            window.Width = dialogueSize.Value.Width;
+            window.Height = dialogueSize.Value.Height;
+        }
+        RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
+        RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
 
-		/// <inheritdoc />
-		public void ShowBorderlessCustomDialogue(object dataContext, Size? dialogueSize = null)
-		{
-			var window = new Window();
-			window.WindowStyle = WindowStyle.None;
-			window.AllowsTransparency = true;
-			window.Background = new SolidColorBrush(Colors.Transparent);
-			window.UseLayoutRounding = true;
-			window.SnapsToDevicePixels = true;
-			window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-			window.Owner = Application.Current.MainWindow;
-			window.FontFamily = window.Owner.FontFamily;
-			window.FontSize = window.Owner.FontSize;
-			window.Icon = window.Owner.Icon;
-			window.HorizontalContentAlignment = HorizontalAlignment.Center;
-			window.VerticalContentAlignment = VerticalAlignment.Center;
-			window.Resources.Add(new DataTemplateKey(dataContext.GetType()), new DataTemplate()
-			{
-				DataType = dataContext.GetType(),
-				VisualTree = new FrameworkElementFactory(this.registeredViews[dataContext.GetType()]),
-			});
-			window.Content = new ContentControl() { Content = (ObservableObject)dataContext };
-			if (dialogueSize == null)
-			{
-				window.SizeToContent = SizeToContent.WidthAndHeight;
-			}
-			else
-			{
-				window.Width = dialogueSize.Value.Width;
-				window.Height = dialogueSize.Value.Height;
-			}
-			RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
-			RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
+        window.ShowDialog();
+    }
 
-			window.ShowDialog();
-		}
+    /// <inheritdoc />
+    public string ShowOpenFileDialogue()
+    {
+        var dialogue = new OpenFileDialog();
 
-		/// <inheritdoc />
-		public string ShowOpenFileDialogue()
-		{
-			var dialogue = new OpenFileDialog();
+        if (dialogue.ShowDialog() == true)
+        {
+            return dialogue.FileName;
+        }
 
-			if (dialogue.ShowDialog() == true)
-			{
-				return dialogue.FileName;
-			}
+        return string.Empty;
+    }
 
-			return string.Empty;
-		}
+    /// <inheritdoc />
+    public Color ShowColourPickerDialogue(Color inputColour, Action<Color>? colourChangedCallback = null)
+    {
+        var dialogue = new ColourPickerDialogue(inputColour, colourChangedCallback);
 
-		/// <inheritdoc />
-		public Color ShowColourPickerDialogue(Color inputColour, Action<Color>? colourChangedCallback = null)
-		{
-			var dialogue = new ColourPickerDialogue(inputColour, colourChangedCallback);
+        dialogue.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        dialogue.Owner = Application.Current.MainWindow;
+        dialogue.WindowStyle = WindowStyle.ToolWindow;
 
-			dialogue.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-			dialogue.Owner = Application.Current.MainWindow;
-			dialogue.WindowStyle = WindowStyle.ToolWindow;
+        if (dialogue.ShowDialog() == true)
+        {
+            return dialogue.Colour;
+        }
 
-			if (dialogue.ShowDialog() == true)
-			{
-				return dialogue.Colour;
-			}
+        return inputColour;
+    }
 
-			return inputColour;
-		}
+    /// <inheritdoc />
+    public void ShowMessageBox(string title, string message, MessageBoxButton button)
+    {
 
-		/// <inheritdoc />
-		public void ShowMessageBox(string title, string message, MessageBoxButton button)
-		{
-			
-		}
-	}
+    }
 }

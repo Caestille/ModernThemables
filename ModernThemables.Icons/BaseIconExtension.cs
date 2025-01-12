@@ -1,120 +1,119 @@
-﻿namespace ModernThemables.Icons
+﻿namespace ModernThemables.Icons;
+
+using System;
+using System.Windows.Markup;
+
+public interface IIconExtension
 {
-    using System;
-    using System.Windows.Markup;
+    double Width { get; set; }
+    double Height { get; set; }
+    double RotationAngle { get; set; }
+}
 
-    public interface IIconExtension
+public static class IconExtensionHelper
+{
+    public static BaseIcon GetPackIcon<TPack, TKind>(this IIconExtension packIconExtension, TKind kind) where TPack : BaseIcon, new()
     {
-        double Width { get; set; }
-        double Height { get; set; }
-        double RotationAngle { get; set; }
+        var packIcon = new TPack();
+        packIcon.SetKind(kind);
+
+        if (((BaseIconExtension)packIconExtension).IsFieldChanged(BaseIconExtension.ChangedFieldFlags.Width))
+        {
+            packIcon.Width = packIconExtension.Width;
+        }
+
+        if (((BaseIconExtension)packIconExtension).IsFieldChanged(BaseIconExtension.ChangedFieldFlags.Height))
+        {
+            packIcon.Height = packIconExtension.Height;
+        }
+
+        if (((BaseIconExtension)packIconExtension).IsFieldChanged(BaseIconExtension.ChangedFieldFlags.RotationAngle))
+        {
+            packIcon.RotationAngle = packIconExtension.RotationAngle;
+        }
+
+        return packIcon;
+    }
+}
+
+[MarkupExtensionReturnType(typeof(BaseIcon))]
+public abstract class BaseIconExtension : MarkupExtension, IIconExtension
+{
+    private double width = 16d;
+
+    public double Width
+    {
+        get => this.width;
+        set
+        {
+            if (Equals(this.width, value))
+            {
+                return;
+            }
+
+            this.width = value;
+            this.WriteFieldChangedFlag(ChangedFieldFlags.Width, true);
+        }
     }
 
-    public static class IconExtensionHelper
+    private double height = 16d;
+
+    public double Height
     {
-        public static BaseIcon GetPackIcon<TPack, TKind>(this IIconExtension packIconExtension, TKind kind) where TPack : BaseIcon, new()
+        get => this.height;
+        set
         {
-            var packIcon = new TPack();
-            packIcon.SetKind(kind);
-
-            if (((BaseIconExtension) packIconExtension).IsFieldChanged(BaseIconExtension.ChangedFieldFlags.Width))
+            if (Equals(this.height, value))
             {
-                packIcon.Width = packIconExtension.Width;
+                return;
             }
 
-            if (((BaseIconExtension) packIconExtension).IsFieldChanged(BaseIconExtension.ChangedFieldFlags.Height))
-            {
-                packIcon.Height = packIconExtension.Height;
-            }
-
-            if (((BaseIconExtension) packIconExtension).IsFieldChanged(BaseIconExtension.ChangedFieldFlags.RotationAngle))
-            {
-                packIcon.RotationAngle = packIconExtension.RotationAngle;
-            }
-
-            return packIcon;
+            this.height = value;
+            this.WriteFieldChangedFlag(ChangedFieldFlags.Height, true);
         }
     }
 
-    [MarkupExtensionReturnType(typeof(BaseIcon))]
-    public abstract class BaseIconExtension : MarkupExtension, IIconExtension
+    private double rotationAngle = 0d;
+
+    public double RotationAngle
     {
-        private double width = 16d;
-
-        public double Width
+        get => this.rotationAngle;
+        set
         {
-            get => this.width;
-            set
+            if (Equals(this.rotationAngle, value))
             {
-                if (Equals(this.width, value))
-                {
-                    return;
-                }
-
-                this.width = value;
-                this.WriteFieldChangedFlag(ChangedFieldFlags.Width, true);
+                return;
             }
+
+            this.rotationAngle = value;
+            this.WriteFieldChangedFlag(ChangedFieldFlags.RotationAngle, true);
         }
+    }
 
-        private double height = 16d;
+    internal ChangedFieldFlags changedField; // Cache changed field bits
 
-        public double Height
+    internal bool IsFieldChanged(ChangedFieldFlags reqFlag)
+    {
+        return (this.changedField & reqFlag) != 0;
+    }
+
+    internal void WriteFieldChangedFlag(ChangedFieldFlags reqFlag, bool set)
+    {
+        if (set)
         {
-            get => this.height;
-            set
-            {
-                if (Equals(this.height, value))
-                {
-                    return;
-                }
-
-                this.height = value;
-                this.WriteFieldChangedFlag(ChangedFieldFlags.Height, true);
-            }
+            this.changedField |= reqFlag;
         }
-
-        private double rotationAngle = 0d;
-
-        public double RotationAngle
+        else
         {
-            get => this.rotationAngle;
-            set
-            {
-                if (Equals(this.rotationAngle, value))
-                {
-                    return;
-                }
-
-                this.rotationAngle = value;
-                this.WriteFieldChangedFlag(ChangedFieldFlags.RotationAngle, true);
-            }
+            this.changedField &= (~reqFlag);
         }
+    }
 
-        internal ChangedFieldFlags changedField; // Cache changed field bits
-
-        internal bool IsFieldChanged(ChangedFieldFlags reqFlag)
-        {
-            return (this.changedField & reqFlag) != 0;
-        }
-
-        internal void WriteFieldChangedFlag(ChangedFieldFlags reqFlag, bool set)
-        {
-            if (set)
-            {
-                this.changedField |= reqFlag;
-            }
-            else
-            {
-                this.changedField &= (~reqFlag);
-            }
-        }
-
-        [Flags]
-        internal enum ChangedFieldFlags : ushort
-        {
-            Width = 0x0001,
-            Height = 0x0002,
-            RotationAngle = 0x0008,
-        }
+    [Flags]
+    internal enum ChangedFieldFlags : ushort
+    {
+        Width = 0x0001,
+        Height = 0x0002,
+        RotationAngle = 0x0008,
     }
 }
