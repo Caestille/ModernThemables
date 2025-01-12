@@ -1,7 +1,6 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:chartConverters="clr-namespace:ModernThemables.Charting.Converters"
     xmlns:converters="clr-namespace:ModernThemables.Converters">
 
     <converters:BrushColourInverterConverter x:Key="BrushColourInverterConverter" />
@@ -11,5 +10,6 @@
     <converters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />
     <converters:MultiBindingDoubleToBorderThicknessConverter x:Key="MultiBindingDoubleToBorderThicknessConverter" />
     <converters:BrushToColourConverter x:Key="BrushToColourConverter" />
+    <converters:CentreToolTipConverter x:Key="CentreToolTipConverter" />
 
 </ResourceDictionary>
