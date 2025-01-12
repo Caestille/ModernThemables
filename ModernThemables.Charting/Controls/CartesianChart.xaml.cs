@@ -12,7 +12,6 @@ using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Models.Brushes;
 using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Services;
-using ModernThemables.Charting.Controls.ChartComponents;
 using System.Diagnostics;
 using CoreUtilities.Helpers.Extensions;
 
