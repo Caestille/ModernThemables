@@ -152,7 +152,7 @@ public partial class BarChart : UserControl
 
             var barSep = this.BarSeparationPixels;
 
-            var source = this.Series.Clone().ToList();
+            var source = this.Series.ShallowCopy().ToList();
 
             var groups = this.Series.SelectMany(x => x.Values.Select(y => x.Values.IndexOf(y))).Distinct();
             var groupedBars = groups.Select(

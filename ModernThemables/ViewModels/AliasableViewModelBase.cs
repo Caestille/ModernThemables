@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 public class AliasableViewModelBase : AliasableViewModelBase<GenericViewModelBase>
 {
-    public AliasableViewModelBase(string name, string alias, Func<GenericViewModelBase>? createChild = null) : base(name, alias, createChild) { }
+    public AliasableViewModelBase(string name, string? alias, Func<GenericViewModelBase>? createChild = null) : base(name, alias, createChild) { }
 }
 
 public class AliasableViewModelBase<TChild> : ViewModelBase<TChild> where TChild : GenericViewModelBase

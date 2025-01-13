@@ -192,7 +192,7 @@ public partial class CartesianChart : UserControl
         {
             var sw = Stopwatch.StartNew();
             this.renderInProgress = true;
-            var collection = this.InternalSeries.Clone().Select(x => (x, false)).ToList();
+            var collection = this.InternalSeries.ShallowCopy().Select(x => (x, false)).ToList();
 
             if (invalidateAll)
             {
@@ -212,7 +212,7 @@ public partial class CartesianChart : UserControl
                 ? this.Series ?? new ObservableCollection<ISeries>()
                 : addedSeries ?? new List<ISeries>())
             {
-                var clonedValues = series.Values?.Clone();
+                var clonedValues = series.Values?.ShallowCopy();
                 if (clonedValues == null || !clonedValues.Any())
                 {
                     continue;
@@ -264,7 +264,7 @@ public partial class CartesianChart : UserControl
 
                 series.UpdatePoints(this.GetPointsForSeries(matchingSeries));
 
-                var cloned = matchingSeries.Values.Clone();
+                var cloned = matchingSeries.Values.ShallowCopy();
                 if (!cloned.Any())
                 {
                     continue;
@@ -419,7 +419,7 @@ public partial class CartesianChart : UserControl
         var yRange = this.dataYMax - yMin;
 
         List<InternalChartEntity> points = new();
-        foreach (var point in series.Values.Clone())
+        foreach (var point in series.Values.ShallowCopy())
         {
             double x = (double)(point.XValue - xMin) / (double)xRange * (double)this.plotAreaWidth;
             double y = this.plotAreaHeight - (point.YValue - yMin) / yRange * this.plotAreaHeight;
@@ -476,7 +476,7 @@ public partial class CartesianChart : UserControl
             return 0;
         }
 
-        var cloned = this.Series.Where(x => x.Values?.Any() ?? false).Select(x => x.Values.Clone()).ToList();
+        var cloned = this.Series.Where(x => x.Values?.Any() ?? false).Select(x => x.Values.ShallowCopy()).ToList();
         if (!cloned.Any())
         {
             return 0;
