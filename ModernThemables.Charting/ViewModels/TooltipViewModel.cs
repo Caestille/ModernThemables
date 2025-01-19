@@ -35,17 +35,17 @@ public class TooltipViewModel : ObservableObject
     public bool IsNearest { get; set; }
 
     /// <summary>
-    /// The tooltip value to display
+    /// The tooltip value to display.
     /// </summary>
     public string PrimaryValue { get; }
 
     /// <summary>
-    /// The tooltip category
+    /// The tooltip category.
     /// </summary>
     public string SecondaryValue { get; }
 
     /// <summary>
-    /// The tooltip category
+    /// The tooltip category.
     /// </summary>
     public string TertiaryValue { get; }
 

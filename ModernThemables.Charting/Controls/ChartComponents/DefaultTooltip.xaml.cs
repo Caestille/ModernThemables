@@ -3,7 +3,7 @@
 using System.Windows.Controls;
 
 /// <summary>
-/// Interaction logic for DefaultTooltip.xaml
+/// Interaction logic for DefaultTooltip.xaml.
 /// </summary>
 public partial class DefaultTooltip : UserControl
 {

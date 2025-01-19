@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Collections.ObjectModel;
 
 /// <summary>
-/// Interaction logic for GridControl.xaml
+/// Interaction logic for GridControl.xaml.
 /// </summary>
 public partial class GridControl : UserControl
 {

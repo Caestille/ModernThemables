@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 
 /// <summary>
-/// Interaction logic for ColourPickerDialogue.xaml
+/// Interaction logic for ColourPickerDialogue.xaml.
 /// </summary>
 public partial class ColourPickerDialogue : Window2
 {

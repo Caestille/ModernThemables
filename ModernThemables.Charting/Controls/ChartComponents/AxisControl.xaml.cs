@@ -9,7 +9,7 @@ using System.Windows.Input;
 using CoreUtilities.Converters;
 
 /// <summary>
-/// Interaction logic for AxisControl.xaml
+/// Interaction logic for AxisControl.xaml.
 /// </summary>
 public partial class AxisControl : UserControl
 {

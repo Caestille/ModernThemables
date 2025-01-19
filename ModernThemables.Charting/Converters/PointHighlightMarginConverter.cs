@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Data;
 
 /// <summary>
-/// Sets the margin for a textblock on an axis
+/// Sets the margin for a textblock on an axis.
 /// </summary>
 public class PointHighlightMarginConverter : IMultiValueConverter
 {

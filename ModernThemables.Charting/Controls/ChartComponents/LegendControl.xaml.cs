@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 /// <summary>
-/// Interaction logic for LegendControl.xaml
+/// Interaction logic for LegendControl.xaml.
 /// </summary>
 public partial class LegendControl : UserControl
 {

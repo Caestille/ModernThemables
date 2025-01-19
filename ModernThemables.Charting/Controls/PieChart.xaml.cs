@@ -16,7 +16,7 @@ using ModernThemables.Charting.Services;
 using CoreUtilities.Helpers.Extensions;
 
 /// <summary>
-/// Interaction logic for PieChart.xaml
+/// Interaction logic for PieChart.xaml.
 /// </summary>
 public partial class PieChart : UserControl
 {
@@ -302,7 +302,7 @@ public partial class PieChart : UserControl
 
     private void YAxisItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        //ignoreNextMouseMove = true;
+        // ignoreNextMouseMove = true;
     }
 
     private void PieChart_Loaded(object sender, RoutedEventArgs e)

@@ -586,8 +586,8 @@ public class Window2 : WindowChromeWindow
         this.RightWindowCommands ??= new WindowCommands();
         this.WindowButtonCommands ??= new WindowButtonCommands();
 
-        //this.LeftWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
-        //this.RightWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
+        // this.LeftWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
+        // this.RightWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
         this.WindowButtonCommands.SetValue(WindowButtonCommands.ParentWindowPropertyKey, this);
 
         this.icon = this.GetTemplateChild(PART_Icon) as FrameworkElement;
@@ -599,7 +599,7 @@ public class Window2 : WindowChromeWindow
     }
 
     /// <summary>
-    /// Creates AutomationPeer (<see cref="UIElement.OnCreateAutomationPeer"/>)
+    /// Creates AutomationPeer (<see cref="UIElement.OnCreateAutomationPeer"/>).
     /// </summary>
     protected override AutomationPeer OnCreateAutomationPeer()
     {

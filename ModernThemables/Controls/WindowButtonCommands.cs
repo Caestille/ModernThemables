@@ -317,7 +317,7 @@ public class WindowButtonCommands : ContentControl
 
         fixed (char* pchars = chars)
         {
-            //PWSTR str = new PWSTR()
+            // PWSTR str = new PWSTR()
             if (PInvoke.LoadString(user32, id, pchars, chars.Length) == 0)
             {
                 return string.Format("String with id '{0}' could not be found.", id);

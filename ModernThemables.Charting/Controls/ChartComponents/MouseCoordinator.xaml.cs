@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 /// <summary>
-/// Interaction logic for MouseCoordinator.xaml
+/// Interaction logic for MouseCoordinator.xaml.
 /// </summary>
 public partial class MouseCoordinator : UserControl
 {

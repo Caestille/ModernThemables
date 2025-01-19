@@ -9,7 +9,7 @@ using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.Services;
 
 /// <summary>
-/// Interaction logic for TooltipControl.xaml
+/// Interaction logic for TooltipControl.xaml.
 /// </summary>
 public partial class TooltipControl : UserControl
 {

@@ -3,7 +3,7 @@
 using System.Windows.Controls;
 
 /// <summary>
-/// Interaction logic for TemplatedTooltip.xaml
+/// Interaction logic for TemplatedTooltip.xaml.
 /// </summary>
 public partial class TemplatedTooltip : UserControl
 {

@@ -16,7 +16,7 @@ using System.Diagnostics;
 using CoreUtilities.Helpers.Extensions;
 
 /// <summary>
-/// Interaction logic for CartesianChart.xaml
+/// Interaction logic for CartesianChart.xaml.
 /// </summary>
 public partial class CartesianChart : UserControl
 {

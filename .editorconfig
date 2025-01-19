@@ -120,7 +120,6 @@ dotnet_style_qualification_for_field = false
 dotnet_style_qualification_for_method = false
 dotnet_style_qualification_for_property = false
 
-file_header_template = <copyright file="{fileName}" company="Mercedes-Benz Grand Prix Limited">\nCopyright (c) Mercedes-Benz Grand Prix Limited. All rights reserved.\n</copyright>
 csharp_style_prefer_method_group_conversion = true:silent
 csharp_style_prefer_top_level_statements = true:silent
 csharp_style_prefer_primary_constructors = true:suggestion

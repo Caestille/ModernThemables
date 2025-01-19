@@ -1,7 +1,7 @@
 ﻿namespace ModernThemables.Charting.Models;
 
 /// <summary>
-/// A label for axis displays
+/// A label for axis displays.
 /// </summary>
 public struct AxisLabel
 {
@@ -11,12 +11,12 @@ public struct AxisLabel
     public double Value { get; }
 
     /// <summary>
-    /// A func to format the given value into a display value
+    /// A func to format the given value into a display value.
     /// </summary>
     public Func<double, string> ValueFormatter { get; }
 
     /// <summary>
-    /// A func to format the given value into a display value
+    /// A func to format the given value into a display value.
     /// </summary>
     public Func<double, string>? IndicatorFormatter { get; }
 

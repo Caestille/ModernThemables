@@ -31,7 +31,7 @@ public interface IChartEntity
     public IChartBrush Fill { get; }
 
     /// <summary>
-    /// The point UID
+    /// The point UID.
     /// </summary>
     public Guid Identifier { get; }
 

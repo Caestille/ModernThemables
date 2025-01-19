@@ -102,7 +102,7 @@ internal class InternalPathSeriesViewModel : ObservableObject
     /// scaled to the cursor scaling under the cursor.
     /// </summary>
     /// <param name="dataWidth">The width of the data in the data representation (i.e.: not pixels).</param>
-    /// <param name="dataHeight">The height of the data in the data representation</param>
+    /// <param name="dataHeight">The height of the data in the data representation.</param>
     /// <param name="mouseX">The scaled cursor X coordinate.</param>
     /// <param name="mouseY">The scaled cursor Y coordinate.</param>
     /// <param name="zoomWidth">The current height of the container for these points. As the points here are not

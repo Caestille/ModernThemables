@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Data;
 
 /// <summary>
-/// Places a tooltip based on the tooltip size, location and placement within the owning chart
+/// Places a tooltip based on the tooltip size, location and placement within the owning chart.
 /// </summary>
 public class PointToolTipConverter : IMultiValueConverter
 {

@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 
 /// <summary>
-/// Sets the margin for a textblock on an axis
+/// Sets the margin for a textblock on an axis.
 /// </summary>
 public class AxisLabelMarginConverter : IMultiValueConverter
 {

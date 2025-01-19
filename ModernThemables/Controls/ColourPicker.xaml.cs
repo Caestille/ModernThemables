@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 /// <summary>
-/// Interaction logic for ColourPicker.xaml
+/// Interaction logic for ColourPicker.xaml.
 /// </summary>
 public partial class ColourPicker : UserControl
 {
@@ -225,7 +225,7 @@ public partial class ColourPicker : UserControl
 
     private void ColourSelectionBorder_MouseLeave(object sender, MouseEventArgs e)
     {
-        //if (isMouseDown) isMouseDown = false;
+        // if (isMouseDown) isMouseDown = false;
     }
 
     private void AdjustSelectedColourCursor(int x, int y)

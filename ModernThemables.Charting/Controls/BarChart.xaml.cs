@@ -13,7 +13,7 @@ using ModernThemables.Charting.Services;
 using CoreUtilities.Helpers.Extensions;
 
 /// <summary>
-/// Interaction logic for BarChart.xaml
+/// Interaction logic for BarChart.xaml.
 /// </summary>
 public partial class BarChart : UserControl
 {

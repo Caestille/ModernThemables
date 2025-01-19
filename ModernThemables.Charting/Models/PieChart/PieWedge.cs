@@ -3,7 +3,7 @@
 using ModernThemables.Charting.Interfaces;
 
 /// <summary>
-/// A point representing a wedge on a pie chart with a <see cref="string"/> name and <see cref="double"/> value
+/// A point representing a wedge on a pie chart with a <see cref="string"/> name and <see cref="double"/> value.
 /// </summary>
 public class PieWedge : IChartEntity
 {
