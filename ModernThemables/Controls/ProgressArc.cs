@@ -1,9 +1,9 @@
 ﻿namespace ModernThemables.Controls;
 
 using System;
-using System.Windows.Shapes;
-using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 public class ProgressArc : Shape
 {
@@ -12,6 +12,7 @@ public class ProgressArc : Shape
         get => (double)this.GetValue(RadiusProperty);
         set => this.SetValue(RadiusProperty, value);
     }
+
     public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
         nameof(Radius),
         typeof(double),
@@ -25,6 +26,7 @@ public class ProgressArc : Shape
         get => (bool)this.GetValue(IsIndeterminateProperty);
         set => this.SetValue(IsIndeterminateProperty, value);
     }
+
     public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
         nameof(IsIndeterminate),
         typeof(bool),
@@ -38,6 +40,7 @@ public class ProgressArc : Shape
         get => (bool)this.GetValue(RoundedEndProperty);
         set => this.SetValue(RoundedEndProperty, value);
     }
+
     public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
         nameof(RoundedEnd),
         typeof(bool),
@@ -51,6 +54,7 @@ public class ProgressArc : Shape
         get => (double)this.GetValue(InnerRadiusProperty);
         set => this.SetValue(InnerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
         nameof(InnerRadiusFraction),
         typeof(double),
@@ -64,6 +68,7 @@ public class ProgressArc : Shape
         get => (double)this.GetValue(RotationAngleProperty);
         set => this.SetValue(RotationAngleProperty, value);
     }
+
     public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
         nameof(RotationAngle),
         typeof(double),
@@ -77,6 +82,7 @@ public class ProgressArc : Shape
         get => (double)this.GetValue(CentreXProperty);
         set => this.SetValue(CentreXProperty, value);
     }
+
     public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
         nameof(CentreX),
         typeof(double),
@@ -90,6 +96,7 @@ public class ProgressArc : Shape
         get => (double)this.GetValue(CentreYProperty);
         set => this.SetValue(CentreYProperty, value);
     }
+
     public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
         nameof(CentreY),
         typeof(double),
@@ -103,11 +110,13 @@ public class ProgressArc : Shape
         get => (double)this.GetValue(PercentageProperty);
         set => this.SetValue(PercentageProperty, value);
     }
+
     public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
         nameof(Percentage),
         typeof(double),
         typeof(ProgressArc),
-        new FrameworkPropertyMetadata(0.0,
+        new FrameworkPropertyMetadata(
+            0.0,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     protected override Geometry DefiningGeometry

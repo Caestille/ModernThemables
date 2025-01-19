@@ -12,7 +12,8 @@ public class NotifyChildrenChangedMessage
     }
 }
 
-public class NotifyChildrenChangedMessage<TChild> where TChild : GenericViewModelBase
+public class NotifyChildrenChangedMessage<TChild>
+    where TChild : GenericViewModelBase
 {
     public ViewModelBase<TChild> Sender { get; private set; }
 

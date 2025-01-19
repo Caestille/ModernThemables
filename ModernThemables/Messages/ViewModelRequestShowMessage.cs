@@ -15,7 +15,8 @@ public class ViewModelRequestShowMessage
     }
 }
 
-public class ViewModelRequestShowMessage<T> where T : GenericViewModelBase
+public class ViewModelRequestShowMessage<T>
+    where T : GenericViewModelBase
 {
     public GenericViewModelBase Sender { get; protected set; }
 

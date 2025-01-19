@@ -1,19 +1,19 @@
 ﻿namespace ModernThemables.ViewModels;
 
-using CommunityToolkit.Mvvm.ComponentModel;
 using System;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Timers;
-using CoreUtilities.Interfaces.Dialogues;
-using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
-using ModernThemables.Services;
-using CoreUtilities.Helpers.Extensions;
-using System.Text.Json;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CoreUtilities.Helpers.Extensions;
+using CoreUtilities.Interfaces.Dialogues;
+using ModernThemables.Services;
 
 /// <summary>
 /// A view model for a theming control to interact with the theme status of an application with.
@@ -38,10 +38,7 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
 
     public ICommand ChangeColourCommand => new RelayCommand(this.ChangeColour);
 
-    private void ChangeColour()
-    {
-        this.ThemeColourProperty = this.dialogueService.ShowColourPickerDialogue(this.ThemeColourProperty, (colour) => this.ThemeColourProperty = colour);
-    }
+    private void ChangeColour() => this.ThemeColourProperty = this.dialogueService.ShowColourPickerDialogue(this.ThemeColourProperty, (colour) => this.ThemeColourProperty = colour);
 
     /// <summary>
     /// Gets or sets the current Theme colour.
@@ -63,7 +60,7 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
         {
             this.SetProperty(ref this.isSyncingWithOs, value);
             this.SyncThemeWithOs(value);
-            SyncWithOsChanged?.Invoke(this, value);
+            this.SyncWithOsChanged?.Invoke(this, value);
         }
     }
 
@@ -78,7 +75,7 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
         {
             this.SetProperty(ref this.isDarkMode, value);
             this.SetBrightnessMode();
-            IsDarkChanged?.Invoke(this, value);
+            this.IsDarkChanged?.Invoke(this, value);
         }
     }
 
@@ -92,7 +89,7 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
         set
         {
             this.SetProperty(ref this.isTransparentHeader, value);
-            TransparentHeaderChanged?.Invoke(this, value);
+            this.TransparentHeaderChanged?.Invoke(this, value);
         }
     }
 
@@ -159,43 +156,41 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
             = new SolidColorBrush(this.isDarkMode ? SecondaryControlDisabledColourDark : SecondaryControlDisabledColourLight);
     }
 
-    private async void SyncThemeWithOs(bool doSync)
-    {
-        await Task.Run(() =>
-        {
-            if (doSync)
-            {
-                if (!this.osThemePollTimer.Enabled)
-                {
-                    this.wasDarkBeforeSync = this.isDarkMode;
-                    this.themeBeforeSync = ThemeColour;
-                }
-                var shouldBeDark = ShouldSystemUseDarkMode();
-                if (shouldBeDark != this.isDarkMode)
-                {
-                    this.IsDarkMode = shouldBeDark;
-                }
+    private async void SyncThemeWithOs(bool doSync) => await Task.Run(() =>
+                                                            {
+                                                                if (doSync)
+                                                                {
+                                                                    if (!this.osThemePollTimer.Enabled)
+                                                                    {
+                                                                        this.wasDarkBeforeSync = this.isDarkMode;
+                                                                        this.themeBeforeSync = ThemeColour;
+                                                                    }
 
-                var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush)?.Color;
-                if (colour.HasValue && ThemeColour != colour.Value)
-                {
-                    this.SetThemeColour(colour.Value);
-                }
-            }
-            else
-            {
-                if (this.wasDarkBeforeSync != null)
-                {
-                    this.IsDarkMode = this.wasDarkBeforeSync.Value;
-                }
+                                                                    var shouldBeDark = ShouldSystemUseDarkMode();
+                                                                    if (shouldBeDark != this.isDarkMode)
+                                                                    {
+                                                                        this.IsDarkMode = shouldBeDark;
+                                                                    }
 
-                if (this.themeBeforeSync != null)
-                {
-                    this.SetThemeColour(this.themeBeforeSync.Value);
-                }
-            }
-        });
-    }
+                                                                    var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush)?.Color;
+                                                                    if (colour.HasValue && ThemeColour != colour.Value)
+                                                                    {
+                                                                        this.SetThemeColour(colour.Value);
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (this.wasDarkBeforeSync != null)
+                                                                    {
+                                                                        this.IsDarkMode = this.wasDarkBeforeSync.Value;
+                                                                    }
+
+                                                                    if (this.themeBeforeSync != null)
+                                                                    {
+                                                                        this.SetThemeColour(this.themeBeforeSync.Value);
+                                                                    }
+                                                                }
+                                                            });
 
     private void SetThemeColour(Color colour)
     {
@@ -243,7 +238,7 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
             IsDarkMode = this.IsDarkMode,
             ThemeColour = this.ThemeColourProperty,
             IsTransparentHeader = this.IsTransparentHeader,
-            IsSyncingWithOs = this.IsSyncingWithOs
+            IsSyncingWithOs = this.IsSyncingWithOs,
         }));
 
         this.Dispose();

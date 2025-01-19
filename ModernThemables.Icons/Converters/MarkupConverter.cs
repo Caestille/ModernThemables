@@ -13,10 +13,7 @@ using System.Windows.Markup;
 public abstract class MarkupConverter : MarkupExtension, IValueConverter
 {
     /// <inheritdoc />
-    public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        return this;
-    }
+    public override object ProvideValue(IServiceProvider serviceProvider) => this;
 
     /// <summary>
     /// Converts a value.

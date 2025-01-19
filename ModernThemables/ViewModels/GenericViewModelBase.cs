@@ -1,14 +1,14 @@
 ﻿namespace ModernThemables.ViewModels;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using System.Windows.Input;
-using System.Windows.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ModernThemables.Messages;
 
 public interface IHamburgerMenuItem
@@ -73,20 +73,11 @@ public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenu
         Application.Current.Dispatcher.ShutdownStarted += this.OnShutdownStart;
     }
 
-    public void RegisterColourUpdateNotification(Action<Color> toInvoke)
-    {
-        this.notifyColourUpdates.Append(toInvoke);
-    }
+    public void RegisterColourUpdateNotification(Action<Color> toInvoke) => this.notifyColourUpdates.Append(toInvoke);
 
-    public virtual void Select(GenericViewModelBase? sender = null)
-    {
-        this.Messenger.Send(new ViewModelRequestShowMessage(this, sender ?? this));
-    }
+    public virtual void Select(GenericViewModelBase? sender = null) => this.Messenger.Send(new ViewModelRequestShowMessage(this, sender ?? this));
 
-    public virtual void Delete()
-    {
-        this.Messenger.Send(new ViewModelRequestDeleteMessage(this));
-    }
+    public virtual void Delete() => this.Messenger.Send(new ViewModelRequestDeleteMessage(this));
 
     public virtual void OnDelete() { }
 

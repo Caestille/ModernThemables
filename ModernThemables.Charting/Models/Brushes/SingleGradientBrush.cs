@@ -1,9 +1,9 @@
 ﻿namespace ModernThemables.Charting.Models.Brushes;
 
-using CoreUtilities.Helpers.Extensions;
-using ModernThemables.Charting.Interfaces;
 using System.Windows;
 using System.Windows.Media;
+using CoreUtilities.Helpers.Extensions;
+using ModernThemables.Charting.Interfaces;
 
 /// <summary>
 /// A brush with a gradient between two <see cref="Color"/>s from top to bottom.
@@ -35,7 +35,7 @@ public sealed class SingleGradientBrush : IChartBrush
             GradientStopCollection collection = new()
             {
                 new GradientStop(topColour, 0),
-                new GradientStop(bottomColour, 1.0)
+                new GradientStop(bottomColour, 1.0),
             };
             this.CoreBrush = new LinearGradientBrush(collection, angle: 90);
         });
@@ -50,7 +50,7 @@ public sealed class SingleGradientBrush : IChartBrush
         GradientStopCollection collection = new()
         {
             new GradientStop(this.topColour, 0),
-            new GradientStop(this.bottomColour, 1.0)
+            new GradientStop(this.bottomColour, 1.0),
         };
 
         this.CoreBrush = new LinearGradientBrush(collection, angle: 90);

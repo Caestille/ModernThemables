@@ -4,13 +4,13 @@
 
 namespace PlottingTestApp;
 
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Media;
 using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Models.Brushes;
 using ModernThemables.Charting.Models.CartesianChart;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Media;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml.
@@ -27,7 +27,7 @@ public partial class MainWindow : Window
             var random = new Random();
             var series = new Series()
             {
-                Stroke = new SolidBrush(Colors.Black)
+                Stroke = new SolidBrush(Colors.Black),
             };
             var data = new ObservableCollection<ISeries>() { series };
             Application.Current.Dispatcher.Invoke(() => this.LineChart.Series = data);
@@ -38,6 +38,7 @@ public partial class MainWindow : Window
                 {
                     series.Values.RemoveAt(0);
                 }
+
                 Thread.Sleep(16);
             }
         });

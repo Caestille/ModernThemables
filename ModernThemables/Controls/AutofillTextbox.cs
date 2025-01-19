@@ -1,10 +1,10 @@
 ﻿namespace ModernThemables.Controls;
 
-using System.Windows.Controls;
-using System.Windows;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -12,7 +12,6 @@ public class AutofillTextbox : TextBox
 {
     public AutofillTextbox()
     {
-
     }
 
     public ObservableCollection<string> AutofillOptions
@@ -44,6 +43,7 @@ public class AutofillTextbox : TextBox
         get => (CornerRadius)this.GetValue(CornerRadiusProperty);
         set => this.SetValue(CornerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius),
         typeof(CornerRadius),
@@ -55,6 +55,7 @@ public class AutofillTextbox : TextBox
         get => (Brush)this.GetValue(WatermarkForegroundProperty);
         set => this.SetValue(WatermarkForegroundProperty, value);
     }
+
     public static readonly DependencyProperty WatermarkForegroundProperty = DependencyProperty.Register(
         nameof(WatermarkForeground),
         typeof(Brush),
@@ -97,6 +98,7 @@ public class AutofillTextbox : TextBox
             this.SuggestionText = this.AutofillOptions[index];
             e.Handled = true;
         }
+
         base.OnPreviewKeyDown(e);
     }
 
@@ -112,8 +114,5 @@ public class AutofillTextbox : TextBox
         this.SuggestionText = string.IsNullOrWhiteSpace(this.Text) ? string.Empty : this.AutofillOptions.FirstOrDefault(x => x.StartsWith(this.Text, StringComparison.OrdinalIgnoreCase)) ?? string.Empty;
     }
 
-    public override void OnApplyTemplate()
-    {
-        base.OnApplyTemplate();
-    }
+    public override void OnApplyTemplate() => base.OnApplyTemplate();
 }

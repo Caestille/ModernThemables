@@ -17,6 +17,7 @@ public partial class ColourPickerDialogue : Window2
         get => (Color)this.GetValue(ColourProperty);
         set => this.SetValue(ColourProperty, value);
     }
+
     public static readonly DependencyProperty ColourProperty = DependencyProperty.Register(
         nameof(Colour),
         typeof(Color),

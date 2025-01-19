@@ -1,11 +1,11 @@
 ﻿namespace ModernThemables.Charting.Services;
 
-using ModernThemables.Charting.Controls;
-using ModernThemables.Charting.Controls.ChartComponents;
-using ModernThemables.Charting.Models;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using ModernThemables.Charting.Controls;
+using ModernThemables.Charting.Controls.ChartComponents;
+using ModernThemables.Charting.Models;
 
 public static class ChartHelper
 {
@@ -134,6 +134,7 @@ public static class ChartHelper
                 {
                     return FindMouseCoordinatorFromVisualTree(parent, out coordinator, true, 0);
                 }
+
                 root = parent;
             }
         }

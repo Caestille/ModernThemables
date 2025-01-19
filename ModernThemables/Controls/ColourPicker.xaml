@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:ModernThemables.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="root"
-    MouseMove="root_MouseMove"
+    MouseMove="Root_MouseMove"
     mc:Ignorable="d">
     <Grid>
         <Grid.Background>

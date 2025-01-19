@@ -1,7 +1,7 @@
 ﻿namespace ModernThemables.Charting.ViewModels.PieChart;
 
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 /// <summary>
 /// A view model for an internal representation of a series used by the <see cref="CartesianChart"/>.

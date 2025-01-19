@@ -11,6 +11,7 @@ public class DataGrid2 : DataGrid
         get => (CornerRadius)this.GetValue(CornerRadiusProperty);
         set => this.SetValue(CornerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius),
         typeof(CornerRadius),
@@ -22,6 +23,7 @@ public class DataGrid2 : DataGrid
         get => (Brush)this.GetValue(ColumnHeaderForegroundProperty);
         set => this.SetValue(ColumnHeaderForegroundProperty, value);
     }
+
     public static readonly DependencyProperty ColumnHeaderForegroundProperty = DependencyProperty.Register(
         nameof(ColumnHeaderForeground),
         typeof(Brush),

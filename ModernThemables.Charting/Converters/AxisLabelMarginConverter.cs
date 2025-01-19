@@ -1,11 +1,11 @@
 ﻿namespace ModernThemables.Charting.Converters;
 
-using CoreUtilities.Converters;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using CoreUtilities.Converters;
 
 /// <summary>
 /// Sets the margin for a textblock on an axis.
@@ -45,12 +45,9 @@ public class AxisLabelMarginConverter : IMultiValueConverter
         }
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-    {
-        return new object[] {
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => new object[] {
             Binding.DoNothing,
             Binding.DoNothing,
             Binding.DoNothing,
-            Binding.DoNothing };
-    }
+            Binding.DoNothing, };
 }

@@ -1,9 +1,9 @@
 ﻿namespace ModernThemables.Charting.Models.Brushes;
 
-using CoreUtilities.Helpers.Extensions;
-using ModernThemables.Charting.Interfaces;
 using System.Windows;
 using System.Windows.Media;
+using CoreUtilities.Helpers.Extensions;
+using ModernThemables.Charting.Interfaces;
 
 /// <summary>
 /// A brush with 4 <see cref="Color"/>s across its vertical span.
@@ -57,7 +57,7 @@ public sealed class MultiGradientBrush : IChartBrush
             new GradientStop(this.topColour, 0),
             new GradientStop(this.topCentreColour, ratio),
             new GradientStop(this.bottomCentreColour, ratio),
-            new GradientStop(this.bottomColour, 1.0)
+            new GradientStop(this.bottomColour, 1.0),
         };
 
         Application.Current.Dispatcher.Invoke(

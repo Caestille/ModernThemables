@@ -1,9 +1,9 @@
 ﻿namespace ModernThemables.Charting.Services;
 
-using ModernThemables.Charting.Interfaces;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using ModernThemables.Charting.Interfaces;
 
 public class SeriesWatcherService
 {
@@ -54,10 +54,7 @@ public class SeriesWatcherService
         }
     }
 
-    private void Series_ValuesChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        this.onSeriesUpdated(null, null, true);
-    }
+    private void Series_ValuesChanged(object? sender, NotifyCollectionChangedEventArgs e) => this.onSeriesUpdated(null, null, true);
 
     private void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {

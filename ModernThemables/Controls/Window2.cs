@@ -1,22 +1,22 @@
 ﻿namespace ModernThemables.Controls;
 
 using System;
+using System.Collections;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Controls.Primitives;
-using Windows.Win32;
-using Windows.Win32.Foundation;
 using ControlzEx;
 using ControlzEx.Native;
 using MahApps.Metro.Automation.Peers;
 using MahApps.Metro.Controls;
-using System.Collections;
 using ModernThemables.ViewModels;
+using Windows.Win32;
+using Windows.Win32.Foundation;
 
 /// <summary>
 /// An extended Window class.
@@ -63,6 +63,7 @@ public class Window2 : WindowChromeWindow
         get => (bool)this.GetValue(ShowThemingMenuProperty);
         set => this.SetValue(ShowThemingMenuProperty, value);
     }
+
     public static readonly DependencyProperty ShowThemingMenuProperty = DependencyProperty.Register(
         nameof(ShowThemingMenu),
         typeof(bool),
@@ -73,6 +74,7 @@ public class Window2 : WindowChromeWindow
         get => (bool)this.GetValue(IsTransparentHeaderProperty);
         set => this.SetValue(IsTransparentHeaderProperty, value);
     }
+
     public static readonly DependencyProperty IsTransparentHeaderProperty = DependencyProperty.Register(
         nameof(IsTransparentHeader),
         typeof(bool),
@@ -84,6 +86,7 @@ public class Window2 : WindowChromeWindow
         get => (bool)this.GetValue(ShowIconProperty);
         set => this.SetValue(ShowIconProperty, value);
     }
+
     public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
         nameof(ShowIcon),
         typeof(bool),
@@ -104,6 +107,7 @@ public class Window2 : WindowChromeWindow
         get => (EdgeMode)this.GetValue(IconEdgeModeProperty);
         set => this.SetValue(IconEdgeModeProperty, value);
     }
+
     public static readonly DependencyProperty IconEdgeModeProperty = DependencyProperty.Register(
         nameof(IconEdgeMode),
         typeof(EdgeMode),
@@ -115,6 +119,7 @@ public class Window2 : WindowChromeWindow
         get => (BitmapScalingMode)this.GetValue(IconBitmapScalingModeProperty);
         set => this.SetValue(IconBitmapScalingModeProperty, value);
     }
+
     public static readonly DependencyProperty IconBitmapScalingModeProperty = DependencyProperty.Register(
         nameof(IconBitmapScalingMode),
         typeof(BitmapScalingMode),
@@ -126,6 +131,7 @@ public class Window2 : WindowChromeWindow
         get => (MultiFrameImageMode)this.GetValue(IconScalingModeProperty);
         set => this.SetValue(IconScalingModeProperty, value);
     }
+
     public static readonly DependencyProperty IconScalingModeProperty = DependencyProperty.Register(
         nameof(IconScalingMode),
         typeof(MultiFrameImageMode),
@@ -137,6 +143,7 @@ public class Window2 : WindowChromeWindow
         get => (bool)this.GetValue(ShowTitleBarProperty);
         set => this.SetValue(ShowTitleBarProperty, value);
     }
+
     public static readonly DependencyProperty ShowTitleBarProperty = DependencyProperty.Register(
         nameof(ShowTitleBar),
         typeof(bool),
@@ -148,6 +155,7 @@ public class Window2 : WindowChromeWindow
         get => (bool)this.GetValue(ShowSystemMenuProperty);
         set => this.SetValue(ShowSystemMenuProperty, value);
     }
+
     public static readonly DependencyProperty ShowSystemMenuProperty = DependencyProperty.Register(
         nameof(ShowSystemMenu),
         typeof(bool),
@@ -159,6 +167,7 @@ public class Window2 : WindowChromeWindow
         get => (bool)this.GetValue(ShowSystemMenuOnRightClickProperty);
         set => this.SetValue(ShowSystemMenuOnRightClickProperty, value);
     }
+
     public static readonly DependencyProperty ShowSystemMenuOnRightClickProperty = DependencyProperty.Register(
         nameof(ShowSystemMenuOnRightClick),
         typeof(bool),
@@ -170,6 +179,7 @@ public class Window2 : WindowChromeWindow
         get => (int)this.GetValue(TitleBarHeightProperty);
         set => this.SetValue(TitleBarHeightProperty, value);
     }
+
     public static readonly DependencyProperty TitleBarHeightProperty = DependencyProperty.Register(
         nameof(TitleBarHeight),
         typeof(int),
@@ -189,6 +199,7 @@ public class Window2 : WindowChromeWindow
         get => (HorizontalAlignment)this.GetValue(TitleAlignmentProperty);
         set => this.SetValue(TitleAlignmentProperty, value);
     }
+
     public static readonly DependencyProperty TitleAlignmentProperty = DependencyProperty.Register(
         nameof(TitleAlignment),
         typeof(HorizontalAlignment),
@@ -214,6 +225,7 @@ public class Window2 : WindowChromeWindow
         get => (Brush?)this.GetValue(TitleForegroundProperty);
         set => this.SetValue(TitleForegroundProperty, value);
     }
+
     public static readonly DependencyProperty TitleForegroundProperty = DependencyProperty.Register(
         nameof(TitleForeground),
         typeof(Brush),
@@ -224,6 +236,7 @@ public class Window2 : WindowChromeWindow
         get => (Brush?)this.GetValue(NonActiveTitleForegroundProperty);
         set => this.SetValue(NonActiveTitleForegroundProperty, value);
     }
+
     public static readonly DependencyProperty NonActiveTitleForegroundProperty = DependencyProperty.Register(
         nameof(NonActiveTitleForeground),
         typeof(Brush),
@@ -234,6 +247,7 @@ public class Window2 : WindowChromeWindow
         get => (DataTemplate?)this.GetValue(TitleTemplateProperty);
         set => this.SetValue(TitleTemplateProperty, value);
     }
+
     public static readonly DependencyProperty TitleTemplateProperty = DependencyProperty.Register(
         nameof(TitleTemplate),
         typeof(DataTemplate),
@@ -245,6 +259,7 @@ public class Window2 : WindowChromeWindow
         get => (DataTemplate?)this.GetValue(TransparentTitleTemplateProperty);
         set => this.SetValue(TransparentTitleTemplateProperty, value);
     }
+
     public static readonly DependencyProperty TransparentTitleTemplateProperty = DependencyProperty.Register(
         nameof(TransparentTitleTemplate),
         typeof(DataTemplate),
@@ -256,6 +271,7 @@ public class Window2 : WindowChromeWindow
         get => (Brush)this.GetValue(WindowTitleBrushProperty);
         set => this.SetValue(WindowTitleBrushProperty, value);
     }
+
     public static readonly DependencyProperty WindowTitleBrushProperty = DependencyProperty.Register(
         nameof(WindowTitleBrush),
         typeof(Brush),
@@ -267,6 +283,7 @@ public class Window2 : WindowChromeWindow
         get => (Brush)this.GetValue(NonActiveWindowTitleBrushProperty);
         set => this.SetValue(NonActiveWindowTitleBrushProperty, value);
     }
+
     public static readonly DependencyProperty NonActiveWindowTitleBrushProperty = DependencyProperty.Register(
         nameof(NonActiveWindowTitleBrush),
         typeof(Brush),
@@ -278,6 +295,7 @@ public class Window2 : WindowChromeWindow
         get => (Brush)this.GetValue(NonActiveBorderBrushProperty);
         set => this.SetValue(NonActiveBorderBrushProperty, value);
     }
+
     public static readonly DependencyProperty NonActiveBorderBrushProperty = DependencyProperty.Register(
         nameof(NonActiveBorderBrush),
         typeof(Brush),
@@ -289,6 +307,7 @@ public class Window2 : WindowChromeWindow
         get => (DataTemplate?)this.GetValue(IconTemplateProperty);
         set => this.SetValue(IconTemplateProperty, value);
     }
+
     public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.Register(
         nameof(IconTemplate),
         typeof(DataTemplate),
@@ -306,6 +325,7 @@ public class Window2 : WindowChromeWindow
         get => (WindowCommands?)this.GetValue(LeftWindowCommandsProperty);
         set => this.SetValue(LeftWindowCommandsProperty, value);
     }
+
     public static readonly DependencyProperty LeftWindowCommandsProperty = DependencyProperty.Register(
         nameof(LeftWindowCommands),
         typeof(WindowCommands),
@@ -349,6 +369,7 @@ public class Window2 : WindowChromeWindow
         get => (WindowButtonCommands?)this.GetValue(WindowButtonCommandsProperty);
         set => this.SetValue(WindowButtonCommandsProperty, value);
     }
+
     public static readonly DependencyProperty WindowButtonCommandsProperty = DependencyProperty.Register(
         nameof(WindowButtonCommands),
         typeof(WindowButtonCommands),
@@ -368,6 +389,7 @@ public class Window2 : WindowChromeWindow
         get => (bool)this.GetValue(IsWindowDraggableProperty);
         set => this.SetValue(IsWindowDraggableProperty, value);
     }
+
     public static readonly DependencyProperty IsWindowDraggableProperty = DependencyProperty.Register(
         nameof(IsWindowDraggable),
         typeof(bool),
@@ -420,7 +442,6 @@ public class Window2 : WindowChromeWindow
                         (o as Window2)?.UpdateIconVisibility();
                     }
                 }));
-
     }
 
     public Window2()
@@ -442,7 +463,6 @@ public class Window2 : WindowChromeWindow
                         : Application.Current.Resources["ThemeTextBrush"] as SolidColorBrush;
                 }
             });
-
         };
 
         this.themeVm.IsDarkChanged += (sender, e) =>
@@ -458,13 +478,13 @@ public class Window2 : WindowChromeWindow
             });
         };
 
-        DataContextChanged += this.Window2_DataContextChanged;
+        this.DataContextChanged += this.Window2_DataContextChanged;
     }
 
     private void UpdateIconVisibility()
     {
         var isVisible = (this.Icon is not null || this.IconTemplate is not null)
-                        && (!this.ShowTitleBar || (this.ShowTitleBar));
+                        && (!this.ShowTitleBar || this.ShowTitleBar);
         this.icon?.SetCurrentValue(VisibilityProperty, isVisible ? Visibility.Visible : Visibility.Collapsed);
     }
 
@@ -480,6 +500,7 @@ public class Window2 : WindowChromeWindow
             this.titleBarBackground.SetCurrentValue(VisibilityProperty, newVisibility);
             this.titleBarBackground.Visibility = this.themeVm.IsTransparentHeader ? Visibility.Hidden : Visibility.Visible;
         }
+
         this.IsTransparentHeader = this.themeVm.IsTransparentHeader;
         if (this.WindowButtonCommands != null)
         {
@@ -601,10 +622,7 @@ public class Window2 : WindowChromeWindow
     /// <summary>
     /// Creates AutomationPeer (<see cref="UIElement.OnCreateAutomationPeer"/>).
     /// </summary>
-    protected override AutomationPeer OnCreateAutomationPeer()
-    {
-        return new MetroWindowAutomationPeer(this);
-    }
+    protected override AutomationPeer OnCreateAutomationPeer() => new MetroWindowAutomationPeer(this);
 
     protected internal IntPtr CriticalHandle
     {
@@ -664,7 +682,7 @@ public class Window2 : WindowChromeWindow
             this.ThemingMenu.InternalRequestClose -= this.ThemingMenu_InternalRequestClose;
         }
 
-        SizeChanged -= this.Window2_SizeChanged;
+        this.SizeChanged -= this.Window2_SizeChanged;
     }
 
     private void SetWindowEvents()
@@ -718,29 +736,17 @@ public class Window2 : WindowChromeWindow
         // handle size if we have a Grid for the title (e.g. clean window have a centered title)
         if (this.titleBar != null && this.TitleAlignment == HorizontalAlignment.Center)
         {
-            SizeChanged += this.Window2_SizeChanged;
+            this.SizeChanged += this.Window2_SizeChanged;
         }
     }
 
-    private void WindowTitleThumbOnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-    {
-        DoWindowTitleThumbOnPreviewMouseLeftButtonUp(this, e);
-    }
+    private void WindowTitleThumbOnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e) => DoWindowTitleThumbOnPreviewMouseLeftButtonUp(this, e);
 
-    private void WindowTitleThumbMoveOnDragDelta(object sender, DragDeltaEventArgs dragDeltaEventArgs)
-    {
-        DoWindowTitleThumbMoveOnDragDelta(sender as IMetroThumb, this, dragDeltaEventArgs);
-    }
+    private void WindowTitleThumbMoveOnDragDelta(object sender, DragDeltaEventArgs dragDeltaEventArgs) => DoWindowTitleThumbMoveOnDragDelta(sender as IMetroThumb, this, dragDeltaEventArgs);
 
-    private void WindowTitleThumbChangeWindowStateOnMouseDoubleClick(object sender, MouseButtonEventArgs mouseButtonEventArgs)
-    {
-        DoWindowTitleThumbChangeWindowStateOnMouseDoubleClick(this, mouseButtonEventArgs);
-    }
+    private void WindowTitleThumbChangeWindowStateOnMouseDoubleClick(object sender, MouseButtonEventArgs mouseButtonEventArgs) => DoWindowTitleThumbChangeWindowStateOnMouseDoubleClick(this, mouseButtonEventArgs);
 
-    private void WindowTitleThumbSystemMenuOnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
-    {
-        DoWindowTitleThumbSystemMenuOnMouseRightButtonUp(this, e);
-    }
+    private void WindowTitleThumbSystemMenuOnMouseRightButtonUp(object sender, MouseButtonEventArgs e) => DoWindowTitleThumbSystemMenuOnMouseRightButtonUp(this, e);
 
     private void ToggleShowThemingMenu(object sender, WindowEventHandlerArgs e)
     {
@@ -751,15 +757,9 @@ public class Window2 : WindowChromeWindow
         }
     }
 
-    private void OnMaximise(object sender, WindowEventHandlerArgs e)
-    {
-        this.GlowColor = null;
-    }
+    private void OnMaximise(object sender, WindowEventHandlerArgs e) => this.GlowColor = null;
 
-    private void OnMaximised(object sender, WindowEventHandlerArgs e)
-    {
-        this.SetResourceReference(GlowColorProperty, "ThemeBrush.Color");
-    }
+    private void OnMaximised(object sender, WindowEventHandlerArgs e) => this.SetResourceReference(GlowColorProperty, "ThemeBrush.Color");
 
     private void CloseThemingMenu(object? sender, RoutedEventArgs? e)
     {
@@ -770,10 +770,7 @@ public class Window2 : WindowChromeWindow
         }
     }
 
-    private void ThemingMenu_InternalRequestClose(object? sender, EventArgs e)
-    {
-        this.CloseThemingMenu(sender, null);
-    }
+    private void ThemingMenu_InternalRequestClose(object? sender, EventArgs e) => this.CloseThemingMenu(sender, null);
 
     internal static void DoWindowTitleThumbOnPreviewMouseLeftButtonUp(Window2 window, MouseButtonEventArgs mouseButtonEventArgs)
     {

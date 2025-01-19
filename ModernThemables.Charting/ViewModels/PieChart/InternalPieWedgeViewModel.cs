@@ -9,100 +9,20 @@ using ModernThemables.Charting.Interfaces;
 internal class InternalPieWedgeViewModel : ObservableObject
 {
     private string? name;
-    /// <summary>
-    /// The name of the pie wedge.
-    /// </summary>
-    public string? Name
-    {
-        get => this.name;
-        set => this.SetProperty(ref this.name, value);
-    }
-
-    private double percent;
-    /// <double>
-    /// The value of the pie wedge in percent of a full circle.
-    /// </summary>
-    public double Percent
-    {
-        get => this.percent;
-        set => this.SetProperty(ref this.percent, value);
-    }
-
-    private double val;
-    /// <double>
-    /// The value of the pie wedge.
-    /// </summary>
-    public double Value
-    {
-        get => this.val;
-        set => this.SetProperty(ref this.val, value);
-    }
-
-    private double startAngle;
-    /// <summary>
-    /// The start angle of the wedge.
-    /// </summary>
-    public double StartAngle
-    {
-        get => this.startAngle;
-        set => this.SetProperty(ref this.startAngle, value);
-    }
-
-    private IChartBrush? stroke;
-    /// <summary>
-    /// The wedge stroke.
-    /// </summary>
-    public IChartBrush? Stroke
-    {
-        get => this.stroke;
-        set => this.SetProperty(ref this.stroke, value);
-    }
-
-    private IChartBrush? fill;
-    /// <summary>
-    /// The wedge fill.
-    /// </summary>
-    public IChartBrush? Fill
-    {
-        get => this.fill;
-        set => this.SetProperty(ref this.fill, value);
-    }
-
-    private Guid identifier;
-    /// <summary>
-    /// The wedge unique identifier.
-    /// </summary>
-    public Guid Identifier
-    {
-        get => this.identifier;
-        set => this.SetProperty(ref this.identifier, value);
-    }
-
-    private bool resizeTrigger;
-    /// <summary>
-    /// A <see cref="bool"/> property used to for the series to resize itself when desired by triggering a
-    /// converter.
-    /// </summary>
-    public bool ResizeTrigger
-    {
-        get => this.resizeTrigger;
-        set => this.SetProperty(ref this.resizeTrigger, value);
-    }
-
     private bool isMouseOver;
-    /// <summary>
-    /// A <see cref="bool"/> indicating whether the mouse is over this wedge.
-    /// </summary>
-    public bool IsMouseOver
-    {
-        get => this.isMouseOver;
-        set => this.SetProperty(ref this.isMouseOver, value);
-    }
+    private bool resizeTrigger;
+    private Guid identifier;
+    private IChartBrush? fill;
+    private IChartBrush? stroke;
+    private double startAngle;
+    private double val;
+    private double percent;
 
     /// <summary>
     /// Initialises a new <see cref="InternalPieWedgeViewModel"/>.
     /// </summary>
     /// <param name="name">The wedge name.</param>
+    /// <param name="identifier">The wedge identifier.</param>
     /// <param name="percent">The wedge value in percent of a full circle.</param>
     /// <param name="value">The wedge value.</param>
     /// <param name="startAngle">The wedge start angle.</param>
@@ -117,5 +37,87 @@ internal class InternalPieWedgeViewModel : ObservableObject
         this.StartAngle = startAngle;
         this.Stroke = stroke;
         this.Fill = fill;
+    }
+
+    /// <summary>
+    /// The name of the pie wedge.
+    /// </summary>
+    public string? Name
+    {
+        get => this.name;
+        set => this.SetProperty(ref this.name, value);
+    }
+
+    /// <summary>
+    /// The value of the pie wedge in percent of a full circle.
+    /// </summary>
+    public double Percent
+    {
+        get => this.percent;
+        set => this.SetProperty(ref this.percent, value);
+    }
+
+    /// <summary>
+    /// The value of the pie wedge.
+    /// </summary>
+    public double Value
+    {
+        get => this.val;
+        set => this.SetProperty(ref this.val, value);
+    }
+
+    /// <summary>
+    /// The start angle of the wedge.
+    /// </summary>
+    public double StartAngle
+    {
+        get => this.startAngle;
+        set => this.SetProperty(ref this.startAngle, value);
+    }
+
+    /// <summary>
+    /// The wedge stroke.
+    /// </summary>
+    public IChartBrush? Stroke
+    {
+        get => this.stroke;
+        set => this.SetProperty(ref this.stroke, value);
+    }
+
+    /// <summary>
+    /// The wedge fill.
+    /// </summary>
+    public IChartBrush? Fill
+    {
+        get => this.fill;
+        set => this.SetProperty(ref this.fill, value);
+    }
+
+    /// <summary>
+    /// The wedge unique identifier.
+    /// </summary>
+    public Guid Identifier
+    {
+        get => this.identifier;
+        set => this.SetProperty(ref this.identifier, value);
+    }
+
+    /// <summary>
+    /// A <see cref="bool"/> property used to for the series to resize itself when desired by triggering a
+    /// converter.
+    /// </summary>
+    public bool ResizeTrigger
+    {
+        get => this.resizeTrigger;
+        set => this.SetProperty(ref this.resizeTrigger, value);
+    }
+
+    /// <summary>
+    /// A <see cref="bool"/> indicating whether the mouse is over this wedge.
+    /// </summary>
+    public bool IsMouseOver
+    {
+        get => this.isMouseOver;
+        set => this.SetProperty(ref this.isMouseOver, value);
     }
 }

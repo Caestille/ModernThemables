@@ -32,6 +32,7 @@ public partial class MouseCoordinator : UserControl
         get => (double?)this.GetValue(MouseMoveThrottleMsProperty);
         set => this.SetValue(MouseMoveThrottleMsProperty, value);
     }
+
     public static readonly DependencyProperty MouseMoveThrottleMsProperty = DependencyProperty.Register(
         "MouseMoveThrottleMs",
         typeof(double?),
@@ -72,7 +73,7 @@ public partial class MouseCoordinator : UserControl
         this.isRunning = true;
         var mouseLoc = e.GetPosition(this.MouseCaptureGrid);
         this.timeLastUpdated = DateTime.Now;
-        MouseMove?.Invoke(this, (this.mouseDown == MouseButton.Left, this.mouseDown == MouseButton.Right, this.mouseDownPoint, this.lastMouseMovePoint ?? mouseLoc, e));
+        this.MouseMove?.Invoke(this, (this.mouseDown == MouseButton.Left, this.mouseDown == MouseButton.Right, this.mouseDownPoint, this.lastMouseMovePoint ?? mouseLoc, e));
         this.lastMouseMovePoint = mouseLoc;
         this.isRunning = false;
     }
@@ -91,12 +92,12 @@ public partial class MouseCoordinator : UserControl
         {
             if (this.mouseUpPoint == this.mouseDownPoint)
             {
-                PointClicked?.Invoke(this, this.mouseDownPoint.Value);
+                this.PointClicked?.Invoke(this, this.mouseDownPoint.Value);
                 e.Handled = true;
             }
             else if (this.mouseDownPoint != null && this.mouseUpPoint != null)
             {
-                PointRangeSelected?.Invoke(this, (this.mouseDownPoint.Value, this.mouseUpPoint.Value));
+                this.PointRangeSelected?.Invoke(this, (this.mouseDownPoint.Value, this.mouseUpPoint.Value));
                 e.Handled = true;
             }
         }
@@ -106,13 +107,9 @@ public partial class MouseCoordinator : UserControl
         this.mouseUpPoint = null;
     }
 
-    private void MouseCaptureGrid_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-        e.Handled = false;
-    }
+    private void MouseCaptureGrid_MouseDown(object sender, MouseButtonEventArgs e) => e.Handled = false;
 
     private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
     {
-
     }
 }

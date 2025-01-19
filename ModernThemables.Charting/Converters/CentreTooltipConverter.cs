@@ -15,13 +15,11 @@ public class CentreToolTipConverter : IMultiValueConverter
         {
             return double.NaN;
         }
+
         double placementTargetWidth = (double)values[0];
         double toolTipWidth = (double)values[1];
         return placementTargetWidth / 2.0 - toolTipWidth / 2.0;
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException();
-    }
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();
 }

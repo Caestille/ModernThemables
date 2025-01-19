@@ -1,8 +1,8 @@
 ﻿namespace ModernThemables.Charting.Models.Brushes;
 
-using ModernThemables.Charting.Interfaces;
 using System.Windows;
 using System.Windows.Media;
+using ModernThemables.Charting.Interfaces;
 
 /// <summary>
 /// A brush with a single color.
@@ -29,8 +29,5 @@ public sealed class SolidBrush : IChartBrush
     public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre) { }
 
     /// <inheritdoc />
-    public Color ColourAtPoint(double x, double y)
-    {
-        return this.colour;
-    }
+    public Color ColourAtPoint(double x, double y) => this.colour;
 }

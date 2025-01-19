@@ -1,9 +1,9 @@
 ﻿namespace ModernThemables.Charting.Controls.ChartComponents;
 
-using ModernThemables.Charting.Models;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
+using ModernThemables.Charting.Models;
 
 /// <summary>
 /// Interaction logic for GridControl.xaml.
@@ -15,6 +15,7 @@ public partial class GridControl : UserControl
         get => (ObservableCollection<AxisLabel>)this.GetValue(XLabelsProperty);
         set => this.SetValue(XLabelsProperty, value);
     }
+
     public static readonly DependencyProperty XLabelsProperty = DependencyProperty.Register(
         "XLabels",
         typeof(ObservableCollection<AxisLabel>),
@@ -26,6 +27,7 @@ public partial class GridControl : UserControl
         get => (ObservableCollection<AxisLabel>)this.GetValue(YLabelsProperty);
         set => this.SetValue(YLabelsProperty, value);
     }
+
     public static readonly DependencyProperty YLabelsProperty = DependencyProperty.Register(
         "YLabels",
         typeof(ObservableCollection<AxisLabel>),

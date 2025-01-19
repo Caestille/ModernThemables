@@ -17,12 +17,9 @@ public partial class ThemingControl : UserControl
     {
         if (e.Key == Key.Escape)
         {
-            InternalRequestClose?.Invoke(this, EventArgs.Empty);
+            this.InternalRequestClose?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    public void FocusOnOpen()
-    {
-        this.SyncCheckbox.Focus();
-    }
+    public void FocusOnOpen() => this.SyncCheckbox.Focus();
 }

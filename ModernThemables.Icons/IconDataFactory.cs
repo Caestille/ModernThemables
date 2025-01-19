@@ -15,9 +15,7 @@ public static class IconDataFactory
         }
     }
 
-    public static IDictionary<IconType, (string, bool)> Create()
-    {
-        return new Dictionary<IconType, (string, bool)>
+    public static IDictionary<IconType, (string, bool)> Create() => new Dictionary<IconType, (string, bool)>
         {
             { IconType.None, (string.Empty, false) },
             { IconType.ArrowUp, ("M405.25 200H194.75A44 44 0 0 0 155 225A52.5 52.5 0 0 0 161.5 280.25L266.75 407.75A44 44 0 0 0 333.25 407.75L438.5 280.25A52.5 52.5 0 0 0 445 225A44 44 0 0 0 405.25 200z", true) },
@@ -57,5 +55,4 @@ public static class IconDataFactory
             { IconType.ViewVertical, ("M160 260H270C275.522 260 280 255.5228 280 250V50C280 44.478 275.522 40 270 40H160V260zM140 260H30C24.4772 260 20 255.5228 20 250V50C20 44.478 24.4772 40 30 40H140V260zM0 250C0 266.5686 13.43146 280 30 280H270C286.568 280 300 266.5686 300 250V50C300 33.432 286.568 20 270 20H30C13.43146 20 0 33.432 0 50V250z", false) },
             { IconType.ViewHorizontal, ("M30 260H270C275.522 260 280 255.5228 280 250V160H20V250C20 255.5228 24.4772 260 30 260zM20 140V50C20 44.478 24.4772 40 30 40H270C275.522 40 280 44.478 280 50V140H20zM0 250C0 266.5686 13.43146 280 30 280H270C286.568 280 300 266.5686 300 250V50C300 33.432 286.568 20 270 20H30C13.43146 20 0 33.432 0 50V250z", false) },
         };
-    }
 }

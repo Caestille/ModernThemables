@@ -1,10 +1,10 @@
 ﻿namespace ModernThemables.Charting.ViewModels.CartesianChart;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using ModernThemables.Charting.Interfaces;
 using System.Text;
 using System.Windows;
 using System.Windows.Shapes;
+using CommunityToolkit.Mvvm.ComponentModel;
+using ModernThemables.Charting.Interfaces;
 
 /// <summary>
 /// A view model for an internal representation of a series used by the <see cref="CartesianChart"/>.
@@ -149,10 +149,7 @@ internal class InternalPathSeriesViewModel : ObservableObject
     /// itself scales to fit its container, it is never re-rendered to match these points.
     /// </summary>
     /// <param name="data">The new data.</param>
-    public void UpdatePoints(IEnumerable<InternalChartEntity> data)
-    {
-        this.Data = data;
-    }
+    public void UpdatePoints(IEnumerable<InternalChartEntity> data) => this.Data = data;
 
     /// <summary>
     /// Indicates whether mouse coordinates scaled to match the scaled series, are inside the bounds of the series
@@ -161,7 +158,7 @@ internal class InternalPathSeriesViewModel : ObservableObject
     /// <param name="dataWidth">The width of the data in the data coordinate (i.e.: not pixels).</param>
     /// <param name="mouseX">The cursor X coordinate in pixels.</param>
     /// <param name="zoomWidth">The width of the series container in pixels (due to zoom).</param>
-    /// <returns>A <see cref="bool"/> indicating whether the cursor X coordinate is within the bounds of the 
+    /// <returns>A <see cref="bool"/> indicating whether the cursor X coordinate is within the bounds of the
     /// (potentially scaled) series.</returns>
     public bool IsTranslatedMouseInBounds(double dataWidth, double mouseX, double zoomWidth)
     {
@@ -184,6 +181,7 @@ internal class InternalPathSeriesViewModel : ObservableObject
             sb.Append($" {pointType}{point.X} {point.Y}");
             pointType = "L";
         }
+
         return sb.ToString().Trim();
     }
 

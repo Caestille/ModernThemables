@@ -63,6 +63,7 @@ internal class ZoomState : ObservableObject
             this.YMin = yMin;
             this.YMax = yMax;
         }
+
         this.XOffset = xOffset;
     }
 
@@ -72,10 +73,7 @@ internal class ZoomState : ObservableObject
     /// <param name="chartPoint">The chart point to test.</param>
     /// <returns>A <see cref="bool"/> indicating whether the given point is contained by the current zoom level.
     /// </returns>
-    public bool IsPointInBounds(IChartEntity chartPoint)
-    {
-        return this.IsPointInBounds(chartPoint.XValue, chartPoint.YValue);
-    }
+    public bool IsPointInBounds(IChartEntity chartPoint) => this.IsPointInBounds(chartPoint.XValue, chartPoint.YValue);
 
     /// <summary>
     /// Given a point in the same scale, indicates whether it would be visible.
@@ -84,8 +82,5 @@ internal class ZoomState : ObservableObject
     /// <param name="y">The Y component of the point.</param>
     /// <returns>A <see cref="bool"/> indicating whether the given point is contained by the current zoom level.
     /// </returns>
-    public bool IsPointInBounds(double x, double y)
-    {
-        return x <= this.XMax && x >= this.XMin && y <= this.YMax && y >= this.YMin;
-    }
+    public bool IsPointInBounds(double x, double y) => x <= this.XMax && x >= this.XMin && y <= this.YMax && y >= this.YMin;
 }

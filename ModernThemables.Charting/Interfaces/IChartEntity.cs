@@ -6,7 +6,7 @@
 public interface IChartEntity
 {
     /// <summary>
-    /// The point name. 
+    /// The point name.
     /// </summary>
     string Name { get; }
 

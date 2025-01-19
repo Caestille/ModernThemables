@@ -1,19 +1,19 @@
 ﻿namespace ModernThemables.Charting.Controls;
 
-using CoreUtilities.Services;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ModernThemables.Charting.ViewModels.PieChart;
+using CoreUtilities.Helpers.Extensions;
+using CoreUtilities.Services;
 using ModernThemables.Charting.Converters;
+using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Models.Brushes;
-using ModernThemables.Charting.Interfaces;
-using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.Services;
-using CoreUtilities.Helpers.Extensions;
+using ModernThemables.Charting.ViewModels;
+using ModernThemables.Charting.ViewModels.PieChart;
 
 /// <summary>
 /// Interaction logic for PieChart.xaml.
@@ -21,22 +21,16 @@ using CoreUtilities.Helpers.Extensions;
 public partial class PieChart : UserControl
 {
     private readonly RefreshTrigger resizeTrigger;
-
     private readonly SeriesWatcherService seriesWatcher;
-
-    private IEnumerable<InternalPieWedgeViewModel> allWedges
-        => this.InternalSeries.Aggregate(new List<InternalPieWedgeViewModel>(), (list, series) => { list.AddRange(series.Wedges); return list; });
-
     private readonly BlockingCollection<Action> renderQueue;
-    private bool renderInProgress;
-
     private readonly Thread renderThread;
     private bool runRenderThread = true;
+    private bool renderInProgress;
 
     public PieChart()
     {
         this.InitializeComponent();
-        Loaded += this.PieChart_Loaded;
+        this.Loaded += this.PieChart_Loaded;
 
         this.seriesWatcher = new SeriesWatcherService(this.QueueRenderChart);
 
@@ -49,6 +43,7 @@ public partial class PieChart : UserControl
                 {
                     Thread.Sleep(1);
                 }
+
                 if (this.renderQueue.Count != 0)
                 {
                     this.renderQueue.Take().Invoke();
@@ -67,7 +62,7 @@ public partial class PieChart : UserControl
             var centreY = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreY);
             var radius = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.Radius);
 
-            mouseLoc = new Point(mouseLoc.X -= this.SeriesItemsControl.ActualWidth / 2 - radius / 0.9, mouseLoc.Y);
+            mouseLoc = new Point(mouseLoc.X - (this.SeriesItemsControl.ActualWidth / 2) - (radius / 0.9), mouseLoc.Y);
 
             var hypLength = Math.Sqrt(
                 Math.Pow(Math.Abs(mouseLoc.X - centreX), 2)
@@ -75,7 +70,7 @@ public partial class PieChart : UserControl
 
             if (hypLength > radius)
             {
-                foreach (var wedge in this.allWedges)
+                foreach (var wedge in this.AllWedges)
                 {
                     wedge.IsMouseOver = false;
                 }
@@ -90,7 +85,7 @@ public partial class PieChart : UserControl
                 foreach (var wedge in series.Wedges)
                 {
                     if (angle > wedge.StartAngle
-                        && angle < wedge.StartAngle + wedge.Percent * 360d / 100d)
+                        && angle < wedge.StartAngle + ((wedge.Percent * 360d) / 100d))
                     {
                         if (!wedge.IsMouseOver)
                         {
@@ -114,7 +109,7 @@ public partial class PieChart : UserControl
 
                         if (this.TooltipLocation == TooltipLocation.Points)
                         {
-                            var centreAngle = wedge.StartAngle + wedge.Percent / 2 * 360 / 100;
+                            var centreAngle = wedge.StartAngle + ((wedge.Percent / 2) * (360 / 100));
                             var angleRad = (Math.PI / 180.0) * (centreAngle - 90);
                             x = radius * Math.Cos(angleRad);
                             y = radius * Math.Sin(angleRad);
@@ -137,6 +132,15 @@ public partial class PieChart : UserControl
 
         this.resizeTrigger = new RefreshTrigger(() => this.QueueRenderChart(null, null, true), 100);
     }
+
+    private IEnumerable<InternalPieWedgeViewModel> AllWedges
+        => this.InternalSeries.Aggregate(
+            new List<InternalPieWedgeViewModel>(),
+            (list, series) =>
+            {
+                list.AddRange(series.Wedges);
+                return list;
+            });
 
     private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
@@ -168,10 +172,7 @@ public partial class PieChart : UserControl
     }
 
     private void QueueRenderChart(
-        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
-    {
-        this.renderQueue.Add(this.RenderChart);
-    }
+        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false) => this.renderQueue.Add(this.RenderChart);
 
     private void RenderChart()
     {
@@ -214,8 +215,6 @@ public partial class PieChart : UserControl
         });
     }
 
-    #region Calculations		
-
     private async Task<List<InternalPieWedgeViewModel>> GetWedgesForSeries(ISeries? series)
     {
         return await Task.Run(() =>
@@ -240,12 +239,8 @@ public partial class PieChart : UserControl
                     wedge.XValue / sum * 100,
                     wedge.XValue,
                     angleSum / sum * 360,
-                    matchingWedge != null
-                        ? matchingWedge.Stroke
-                        : wedge.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
-                    matchingWedge != null
-                        ? matchingWedge.Fill
-                        : wedge.Fill ?? new SolidBrush(ColorExtensions.RandomColour(50))));
+                    matchingWedge != null ? matchingWedge.Stroke : wedge.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
+                    matchingWedge != null ? matchingWedge.Fill : wedge.Fill ?? new SolidBrush(ColorExtensions.RandomColour(50))));
 
                 angleSum += wedge.XValue;
             }
@@ -253,10 +248,6 @@ public partial class PieChart : UserControl
             return convertedSeries;
         });
     }
-
-    #endregion
-
-    #region Mouse events
 
     private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
     {
@@ -268,8 +259,6 @@ public partial class PieChart : UserControl
             }
         }
     }
-
-    #endregion
 
     private double GetMouseAngleFromPoint(Point mouseLoc, Point point)
     {
@@ -307,9 +296,9 @@ public partial class PieChart : UserControl
 
     private void PieChart_Loaded(object sender, RoutedEventArgs e)
     {
-        Loaded -= this.PieChart_Loaded;
+        this.Loaded -= this.PieChart_Loaded;
         Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
-        OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
+        OnLegendLocationSet(this, default(DependencyPropertyChangedEventArgs));
         this.Coordinator.MouseLeave += this.MouseCaptureGrid_MouseLeave;
     }
 

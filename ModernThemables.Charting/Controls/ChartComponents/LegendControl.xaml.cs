@@ -1,10 +1,10 @@
 ﻿namespace ModernThemables.Charting.Controls.ChartComponents;
 
-using ModernThemables.Charting.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using ModernThemables.Charting.Interfaces;
 
 /// <summary>
 /// Interaction logic for LegendControl.xaml.
@@ -16,6 +16,7 @@ public partial class LegendControl : UserControl
         get => (ObservableCollection<ISeries>)this.GetValue(ItemsProperty);
         set => this.SetValue(ItemsProperty, value);
     }
+
     public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
         "Items",
         typeof(ObservableCollection<ISeries>),
@@ -27,6 +28,7 @@ public partial class LegendControl : UserControl
         get => (DataTemplate)this.GetValue(LegendTemplateProperty);
         set => this.SetValue(LegendTemplateProperty, value);
     }
+
     public static readonly DependencyProperty LegendTemplateProperty = DependencyProperty.Register(
         "LegendTemplate",
         typeof(DataTemplate),
@@ -38,6 +40,7 @@ public partial class LegendControl : UserControl
         get => (CornerRadius)this.GetValue(CornerRadiusProperty);
         set => this.SetValue(CornerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         "CornerRadius",
         typeof(CornerRadius),
@@ -49,6 +52,7 @@ public partial class LegendControl : UserControl
         get => (DataTemplate)this.GetValue(TemplatedDataContextProperty);
         set => this.SetValue(TemplatedDataContextProperty, value);
     }
+
     public static readonly DependencyProperty TemplatedDataContextProperty = DependencyProperty.Register(
         "TemplatedDataContext",
         typeof(object),
@@ -60,6 +64,7 @@ public partial class LegendControl : UserControl
         get => (Orientation)this.GetValue(OrientationProperty);
         set => this.SetValue(OrientationProperty, value);
     }
+
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         "Orientation",
         typeof(Orientation),
@@ -71,6 +76,7 @@ public partial class LegendControl : UserControl
         get => (Brush)this.GetValue(BackgroundProperty);
         set => this.SetValue(BackgroundProperty, value);
     }
+
     public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
         "Background",
         typeof(Brush),
@@ -82,6 +88,7 @@ public partial class LegendControl : UserControl
         get => (Brush)this.GetValue(BorderBrushProperty);
         set => this.SetValue(BorderBrushProperty, value);
     }
+
     public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
         "BorderBrush",
         typeof(Brush),
@@ -93,6 +100,7 @@ public partial class LegendControl : UserControl
         get => (Thickness)this.GetValue(BorderThicknessProperty);
         set => this.SetValue(BorderThicknessProperty, value);
     }
+
     public static readonly new DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
         "BorderThickness",
         typeof(Thickness),

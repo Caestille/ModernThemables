@@ -1,7 +1,7 @@
 ﻿namespace ModernThemables.ViewModels;
 
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 public partial class ThemingControlViewModel : ObservableObject
 {
@@ -66,8 +66,5 @@ public partial class ThemingControlViewModel : ObservableObject
 
     private static Color ThemeDisabledColour = Color.FromArgb(255, 0, 103, 173);
 
-    private static Color MonoColour(byte value)
-    {
-        return Color.FromArgb(255, value, value, value);
-    }
+    private static Color MonoColour(byte value) => Color.FromArgb(255, value, value, value);
 }

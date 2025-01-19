@@ -1,8 +1,8 @@
 ﻿namespace ModernThemables.Controls;
 
 using System;
-using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 [TemplatePart(Name = PART_MidRange, Type = typeof(RepeatButton))]
@@ -26,7 +26,7 @@ public class RangeSlider : Slider2
 
     public RangeSlider()
     {
-        SizeChanged += this.RangeSlider_SizeChanged;
+        this.SizeChanged += this.RangeSlider_SizeChanged;
     }
 
     #region Properties
@@ -35,8 +35,8 @@ public class RangeSlider : Slider2
     /// <summary>
     /// HigherValue property represents the higher value within the selected range.
     /// </summary>
-    public static readonly DependencyProperty HigherValueProperty = DependencyProperty.Register("HigherValue", typeof(double), typeof(RangeSlider)
-      , new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, RangeSlider.OnHigherValueChanged, RangeSlider.OnCoerceHigherValueChanged));
+    public static readonly DependencyProperty HigherValueProperty = DependencyProperty.Register("HigherValue", typeof(double), typeof(RangeSlider),
+      new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, RangeSlider.OnHigherValueChanged, RangeSlider.OnCoerceHigherValueChanged));
 
     public double HigherValue
     {
@@ -78,8 +78,8 @@ public class RangeSlider : Slider2
     /// <summary>
     /// LowerValue property represents the lower value within the selected range.
     /// </summary>
-    public static readonly DependencyProperty LowerValueProperty = DependencyProperty.Register("LowerValue", typeof(double), typeof(RangeSlider)
-      , new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, RangeSlider.OnLowerValueChanged, RangeSlider.OnCoerceLowerValueChanged));
+    public static readonly DependencyProperty LowerValueProperty = DependencyProperty.Register("LowerValue", typeof(double), typeof(RangeSlider),
+      new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, RangeSlider.OnLowerValueChanged, RangeSlider.OnCoerceLowerValueChanged));
 
     public double LowerValue
     {
@@ -122,18 +122,13 @@ public class RangeSlider : Slider2
 
     #endregion LowerValue
 
-    protected override void OnMaximumChanged(double oldValue, double newValue)
-    {
-        this.AdjustView();
-    }
+    protected override void OnMaximumChanged(double oldValue, double newValue) => this.AdjustView();
 
     #region Minimum
 
-    protected override void OnMinimumChanged(double oldValue, double newValue)
-    {
+    protected override void OnMinimumChanged(double oldValue, double newValue) =>
         // adjust the range width
         this.AdjustView();
-    }
 
     #endregion Minimum
 
@@ -142,8 +137,8 @@ public class RangeSlider : Slider2
     /// RangeWidth property is a readonly property, used to calculate the percentage of the range within the entire min/max range.
     /// </summary>
 
-    private static readonly DependencyPropertyKey RangeWidthPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeWidth", typeof(double)
-      , typeof(RangeSlider), new PropertyMetadata(0d));
+    private static readonly DependencyPropertyKey RangeWidthPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeWidth", typeof(double),
+      typeof(RangeSlider), new PropertyMetadata(0d));
 
     public static readonly DependencyProperty RangeWidthProperty = RangeWidthPropertyKey.DependencyProperty;
 
@@ -160,8 +155,8 @@ public class RangeSlider : Slider2
     /// RangeMargin property is a readonly property, used to calculate the offset of the range within the left hand side of the range.
     /// </summary>
 
-    private static readonly DependencyPropertyKey RangeMarginPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeMargin", typeof(Thickness)
-      , typeof(RangeSlider), new PropertyMetadata(new Thickness(0)));
+    private static readonly DependencyPropertyKey RangeMarginPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeMargin", typeof(Thickness),
+      typeof(RangeSlider), new PropertyMetadata(new Thickness(0)));
 
     public static readonly DependencyProperty RangeMarginProperty = RangeMarginPropertyKey.DependencyProperty;
 
@@ -183,16 +178,17 @@ public class RangeSlider : Slider2
 
         if (this.midRange != null)
         {
-            this.midRange.PreviewMouseDown += this._midRange_MouseDown;
-            this.midRange.PreviewMouseMove -= this._midRange_MouseMove;
-            this.midRange.PreviewMouseUp -= this._midRange_MouseUp;
+            this.midRange.PreviewMouseDown += this.MidRange_MouseDown;
+            this.midRange.PreviewMouseMove -= this.MidRange_MouseMove;
+            this.midRange.PreviewMouseUp -= this.MidRange_MouseUp;
         }
+
         this.midRange = this.Template.FindName(PART_MidRange, this) as RepeatButton;
         if (this.midRange != null)
         {
-            this.midRange.PreviewMouseDown += this._midRange_MouseDown;
-            this.midRange.PreviewMouseMove += this._midRange_MouseMove;
-            this.midRange.PreviewMouseUp += this._midRange_MouseUp;
+            this.midRange.PreviewMouseDown += this.MidRange_MouseDown;
+            this.midRange.PreviewMouseMove += this.MidRange_MouseMove;
+            this.midRange.PreviewMouseUp += this.MidRange_MouseUp;
         }
 
         if (this.lowerSlider != null)
@@ -200,6 +196,7 @@ public class RangeSlider : Slider2
             this.lowerSlider.Loaded -= this.Slider_Loaded;
             this.lowerSlider.ValueChanged -= this.LowerSlider_ValueChanged;
         }
+
         this.lowerSlider = this.Template.FindName(PART_LowerSlider, this) as Slider;
         if (this.lowerSlider != null)
         {
@@ -213,6 +210,7 @@ public class RangeSlider : Slider2
             this.higherSlider.Loaded -= this.Slider_Loaded;
             this.higherSlider.ValueChanged -= this.HigherSlider_ValueChanged;
         }
+
         this.higherSlider = this.Template.FindName(PART_HigherSlider, this) as Slider;
         if (this.higherSlider != null)
         {
@@ -222,18 +220,15 @@ public class RangeSlider : Slider2
         }
     }
 
-    private void _midRange_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void MidRange_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         this.midRangeMouseDownPoint = e.GetPosition(this.midRange);
         this.midRangeMouseDown = true;
     }
 
-    private void _midRange_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-    {
-        this.midRangeMouseDown = false;
-    }
+    private void MidRange_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) => this.midRangeMouseDown = false;
 
-    private void _midRange_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+    private void MidRange_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
     {
         if (!this.midRangeMouseDown)
         {
@@ -264,7 +259,7 @@ public class RangeSlider : Slider2
         double lowerSliderThumbWidth = 0d;
         double higherSliderThumbWidth = 0d;
 
-        actualWidth -= (lowerSliderThumbWidth + higherSliderThumbWidth);
+        actualWidth -= lowerSliderThumbWidth + higherSliderThumbWidth;
         this.SetLowerSliderValues(cv.LowerValue, cv.Minimum, cv.Maximum);
         this.SetHigherSliderValues(cv.HigherValue, cv.Minimum, cv.Maximum);
 
@@ -296,15 +291,9 @@ public class RangeSlider : Slider2
         return cv;
     }
 
-    private void SetLowerSliderValues(double value, double? minimum, double? maximum)
-    {
-        this.SetSliderValues(this.lowerSlider, this.LowerSlider_ValueChanged, value, minimum, maximum);
-    }
+    private void SetLowerSliderValues(double value, double? minimum, double? maximum) => this.SetSliderValues(this.lowerSlider, this.LowerSlider_ValueChanged, value, minimum, maximum);
 
-    private void SetHigherSliderValues(double value, double? minimum, double? maximum)
-    {
-        this.SetSliderValues(this.higherSlider, this.HigherSlider_ValueChanged, value, minimum, maximum);
-    }
+    private void SetHigherSliderValues(double value, double? minimum, double? maximum) => this.SetSliderValues(this.higherSlider, this.HigherSlider_ValueChanged, value, minimum, maximum);
 
     private void SetSliderValues(
       Slider? slider,
@@ -322,6 +311,7 @@ public class RangeSlider : Slider2
             {
                 slider.Minimum = minimum.Value;
             }
+
             if (maximum != null)
             {
                 slider.Maximum = maximum.Value;
@@ -371,15 +361,9 @@ public class RangeSlider : Slider2
 
     #region Events Handlers
 
-    private void RangeSlider_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        this.AdjustView();
-    }
+    private void RangeSlider_SizeChanged(object sender, SizeChangedEventArgs e) => this.AdjustView();
 
-    private void Slider_Loaded(object sender, RoutedEventArgs e)
-    {
-        this.AdjustView();
-    }
+    private void Slider_Loaded(object sender, RoutedEventArgs e) => this.AdjustView();
 
     private void LowerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {

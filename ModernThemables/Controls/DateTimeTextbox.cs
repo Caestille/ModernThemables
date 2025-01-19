@@ -1,15 +1,15 @@
 ﻿namespace ModernThemables.Controls;
 
 using System;
-using System.Windows.Controls;
-using System.Windows;
-using System.Windows.Media;
 using System.Collections.Generic;
-using System.Windows.Input;
-using CoreUtilities.Services;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using CoreUtilities.Services;
 
 public class DateTimeTextBox : TextBox
 {
@@ -26,7 +26,7 @@ public class DateTimeTextBox : TextBox
     {
         this.trigger = new RefreshTrigger(() => { this.CalculateDate(false); }, 100);
         Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
-        DataContextChanged += this.DatetimeTextBox_DataContextChanged;
+        this.DataContextChanged += this.DatetimeTextBox_DataContextChanged;
         OnSetDateTime(this, new DependencyPropertyChangedEventArgs(DateTimeProperty, System.DateTime.MinValue, this.DateTime));
     }
 
@@ -91,6 +91,7 @@ public class DateTimeTextBox : TextBox
         get => (CornerRadius)this.GetValue(CornerRadiusProperty);
         set => this.SetValue(CornerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius),
         typeof(CornerRadius),
@@ -126,11 +127,13 @@ public class DateTimeTextBox : TextBox
                 {
                     _this.Focusable = false;
                 }
+
                 _this.Text = dt.ToString(_this.Format);
                 if (!_this.isKeyboardUpdate)
                 {
                     _this.Focusable = true;
                 }
+
                 _this.blockUpdate = false;
             }
             else if (e.NewValue == null && _this != null && !_this.isKeyboardUpdate)
@@ -144,10 +147,10 @@ public class DateTimeTextBox : TextBox
     {
         base.OnApplyTemplate();
 
-        TextChanged -= this.ThisTextChanged;
-        PreviewKeyDown -= this.TextKeyDown;
-        TextChanged += this.ThisTextChanged;
-        PreviewKeyDown += this.TextKeyDown;
+        this.TextChanged -= this.ThisTextChanged;
+        this.PreviewKeyDown -= this.TextKeyDown;
+        this.TextChanged += this.ThisTextChanged;
+        this.PreviewKeyDown += this.TextKeyDown;
         this.Text = this.DateTime.HasValue
             ? this.DateTime.Value.ToString(this.Format)
             : string.Join(string.Empty, this.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
@@ -272,6 +275,7 @@ public class DateTimeTextBox : TextBox
                     {
                         selectStart++;
                     }
+
                     setStart = true;
                     this.SelectionLength = 0;
                     e.Handled = true;
@@ -295,6 +299,7 @@ public class DateTimeTextBox : TextBox
                         setStart = true;
                         e.Handled = !(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Regex.IsMatch(key, "^[A-Z]$") || e.Key == Key.Space;
                     }
+
                     break;
             }
         }
@@ -318,10 +323,7 @@ public class DateTimeTextBox : TextBox
         return next;
     }
 
-    private void Dispatcher_ShutdownStarted(object? sender, EventArgs e)
-    {
-        this.trigger.Stop();
-    }
+    private void Dispatcher_ShutdownStarted(object? sender, EventArgs e) => this.trigger.Stop();
 
     private void CalculateDate(bool keyboardUpdate = true)
     {
@@ -346,6 +348,7 @@ public class DateTimeTextBox : TextBox
                 {
                     this.lastValue = this.DateTime.Value;
                 }
+
                 this.DateTime = newVal;
                 var args = new RoutedPropertyChangedEventArgs<DateTime?>(this.lastValue, newVal, DateChangedEvent) { Source = this };
                 this.RaiseEvent(args);

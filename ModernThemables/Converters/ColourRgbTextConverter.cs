@@ -1,9 +1,9 @@
 ﻿namespace ModernThemables.Converters;
 
 using System;
-using System.Windows.Media;
 using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Media;
 
 /// <summary>
 /// For a given <see cref="Color"/>, and <see cref="string"/> parameter dictating the component of the colour to

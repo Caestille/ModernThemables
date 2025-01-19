@@ -35,7 +35,8 @@ public class WindowButtonCommands : ContentControl
 
     /// <summary>Identifies the <see cref="Minimize"/> dependency property.</summary>
     public static readonly DependencyProperty MinimizeProperty
-        = DependencyProperty.Register(nameof(Minimize),
+        = DependencyProperty.Register(
+            nameof(Minimize),
                                       typeof(string),
                                       typeof(WindowButtonCommands),
                                       new PropertyMetadata(null));
@@ -51,7 +52,8 @@ public class WindowButtonCommands : ContentControl
 
     /// <summary>Identifies the <see cref="Maximize"/> dependency property.</summary>
     public static readonly DependencyProperty MaximizeProperty
-        = DependencyProperty.Register(nameof(Maximize),
+        = DependencyProperty.Register(
+            nameof(Maximize),
                                       typeof(string),
                                       typeof(WindowButtonCommands),
                                       new PropertyMetadata(null));
@@ -67,7 +69,8 @@ public class WindowButtonCommands : ContentControl
 
     /// <summary>Identifies the <see cref="Close"/> dependency property.</summary>
     public static readonly DependencyProperty CloseProperty
-        = DependencyProperty.Register(nameof(Close),
+        = DependencyProperty.Register(
+            nameof(Close),
                                       typeof(string),
                                       typeof(WindowButtonCommands),
                                       new PropertyMetadata(null));
@@ -83,7 +86,8 @@ public class WindowButtonCommands : ContentControl
 
     /// <summary>Identifies the <see cref="Restore"/> dependency property.</summary>
     public static readonly DependencyProperty RestoreProperty
-        = DependencyProperty.Register(nameof(Restore),
+        = DependencyProperty.Register(
+            nameof(Restore),
                                       typeof(string),
                                       typeof(WindowButtonCommands),
                                       new PropertyMetadata(null));
@@ -99,14 +103,14 @@ public class WindowButtonCommands : ContentControl
 
     /// <summary>Identifies the <see cref="ParentWindow"/> dependency property.</summary>
     internal static readonly DependencyPropertyKey ParentWindowPropertyKey =
-        DependencyProperty.RegisterReadOnly(nameof(ParentWindow),
+        DependencyProperty.RegisterReadOnly(
+            nameof(ParentWindow),
                                             typeof(Window),
                                             typeof(WindowButtonCommands),
                                             new PropertyMetadata(null));
 
     /// <summary>Identifies the <see cref="ParentWindow"/> dependency property.</summary>
     public static readonly DependencyProperty ParentWindowProperty = ParentWindowPropertyKey.DependencyProperty;
-
 
     public bool IsThemingMenuVisible
     {
@@ -116,7 +120,8 @@ public class WindowButtonCommands : ContentControl
 
     /// <summary>Identifies the <see cref="Maximize"/> dependency property.</summary>
     public static readonly DependencyProperty IsThemingMenuVisibleProperty
-        = DependencyProperty.Register(nameof(IsThemingMenuVisible),
+        = DependencyProperty.Register(
+            nameof(IsThemingMenuVisible),
                                       typeof(bool),
                                       typeof(WindowButtonCommands),
                                       new PropertyMetadata(false));
@@ -137,7 +142,8 @@ public class WindowButtonCommands : ContentControl
         this.CommandBindings.Add(new CommandBinding(SystemCommands.RestoreWindowCommand, this.RestoreWindow));
         this.CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, this.CloseWindow));
 
-        this.Dispatcher.BeginInvoke(() =>
+        this.Dispatcher.BeginInvoke(
+            () =>
             {
                 if (this.ParentWindow is null)
                 {
@@ -175,7 +181,7 @@ public class WindowButtonCommands : ContentControl
             button.Click += (s, e) =>
             {
                 this.IsThemingMenuVisible = !this.IsThemingMenuVisible;
-                ToggleThemeingMenu?.Invoke(this, new WindowEventHandlerArgs());
+                this.ToggleThemeingMenu?.Invoke(this, new WindowEventHandlerArgs());
             };
         }
     }
@@ -185,7 +191,7 @@ public class WindowButtonCommands : ContentControl
         if (this.ParentWindow != null)
         {
             var args = new WindowEventHandlerArgs();
-            MinimisingWindow?.Invoke(this, args);
+            this.MinimisingWindow?.Invoke(this, args);
 
             if (args.Cancelled)
             {
@@ -193,7 +199,7 @@ public class WindowButtonCommands : ContentControl
             }
 
             SystemCommands.MinimizeWindow(this.ParentWindow);
-            MinimisedWindow?.Invoke(this, new WindowEventHandlerArgs());
+            this.MinimisedWindow?.Invoke(this, new WindowEventHandlerArgs());
         }
     }
 
@@ -202,7 +208,7 @@ public class WindowButtonCommands : ContentControl
         if (this.ParentWindow != null)
         {
             var args = new WindowEventHandlerArgs();
-            MaximisingWindow?.Invoke(this, args);
+            this.MaximisingWindow?.Invoke(this, args);
 
             if (args.Cancelled)
             {
@@ -210,7 +216,7 @@ public class WindowButtonCommands : ContentControl
             }
 
             SystemCommands.MaximizeWindow(this.ParentWindow);
-            MaximisedWindow?.Invoke(this, new WindowEventHandlerArgs());
+            this.MaximisedWindow?.Invoke(this, new WindowEventHandlerArgs());
         }
     }
 
@@ -219,7 +225,7 @@ public class WindowButtonCommands : ContentControl
         if (this.ParentWindow != null)
         {
             var args = new WindowEventHandlerArgs();
-            RestoringWindow?.Invoke(this, args);
+            this.RestoringWindow?.Invoke(this, args);
 
             if (args.Cancelled)
             {
@@ -227,7 +233,7 @@ public class WindowButtonCommands : ContentControl
             }
 
             SystemCommands.RestoreWindow(this.ParentWindow);
-            RestoredWindow?.Invoke(this, new WindowEventHandlerArgs());
+            this.RestoredWindow?.Invoke(this, new WindowEventHandlerArgs());
         }
     }
 
@@ -236,7 +242,7 @@ public class WindowButtonCommands : ContentControl
         if (this.ParentWindow != null)
         {
             var args = new WindowEventHandlerArgs();
-            ClosingWindow?.Invoke(this, args);
+            this.ClosingWindow?.Invoke(this, args);
 
             if (args.Cancelled)
             {

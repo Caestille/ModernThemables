@@ -1,8 +1,8 @@
 ﻿namespace ModernThemables.Charting.Models.PieChart;
 
-using System.Windows.Shapes;
-using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 public class PieArc : Shape
 {
@@ -11,6 +11,7 @@ public class PieArc : Shape
         get => (double)this.GetValue(RadiusProperty);
         set => this.SetValue(RadiusProperty, value);
     }
+
     public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
         "Radius",
         typeof(double),
@@ -24,6 +25,7 @@ public class PieArc : Shape
         get => (bool)this.GetValue(IsIndeterminateProperty);
         set => this.SetValue(IsIndeterminateProperty, value);
     }
+
     public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
         "IsIndeterminate",
         typeof(bool),
@@ -37,6 +39,7 @@ public class PieArc : Shape
         get => (double)this.GetValue(PushOutProperty);
         set => this.SetValue(PushOutProperty, value);
     }
+
     public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
         "PushOut",
         typeof(double),
@@ -50,6 +53,7 @@ public class PieArc : Shape
         get => (double)this.GetValue(InnerRadiusProperty);
         set => this.SetValue(InnerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
         "InnerRadiusFraction",
         typeof(double),
@@ -63,6 +67,7 @@ public class PieArc : Shape
         get => (double)this.GetValue(RotationAngleProperty);
         set => this.SetValue(RotationAngleProperty, value);
     }
+
     public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
         "RotationAngle",
         typeof(double),
@@ -76,6 +81,7 @@ public class PieArc : Shape
         get => (double)this.GetValue(CentreXProperty);
         set => this.SetValue(CentreXProperty, value);
     }
+
     public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
         "CentreX",
         typeof(double),
@@ -89,6 +95,7 @@ public class PieArc : Shape
         get => (double)this.GetValue(CentreYProperty);
         set => this.SetValue(CentreYProperty, value);
     }
+
     public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
         "CentreY",
         typeof(double),
@@ -102,11 +109,13 @@ public class PieArc : Shape
         get => (double)this.GetValue(PercentageProperty);
         set => this.SetValue(PercentageProperty, value);
     }
+
     public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
         "Percentage",
         typeof(double),
         typeof(PieArc),
-        new FrameworkPropertyMetadata(0.0,
+        new FrameworkPropertyMetadata(
+            0.0,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     public double PieceValue
@@ -114,6 +123,7 @@ public class PieArc : Shape
         get => (double)this.GetValue(PieceValueProperty);
         set => this.SetValue(PieceValueProperty, value);
     }
+
     public static readonly DependencyProperty PieceValueProperty = DependencyProperty.Register(
         "PieceValue",
         typeof(double),

@@ -1,51 +1,36 @@
 ﻿namespace ModernThemables.Charting.Controls;
 
-using CoreUtilities.Services;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using ModernThemables.Charting.ViewModels.CartesianChart;
-using ModernThemables.Charting.ViewModels;
+using CoreUtilities.Helpers.Extensions;
+using CoreUtilities.Services;
+using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Models.Brushes;
-using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Services;
-using System.Diagnostics;
-using CoreUtilities.Helpers.Extensions;
+using ModernThemables.Charting.ViewModels;
+using ModernThemables.Charting.ViewModels.CartesianChart;
 
 /// <summary>
 /// Interaction logic for CartesianChart.xaml.
 /// </summary>
 public partial class CartesianChart : UserControl
 {
-    public event EventHandler<IChartEntity>? PointClicked;
-    public event EventHandler<Tuple<IChartEntity, IChartEntity>>? PointRangeSelected;
-
     private readonly RefreshTrigger resizeTrigger;
-
-    private readonly BlockingCollection<Action> renderQueue;
-    private bool renderInProgress;
-
-    private readonly Thread renderThread;
-    private bool runRenderThread = true;
-
     private readonly SeriesWatcherService seriesWatcher;
-
-    private bool hasData => this.Series != null && this.Series.Any(x => x.Values?.Any() ?? false);
-    private double plotAreaHeight => this.TooltipControl.ActualHeight;
-    private double plotAreaWidth => this.TooltipControl.ActualWidth;
-
-    private double dataXMin => this.SafeMinMax(true, (point) => point.XValue);
-    private double dataXMax => this.SafeMinMax(false, (point) => point.XValue);
-    public double dataYMin => this.SafeMinMax(true, (point) => point.YValue);
-    public double dataYMax => this.SafeMinMax(false, (point) => point.YValue);
+    private readonly BlockingCollection<Action> renderQueue;
+    private readonly Thread renderThread;
+    private bool renderInProgress;
+    private bool runRenderThread = true;
 
     public CartesianChart()
     {
         this.InitializeComponent();
-        Loaded += this.WpfChart_Loaded;
+        this.Loaded += this.WpfChart_Loaded;
 
         this.seriesWatcher = new SeriesWatcherService(this.QueueRenderChart);
 
@@ -77,7 +62,7 @@ public partial class CartesianChart : UserControl
         }));
         this.renderThread.Start();
 
-        this.TooltipControl.TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((point =>
+        this.TooltipControl.TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>(point =>
         {
             var pointsUnderMouse = this.GetPointsUnderMouse(point);
 
@@ -87,12 +72,14 @@ public partial class CartesianChart : UserControl
                     ? x.series.Stroke.ColourAtPoint(
                         x.point.BackingPoint.XValue, x.point.BackingPoint.YValue)
                     : Colors.Red),
-                string.Empty, string.Empty, string.Empty)
+                string.Empty,
+                string.Empty,
+                string.Empty)
             {
                 TooltipTemplate = this.TooltipTemplate,
                 TemplatedContent = this.TooltipContentGetter != null
                         ? this.TooltipContentGetter(x.series.Data.Select(x => x.BackingPoint), x.point.BackingPoint)
-                        : null
+                        : null,
             }).ToList();
 
             switch (this.TooltipFindingStrategy)
@@ -122,7 +109,7 @@ public partial class CartesianChart : UserControl
             }
 
             return tooltips;
-        }));
+        });
         this.Zoom.GetDataHeightPixelsInBounds = new Func<(double, double)>(() =>
         {
             var allPoints = this.InternalSeries.SelectMany(x => x.Data);
@@ -134,8 +121,8 @@ public partial class CartesianChart : UserControl
             var min = allPoints.Min(x => x.X);
             var max = allPoints.Max(x => x.X);
             var range = max - min;
-            var boundedXMax = max - this.Zoom.RightFraction * range + this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth / this.Zoom.ActualWidth;
-            var boundedXMin = min + this.Zoom.LeftFraction * range + this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth / this.Zoom.ActualWidth;
+            var boundedXMax = max - (this.Zoom.RightFraction * range) + ((this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth) / this.Zoom.ActualWidth);
+            var boundedXMin = min + (this.Zoom.LeftFraction * range) + ((this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth) / this.Zoom.ActualWidth);
             var pointsInRange = allPoints.Where(x => x.X >= boundedXMin && x.X <= boundedXMax);
             var boundedYMax = pointsInRange.Any() ? pointsInRange.Max(x => x.Y) : allPoints.Max(x => x.Y);
             var boundedYMin = pointsInRange.Any() ? pointsInRange.Min(x => x.Y) : allPoints.Min(x => x.Y);
@@ -145,10 +132,25 @@ public partial class CartesianChart : UserControl
         this.resizeTrigger = new RefreshTrigger(() => { this.QueueRenderChart(null, null, true); }, 100);
     }
 
-    public void ResetZoom()
-    {
-        this.Zoom.ResetZoom();
-    }
+    public event EventHandler<IChartEntity>? PointClicked;
+
+    public event EventHandler<Tuple<IChartEntity, IChartEntity>>? PointRangeSelected;
+
+    private bool HasData => this.Series != null && this.Series.Any(x => x.Values?.Any() ?? false);
+
+    private double PlotAreaHeight => this.TooltipControl.ActualHeight;
+
+    private double PlotAreaWidth => this.TooltipControl.ActualWidth;
+
+    private double DataXMin => this.SafeMinMax(true, (point) => point.XValue);
+
+    private double DataXMax => this.SafeMinMax(false, (point) => point.XValue);
+
+    private double DataYMin => this.SafeMinMax(true, (point) => point.YValue);
+
+    private double DataYMax => this.SafeMinMax(false, (point) => point.YValue);
+
+    public void ResetZoom() => this.Zoom.ResetZoom();
 
     private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
@@ -180,10 +182,10 @@ public partial class CartesianChart : UserControl
     }
 
     private void QueueRenderChart(
-        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
-    {
-        this.renderQueue.Add(new Action(() => this.RenderChart(addedSeries, removedSeries, invalidateAll)));
-    }
+        IEnumerable<ISeries>? addedSeries,
+        IEnumerable<ISeries>? removedSeries,
+        bool invalidateAll = false) => this.renderQueue.Add(
+            new Action(() => this.RenderChart(addedSeries, removedSeries, invalidateAll)));
 
     private void RenderChart(
         IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
@@ -192,22 +194,22 @@ public partial class CartesianChart : UserControl
         {
             var sw = Stopwatch.StartNew();
             this.renderInProgress = true;
-            var collection = this.InternalSeries.ShallowCopy().Select(x => (x, false)).ToList();
+            var collection = this.InternalSeries.ShallowCopy().Select(series => (series, false)).ToList();
 
             if (invalidateAll)
             {
                 collection.Clear();
             }
-            else
+            else if (removedSeries != null && removedSeries.Any())
             {
-                foreach (var series in (removedSeries ?? new List<ISeries>()).Where(x => collection.Any(y => y.Item1.Identifier == x.Identifier)))
+                foreach (var series in removedSeries.Where(x => collection.Any(y => y.series.Identifier == x.Identifier)))
                 {
-                    collection.Remove(collection.First(x => x.Item1.Identifier == series.Identifier));
+                    collection.Remove(collection.First(x => x.series.Identifier == series.Identifier));
                 }
             }
 
-            var xMax = this.dataXMax;
-            var xMin = this.dataXMin;
+            var xMax = this.DataXMax;
+            var xMin = this.DataXMin;
             foreach (var series in invalidateAll
                 ? this.Series ?? new ObservableCollection<ISeries>()
                 : addedSeries ?? new List<ISeries>())
@@ -222,18 +224,17 @@ public partial class CartesianChart : UserControl
 
                 var matchingSeries = this.InternalSeries.FirstOrDefault(x => x.Identifier == series.Identifier);
 
-                collection.Add((new InternalPathSeriesViewModel(
-                    series.Name,
-                    series.Identifier,
-                    points,
-                    invalidateAll
-                        ? matchingSeries != null
-                            ? matchingSeries.Stroke
-                            : series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50))
-                        : series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50)),
-                    invalidateAll
-                        ? matchingSeries != null ? matchingSeries.Fill : series.Fill
-                        : series.Fill), true));
+                var stroke = invalidateAll
+                    ? matchingSeries != null
+                        ? matchingSeries.Stroke
+                        : series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50))
+                    : series.Stroke ?? new SolidBrush(ColorExtensions.RandomColour(50));
+                var fill = invalidateAll
+                    ? matchingSeries != null ? matchingSeries.Fill : series.Fill
+                    : series.Fill;
+                collection.Add((
+                    new InternalPathSeriesViewModel(series.Name, series.Identifier, points, stroke, fill),
+                    true));
 
                 if (!clonedValues.Any())
                 {
@@ -247,9 +248,9 @@ public partial class CartesianChart : UserControl
                 series.Fill?.Reevaluate(seriesYMax, seriesYMin, 0, xMax, xMin, 0);
             }
 
-            var yMax = this.dataYMax;
-            var yMin = this.dataYMin;
-            foreach (var series in collection.Where(x => x.Item2).Select(x => x.Item1))
+            var yMax = this.DataYMax;
+            var yMin = this.DataYMin;
+            foreach (var series in collection.Where(x => x.Item2).Select(x => x.series))
             {
                 if (this.Series == null || !this.Series.Any())
                 {
@@ -277,10 +278,10 @@ public partial class CartesianChart : UserControl
                 var seriesXMin = cloned.Min(x => x.XValue);
                 var seriesXRange = seriesXMax - seriesXMin;
 
-                var topMargin = ((yMax - seriesYMax) / seriesYRange);
-                var bottomMargin = ((seriesYMin - yMin) / seriesYRange);
-                var rightMargin = ((xMax - seriesXMax) / seriesXRange);
-                var leftMargin = ((seriesXMin - xMin) / seriesXRange);
+                var topMargin = (yMax - seriesYMax) / seriesYRange;
+                var bottomMargin = (seriesYMin - yMin) / seriesYRange;
+                var rightMargin = (xMax - seriesXMax) / seriesXRange;
+                var leftMargin = (seriesXMin - xMin) / seriesXRange;
 
                 series.SetMargins(topMargin, bottomMargin, leftMargin, rightMargin);
             }
@@ -288,7 +289,7 @@ public partial class CartesianChart : UserControl
             _ = this.SetXAxisLabels();
             _ = this.SetYAxisLabels();
 
-            this.InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection.Select(x => x.Item1));
+            this.InternalSeries = new ObservableCollection<InternalPathSeriesViewModel>(collection.Select(x => x.series));
 
             this.Zoom.InvalidateArrange();
 
@@ -297,26 +298,24 @@ public partial class CartesianChart : UserControl
         });
     }
 
-    #region Calculations
-
     private async Task SetXAxisLabels()
     {
-        if (!this.hasData)
+        if (!this.HasData)
         {
             return;
         }
 
-        var range = this.dataXMax - this.dataXMin;
-        var xMax = this.dataXMax - this.Zoom.RightFraction * range + this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth / this.Zoom.ActualWidth;
-        var xMin = this.dataXMin + this.Zoom.LeftFraction * range + this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth / this.Zoom.ActualWidth;
+        var range = this.DataXMax - this.DataXMin;
+        var xMax = this.DataXMax - (this.Zoom.RightFraction * range) + ((this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth) / this.Zoom.ActualWidth);
+        var xMin = this.DataXMin + (this.Zoom.LeftFraction * range) + ((this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth) / this.Zoom.ActualWidth);
 
         var first = this.Series.First().Values.First();
         var xRange = xMax - xMin;
-        var xAxisItemCount = (int)Math.Floor(this.plotAreaWidth / 60);
+        var xAxisItemCount = (int)Math.Floor(this.PlotAreaWidth / 60);
         var labels = await this.GetXSteps(xAxisItemCount, xMin, xMax);
         var labels2 = labels.Select(xValue => new AxisLabel(
             xValue,
-            (xValue - xMin) / xRange * this.plotAreaWidth,
+            (xValue - xMin) / xRange * this.PlotAreaWidth,
             value => this.XAxisFormatter == null ? value.ToString() : this.XAxisFormatter(first.XValueToImplementation(value)),
             value => this.XAxisCursorLabelFormatter(first.XValueToImplementation(value))));
         this.XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
@@ -326,31 +325,31 @@ public partial class CartesianChart : UserControl
             {
                 new AxisLabel(
                     xMin,
-                    this.plotAreaWidth / 2,
+                    this.PlotAreaWidth / 2,
                     value => this.XAxisFormatter == null ? value.ToString() : this.XAxisFormatter(first.XValueToImplementation(value)),
-                    this.XAxisCursorLabelFormatter != null ? value => this.XAxisCursorLabelFormatter(first.XValueToImplementation(value)) : null)
+                    this.XAxisCursorLabelFormatter != null ? value => this.XAxisCursorLabelFormatter(first.XValueToImplementation(value)) : null),
             };
         }
     }
 
     private async Task SetYAxisLabels()
     {
-        if (!this.hasData)
+        if (!this.HasData)
         {
             return;
         }
 
-        var range = this.dataYMax - this.dataYMin;
-        var yMax = this.dataYMax - this.Zoom.TopFraction * range;
-        var yMin = this.dataYMin + this.Zoom.BottomFraction * range;
+        var range = this.DataYMax - this.DataYMin;
+        var yMax = this.DataYMax - (this.Zoom.TopFraction * range);
+        var yMin = this.DataYMin + (this.Zoom.BottomFraction * range);
 
         var first = this.Series.First().Values.First();
         var yRange = yMax - yMin;
-        var yAxisItemsCount = (int)Math.Max(1, Math.Floor(this.plotAreaHeight / 50));
+        var yAxisItemsCount = (int)Math.Max(1, Math.Floor(this.PlotAreaHeight / 50));
         var labels = (await this.GetYSteps(yAxisItemsCount, yMax, yMin)).ToList();
         var labels2 = labels.Select(yValue => new AxisLabel(
             yValue,
-            (yValue - yMin) / yRange * this.plotAreaHeight,
+            (yValue - yMin) / yRange * this.PlotAreaHeight,
             value => this.YAxisFormatter == null ? Math.Round(value, 2).ToString() : this.YAxisFormatter(first.YValueToImplementation(value)),
             this.YAxisCursorLabelFormatter != null ? value => this.YAxisCursorLabelFormatter(first.YValueToImplementation(value)) : null));
         this.YAxisLabels = new ObservableCollection<AxisLabel>(labels2.Reverse());
@@ -369,6 +368,7 @@ public partial class CartesianChart : UserControl
                 {
                     xVals.Add(currVal);
                 }
+
                 currVal++;
             }
         }
@@ -395,6 +395,7 @@ public partial class CartesianChart : UserControl
                 {
                     yVals.Add(currVal);
                 }
+
                 currVal++;
             }
         }
@@ -413,25 +414,26 @@ public partial class CartesianChart : UserControl
             return new List<InternalChartEntity>();
         }
 
-        var xMin = this.dataXMin;
-        var xRange = this.dataXMax - xMin;
-        var yMin = this.dataYMin;
-        var yRange = this.dataYMax - yMin;
+        var xMin = this.DataXMin;
+        var xRange = this.DataXMax - xMin;
+        var yMin = this.DataYMin;
+        var yRange = this.DataYMax - yMin;
 
         List<InternalChartEntity> points = new();
         foreach (var point in series.Values.ShallowCopy())
         {
-            double x = (double)(point.XValue - xMin) / (double)xRange * (double)this.plotAreaWidth;
-            double y = this.plotAreaHeight - (point.YValue - yMin) / yRange * this.plotAreaHeight;
+            double x = (double)(point.XValue - xMin) / (double)xRange * (double)this.PlotAreaWidth;
+            double y = this.PlotAreaHeight - (point.YValue - yMin) / yRange * this.PlotAreaHeight;
             points.Add(new InternalChartEntity(x, y, point));
         }
+
         return points;
     }
 
     private List<(InternalChartEntity point, InternalPathSeriesViewModel series)> GetPointsUnderMouse(Point point)
     {
-        var xMax = this.dataXMax;
-        var xMin = this.dataXMin;
+        var xMax = this.DataXMax;
+        var xMin = this.DataXMin;
         var xRange = xMax - xMin;
 
         var translatedMouseLoc = this.TooltipControl.TranslatePoint(point, this.Zoom);
@@ -460,7 +462,7 @@ public partial class CartesianChart : UserControl
 
             if (xRange == 0)
             {
-                hoveredChartPoint.X += (this.plotAreaWidth / 2);
+                hoveredChartPoint.X += this.PlotAreaWidth / 2;
             }
 
             pointsUnderMouse.Add((hoveredChartPoint, series));
@@ -494,18 +496,13 @@ public partial class CartesianChart : UserControl
             : all.Max(y => valueGetter(y));
     }
 
-    #endregion
-
-    private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        this.resizeTrigger.Refresh();
-    }
+    private void Grid_SizeChanged(object sender, SizeChangedEventArgs e) => this.resizeTrigger.Refresh();
 
     private void WpfChart_Loaded(object sender, RoutedEventArgs e)
     {
-        Loaded -= this.WpfChart_Loaded;
+        this.Loaded -= this.WpfChart_Loaded;
         Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
-        OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
+        OnLegendLocationSet(this, default(DependencyPropertyChangedEventArgs));
         this.Coordinator.PointClicked += this.Coordinator_PointClicked;
         this.Coordinator.PointRangeSelected += this.Coordinator_PointRangeSelected;
         this.Zoom.ZoomChanged += this.Zoom_ZoomChanged;
@@ -532,7 +529,7 @@ public partial class CartesianChart : UserControl
 
         if (nearestLower != null && nearestUpper != null)
         {
-            PointRangeSelected?.Invoke(this, new Tuple<IChartEntity, IChartEntity>(nearestLower, nearestUpper));
+            this.PointRangeSelected?.Invoke(this, new Tuple<IChartEntity, IChartEntity>(nearestLower, nearestUpper));
         }
     }
 
@@ -545,7 +542,7 @@ public partial class CartesianChart : UserControl
 
         if (nearestPoint != null)
         {
-            PointClicked?.Invoke(this, nearestPoint);
+            this.PointClicked?.Invoke(this, nearestPoint);
         }
     }
 

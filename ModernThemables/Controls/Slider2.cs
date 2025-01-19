@@ -11,6 +11,7 @@ public class Slider2 : Slider
         get => (Brush)this.GetValue(ThumbBrushProperty);
         set => this.SetValue(ThumbBrushProperty, value);
     }
+
     public static readonly DependencyProperty ThumbBrushProperty = DependencyProperty.Register(
         nameof(ThumbBrush),
         typeof(Brush),
@@ -22,6 +23,7 @@ public class Slider2 : Slider
         get => (Brush)this.GetValue(ThumbMouseOverBrushProperty);
         set => this.SetValue(ThumbMouseOverBrushProperty, value);
     }
+
     public static readonly DependencyProperty ThumbMouseOverBrushProperty = DependencyProperty.Register(
         nameof(ThumbMouseOverBrush),
         typeof(Brush),
@@ -33,6 +35,7 @@ public class Slider2 : Slider
         get => (Brush)this.GetValue(ThumbMouseDownBrushProperty);
         set => this.SetValue(ThumbMouseDownBrushProperty, value);
     }
+
     public static readonly DependencyProperty ThumbMouseDownBrushProperty = DependencyProperty.Register(
         nameof(ThumbMouseDownBrush),
         typeof(Brush),
@@ -44,6 +47,7 @@ public class Slider2 : Slider
         get => (Brush)this.GetValue(ThumbBorderBrushProperty);
         set => this.SetValue(ThumbBorderBrushProperty, value);
     }
+
     public static readonly DependencyProperty ThumbBorderBrushProperty = DependencyProperty.Register(
         nameof(ThumbBorderBrush),
         typeof(Brush),
@@ -55,6 +59,7 @@ public class Slider2 : Slider
         get => (int)this.GetValue(ThumbBorderThicknessProperty);
         set => this.SetValue(ThumbBorderThicknessProperty, value);
     }
+
     public static readonly DependencyProperty ThumbBorderThicknessProperty = DependencyProperty.Register(
         nameof(ThumbBorderThickness),
         typeof(int),
@@ -66,6 +71,7 @@ public class Slider2 : Slider
         get => (Brush)this.GetValue(ActiveBarBrushProperty);
         set => this.SetValue(ActiveBarBrushProperty, value);
     }
+
     public static readonly DependencyProperty ActiveBarBrushProperty = DependencyProperty.Register(
         nameof(ActiveBarBrush),
         typeof(Brush),
@@ -77,6 +83,7 @@ public class Slider2 : Slider
         get => (Brush)this.GetValue(InactiveBarBrushProperty);
         set => this.SetValue(InactiveBarBrushProperty, value);
     }
+
     public static readonly DependencyProperty InactiveBarBrushProperty = DependencyProperty.Register(
         nameof(InactiveBarBrush),
         typeof(Brush),
@@ -88,6 +95,7 @@ public class Slider2 : Slider
         get => (CornerRadius)this.GetValue(ThumbCornerRadiusProperty);
         set => this.SetValue(ThumbCornerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty ThumbCornerRadiusProperty = DependencyProperty.Register(
         nameof(ThumbCornerRadius),
         typeof(CornerRadius),
@@ -99,6 +107,7 @@ public class Slider2 : Slider
         get => (CornerRadius)this.GetValue(BarCornerRadiusProperty);
         set => this.SetValue(BarCornerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty BarCornerRadiusProperty = DependencyProperty.Register(
         nameof(BarCornerRadius),
         typeof(CornerRadius),

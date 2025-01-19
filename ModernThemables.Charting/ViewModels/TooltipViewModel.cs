@@ -1,8 +1,8 @@
 ﻿namespace ModernThemables.Charting.ViewModels;
 
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 /// <summary>
 /// A view model represnting a tooltip aligned to a point on a chart.

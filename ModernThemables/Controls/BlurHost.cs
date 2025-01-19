@@ -117,12 +117,12 @@ public class BlurHost : ContentControl
 
     public BlurHost()
     {
-        Loaded += this.OnLoaded;
+        this.Loaded += this.OnLoaded;
 
         this.BlurDecoratorBrush = new VisualBrush()
         {
             ViewboxUnits = BrushMappingMode.Absolute,
-            Opacity = this.BlurOpacity
+            Opacity = this.BlurOpacity,
         };
     }
 
@@ -182,7 +182,7 @@ public class BlurHost : ContentControl
             {
                 Radius = this.BlurRadius,
                 KernelType = KernelType.Gaussian,
-                RenderingBias = RenderingBias.Performance
+                RenderingBias = RenderingBias.Performance,
             };
             this.PART_BlurDecorator.Background = this.BlurDecoratorBrush;
         }
@@ -190,7 +190,6 @@ public class BlurHost : ContentControl
         {
             throw new InvalidOperationException("Theme does not contain required UI elements");
         }
-
     }
 
     private static void OnBlurBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -206,9 +205,10 @@ public class BlurHost : ContentControl
                     {
                         Radius = this_.BlurRadius,
                         KernelType = KernelType.Gaussian,
-                        RenderingBias = RenderingBias.Performance
+                        RenderingBias = RenderingBias.Performance,
                     };
                 }
+
                 this_.DrawBlurredElementBackground();
             });
         }

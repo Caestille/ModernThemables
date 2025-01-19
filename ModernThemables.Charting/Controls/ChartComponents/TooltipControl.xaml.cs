@@ -1,12 +1,12 @@
 ﻿namespace ModernThemables.Charting.Controls.ChartComponents;
 
-using ModernThemables.Charting.Models;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
-using ModernThemables.Charting.ViewModels;
+using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Services;
+using ModernThemables.Charting.ViewModels;
 
 /// <summary>
 /// Interaction logic for TooltipControl.xaml.
@@ -23,6 +23,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(ShowPointIndicatorsProperty);
         set => this.SetValue(ShowPointIndicatorsProperty, value);
     }
+
     public static readonly DependencyProperty ShowPointIndicatorsProperty = DependencyProperty.Register(
         "ShowPointIndicators",
         typeof(bool),
@@ -34,6 +35,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(ShowTooltipProperty);
         set => this.SetValue(ShowTooltipProperty, value);
     }
+
     public static readonly DependencyProperty ShowTooltipProperty = DependencyProperty.Register(
         "ShowTooltip",
         typeof(bool),
@@ -45,6 +47,7 @@ public partial class TooltipControl : UserControl
         get => (bool?)this.GetValue(ForceCrosshairsProperty);
         set => this.SetValue(ForceCrosshairsProperty, value);
     }
+
     public static readonly DependencyProperty ForceCrosshairsProperty = DependencyProperty.Register(
         "ForceCrosshairs",
         typeof(bool?),
@@ -56,6 +59,7 @@ public partial class TooltipControl : UserControl
         get => (bool?)this.GetValue(ForceTooltipProperty);
         set => this.SetValue(ForceTooltipProperty, value);
     }
+
     public static readonly DependencyProperty ForceTooltipProperty = DependencyProperty.Register(
         "ForceTooltip",
         typeof(bool?),
@@ -67,6 +71,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(IsMouseOverThisProperty);
         private set => this.SetValue(IsMouseOverThisProperty, value);
     }
+
     public static readonly DependencyProperty IsMouseOverThisProperty = DependencyProperty.Register(
         "IsMouseOverThis",
         typeof(bool),
@@ -78,6 +83,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(PointClickedProperty);
         private set => this.SetValue(PointClickedProperty, value);
     }
+
     public static readonly DependencyProperty PointClickedProperty = DependencyProperty.Register(
         "PointClicked",
         typeof(bool),
@@ -89,6 +95,7 @@ public partial class TooltipControl : UserControl
         get => (bool?)this.GetValue(PointIndicatorsProperty);
         set => this.SetValue(PointIndicatorsProperty, value);
     }
+
     public static readonly DependencyProperty PointIndicatorsProperty = DependencyProperty.Register(
         "PointIndicators",
         typeof(bool?),
@@ -100,6 +107,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(ShowCrosshairsProperty);
         set => this.SetValue(ShowCrosshairsProperty, value);
     }
+
     public static readonly DependencyProperty ShowCrosshairsProperty = DependencyProperty.Register(
         "ShowCrosshairs",
         typeof(bool),
@@ -111,6 +119,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(AllowSelectionProperty);
         set => this.SetValue(AllowSelectionProperty, value);
     }
+
     public static readonly DependencyProperty AllowSelectionProperty = DependencyProperty.Register(
         "AllowSelection",
         typeof(bool),
@@ -122,6 +131,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(ForceTooltipTopProperty);
         set => this.SetValue(ForceTooltipTopProperty, value);
     }
+
     public static readonly DependencyProperty ForceTooltipTopProperty = DependencyProperty.Register(
         "ForceTooltipTop",
         typeof(bool),
@@ -133,6 +143,7 @@ public partial class TooltipControl : UserControl
         get => (double)this.GetValue(TooltipOffsetXProperty);
         set => this.SetValue(TooltipOffsetXProperty, value);
     }
+
     public static readonly DependencyProperty TooltipOffsetXProperty = DependencyProperty.Register(
         "TooltipOffsetX",
         typeof(double),
@@ -144,6 +155,7 @@ public partial class TooltipControl : UserControl
         get => (double)this.GetValue(TooltipOffsetYProperty);
         set => this.SetValue(TooltipOffsetYProperty, value);
     }
+
     public static readonly DependencyProperty TooltipOffsetYProperty = DependencyProperty.Register(
         "TooltipOffsetY",
         typeof(double),
@@ -155,6 +167,7 @@ public partial class TooltipControl : UserControl
         get => (double)this.GetValue(TooltipOpacityProperty);
         set => this.SetValue(TooltipOpacityProperty, value);
     }
+
     public static readonly DependencyProperty TooltipOpacityProperty = DependencyProperty.Register(
         "TooltipOpacity",
         typeof(double),
@@ -166,6 +179,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(InvertYProperty);
         set => this.SetValue(InvertYProperty, value);
     }
+
     public static readonly DependencyProperty InvertYProperty = DependencyProperty.Register(
         "InvertY",
         typeof(bool),
@@ -177,6 +191,7 @@ public partial class TooltipControl : UserControl
         get => (ObservableCollection<TooltipViewModel>)this.GetValue(TooltipPointsProperty);
         set => this.SetValue(TooltipPointsProperty, value);
     }
+
     public static readonly DependencyProperty TooltipPointsProperty = DependencyProperty.Register(
         "TooltipPoints",
         typeof(ObservableCollection<TooltipViewModel>),
@@ -188,6 +203,7 @@ public partial class TooltipControl : UserControl
         get => (TooltipLocation)this.GetValue(TooltipLocationProperty);
         set => this.SetValue(TooltipLocationProperty, value);
     }
+
     public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
         "TooltipLocation",
         typeof(TooltipLocation),
@@ -199,6 +215,7 @@ public partial class TooltipControl : UserControl
         get => (Func<Point, IEnumerable<TooltipViewModel>>)this.GetValue(TooltipGetterFuncProperty);
         set => this.SetValue(TooltipGetterFuncProperty, value);
     }
+
     public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
         "TooltipGetterFunc",
         typeof(Func<Point, IEnumerable<TooltipViewModel>>),
@@ -210,6 +227,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(IsTooltipByCursorProperty);
         set => this.SetValue(IsTooltipByCursorProperty, value);
     }
+
     public static readonly DependencyProperty IsTooltipByCursorProperty = DependencyProperty.Register(
         "IsTooltipByCursor",
         typeof(bool),
@@ -221,6 +239,7 @@ public partial class TooltipControl : UserControl
         get => (bool)this.GetValue(IsUserSelectingRangeProperty);
         set => this.SetValue(IsUserSelectingRangeProperty, value);
     }
+
     public static readonly DependencyProperty IsUserSelectingRangeProperty = DependencyProperty.Register(
         "IsUserSelectingRange",
         typeof(bool),
@@ -232,6 +251,7 @@ public partial class TooltipControl : UserControl
         get => (MouseCoordinator)this.GetValue(MouseCoordinatorProperty);
         set => this.SetValue(MouseCoordinatorProperty, value);
     }
+
     public static readonly DependencyProperty MouseCoordinatorProperty = DependencyProperty.Register(
         "MouseCoordinator",
         typeof(MouseCoordinator),
@@ -242,14 +262,14 @@ public partial class TooltipControl : UserControl
     {
         this.InitializeComponent();
 
-        Loaded += this.TooltipControl_Loaded;
+        this.Loaded += this.TooltipControl_Loaded;
 
         NameScope.SetNameScope(this.CM, NameScope.GetNameScope(this));
     }
 
     private void TooltipControl_Loaded(object sender, RoutedEventArgs e)
     {
-        Loaded -= this.TooltipControl_Loaded;
+        this.Loaded -= this.TooltipControl_Loaded;
         if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator))
         {
             this.Coordinator = coordinator!;
@@ -284,10 +304,7 @@ public partial class TooltipControl : UserControl
         }
     }
 
-    private void Coordinator_PointRangeSelected(object? sender, (Point lowerValue, Point upperValue) e)
-    {
-        this.IsUserSelectingRange = false;
-    }
+    private void Coordinator_PointRangeSelected(object? sender, (Point lowerValue, Point upperValue) e) => this.IsUserSelectingRange = false;
 
     private void Coordinator_PointClicked(object? sender, Point e)
     {
@@ -295,10 +312,7 @@ public partial class TooltipControl : UserControl
         this.PointClicked = false;
     }
 
-    private void Coordinator_MouseLeave(object sender, MouseEventArgs e)
-    {
-        this.IsMouseOverThis = false;
-    }
+    private void Coordinator_MouseLeave(object sender, MouseEventArgs e) => this.IsMouseOverThis = false;
 
     private static void OnTooltipLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
@@ -410,7 +424,7 @@ public partial class TooltipControl : UserControl
                         this.tooltipLeft = true;
                     }
 
-                    if (this.tooltipLeft && (mouseLoc.X) < (this.TooltipsByCursor.ActualWidth + 5))
+                    if (this.tooltipLeft && mouseLoc.X < (this.TooltipsByCursor.ActualWidth + 5))
                     {
                         this.tooltipLeft = false;
                     }
@@ -420,7 +434,7 @@ public partial class TooltipControl : UserControl
                         this.tooltipTop = true;
                     }
 
-                    if (this.tooltipTop && (mouseLoc.Y) < (this.TooltipsByCursor.ActualHeight + 5))
+                    if (this.tooltipTop && mouseLoc.Y < (this.TooltipsByCursor.ActualHeight + 5))
                     {
                         this.tooltipTop = false;
                     }

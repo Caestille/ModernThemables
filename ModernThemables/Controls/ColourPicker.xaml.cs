@@ -1,6 +1,5 @@
 ﻿namespace ModernThemables.Controls;
 
-using CoreUtilities.Helpers.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using CoreUtilities.Helpers.Extensions;
 
 /// <summary>
 /// Interaction logic for ColourPicker.xaml.
@@ -27,6 +27,7 @@ public partial class ColourPicker : UserControl
         get => (Color)this.GetValue(ColourProperty);
         set => this.SetValue(ColourProperty, value);
     }
+
     public static readonly DependencyProperty ColourProperty = DependencyProperty.Register(
         nameof(Colour),
         typeof(Color),
@@ -53,6 +54,7 @@ public partial class ColourPicker : UserControl
         get => (string)this.GetValue(HtmlProperty);
         set => this.SetValue(HtmlProperty, value);
     }
+
     public static readonly DependencyProperty HtmlProperty = DependencyProperty.Register(
         nameof(Html),
         typeof(string),
@@ -83,28 +85,28 @@ public partial class ColourPicker : UserControl
     }
 
     private bool isMouseDown;
-    private static readonly List<KeyValuePair<Color, double>> horizontalColourStops = new List<KeyValuePair<Color, double>>()
+    private static readonly List<KeyValuePair<Color, double>> HorizontalColourStops = new List<KeyValuePair<Color, double>>()
     {
         new KeyValuePair<Color, double>(Colors.Red, 0),
-        new KeyValuePair<Color, double>(Colors.Magenta, 1d/6),
-        new KeyValuePair<Color, double>(Colors.Blue, 2d/6),
-        new KeyValuePair<Color, double>(Colors.Cyan, 3d/6),
-        new KeyValuePair<Color, double>(Colors.Lime, 4d/6),
-        new KeyValuePair<Color, double>(Colors.Yellow, 5d/6),
-        new KeyValuePair<Color, double>(Colors.Red, 1)
+        new KeyValuePair<Color, double>(Colors.Magenta, 1d / 6),
+        new KeyValuePair<Color, double>(Colors.Blue, 2d / 6),
+        new KeyValuePair<Color, double>(Colors.Cyan, 3d / 6),
+        new KeyValuePair<Color, double>(Colors.Lime, 4d / 6),
+        new KeyValuePair<Color, double>(Colors.Yellow, 5d / 6),
+        new KeyValuePair<Color, double>(Colors.Red, 1),
     };
-    private static readonly List<KeyValuePair<Color, double>> verticalColourStops = new List<KeyValuePair<Color, double>>()
+    private static readonly List<KeyValuePair<Color, double>> VerticalColourStops = new List<KeyValuePair<Color, double>>()
     {
         new KeyValuePair<Color, double>(Colors.Black, 0),
         new KeyValuePair<Color, double>(Colors.Transparent, 0.48),
         new KeyValuePair<Color, double>(Colors.Transparent, 0.52),
-        new KeyValuePair<Color, double>(Colors.White, 1)
+        new KeyValuePair<Color, double>(Colors.White, 1),
     };
 
     public ColourPicker()
     {
         this.InitializeComponent();
-        Loaded += this.ColourPicker_Loaded;
+        this.Loaded += this.ColourPicker_Loaded;
     }
 
     private async void ColourPicker_Loaded(object sender, RoutedEventArgs e)
@@ -114,7 +116,8 @@ public partial class ColourPicker : UserControl
         {
             this.AdjustSelectedColourCursor((int)point.X, (int)point.Y);
         }
-        Loaded -= this.ColourPicker_Loaded;
+
+        this.Loaded -= this.ColourPicker_Loaded;
     }
 
     public Color? GetColorAt(int x, int y)
@@ -125,9 +128,9 @@ public partial class ColourPicker : UserControl
         var horizFrac = x / this.ColourSelectionBorder.ActualWidth;
         var vertFrac = (float)(((y / this.ColourSelectionBorder.ActualHeight) - 0.5) * 2);
 
-        var leftColour = horizontalColourStops.Where(x => x.Value <= horizFrac)
+        var leftColour = HorizontalColourStops.Where(x => x.Value <= horizFrac)
             .DefaultIfEmpty(new KeyValuePair<Color, double>(Colors.Red, 0)).Last();
-        var rightColour = horizontalColourStops.Where(x => x.Value >= horizFrac)
+        var rightColour = HorizontalColourStops.Where(x => x.Value >= horizFrac)
             .DefaultIfEmpty(new KeyValuePair<Color, double>(Colors.Red, 1)).First();
 
         var outputColour = leftColour.Key.Combine(rightColour.Key, (horizFrac - leftColour.Value) / (rightColour.Value - leftColour.Value));
@@ -137,58 +140,51 @@ public partial class ColourPicker : UserControl
         return output;
     }
 
-    public async Task<Point> GetPointAtColour(Color colour)
-    {
-        return await Task.Run(() =>
-        {
-            this.cts.Cancel();
-            this.cts = new CancellationTokenSource();
-            var iter = 200;
-            var threshold = 10;
+    public async Task<Point> GetPointAtColour(Color colour) => await Task.Run(() =>
+                                                                    {
+                                                                        this.cts.Cancel();
+                                                                        this.cts = new CancellationTokenSource();
+                                                                        var iter = 200;
+                                                                        var threshold = 10;
 
-            int width = (int)this.ColourSelectionBorder.ActualWidth;
-            int height = (int)this.ColourSelectionBorder.ActualHeight;
-            var xStep = width / iter;
-            var yStep = height / iter;
-            int xPos = 0;
-            int yPos = 0;
-            for (int i = 0; i < iter; i++)
-            {
-                var doBreak = false;
-                for (int j = 0; j < iter; j++)
-                {
-                    if (this.cts.IsCancellationRequested)
-                    {
-                        return new Point(-1, -1);
-                    }
-                    xPos = xStep * i;
-                    yPos = yStep * j;
-                    var sampled = this.GetColorAt(xPos, yPos);
-                    if (sampled.HasValue && sampled.Value.ColoursAreClose(colour, threshold))
-                    {
-                        doBreak = true;
-                        break;
-                    }
-                }
-                if (doBreak)
-                {
-                    break;
-                }
-            }
+                                                                        int width = (int)this.ColourSelectionBorder.ActualWidth;
+                                                                        int height = (int)this.ColourSelectionBorder.ActualHeight;
+                                                                        var xStep = width / iter;
+                                                                        var yStep = height / iter;
+                                                                        int xPos = 0;
+                                                                        int yPos = 0;
+                                                                        for (int i = 0; i < iter; i++)
+                                                                        {
+                                                                            var doBreak = false;
+                                                                            for (int j = 0; j < iter; j++)
+                                                                            {
+                                                                                if (this.cts.IsCancellationRequested)
+                                                                                {
+                                                                                    return new Point(-1, -1);
+                                                                                }
 
-            return new Point(xPos, yPos);
-        });
-    }
+                                                                                xPos = xStep * i;
+                                                                                yPos = yStep * j;
+                                                                                var sampled = this.GetColorAt(xPos, yPos);
+                                                                                if (sampled.HasValue && sampled.Value.ColoursAreClose(colour, threshold))
+                                                                                {
+                                                                                    doBreak = true;
+                                                                                    break;
+                                                                                }
+                                                                            }
 
-    private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        this.isMouseDown = true;
-    }
+                                                                            if (doBreak)
+                                                                            {
+                                                                                break;
+                                                                            }
+                                                                        }
 
-    private void Border_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-    {
-        this.isMouseDown = false;
-    }
+                                                                        return new Point(xPos, yPos);
+                                                                    });
+
+    private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e) => this.isMouseDown = true;
+
+    private void Border_PreviewMouseUp(object sender, MouseButtonEventArgs e) => this.isMouseDown = false;
 
     private async void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
@@ -202,6 +198,7 @@ public partial class ColourPicker : UserControl
         {
             this.AdjustSelectedColourCursor((int)point.X, (int)point.Y);
         }
+
         if (this.colourChangedCallback != null)
         {
             this.colourChangedCallback(this.Colour);
@@ -228,12 +225,9 @@ public partial class ColourPicker : UserControl
         // if (isMouseDown) isMouseDown = false;
     }
 
-    private void AdjustSelectedColourCursor(int x, int y)
-    {
-        this.SelectedColourBorder.Margin = new Thickness(Math.Max(x - 5, -5), Math.Max(y - 5, -5), 0, 0);
-    }
+    private void AdjustSelectedColourCursor(int x, int y) => this.SelectedColourBorder.Margin = new Thickness(Math.Max(x - 5, -5), Math.Max(y - 5, -5), 0, 0);
 
-    private void root_MouseMove(object sender, MouseEventArgs e)
+    private void Root_MouseMove(object sender, MouseEventArgs e)
     {
         if (!this.isMouseDown)
         {

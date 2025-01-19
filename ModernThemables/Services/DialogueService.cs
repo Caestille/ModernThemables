@@ -1,14 +1,14 @@
 ﻿namespace ModernThemables.Services;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Media;
-using ModernThemables.Controls;
-using CoreUtilities.Interfaces.Dialogues;
 using System.Windows.Controls;
+using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CoreUtilities.Interfaces.Dialogues;
+using Microsoft.Win32;
+using ModernThemables.Controls;
 
 /// <summary>
 /// A service for initialising and managing various dialogues.
@@ -18,10 +18,7 @@ public class DialogueService : IDialogueService
     private readonly Dictionary<Type, Type> registeredViews = new();
 
     /// <inheritdoc />
-    public void RegisterViewForViewModel(Type viewType, Type vmType)
-    {
-        this.registeredViews[vmType] = viewType;
-    }
+    public void RegisterViewForViewModel(Type viewType, Type vmType) => this.registeredViews[vmType] = viewType;
 
     /// <inheritdoc />
     public void ShowCustomDialogue(object dataContext, Size? dialogueSize = null)
@@ -51,6 +48,7 @@ public class DialogueService : IDialogueService
             window.Width = dialogueSize.Value.Width;
             window.Height = dialogueSize.Value.Height;
         }
+
         window.WindowStyle = WindowStyle.ToolWindow;
         RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
         RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
@@ -89,6 +87,7 @@ public class DialogueService : IDialogueService
             window.Width = dialogueSize.Value.Width;
             window.Height = dialogueSize.Value.Height;
         }
+
         RenderOptions.SetBitmapScalingMode(window, BitmapScalingMode.HighQuality);
         RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
 
@@ -128,6 +127,5 @@ public class DialogueService : IDialogueService
     /// <inheritdoc />
     public void ShowMessageBox(string title, string message, MessageBoxButton button)
     {
-
     }
 }

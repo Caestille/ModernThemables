@@ -1,15 +1,17 @@
 ﻿namespace ModernThemables.ViewModels;
 
-using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 public class AliasableViewModelBase : AliasableViewModelBase<GenericViewModelBase>
 {
-    public AliasableViewModelBase(string name, string? alias, Func<GenericViewModelBase>? createChild = null) : base(name, alias, createChild) { }
+    public AliasableViewModelBase(string name, string? alias, Func<GenericViewModelBase>? createChild = null)
+        : base(name, alias, createChild) { }
 }
 
-public class AliasableViewModelBase<TChild> : ViewModelBase<TChild> where TChild : GenericViewModelBase
+public class AliasableViewModelBase<TChild> : ViewModelBase<TChild>
+    where TChild : GenericViewModelBase
 {
     private string? previousAlias;
 
@@ -41,10 +43,7 @@ public class AliasableViewModelBase<TChild> : ViewModelBase<TChild> where TChild
         this.Alias = alias;
     }
 
-    protected virtual void OnCommitAliasUpdate()
-    {
-        this.OnPropertyChanged(nameof(this.Name));
-    }
+    protected virtual void OnCommitAliasUpdate() => this.OnPropertyChanged(nameof(this.Name));
 
     private void EditAlias()
     {

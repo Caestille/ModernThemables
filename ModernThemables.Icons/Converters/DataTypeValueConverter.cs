@@ -6,7 +6,7 @@ using System.Windows;
 
 public class DataTypeValueConverter : MarkupConverter
 {
-    private static DataTypeValueConverter? _instance;
+    private static DataTypeValueConverter? instance;
 
     // Explicit static constructor to tell C# compiler
     // not to mark type as beforefieldinit
@@ -14,18 +14,9 @@ public class DataTypeValueConverter : MarkupConverter
     {
     }
 
-    public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        return _instance ?? (_instance = new DataTypeValueConverter());
-    }
+    public override object ProvideValue(IServiceProvider serviceProvider) => instance ?? (instance = new DataTypeValueConverter());
 
-    protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return value?.GetType()!;
-    }
+    protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value?.GetType()!;
 
-    protected override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return DependencyProperty.UnsetValue;
-    }
+    protected override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => DependencyProperty.UnsetValue;
 }

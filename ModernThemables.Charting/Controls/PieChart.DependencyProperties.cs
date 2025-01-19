@@ -1,11 +1,11 @@
 ﻿namespace ModernThemables.Charting.Controls;
 
+using System.Collections.ObjectModel;
+using System.Windows;
 using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.ViewModels;
 using ModernThemables.Charting.ViewModels.PieChart;
-using System.Collections.ObjectModel;
-using System.Windows;
 
 public partial class PieChart // .DependencyProperties
 {
@@ -16,6 +16,7 @@ public partial class PieChart // .DependencyProperties
         get => (ObservableCollection<ISeries>)this.GetValue(SeriesProperty);
         set => this.SetValue(SeriesProperty, value);
     }
+
     public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
         "Series",
         typeof(ObservableCollection<ISeries>),
@@ -27,6 +28,7 @@ public partial class PieChart // .DependencyProperties
         get => (double)this.GetValue(InnerRadiusFractionProperty);
         set => this.SetValue(InnerRadiusFractionProperty, value);
     }
+
     public static readonly DependencyProperty InnerRadiusFractionProperty = DependencyProperty.Register(
         "InnerRadiusFraction",
         typeof(double),
@@ -38,6 +40,7 @@ public partial class PieChart // .DependencyProperties
         get => (double)this.GetValue(LabelRadiusFractionProperty);
         set => this.SetValue(LabelRadiusFractionProperty, value);
     }
+
     public static readonly DependencyProperty LabelRadiusFractionProperty = DependencyProperty.Register(
         "LabelRadiusFraction",
         typeof(double),
@@ -49,6 +52,7 @@ public partial class PieChart // .DependencyProperties
         get => (DataTemplate)this.GetValue(TooltipTemplateProperty);
         set => this.SetValue(TooltipTemplateProperty, value);
     }
+
     public static readonly DependencyProperty TooltipTemplateProperty = DependencyProperty.Register(
         "TooltipTemplate",
         typeof(DataTemplate),
@@ -60,6 +64,7 @@ public partial class PieChart // .DependencyProperties
         get => (DataTemplate)this.GetValue(LegendTemplateProperty);
         set => this.SetValue(LegendTemplateProperty, value);
     }
+
     public static readonly DependencyProperty LegendTemplateProperty = DependencyProperty.Register(
         "LegendTemplate",
         typeof(DataTemplate),
@@ -71,6 +76,7 @@ public partial class PieChart // .DependencyProperties
         get => (LegendLocation)this.GetValue(LegendLocationProperty);
         set => this.SetValue(LegendLocationProperty, value);
     }
+
     public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
         "LegendLocation",
         typeof(LegendLocation),
@@ -82,6 +88,7 @@ public partial class PieChart // .DependencyProperties
         get => (TooltipLocation)this.GetValue(TooltipLocationProperty);
         set => this.SetValue(TooltipLocationProperty, value);
     }
+
     public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
         "TooltipLocation",
         typeof(TooltipLocation),
@@ -93,6 +100,7 @@ public partial class PieChart // .DependencyProperties
         get => (double)this.GetValue(TooltipOpacityProperty);
         set => this.SetValue(TooltipOpacityProperty, value);
     }
+
     public static readonly DependencyProperty TooltipOpacityProperty = DependencyProperty.Register(
         "TooltipOpacity",
         typeof(double),
@@ -108,6 +116,7 @@ public partial class PieChart // .DependencyProperties
         get => (ObservableCollection<InternalPieSeriesViewModel>)this.GetValue(InternalSeriesProperty);
         set => this.SetValue(InternalSeriesProperty, value);
     }
+
     public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
         "InternalSeries",
         typeof(ObservableCollection<InternalPieSeriesViewModel>),
@@ -119,6 +128,7 @@ public partial class PieChart // .DependencyProperties
         get => (Func<Point, IEnumerable<TooltipViewModel>>)this.GetValue(TooltipGetterFuncProperty);
         set => this.SetValue(TooltipGetterFuncProperty, value);
     }
+
     public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
         "TooltipGetterFunc",
         typeof(Func<Point, IEnumerable<TooltipViewModel>>),

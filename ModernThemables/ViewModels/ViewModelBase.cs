@@ -1,19 +1,21 @@
 ﻿namespace ModernThemables.ViewModels;
 
+using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Windows.Input;
-using System;
-using ModernThemables.Messages;
-using System.Collections.Generic;
 using CoreUtilities.Helpers.WPF;
+using ModernThemables.Messages;
 
 public class ViewModelBase : ViewModelBase<GenericViewModelBase>
 {
-    public ViewModelBase(string name) : base(name) { }
+    public ViewModelBase(string name)
+        : base(name) { }
 }
 
-public class ViewModelBase<TChild> : GenericViewModelBase where TChild : GenericViewModelBase
+public class ViewModelBase<TChild> : GenericViewModelBase
+    where TChild : GenericViewModelBase
 {
     public ICommand AddChildCommand => new RelayCommand(() => this.AddChild());
 

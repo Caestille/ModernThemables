@@ -12,7 +12,8 @@ public interface IIconExtension
 
 public static class IconExtensionHelper
 {
-    public static BaseIcon GetPackIcon<TPack, TKind>(this IIconExtension packIconExtension, TKind kind) where TPack : BaseIcon, new()
+    public static BaseIcon GetPackIcon<TPack, TKind>(this IIconExtension packIconExtension, TKind kind)
+        where TPack : BaseIcon, new()
     {
         var packIcon = new TPack();
         packIcon.SetKind(kind);
@@ -92,10 +93,7 @@ public abstract class BaseIconExtension : MarkupExtension, IIconExtension
 
     internal ChangedFieldFlags changedField; // Cache changed field bits
 
-    internal bool IsFieldChanged(ChangedFieldFlags reqFlag)
-    {
-        return (this.changedField & reqFlag) != 0;
-    }
+    internal bool IsFieldChanged(ChangedFieldFlags reqFlag) => (this.changedField & reqFlag) != 0;
 
     internal void WriteFieldChangedFlag(ChangedFieldFlags reqFlag, bool set)
     {
@@ -105,7 +103,7 @@ public abstract class BaseIconExtension : MarkupExtension, IIconExtension
         }
         else
         {
-            this.changedField &= (~reqFlag);
+            this.changedField &= ~reqFlag;
         }
     }
 

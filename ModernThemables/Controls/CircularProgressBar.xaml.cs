@@ -34,6 +34,7 @@ public partial class CircularProgressBar : UserControl
         get => (bool)this.GetValue(RoundedEndProperty);
         set => this.SetValue(RoundedEndProperty, value);
     }
+
     public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
         nameof(RoundedEnd),
         typeof(bool),

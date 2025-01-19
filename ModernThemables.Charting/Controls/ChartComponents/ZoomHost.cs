@@ -1,8 +1,8 @@
 ﻿namespace ModernThemables.Charting.Controls.ChartComponents;
 
-using ModernThemables.Charting.Services;
 using System.Windows;
 using System.Windows.Controls;
+using ModernThemables.Charting.Services;
 
 public class ZoomHost : ContentControl
 {
@@ -21,6 +21,7 @@ public class ZoomHost : ContentControl
         get => (double)this.GetValue(PanOffsetFractionProperty);
         private set => this.SetValue(PanOffsetFractionProperty, value);
     }
+
     public static readonly DependencyProperty PanOffsetFractionProperty = DependencyProperty.Register(
         nameof(PanOffsetFraction),
         typeof(double),
@@ -32,6 +33,7 @@ public class ZoomHost : ContentControl
         get => (double)this.GetValue(LeftFractionProperty);
         private set => this.SetValue(LeftFractionProperty, value);
     }
+
     public static readonly DependencyProperty LeftFractionProperty = DependencyProperty.Register(
         nameof(LeftFraction),
         typeof(double),
@@ -43,6 +45,7 @@ public class ZoomHost : ContentControl
         get => (double)this.GetValue(RightFractionProperty);
         private set => this.SetValue(RightFractionProperty, value);
     }
+
     public static readonly DependencyProperty RightFractionProperty = DependencyProperty.Register(
         nameof(RightFraction),
         typeof(double),
@@ -54,6 +57,7 @@ public class ZoomHost : ContentControl
         get => (double)this.GetValue(BottomFractionProperty);
         private set => this.SetValue(BottomFractionProperty, value);
     }
+
     public static readonly DependencyProperty BottomFractionProperty = DependencyProperty.Register(
         nameof(BottomFraction),
         typeof(double),
@@ -65,6 +69,7 @@ public class ZoomHost : ContentControl
         get => (double)this.GetValue(TopFractionProperty);
         private set => this.SetValue(TopFractionProperty, value);
     }
+
     public static readonly DependencyProperty TopFractionProperty = DependencyProperty.Register(
         nameof(TopFraction),
         typeof(double),
@@ -76,6 +81,7 @@ public class ZoomHost : ContentControl
         get => (bool)this.GetValue(IsZoomedProperty);
         set => this.SetValue(IsZoomedProperty, value);
     }
+
     public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
         nameof(IsZoomed),
         typeof(bool),
@@ -87,6 +93,7 @@ public class ZoomHost : ContentControl
         get => (Func<(double minFrac, double maxFrac)>)this.GetValue(GetDataHeightPixelsInBoundsProperty);
         set => this.SetValue(GetDataHeightPixelsInBoundsProperty, value);
     }
+
     public static readonly DependencyProperty GetDataHeightPixelsInBoundsProperty = DependencyProperty.Register(
         nameof(GetDataHeightPixelsInBounds),
         typeof(Func<(double minFrac, double maxFrac)>),
@@ -98,6 +105,7 @@ public class ZoomHost : ContentControl
         get => (double)this.GetValue(YPaddingFracProperty);
         set => this.SetValue(YPaddingFracProperty, value);
     }
+
     public static readonly DependencyProperty YPaddingFracProperty = DependencyProperty.Register(
         "YPaddingFrac",
         typeof(double),
@@ -106,7 +114,7 @@ public class ZoomHost : ContentControl
 
     public ZoomHost()
     {
-        Loaded += this.OnLoaded;
+        this.Loaded += this.OnLoaded;
     }
 
     public void ResetZoom()
@@ -128,7 +136,7 @@ public class ZoomHost : ContentControl
 
         this.Margin = new Thickness(0, double.IsNaN(diffs.top) ? 0 : -diffs.top, 0, double.IsNaN(diffs.bottom) ? 0 : -diffs.bottom);
 
-        ZoomChanged?.Invoke(this, EventArgs.Empty);
+        this.ZoomChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public new void InvalidateArrange()
@@ -144,7 +152,7 @@ public class ZoomHost : ContentControl
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        Loaded -= this.OnLoaded;
+        this.Loaded -= this.OnLoaded;
         if (ChartHelper.FindMouseCoordinatorFromVisualTree(this, out var coordinator) && coordinator != null)
         {
             this.currentCoordinator = coordinator;
@@ -215,7 +223,7 @@ public class ZoomHost : ContentControl
         }
 
         this.IsZoomed = this.currentZoomLevel != 1 || this.PanOffsetFraction != 0;
-        ZoomChanged?.Invoke(this, EventArgs.Empty);
+        this.ZoomChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private (double top, double bottom) GetTopBottomDiff()
@@ -265,7 +273,7 @@ public class ZoomHost : ContentControl
             this.Margin = new Thickness(this.Margin.Left + prevOffset - panOffset, -diffs.top, this.Margin.Right - prevOffset + panOffset, -diffs.bottom);
 
             this.IsZoomed = this.currentZoomLevel != 1 || this.PanOffsetFraction != 0;
-            ZoomChanged?.Invoke(this, EventArgs.Empty);
+            this.ZoomChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -11,5 +11,4 @@ public class Theme
     public Color ThemeColour { get; set; } = Color.FromArgb(255, 47, 47, 74);
 
     public bool IsTransparentHeader { get; set; } = false;
-
 }

@@ -47,26 +47,14 @@ public class PieWedge : IChartEntity
     }
 
     /// <inheritdoc />
-    public object XValueToImplementation()
-    {
-        throw new NotImplementedException();
-    }
+    public object XValueToImplementation() => throw new NotImplementedException();
 
     /// <inheritdoc />
-    public object YValueToImplementation()
-    {
-        throw new NotImplementedException();
-    }
+    public object YValueToImplementation() => throw new NotImplementedException();
 
     /// <inheritdoc />
-    public object XValueToImplementation(double convert)
-    {
-        throw new NotImplementedException();
-    }
+    public object XValueToImplementation(double convert) => throw new NotImplementedException();
 
     /// <inheritdoc />
-    public object YValueToImplementation(double convert)
-    {
-        throw new NotImplementedException();
-    }
+    public object YValueToImplementation(double convert) => throw new NotImplementedException();
 }

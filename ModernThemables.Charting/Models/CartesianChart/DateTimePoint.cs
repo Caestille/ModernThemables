@@ -51,26 +51,14 @@ public class DateTimePoint : IChartEntity
     }
 
     /// <inheritdoc />
-    public object XValueToImplementation()
-    {
-        return new DateTime(TimeSpan.FromDays(this.XValue).Ticks);
-    }
+    public object XValueToImplementation() => new DateTime(TimeSpan.FromDays(this.XValue).Ticks);
 
     /// <inheritdoc />
-    public object YValueToImplementation()
-    {
-        return this.YValue;
-    }
+    public object YValueToImplementation() => this.YValue;
 
     /// <inheritdoc />
-    public object XValueToImplementation(double convert)
-    {
-        return new DateTime(TimeSpan.FromDays(convert).Ticks);
-    }
+    public object XValueToImplementation(double convert) => new DateTime(TimeSpan.FromDays(convert).Ticks);
 
     /// <inheritdoc />
-    public object YValueToImplementation(double convert)
-    {
-        return convert;
-    }
+    public object YValueToImplementation(double convert) => convert;
 }

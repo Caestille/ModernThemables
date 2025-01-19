@@ -18,8 +18,5 @@ public class IconExtension : BaseIconExtension
     [ConstructorArgument("kind")]
     public IconType Kind { get; set; }
 
-    public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        return this.GetPackIcon<Icon, IconType>(this.Kind);
-    }
+    public override object ProvideValue(IServiceProvider serviceProvider) => this.GetPackIcon<Icon, IconType>(this.Kind);
 }

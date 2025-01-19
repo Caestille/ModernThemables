@@ -1,10 +1,10 @@
 ﻿namespace ModernThemables.Charting.Controls;
 
-using ModernThemables.Charting.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows;
-using ModernThemables.Charting.Models;
 using ModernThemables.Charting.Interfaces;
+using ModernThemables.Charting.Models;
+using ModernThemables.Charting.ViewModels;
 
 public partial class BarChart // .DependencyProperties
 {
@@ -15,6 +15,7 @@ public partial class BarChart // .DependencyProperties
         get => (ObservableCollection<ISeries>)this.GetValue(SeriesProperty);
         set => this.SetValue(SeriesProperty, value);
     }
+
     public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
         "Series",
         typeof(ObservableCollection<ISeries>),
@@ -26,6 +27,7 @@ public partial class BarChart // .DependencyProperties
         get => (Func<object, string>)this.GetValue(YAxisFormatterProperty);
         set => this.SetValue(YAxisFormatterProperty, value);
     }
+
     public static readonly DependencyProperty YAxisFormatterProperty = DependencyProperty.Register(
         "YAxisFormatter",
         typeof(Func<object, string>),
@@ -37,6 +39,7 @@ public partial class BarChart // .DependencyProperties
         get => (Func<object, bool>)this.GetValue(YAxisLabelIdentifierProperty);
         set => this.SetValue(YAxisLabelIdentifierProperty, value);
     }
+
     public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
         "YAxisLabelIdentifier",
         typeof(Func<object, bool>),
@@ -48,6 +51,7 @@ public partial class BarChart // .DependencyProperties
         get => (bool)this.GetValue(ShowXSeparatorLinesProperty);
         set => this.SetValue(ShowXSeparatorLinesProperty, value);
     }
+
     public static readonly DependencyProperty ShowXSeparatorLinesProperty = DependencyProperty.Register(
         "ShowXSeparatorLines",
         typeof(bool),
@@ -59,6 +63,7 @@ public partial class BarChart // .DependencyProperties
         get => (bool)this.GetValue(ShowYSeparatorLinesProperty);
         set => this.SetValue(ShowYSeparatorLinesProperty, value);
     }
+
     public static readonly DependencyProperty ShowYSeparatorLinesProperty = DependencyProperty.Register(
         "ShowYSeparatorLines",
         typeof(bool),
@@ -70,6 +75,7 @@ public partial class BarChart // .DependencyProperties
         get => (DataTemplate)this.GetValue(TooltipTemplateProperty);
         set => this.SetValue(TooltipTemplateProperty, value);
     }
+
     public static readonly DependencyProperty TooltipTemplateProperty = DependencyProperty.Register(
         "TooltipTemplate",
         typeof(DataTemplate),
@@ -81,6 +87,7 @@ public partial class BarChart // .DependencyProperties
         get => (DataTemplate)this.GetValue(LegendTemplateProperty);
         set => this.SetValue(LegendTemplateProperty, value);
     }
+
     public static readonly DependencyProperty LegendTemplateProperty = DependencyProperty.Register(
         "LegendTemplate",
         typeof(DataTemplate),
@@ -92,6 +99,7 @@ public partial class BarChart // .DependencyProperties
         get => (LegendLocation)this.GetValue(LegendLocationProperty);
         set => this.SetValue(LegendLocationProperty, value);
     }
+
     public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
         "LegendLocation",
         typeof(LegendLocation),
@@ -103,6 +111,7 @@ public partial class BarChart // .DependencyProperties
         get => (TooltipLocation)this.GetValue(TooltipLocationProperty);
         set => this.SetValue(TooltipLocationProperty, value);
     }
+
     public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
         "TooltipLocation",
         typeof(TooltipLocation),
@@ -114,6 +123,7 @@ public partial class BarChart // .DependencyProperties
         get => (double)this.GetValue(TooltipOpacityProperty);
         set => this.SetValue(TooltipOpacityProperty, value);
     }
+
     public static readonly DependencyProperty TooltipOpacityProperty = DependencyProperty.Register(
         "TooltipOpacity",
         typeof(double),
@@ -125,6 +135,7 @@ public partial class BarChart // .DependencyProperties
         get => (double)this.GetValue(BarCornerRadiusFractionProperty);
         set => this.SetValue(BarCornerRadiusFractionProperty, value);
     }
+
     public static readonly DependencyProperty BarCornerRadiusFractionProperty = DependencyProperty.Register(
         "BarCornerRadiusFraction",
         typeof(double),
@@ -136,6 +147,7 @@ public partial class BarChart // .DependencyProperties
         get => (double)this.GetValue(BarGroupSeparationPixelsProperty);
         set => this.SetValue(BarGroupSeparationPixelsProperty, value);
     }
+
     public static readonly DependencyProperty BarGroupSeparationPixelsProperty = DependencyProperty.Register(
         "BarGroupSeparationPixels",
         typeof(double),
@@ -147,6 +159,7 @@ public partial class BarChart // .DependencyProperties
         get => (double)this.GetValue(BarSeparationPixelsProperty);
         set => this.SetValue(BarSeparationPixelsProperty, value);
     }
+
     public static readonly DependencyProperty BarSeparationPixelsProperty = DependencyProperty.Register(
         "BarSeparationPixels",
         typeof(double),
@@ -158,6 +171,7 @@ public partial class BarChart // .DependencyProperties
         get => (double)this.GetValue(XAxisLabelRotationProperty);
         set => this.SetValue(XAxisLabelRotationProperty, value);
     }
+
     public static readonly DependencyProperty XAxisLabelRotationProperty = DependencyProperty.Register(
         "XAxisLabelRotation",
         typeof(double),
@@ -173,6 +187,7 @@ public partial class BarChart // .DependencyProperties
         get => (ObservableCollection<InternalChartEntity>)this.GetValue(InternalSeriesProperty);
         set => this.SetValue(InternalSeriesProperty, value);
     }
+
     public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
         "InternalSeries",
         typeof(ObservableCollection<InternalChartEntity>),
@@ -184,6 +199,7 @@ public partial class BarChart // .DependencyProperties
         get => (ObservableCollection<AxisLabel>)this.GetValue(XAxisLabelsProperty);
         set => this.SetValue(XAxisLabelsProperty, value);
     }
+
     public static readonly DependencyProperty XAxisLabelsProperty = DependencyProperty.Register(
         "XAxisLabels",
         typeof(ObservableCollection<AxisLabel>),
@@ -195,6 +211,7 @@ public partial class BarChart // .DependencyProperties
         get => (ObservableCollection<AxisLabel>)this.GetValue(YAxisLabelsProperty);
         set => this.SetValue(YAxisLabelsProperty, value);
     }
+
     public static readonly DependencyProperty YAxisLabelsProperty = DependencyProperty.Register(
         "YAxisLabels",
         typeof(ObservableCollection<AxisLabel>),
@@ -206,6 +223,7 @@ public partial class BarChart // .DependencyProperties
         get => (double)this.GetValue(BarWidthProperty);
         set => this.SetValue(BarWidthProperty, value);
     }
+
     public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
         "BarWidth",
         typeof(double),
@@ -217,6 +235,7 @@ public partial class BarChart // .DependencyProperties
         get => (double)this.GetValue(GroupWidthProperty);
         set => this.SetValue(GroupWidthProperty, value);
     }
+
     public static readonly DependencyProperty GroupWidthProperty = DependencyProperty.Register(
         "GroupWidth",
         typeof(double),
@@ -228,6 +247,7 @@ public partial class BarChart // .DependencyProperties
         get => (CornerRadius)this.GetValue(BarCornerRadiusProperty);
         set => this.SetValue(BarCornerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty BarCornerRadiusProperty = DependencyProperty.Register(
         "BarCornerRadius",
         typeof(CornerRadius),
@@ -239,6 +259,7 @@ public partial class BarChart // .DependencyProperties
         get => (Func<Point, IEnumerable<TooltipViewModel>>)this.GetValue(TooltipGetterFuncProperty);
         set => this.SetValue(TooltipGetterFuncProperty, value);
     }
+
     public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
         "TooltipGetterFunc",
         typeof(Func<Point, IEnumerable<TooltipViewModel>>),

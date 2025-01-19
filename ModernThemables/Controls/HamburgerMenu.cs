@@ -1,7 +1,5 @@
 ﻿namespace ModernThemables.Controls;
 
-using CommunityToolkit.Mvvm.Input;
-using ModernThemables.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,8 +8,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CoreUtilities.Helpers.WPF;
+using CommunityToolkit.Mvvm.Input;
 using CoreUtilities.Helpers.Extensions;
+using CoreUtilities.Helpers.WPF;
+using ModernThemables.ViewModels;
 
 public class HamburgerMenu : Control
 {
@@ -33,6 +33,7 @@ public class HamburgerMenu : Control
         get => (DataTemplate)this.GetValue(ItemTemplateProperty);
         set => this.SetValue(ItemTemplateProperty, value);
     }
+
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
         typeof(DataTemplate),
@@ -44,6 +45,7 @@ public class HamburgerMenu : Control
         get => (DataTemplate)this.GetValue(SearchItemTemplateProperty);
         set => this.SetValue(SearchItemTemplateProperty, value);
     }
+
     public static readonly DependencyProperty SearchItemTemplateProperty = DependencyProperty.Register(
         nameof(SearchItemTemplate),
         typeof(DataTemplate),
@@ -55,6 +57,7 @@ public class HamburgerMenu : Control
         get => (Brush)this.GetValue(AccentBrushProperty);
         set => this.SetValue(AccentBrushProperty, value);
     }
+
     public static readonly DependencyProperty AccentBrushProperty = DependencyProperty.Register(
         nameof(AccentBrush),
         typeof(Brush),
@@ -66,6 +69,7 @@ public class HamburgerMenu : Control
         get => (IEnumerable<IHamburgerMenuItem>)this.GetValue(ItemsProperty);
         set => this.SetValue(ItemsProperty, value);
     }
+
     public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
         nameof(Items),
         typeof(IEnumerable<IHamburgerMenuItem>),
@@ -77,6 +81,7 @@ public class HamburgerMenu : Control
         get => (RangeObservableCollection<IHamburgerMenuItem>)this.GetValue(FilteredItemsProperty);
         set => this.SetValue(FilteredItemsProperty, value);
     }
+
     public static readonly DependencyProperty FilteredItemsProperty = DependencyProperty.Register(
         nameof(FilteredItems),
         typeof(RangeObservableCollection<IHamburgerMenuItem>),
@@ -88,6 +93,7 @@ public class HamburgerMenu : Control
         get => (bool)this.GetValue(IsMenuOpenProperty);
         set => this.SetValue(IsMenuOpenProperty, value);
     }
+
     public static readonly DependencyProperty IsMenuOpenProperty = DependencyProperty.Register(
         nameof(IsMenuOpen),
         typeof(bool),
@@ -99,6 +105,7 @@ public class HamburgerMenu : Control
         get => (bool)this.GetValue(IsMenuPinnedProperty);
         set => this.SetValue(IsMenuPinnedProperty, value);
     }
+
     public static readonly DependencyProperty IsMenuPinnedProperty = DependencyProperty.Register(
         nameof(IsMenuPinned),
         typeof(bool),
@@ -110,6 +117,7 @@ public class HamburgerMenu : Control
         get => (string)this.GetValue(SearchTextProperty);
         set => this.SetValue(SearchTextProperty, value);
     }
+
     public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
         nameof(SearchText),
         typeof(string),
@@ -228,7 +236,9 @@ public class HamburgerMenu : Control
         if (this.pinButton != null)
         {
             this.pinButton.Click += this.PinButton_Click;
-        };
+        }
+
+        ;
 
         if (this.searchBox != null)
         {
@@ -246,15 +256,9 @@ public class HamburgerMenu : Control
         }
     }
 
-    private void OpenButton_Click(object sender, RoutedEventArgs e)
-    {
-        this.IsMenuOpen = !this.IsMenuOpen;
-    }
+    private void OpenButton_Click(object sender, RoutedEventArgs e) => this.IsMenuOpen = !this.IsMenuOpen;
 
-    private void PinButton_Click(object sender, RoutedEventArgs e)
-    {
-        this.IsMenuPinned = !this.IsMenuPinned;
-    }
+    private void PinButton_Click(object sender, RoutedEventArgs e) => this.IsMenuPinned = !this.IsMenuPinned;
 
     private void SearchBox_SearchTextChanged(object? sender, TextChangedEventArgs e)
     {

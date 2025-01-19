@@ -1,12 +1,12 @@
 ﻿namespace ModernThemables.Charting.Controls.ChartComponents;
 
-using ModernThemables.Charting.Models;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using ModernThemables.Charting.Services;
 using System.Windows.Input;
 using CoreUtilities.Converters;
+using ModernThemables.Charting.Models;
+using ModernThemables.Charting.Services;
 
 /// <summary>
 /// Interaction logic for AxisControl.xaml.
@@ -18,6 +18,7 @@ public partial class AxisControl : UserControl
         get => (Orientation)this.GetValue(OrientationProperty);
         set => this.SetValue(OrientationProperty, value);
     }
+
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         "Orientation",
         typeof(Orientation),
@@ -29,6 +30,7 @@ public partial class AxisControl : UserControl
         get => (double)this.GetValue(LabelRotationProperty);
         set => this.SetValue(LabelRotationProperty, value);
     }
+
     public static readonly DependencyProperty LabelRotationProperty = DependencyProperty.Register(
         "LabelRotation",
         typeof(double),
@@ -40,6 +42,7 @@ public partial class AxisControl : UserControl
         get => (bool)this.GetValue(ShowDividersProperty);
         set => this.SetValue(ShowDividersProperty, value);
     }
+
     public static readonly DependencyProperty ShowDividersProperty = DependencyProperty.Register(
         "ShowDividers",
         typeof(bool),
@@ -51,6 +54,7 @@ public partial class AxisControl : UserControl
         get => (bool)this.GetValue(ShowIndicatorsProperty);
         set => this.SetValue(ShowIndicatorsProperty, value);
     }
+
     public static readonly DependencyProperty ShowIndicatorsProperty = DependencyProperty.Register(
         "ShowIndicators",
         typeof(bool),
@@ -67,6 +71,7 @@ public partial class AxisControl : UserControl
         get => (double)this.GetValue(DividerWidthtProperty);
         set => this.SetValue(DividerWidthtProperty, value);
     }
+
     public static readonly DependencyProperty DividerWidthtProperty = DependencyProperty.Register(
         "DividerWidth",
         typeof(double),
@@ -78,6 +83,7 @@ public partial class AxisControl : UserControl
         get => (double)this.GetValue(DividerHeightProperty);
         set => this.SetValue(DividerHeightProperty, value);
     }
+
     public static readonly DependencyProperty DividerHeightProperty = DependencyProperty.Register(
         "DividerHeight",
         typeof(double),
@@ -89,6 +95,7 @@ public partial class AxisControl : UserControl
         get => (double)this.GetValue(DividerOffsetProperty);
         set => this.SetValue(DividerOffsetProperty, value);
     }
+
     public static readonly DependencyProperty DividerOffsetProperty = DependencyProperty.Register(
         "DividerOffset",
         typeof(double),
@@ -105,6 +112,7 @@ public partial class AxisControl : UserControl
         get => (Thickness)this.GetValue(DividerBorderThicknessProperty);
         set => this.SetValue(DividerBorderThicknessProperty, value);
     }
+
     public static readonly DependencyProperty DividerBorderThicknessProperty = DependencyProperty.Register(
         "DividerBorderThickness",
         typeof(Thickness),
@@ -116,6 +124,7 @@ public partial class AxisControl : UserControl
         get => (string)this.GetValue(MarginStringProperty);
         set => this.SetValue(MarginStringProperty, value);
     }
+
     public static readonly DependencyProperty MarginStringProperty = DependencyProperty.Register(
         "MarginString",
         typeof(string),
@@ -127,6 +136,7 @@ public partial class AxisControl : UserControl
         get => (HorizontalAlignment)this.GetValue(DividerAlignmentProperty);
         set => this.SetValue(DividerAlignmentProperty, value);
     }
+
     public static readonly DependencyProperty DividerAlignmentProperty = DependencyProperty.Register(
         "DividerAlignment",
         typeof(HorizontalAlignment),
@@ -138,6 +148,7 @@ public partial class AxisControl : UserControl
         get => (VerticalAlignment)this.GetValue(AlignmentProperty);
         set => this.SetValue(AlignmentProperty, value);
     }
+
     public static readonly DependencyProperty AlignmentProperty = DependencyProperty.Register(
         "Alignment",
         typeof(VerticalAlignment),
@@ -149,6 +160,7 @@ public partial class AxisControl : UserControl
         get => (ObservableCollection<AxisLabel>)this.GetValue(LabelsProperty);
         set => this.SetValue(LabelsProperty, value);
     }
+
     public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
         "Labels",
         typeof(ObservableCollection<AxisLabel>),
@@ -160,6 +172,7 @@ public partial class AxisControl : UserControl
         get => (MouseCoordinator)this.GetValue(MouseCoordinatorProperty);
         set => this.SetValue(MouseCoordinatorProperty, value);
     }
+
     public static readonly DependencyProperty MouseCoordinatorProperty = DependencyProperty.Register(
         "MouseCoordinator",
         typeof(MouseCoordinator),
@@ -170,7 +183,7 @@ public partial class AxisControl : UserControl
     {
         this.InitializeComponent();
         this.MainItemsControl.SizeChanged += this.MainItemsControl_SizeChanged;
-        Loaded += this.AxisControl_Loaded;
+        this.Loaded += this.AxisControl_Loaded;
     }
 
     private void AxisControl_Loaded(object sender, RoutedEventArgs e)
@@ -180,13 +193,10 @@ public partial class AxisControl : UserControl
             this.Coordinator = coordinator!;
         }
 
-        Loaded -= this.AxisControl_Loaded;
+        this.Loaded -= this.AxisControl_Loaded;
     }
 
-    private void MainItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        OnSetLabelRotation(this, new DependencyPropertyChangedEventArgs());
-    }
+    private void MainItemsControl_SizeChanged(object sender, SizeChangedEventArgs e) => OnSetLabelRotation(this, new DependencyPropertyChangedEventArgs());
 
     private static void OnSetAxisOrientation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {

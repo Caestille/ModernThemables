@@ -1,9 +1,9 @@
 ﻿namespace ModernThemables.Charting.Models;
 
-using ModernThemables.Charting.Interfaces;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using ModernThemables.Charting.Interfaces;
 
 /// <summary>
 /// Generic series.
@@ -42,14 +42,12 @@ public class Series : ISeries
             {
                 this.values.CollectionChanged -= this.Values_CollectionChanged;
             }
+
             this.values = value;
             this.values.CollectionChanged += this.Values_CollectionChanged;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Values)));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Values)));
         }
     }
 
-    private void Values_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        CollectionChanged?.Invoke(this, e);
-    }
+    private void Values_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) => this.CollectionChanged?.Invoke(this, e);
 }

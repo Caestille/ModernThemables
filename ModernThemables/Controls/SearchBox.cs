@@ -16,6 +16,7 @@ public class SearchBox : TextBox
         get => (CornerRadius)this.GetValue(CornerRadiusProperty);
         set => this.SetValue(CornerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius),
         typeof(CornerRadius),
@@ -27,6 +28,7 @@ public class SearchBox : TextBox
         get => (Brush)this.GetValue(WatermarkForegroundProperty);
         set => this.SetValue(WatermarkForegroundProperty, value);
     }
+
     public static readonly DependencyProperty WatermarkForegroundProperty = DependencyProperty.Register(
         nameof(WatermarkForeground),
         typeof(Brush),
@@ -56,8 +58,5 @@ public class SearchBox : TextBox
         }
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        this.Text = string.Empty;
-    }
+    private void Button_Click(object sender, RoutedEventArgs e) => this.Text = string.Empty;
 }

@@ -11,6 +11,7 @@ public class ComboBox2 : ComboBox
         get => (Brush)this.GetValue(MouseOverBrushProperty);
         set => this.SetValue(MouseOverBrushProperty, value);
     }
+
     public static readonly DependencyProperty MouseOverBrushProperty = DependencyProperty.Register(
         nameof(MouseOverBrush),
         typeof(Brush),
@@ -21,6 +22,7 @@ public class ComboBox2 : ComboBox
         get => (Brush)this.GetValue(MouseDownBrushProperty);
         set => this.SetValue(MouseDownBrushProperty, value);
     }
+
     public static readonly DependencyProperty MouseDownBrushProperty = DependencyProperty.Register(
         nameof(MouseDownBrush),
         typeof(Brush),
@@ -31,6 +33,7 @@ public class ComboBox2 : ComboBox
         get => (Brush)this.GetValue(DisabledBackgroundProperty);
         set => this.SetValue(DisabledBackgroundProperty, value);
     }
+
     public static readonly DependencyProperty DisabledBackgroundProperty = DependencyProperty.Register(
         nameof(DisabledBackground),
         typeof(Brush),
@@ -41,6 +44,7 @@ public class ComboBox2 : ComboBox
         get => (Brush)this.GetValue(DisabledForegroundProperty);
         set => this.SetValue(DisabledForegroundProperty, value);
     }
+
     public static readonly DependencyProperty DisabledForegroundProperty = DependencyProperty.Register(
         nameof(DisabledForeground),
         typeof(Brush),
@@ -51,6 +55,7 @@ public class ComboBox2 : ComboBox
         get => (CornerRadius)this.GetValue(CornerRadiusProperty);
         set => this.SetValue(CornerRadiusProperty, value);
     }
+
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius),
         typeof(CornerRadius),
@@ -62,6 +67,7 @@ public class ComboBox2 : ComboBox
         get => (Brush)this.GetValue(ContentBackgroundProperty);
         set => this.SetValue(ContentBackgroundProperty, value);
     }
+
     public static readonly DependencyProperty ContentBackgroundProperty = DependencyProperty.Register(
         nameof(ContentBackground),
         typeof(Brush),

@@ -1,10 +1,10 @@
 ﻿namespace ModernThemables.Charting.Controls;
 
+using System.Collections.ObjectModel;
+using System.Windows;
 using ModernThemables.Charting.Interfaces;
 using ModernThemables.Charting.Models;
 using ModernThemables.Charting.ViewModels.CartesianChart;
-using System.Collections.ObjectModel;
-using System.Windows;
 
 public partial class CartesianChart // .DependencyProperties
 {
@@ -15,6 +15,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (ObservableCollection<ISeries>)this.GetValue(SeriesProperty);
         set => this.SetValue(SeriesProperty, value);
     }
+
     public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
         "Series",
         typeof(ObservableCollection<ISeries>),
@@ -26,6 +27,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (Func<object, string>)this.GetValue(XAxisFormatterProperty);
         set => this.SetValue(XAxisFormatterProperty, value);
     }
+
     public static readonly DependencyProperty XAxisFormatterProperty = DependencyProperty.Register(
         "XAxisFormatter",
         typeof(Func<object, string>),
@@ -37,6 +39,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (Func<object, string>)this.GetValue(XAxisCursorLabelFormatterProperty);
         set => this.SetValue(XAxisCursorLabelFormatterProperty, value);
     }
+
     public static readonly DependencyProperty XAxisCursorLabelFormatterProperty = DependencyProperty.Register(
         "XAxisCursorLabelFormatter",
         typeof(Func<object, string>),
@@ -48,6 +51,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (Func<object, string>)this.GetValue(YAxisFormatterProperty);
         set => this.SetValue(YAxisFormatterProperty, value);
     }
+
     public static readonly DependencyProperty YAxisFormatterProperty = DependencyProperty.Register(
         "YAxisFormatter",
         typeof(Func<object, string>),
@@ -59,6 +63,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (Func<object, string>)this.GetValue(YAxisCursorLabelFormatterProperty);
         set => this.SetValue(YAxisCursorLabelFormatterProperty, value);
     }
+
     public static readonly DependencyProperty YAxisCursorLabelFormatterProperty = DependencyProperty.Register(
         "YAxisCursorLabelFormatter",
         typeof(Func<object, string>),
@@ -70,6 +75,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (Func<object, bool>)this.GetValue(YAxisLabelIdentifierProperty);
         set => this.SetValue(YAxisLabelIdentifierProperty, value);
     }
+
     public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
         "YAxisLabelIdentifier",
         typeof(Func<object, bool>),
@@ -81,6 +87,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (Func<object, bool>)this.GetValue(XAxisLabelIdentifierProperty);
         set => this.SetValue(XAxisLabelIdentifierProperty, value);
     }
+
     public static readonly DependencyProperty XAxisLabelIdentifierProperty = DependencyProperty.Register(
         "XAxisLabelIdentifier",
         typeof(Func<object, bool>),
@@ -92,6 +99,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (bool)this.GetValue(ShowXSeparatorLinesProperty);
         set => this.SetValue(ShowXSeparatorLinesProperty, value);
     }
+
     public static readonly DependencyProperty ShowXSeparatorLinesProperty = DependencyProperty.Register(
         "ShowXSeparatorLines",
         typeof(bool),
@@ -103,6 +111,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (bool)this.GetValue(ShowYSeparatorLinesProperty);
         set => this.SetValue(ShowYSeparatorLinesProperty, value);
     }
+
     public static readonly DependencyProperty ShowYSeparatorLinesProperty = DependencyProperty.Register(
         "ShowYSeparatorLines",
         typeof(bool),
@@ -114,6 +123,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (bool)this.GetValue(IsZoomedProperty);
         private set => this.SetValue(IsZoomedProperty, value);
     }
+
     public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
         "IsZoomed",
         typeof(bool),
@@ -125,6 +135,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (DataTemplate)this.GetValue(TooltipTemplateProperty);
         set => this.SetValue(TooltipTemplateProperty, value);
     }
+
     public static readonly DependencyProperty TooltipTemplateProperty = DependencyProperty.Register(
         "TooltipTemplate",
         typeof(DataTemplate),
@@ -136,6 +147,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (DataTemplate)this.GetValue(LegendTemplateProperty);
         set => this.SetValue(LegendTemplateProperty, value);
     }
+
     public static readonly DependencyProperty LegendTemplateProperty = DependencyProperty.Register(
         "LegendTemplate",
         typeof(DataTemplate),
@@ -147,6 +159,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (LegendLocation)this.GetValue(LegendLocationProperty);
         set => this.SetValue(LegendLocationProperty, value);
     }
+
     public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
         "LegendLocation",
         typeof(LegendLocation),
@@ -158,6 +171,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (TooltipFindingStrategy)this.GetValue(TooltipFindingStrategyProperty);
         set => this.SetValue(TooltipFindingStrategyProperty, value);
     }
+
     public static readonly DependencyProperty TooltipFindingStrategyProperty = DependencyProperty.Register(
         "TooltipFindingStrategy",
         typeof(TooltipFindingStrategy),
@@ -169,6 +183,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (TooltipLocation)this.GetValue(TooltipLocationProperty);
         set => this.SetValue(TooltipLocationProperty, value);
     }
+
     public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
         "TooltipLocation",
         typeof(TooltipLocation),
@@ -180,6 +195,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (double)this.GetValue(TooltipLocationThresholdProperty);
         set => this.SetValue(TooltipLocationThresholdProperty, value);
     }
+
     public static readonly DependencyProperty TooltipLocationThresholdProperty = DependencyProperty.Register(
         "TooltipLocationThreshold",
         typeof(double),
@@ -191,6 +207,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (double)this.GetValue(TooltipOpacityProperty);
         set => this.SetValue(TooltipOpacityProperty, value);
     }
+
     public static readonly DependencyProperty TooltipOpacityProperty = DependencyProperty.Register(
         "TooltipOpacity",
         typeof(double),
@@ -202,6 +219,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (double)this.GetValue(YPaddingFracProperty);
         set => this.SetValue(YPaddingFracProperty, value);
     }
+
     public static readonly DependencyProperty YPaddingFracProperty = DependencyProperty.Register(
         "YPaddingFrac",
         typeof(double),
@@ -213,6 +231,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (Func<IEnumerable<IChartEntity>, IChartEntity, object>)this.GetValue(TooltipContentGetterProperty);
         set => this.SetValue(TooltipContentGetterProperty, value);
     }
+
     public static readonly DependencyProperty TooltipContentGetterProperty = DependencyProperty.Register(
         "TooltipContentGetter",
         typeof(Func<IEnumerable<IChartEntity>, IChartEntity, object>),
@@ -228,6 +247,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (ObservableCollection<InternalPathSeriesViewModel>)this.GetValue(InternalSeriesProperty);
         set => this.SetValue(InternalSeriesProperty, value);
     }
+
     public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
         "InternalSeries",
         typeof(ObservableCollection<InternalPathSeriesViewModel>),
@@ -239,6 +259,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (ObservableCollection<AxisLabel>)this.GetValue(XAxisLabelsProperty);
         set => this.SetValue(XAxisLabelsProperty, value);
     }
+
     public static readonly DependencyProperty XAxisLabelsProperty = DependencyProperty.Register(
         "XAxisLabels",
         typeof(ObservableCollection<AxisLabel>),
@@ -250,6 +271,7 @@ public partial class CartesianChart // .DependencyProperties
         get => (ObservableCollection<AxisLabel>)this.GetValue(YAxisLabelsProperty);
         set => this.SetValue(YAxisLabelsProperty, value);
     }
+
     public static readonly DependencyProperty YAxisLabelsProperty = DependencyProperty.Register(
         "YAxisLabels",
         typeof(ObservableCollection<AxisLabel>),

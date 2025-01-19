@@ -1,10 +1,10 @@
 ﻿namespace ModernThemables.Converters;
 
-using CoreUtilities.Helpers.Extensions;
 using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
+using CoreUtilities.Helpers.Extensions;
 
 public class BrushColourInverterConverter : IValueConverter
 {
@@ -19,8 +19,5 @@ public class BrushColourInverterConverter : IValueConverter
         return value;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return Binding.DoNothing;
-    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
 }
