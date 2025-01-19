@@ -21,7 +21,7 @@ public class DoubleToBorderThicknessConverter : IValueConverter
         if (parameter != null)
         {
             var weightings = (string)parameter;
-            var weightingsArray = weightings.Split('-').Select(x => double.Parse(x)).ToList();
+            var weightingsArray = weightings.Split('-').Select(double.Parse).ToList();
             var leftWeighting = weightingsArray[0];
             var rightWeighting = weightingsArray[2];
             var topWeighting = weightingsArray[1];

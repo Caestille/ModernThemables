@@ -29,7 +29,7 @@ public class MultiBindingDoubleToBorderThicknessConverter : IMultiValueConverter
 
             if (!string.IsNullOrEmpty(weightingsString))
             {
-                var weightingsArray = weightingsString.Split('-').Select(x => double.Parse(x)).ToList();
+                var weightingsArray = weightingsString.Split('-').Select(double.Parse).ToList();
                 var leftWeighting = weightingsArray[0];
                 var rightWeighting = weightingsArray[2];
                 var topWeighting = weightingsArray[1];

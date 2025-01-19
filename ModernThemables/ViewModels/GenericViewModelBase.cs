@@ -22,7 +22,7 @@ public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenu
 {
     private readonly IEnumerable<Action<Color>> notifyColourUpdates = new List<Action<Color>>();
     public ICommand SelectCommand => new RelayCommand(() => this.Select(this));
-    public ICommand DeleteCommand => new RelayCommand(() => this.Delete());
+    public ICommand DeleteCommand => new RelayCommand(this.Delete);
 
     public static string? WorkingDirectory { protected get; set; }
 
