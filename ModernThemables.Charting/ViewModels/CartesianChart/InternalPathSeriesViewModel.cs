@@ -22,9 +22,39 @@ internal class InternalPathSeriesViewModel : ObservableObject
     private double rightMargin;
 
     /// <summary>
+    /// Initialises a new <see cref="InternalPathSeriesViewModel"/>.
+    /// </summary>
+    /// <param name="name">The series name.</param>
+    /// <param name="guid">The unique identifier.</param>
+    /// <param name="data">The data this series represents.</param>
+    /// <param name="stroke">The <see cref="IChartBrush"/> path stroke.</param>
+    /// <param name="fill">The <see cref="IChartBrush"/> path fill.</param>
+    public InternalPathSeriesViewModel(
+        string? name,
+        Guid guid,
+        IEnumerable<InternalChartEntity> data,
+        IChartBrush? stroke,
+        IChartBrush? fill)
+    {
+        this.Name = name;
+        this.Identifier = guid;
+        this.Data = data;
+        this.Stroke = stroke;
+        this.Fill = fill;
+
+        if (!data.Any())
+        {
+            return;
+        }
+
+        this.pathStrokeData = this.ConvertDataToPath(data);
+        this.pathFillData = this.ConvertPathForFill(this.pathStrokeData);
+    }
+
+    /// <summary>
     /// The data making up the rendered points in pixels scale.
     /// </summary>
-    public IEnumerable<InternalChartEntity> Data;
+    public IEnumerable<InternalChartEntity> Data { get; private set; }
 
     /// <summary>
     /// The string used the render the series line using a <see cref="Path"/>.
@@ -56,36 +86,6 @@ internal class InternalPathSeriesViewModel : ObservableObject
     /// The series name for the legend.
     /// </summary>
     public string? Name { get; }
-
-    /// <summary>
-    /// Initialises a new <see cref="InternalPathSeriesViewModel"/>.
-    /// </summary>
-    /// <param name="name">The series name.</param>
-    /// <param name="guid">The unique identifier.</param>
-    /// <param name="data">The data this series represents.</param>
-    /// <param name="stroke">The <see cref="IChartBrush"/> path stroke.</param>
-    /// <param name="fill">The <see cref="IChartBrush"/> path fill.</param>
-    public InternalPathSeriesViewModel(
-        string? name,
-        Guid guid,
-        IEnumerable<InternalChartEntity> data,
-        IChartBrush? stroke,
-        IChartBrush? fill)
-    {
-        this.Name = name;
-        this.Identifier = guid;
-        this.Data = data;
-        this.Stroke = stroke;
-        this.Fill = fill;
-
-        if (!data.Any())
-        {
-            return;
-        }
-
-        this.pathStrokeData = this.ConvertDataToPath(data);
-        this.pathFillData = this.ConvertPathForFill(this.pathStrokeData);
-    }
 
     public void SetMargins(double topMargin, double bottomMargin, double leftMargin, double rightMargin)
     {
@@ -139,8 +139,8 @@ internal class InternalPathSeriesViewModel : ObservableObject
                 x => Math.Abs(x.Y - translatedY) == hoveredChartPoints.Min(x => Math.Abs(x.Y - translatedY)))
             : hoveredChartPoints.First();
 
-        var x = hoveredChartPoint.X * xZoom - xLeftOffset;
-        var y = hoveredChartPoint.Y * yZoom - yTopOffset;
+        var x = (hoveredChartPoint.X * xZoom) - xLeftOffset;
+        var y = (hoveredChartPoint.Y * yZoom) - yTopOffset;
         return new InternalChartEntity(x, y, hoveredChartPoint.BackingPoint);
     }
 
@@ -191,10 +191,10 @@ internal class InternalPathSeriesViewModel : ObservableObject
         var dataMax = this.Data.Max(x => x.BackingPoint.YValue);
         var dataRange = dataMax - dataMin;
         var zero = Math.Min(Math.Max(0d, dataMin), dataMax);
-        var ratio = (double)(1 - (zero - dataMin) / dataRange);
+        var ratio = (double)(1 - ((zero - dataMin) / dataRange));
         var min = this.Data.Min(x => x.Y);
         var max = this.Data.Max(x => x.Y);
-        var zeroPoint = min + ratio * (max - min);
+        var zeroPoint = min + (ratio * (max - min));
         return $"M{this.Data.First().X} {zeroPoint} {strokePath.Replace("M", "L")} L{this.Data.Last().X} {zeroPoint}";
     }
 }

@@ -58,9 +58,18 @@ public partial class PieChart : UserControl
         {
             var tooltipPoints = new List<TooltipViewModel>();
 
-            var centreX = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreX);
-            var centreY = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.CentreY);
-            var radius = PieCentreRadiusConverter.ConvertLocally(this.SeriesItemsControl.ActualWidth, this.SeriesItemsControl.ActualHeight, PieCentreRadiusConverter.PieConverterReturnType.Radius);
+            var centreX = PieCentreRadiusConverter.ConvertLocally(
+                this.SeriesItemsControl.ActualWidth,
+                this.SeriesItemsControl.ActualHeight,
+                PieCentreRadiusConverter.PieConverterReturnType.CentreX);
+            var centreY = PieCentreRadiusConverter.ConvertLocally(
+                this.SeriesItemsControl.ActualWidth,
+                this.SeriesItemsControl.ActualHeight,
+                PieCentreRadiusConverter.PieConverterReturnType.CentreY);
+            var radius = PieCentreRadiusConverter.ConvertLocally(
+                this.SeriesItemsControl.ActualWidth,
+                this.SeriesItemsControl.ActualHeight,
+                PieCentreRadiusConverter.PieConverterReturnType.Radius);
 
             mouseLoc = new Point(mouseLoc.X - (this.SeriesItemsControl.ActualWidth / 2) - (radius / 0.9), mouseLoc.Y);
 
@@ -92,7 +101,8 @@ public partial class PieChart : UserControl
                             wedge.IsMouseOver = true;
                         }
 
-                        var matchingSeries = this.Series.FirstOrDefault(x => x.Values.Any(y => y.Identifier == wedge.Identifier));
+                        var matchingSeries = this.Series.FirstOrDefault(
+                            x => x.Values.Any(y => y.Identifier == wedge.Identifier));
                         if (matchingSeries == null)
                         {
                             continue;
@@ -117,7 +127,8 @@ public partial class PieChart : UserControl
                             y = y + centreY - 20;
                         }
 
-                        var tooltip = new TooltipViewModel(x, y, wedge?.Fill?.CoreBrush, formattedValue, matchingWedge.Name, formattedPercent);
+                        var tooltip = new TooltipViewModel(
+                            x, y, wedge?.Fill?.CoreBrush, formattedValue, matchingWedge.Name, formattedPercent);
                         tooltipPoints.Add(tooltip);
                     }
                     else if (wedge.IsMouseOver)
@@ -172,7 +183,8 @@ public partial class PieChart : UserControl
     }
 
     private void QueueRenderChart(
-        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false) => this.renderQueue.Add(this.RenderChart);
+        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
+            => this.renderQueue.Add(this.RenderChart);
 
     private void RenderChart()
     {
@@ -298,7 +310,7 @@ public partial class PieChart : UserControl
     {
         this.Loaded -= this.PieChart_Loaded;
         Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
-        OnLegendLocationSet(this, default(DependencyPropertyChangedEventArgs));
+        OnLegendLocationSet(this, default);
         this.Coordinator.MouseLeave += this.MouseCaptureGrid_MouseLeave;
     }
 

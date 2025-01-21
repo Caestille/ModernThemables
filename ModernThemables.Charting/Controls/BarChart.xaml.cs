@@ -17,20 +17,14 @@ using ModernThemables.Charting.ViewModels;
 /// </summary>
 public partial class BarChart : UserControl
 {
-    private double PlotAreaHeight => this.TooltipControl.ActualHeight;
-    private double PlotAreaWidth => this.TooltipControl.ActualWidth;
-
     private readonly RefreshTrigger resizeTrigger;
+    private readonly BlockingCollection<Action> renderQueue;
+    private readonly SeriesWatcherService seriesWatcher;
 
     private bool isSingleXPoint;
 
-    private readonly BlockingCollection<Action> renderQueue;
     private bool renderInProgress;
     private bool runRenderThread = true;
-
-    private readonly SeriesWatcherService seriesWatcher;
-
-    private bool HasData => this.Series != null && this.Series.Any(x => x.Values.Any());
 
     public BarChart()
     {
@@ -84,7 +78,8 @@ public partial class BarChart : UserControl
                         : matchingSeries.Name;
                     var formattedDate = tooltipBar.BackingPoint.Name;
 
-                    tooltipPoints.Add(new TooltipViewModel(tooltipBar, tooltipBar?.Fill?.CoreBrush, formattedValue, formattedDate, category ?? string.Empty));
+                    tooltipPoints.Add(new TooltipViewModel(
+                        tooltipBar, tooltipBar?.Fill?.CoreBrush, formattedValue, formattedDate, category ?? string.Empty));
                 }
                 else
                 {
@@ -97,6 +92,12 @@ public partial class BarChart : UserControl
 
         this.resizeTrigger = new RefreshTrigger(() => { this.QueueRenderChart(null, null, true); }, 100);
     }
+
+    private double PlotAreaHeight => this.TooltipControl.ActualHeight;
+
+    private double PlotAreaWidth => this.TooltipControl.ActualWidth;
+
+    private bool HasData => this.Series != null && this.Series.Any(x => x.Values.Any());
 
     private static void TriggerReRender(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
@@ -138,81 +139,83 @@ public partial class BarChart : UserControl
     }
 
     private void QueueRenderChart(
-        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false) => this.renderQueue.Add(new Action(() => this.RenderChart(addedSeries, removedSeries, invalidateAll)));
+        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
+            => this.renderQueue.Add(new Action(() => this.RenderChart(addedSeries, removedSeries, invalidateAll)));
 
     private void RenderChart(
-        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false) => Application.Current.Dispatcher.Invoke(async () =>
-                                                                                                                    {
-                                                                                                                        this.renderInProgress = true;
-                                                                                                                        await this.SetYAxisLabels();
+        IEnumerable<ISeries>? addedSeries, IEnumerable<ISeries>? removedSeries, bool invalidateAll = false)
+    {
+        Application.Current.Dispatcher.Invoke(async () =>
+        {
+            this.renderInProgress = true;
+            await this.SetYAxisLabels();
 
-                                                                                                                        var barSep = this.BarSeparationPixels;
+            var barSep = this.BarSeparationPixels;
 
-                                                                                                                        var source = this.Series.ShallowCopy().ToList();
+            var source = this.Series.ShallowCopy().ToList();
 
-                                                                                                                        var groups = this.Series.SelectMany(x => x.Values.Select(y => x.Values.IndexOf(y))).Distinct();
-                                                                                                                        var groupedBars = groups.Select(
-                                                                                                                            group => source.Select(
-                                                                                                                                series => group < series.Values.Count
-                                                                                                                                    ? new Tuple<IChartEntity, IChartBrush?, IChartBrush?>(series.Values[group], series.Fill, series.Stroke)
-                                                                                                                                    : null)
-                                                                                                                            .Where(y => y != null));
-                                                                                                                        var labels = groupedBars.Select(x => x.First()?.Item1?.Name ?? string.Empty);
-                                                                                                                        double barCount = groupedBars.Any() ? groupedBars.Max(x => x.Count()) : 0;
+            var groups = this.Series.SelectMany(x => x.Values.Select(y => x.Values.IndexOf(y))).Distinct();
+            var groupedBars = groups.Select(
+                group => source.Select(
+                    series => group < series.Values.Count
+                        ? new Tuple<IChartEntity, IChartBrush?, IChartBrush?>(series.Values[group], series.Fill, series.Stroke)
+                        : null)
+                .Where(y => y != null));
+            var labels = groupedBars.Select(x => x.First()?.Item1?.Name ?? string.Empty);
+            double barCount = groupedBars.Any() ? groupedBars.Max(x => x.Count()) : 0;
 
-                                                                                                                        var groupWidth = groups.Any() ? ((double)this.PlotAreaWidth / groups.Count()) : 0;
-                                                                                                                        var barWidth = Math.Min(50, groupWidth > 0 ? ((groupWidth - this.BarGroupSeparationPixels) / barCount) - (barSep * ((barCount - 1) / barCount)) : 0);
-                                                                                                                        var groupSep = groupWidth - (((barWidth + barSep) * barCount) - barSep);
+            var groupWidth = groups.Any() ? ((double)this.PlotAreaWidth / groups.Count()) : 0;
+            var barWidth = Math.Min(50, groupWidth > 0 ? ((groupWidth - this.BarGroupSeparationPixels) / barCount) - (barSep * ((barCount - 1) / barCount)) : 0);
+            var groupSep = groupWidth - (((barWidth + barSep) * barCount) - barSep);
 
-                                                                                                                        var collection = await Task.Run(() =>
-                                                                                                                        {
-                                                                                                                            var ret = new List<InternalChartEntity>();
-                                                                                                                            var maxHeight = groupedBars.Any() ? groupedBars.Max(x => x.Max(y => y!.Item1.YValue)) : 0;
+            var collection = await Task.Run(() =>
+            {
+                var ret = new List<InternalChartEntity>();
+                var maxHeight = groupedBars.Any() ? groupedBars.Max(x => x.Max(y => y!.Item1.YValue)) : 0;
 
-                                                                                                                            var currentX = groupSep / 2;
-                                                                                                                            foreach (var group in groupedBars.Select(x => x.ToList()))
-                                                                                                                            {
-                                                                                                                                for (int i = 0; i < barCount; i++)
-                                                                                                                                {
-                                                                                                                                    if (i < group.Count())
-                                                                                                                                    {
-                                                                                                                                        var bar = group[i];
-                                                                                                                                        if (bar == null)
-                                                                                                                                        {
-                                                                                                                                            continue;
-                                                                                                                                        }
+                var currentX = groupSep / 2;
+                foreach (var group in groupedBars.Select(x => x.ToList()))
+                {
+                    for (int i = 0; i < barCount; i++)
+                    {
+                        if (i < group.Count())
+                        {
+                            var bar = group[i];
+                            if (bar == null)
+                            {
+                                continue;
+                            }
 
-                                                                                                                                        ret.Add(new InternalChartEntity(
-                                                                                                                                            currentX,
-                                                                                                                                            (bar.Item1.YValue / maxHeight) * this.PlotAreaHeight / 1.1d,
-                                                                                                                                            bar.Item1,
-                                                                                                                                            bar.Item3,
-                                                                                                                                            bar.Item2)
-                                                                                                                                        { Identifier = bar.Item1.Identifier });
-                                                                                                                                    }
+                            ret.Add(new InternalChartEntity(
+                                currentX,
+                                (bar.Item1.YValue / maxHeight) * this.PlotAreaHeight / 1.1d,
+                                bar.Item1,
+                                bar.Item3,
+                                bar.Item2)
+                            { Identifier = bar.Item1.Identifier });
+                        }
 
-                                                                                                                                    currentX += barWidth + barSep;
-                                                                                                                                }
+                        currentX += barWidth + barSep;
+                    }
 
-                                                                                                                                currentX += groupSep - barSep;
-                                                                                                                            }
+                    currentX += groupSep - barSep;
+                }
 
-                                                                                                                            return ret;
-                                                                                                                        });
+                return ret;
+            });
 
-                                                                                                                        this.BarWidth = barWidth;
-                                                                                                                        this.GroupWidth = Math.Floor(groups.Any() ? ((double)this.PlotAreaWidth / groups.Count()) : 0);
-                                                                                                                        var radius = this.BarWidth * this.BarCornerRadiusFraction / 2;
-                                                                                                                        this.BarCornerRadius = new CornerRadius(0, 0, radius, radius);
-                                                                                                                        this.isSingleXPoint = collection.Count < 2;
+            this.BarWidth = barWidth;
+            this.GroupWidth = Math.Floor(groups.Any() ? ((double)this.PlotAreaWidth / groups.Count()) : 0);
+            var radius = this.BarWidth * this.BarCornerRadiusFraction / 2;
+            this.BarCornerRadius = new CornerRadius(0, 0, radius, radius);
+            this.isSingleXPoint = collection.Count < 2;
 
-                                                                                                                        this.InternalSeries = new ObservableCollection<InternalChartEntity>(collection);
-                                                                                                                        this.SetXAxisLabels(labels, (int)barCount, groupSep);
+            this.InternalSeries = new ObservableCollection<InternalChartEntity>(collection);
+            this.SetXAxisLabels(labels, (int)barCount, groupSep);
 
-                                                                                                                        this.renderInProgress = false;
-                                                                                                                    });
-
-    #region Calculations
+            this.renderInProgress = false;
+        });
+    }
 
     private void SetXAxisLabels(IEnumerable<string> labels, int barCount, double groupSep)
     {
@@ -224,7 +227,7 @@ public partial class BarChart : UserControl
 
         var labels2 = labels.Select(x => new AxisLabel(
             0,
-            this.InternalSeries.First(y => y.BackingPoint.Name == x).X + (barCount / 2) * this.BarWidth + (groupSep / 2),
+            this.InternalSeries.First(y => y.BackingPoint.Name == x).X + ((barCount / 2) * this.BarWidth) + (groupSep / 2),
             _ => x));
         this.XAxisLabels = new ObservableCollection<AxisLabel>(labels2);
         if (this.isSingleXPoint)
@@ -284,8 +287,6 @@ public partial class BarChart : UserControl
         return yVals;
     }
 
-    #endregion
-
     private void Grid_SizeChanged(object sender, SizeChangedEventArgs e) => this.resizeTrigger.Refresh();
 
     private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
@@ -300,7 +301,7 @@ public partial class BarChart : UserControl
     {
         this.Loaded -= this.WpfChart_Loaded;
         Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
-        OnLegendLocationSet(this, new DependencyPropertyChangedEventArgs());
+        OnLegendLocationSet(this, default);
         this.Coordinator.MouseLeave += this.MouseCaptureGrid_MouseLeave;
     }
 

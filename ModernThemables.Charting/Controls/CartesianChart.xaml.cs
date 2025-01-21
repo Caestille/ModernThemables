@@ -67,10 +67,10 @@ public partial class CartesianChart : UserControl
             var pointsUnderMouse = this.GetPointsUnderMouse(point);
 
             var tooltips = pointsUnderMouse.Select(x => new TooltipViewModel(
-                x.point,
-                new SolidColorBrush(x.series.Stroke != null
-                    ? x.series.Stroke.ColourAtPoint(
-                        x.point.BackingPoint.XValue, x.point.BackingPoint.YValue)
+                x.Point,
+                new SolidColorBrush(x.Series.Stroke != null
+                    ? x.Series.Stroke.ColourAtPoint(
+                        x.Point.BackingPoint.XValue, x.Point.BackingPoint.YValue)
                     : Colors.Red),
                 string.Empty,
                 string.Empty,
@@ -78,7 +78,7 @@ public partial class CartesianChart : UserControl
             {
                 TooltipTemplate = this.TooltipTemplate,
                 TemplatedContent = this.TooltipContentGetter != null
-                        ? this.TooltipContentGetter(x.series.Data.Select(x => x.BackingPoint), x.point.BackingPoint)
+                        ? this.TooltipContentGetter(x.Series.Data.Select(x => x.BackingPoint), x.Point.BackingPoint)
                         : null,
             }).ToList();
 
@@ -110,6 +110,7 @@ public partial class CartesianChart : UserControl
 
             return tooltips;
         });
+
         this.Zoom.GetDataHeightPixelsInBounds = new Func<(double, double)>(() =>
         {
             var allPoints = this.InternalSeries.SelectMany(x => x.Data);
@@ -423,21 +424,21 @@ public partial class CartesianChart : UserControl
         foreach (var point in series.Values.ShallowCopy())
         {
             double x = (double)(point.XValue - xMin) / (double)xRange * (double)this.PlotAreaWidth;
-            double y = this.PlotAreaHeight - (point.YValue - yMin) / yRange * this.PlotAreaHeight;
+            double y = this.PlotAreaHeight - ((point.YValue - yMin) / (yRange * this.PlotAreaHeight));
             points.Add(new InternalChartEntity(x, y, point));
         }
 
         return points;
     }
 
-    private List<(InternalChartEntity point, InternalPathSeriesViewModel series)> GetPointsUnderMouse(Point point)
+    private List<(InternalChartEntity Point, InternalPathSeriesViewModel Series)> GetPointsUnderMouse(Point point)
     {
         var xMax = this.DataXMax;
         var xMin = this.DataXMin;
         var xRange = xMax - xMin;
 
         var translatedMouseLoc = this.TooltipControl.TranslatePoint(point, this.Zoom);
-        var pointsUnderMouse = new List<(InternalChartEntity point, InternalPathSeriesViewModel series)>();
+        var pointsUnderMouse = new List<(InternalChartEntity Point, InternalPathSeriesViewModel Series)>();
         foreach (var series in this.InternalSeries)
         {
             var data = this.InternalSeries.SelectMany(x => x.Data);
@@ -514,18 +515,18 @@ public partial class CartesianChart : UserControl
         _ = this.SetYAxisLabels();
     }
 
-    private void Coordinator_PointRangeSelected(object? sender, (Point lowerValue, Point upperValue) e)
+    private void Coordinator_PointRangeSelected(object? sender, (Point LowerValue, Point UpperValue) e)
     {
-        var lowerPoints = this.GetPointsUnderMouse(e.lowerValue).Select(x => x.point.BackingPoint);
-        var upperPoints = this.GetPointsUnderMouse(e.upperValue).Select(x => x.point.BackingPoint);
+        var lowerPoints = this.GetPointsUnderMouse(e.LowerValue).Select(x => x.Point.BackingPoint);
+        var upperPoints = this.GetPointsUnderMouse(e.UpperValue).Select(x => x.Point.BackingPoint);
 
         var nearestLower = lowerPoints
-            .FirstOrDefault(x => Math.Abs(x.YValue - e.lowerValue.Y)
-                    == lowerPoints.Min(x => Math.Abs(x.YValue - e.lowerValue.Y)));
+            .FirstOrDefault(x => Math.Abs(x.YValue - e.LowerValue.Y)
+                    == lowerPoints.Min(x => Math.Abs(x.YValue - e.LowerValue.Y)));
 
         var nearestUpper = upperPoints
-            .FirstOrDefault(x => Math.Abs(x.YValue - e.upperValue.Y)
-                    == upperPoints.Min(x => Math.Abs(x.YValue - e.upperValue.Y)));
+            .FirstOrDefault(x => Math.Abs(x.YValue - e.UpperValue.Y)
+                    == upperPoints.Min(x => Math.Abs(x.YValue - e.UpperValue.Y)));
 
         if (nearestLower != null && nearestUpper != null)
         {
@@ -535,7 +536,7 @@ public partial class CartesianChart : UserControl
 
     private void Coordinator_PointClicked(object? sender, Point e)
     {
-        var pointsUnderMouse = this.GetPointsUnderMouse(e).Select(x => x.point.BackingPoint);
+        var pointsUnderMouse = this.GetPointsUnderMouse(e).Select(x => x.Point.BackingPoint);
         var nearestPoint = pointsUnderMouse
             .FirstOrDefault(x => Math.Abs(x.YValue - e.Y)
                     == pointsUnderMouse.Min(x => Math.Abs(x.YValue - e.Y)));

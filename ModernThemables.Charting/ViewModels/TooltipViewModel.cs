@@ -9,6 +9,46 @@ using CommunityToolkit.Mvvm.ComponentModel;
 /// </summary>
 public class TooltipViewModel : ObservableObject
 {
+    private bool resizeTrigger;
+
+    /// <summary>
+    /// Initialises a new <see cref="TooltipViewModel"/>.
+    /// </summary>
+    /// <param name="point">The <see cref="InternalChartEntity"/> being represented.</param>
+    /// <param name="fill">The point fill if visible.</param>
+    /// <param name="primaryValue">The <see cref="string"/> used to make up the tooltip display.</param>
+    /// <param name="secondaryValue">The <see cref="string"/> used to make up the tooltip display.</param>
+    public TooltipViewModel(
+        InternalChartEntity point,
+        Brush? fill,
+        string primaryValue,
+        string secondaryValue,
+        string tertiaryValue)
+    {
+        this.LocationX = point.X;
+        this.LocationY = point.Y;
+        this.Fill = fill;
+        this.PrimaryValue = primaryValue;
+        this.SecondaryValue = secondaryValue;
+        this.TertiaryValue = tertiaryValue;
+    }
+
+    public TooltipViewModel(
+        double locationX,
+        double locationY,
+        Brush? fill,
+        string primaryValue,
+        string secondaryValue,
+        string tertiaryValue)
+    {
+        this.LocationX = locationX;
+        this.LocationY = locationY;
+        this.Fill = fill;
+        this.PrimaryValue = primaryValue;
+        this.SecondaryValue = secondaryValue;
+        this.TertiaryValue = tertiaryValue;
+    }
+
     public double LocationX { get; }
 
     public double LocationY { get; }
@@ -49,7 +89,6 @@ public class TooltipViewModel : ObservableObject
     /// </summary>
     public string TertiaryValue { get; }
 
-    private bool resizeTrigger;
     /// <summary>
     /// A <see cref="bool"/> property used to for the series to resize itself when desired by triggering a
     /// converter.
@@ -58,43 +97,5 @@ public class TooltipViewModel : ObservableObject
     {
         get => this.resizeTrigger;
         set => this.SetProperty(ref this.resizeTrigger, value);
-    }
-
-    /// <summary>
-    /// Initialises a new <see cref="TooltipViewModel"/>.
-    /// </summary>
-    /// <param name="point">The <see cref="InternalChartEntity"/> being represented.</param>
-    /// <param name="fill">The point fill if visible.</param>
-    /// <param name="primaryValue">The <see cref="string"/> used to make up the tooltip display.</param>
-    /// <param name="secondaryValue">The <see cref="string"/> used to make up the tooltip display.</param>
-    public TooltipViewModel(
-        InternalChartEntity point,
-        Brush? fill,
-        string primaryValue,
-        string secondaryValue,
-        string tertiaryValue)
-    {
-        this.LocationX = point.X;
-        this.LocationY = point.Y;
-        this.Fill = fill;
-        this.PrimaryValue = primaryValue;
-        this.SecondaryValue = secondaryValue;
-        this.TertiaryValue = tertiaryValue;
-    }
-
-    public TooltipViewModel(
-        double locationX,
-        double locationY,
-        Brush? fill,
-        string primaryValue,
-        string secondaryValue,
-        string tertiaryValue)
-    {
-        this.LocationX = locationX;
-        this.LocationY = locationY;
-        this.Fill = fill;
-        this.PrimaryValue = primaryValue;
-        this.SecondaryValue = secondaryValue;
-        this.TertiaryValue = tertiaryValue;
     }
 }

@@ -8,6 +8,38 @@ using ModernThemables.Charting.Interfaces;
 /// </summary>
 public class InternalChartEntity : ObservableObject
 {
+    private bool isMouseOver;
+
+    /// <summary>
+    /// Initialises a new <see cref="InternalChartEntity"/>.
+    /// </summary>
+    /// <param name="x">The x point which the point will be plotted on in pixels.</param>
+    /// <param name="y">The y point which the point will be plotted on in pixels. </param>
+    /// <param name="backingPoint">The actual, unscaled point this represents.</param>
+    public InternalChartEntity(double x, double y, IChartEntity backingPoint)
+    {
+        this.X = x;
+        this.Y = y;
+        this.BackingPoint = backingPoint;
+    }
+
+    /// <summary>
+    /// Initialises a new <see cref="InternalChartEntity"/>.
+    /// </summary>
+    /// <param name="x">The x point which the point will be plotted on in pixels.</param>
+    /// <param name="y">The y point which the point will be plotted on in pixels. </param>
+    /// <param name="backingPoint">The actual, unscaled point this represents.</param>
+    /// <param name="stroke">The <see cref="IChartBrush"/> entity stroke.</param>
+    /// <param name="fill">The <see cref="IChartBrush"/> entity fill.</param>
+    public InternalChartEntity(double x, double y, IChartEntity backingPoint, IChartBrush? stroke, IChartBrush? fill)
+    {
+        this.X = x;
+        this.Y = y;
+        this.BackingPoint = backingPoint;
+        this.Stroke = stroke;
+        this.Fill = fill;
+    }
+
     /// <summary>
     /// The X point in pixels.
     /// </summary>
@@ -38,40 +70,9 @@ public class InternalChartEntity : ObservableObject
     /// </summary>
     public Guid? Identifier { get; set; }
 
-    private bool isMouseOver;
     public bool IsMouseOver
     {
         get => this.isMouseOver;
         set => this.SetProperty(ref this.isMouseOver, value);
-    }
-
-    /// <summary>
-    /// Initialises a new <see cref="InternalChartEntity"/>.
-    /// </summary>
-    /// <param name="x">The x point which the point will be plotted on in pixels.</param>
-    /// <param name="y">The y point which the point will be plotted on in pixels. </param>
-    /// <param name="backingPoint">The actual, unscaled point this represents.</param>
-    public InternalChartEntity(double x, double y, IChartEntity backingPoint)
-    {
-        this.X = x;
-        this.Y = y;
-        this.BackingPoint = backingPoint;
-    }
-
-    /// <summary>
-    /// Initialises a new <see cref="InternalChartEntity"/>.
-    /// </summary>
-    /// <param name="x">The x point which the point will be plotted on in pixels.</param>
-    /// <param name="y">The y point which the point will be plotted on in pixels. </param>
-    /// <param name="backingPoint">The actual, unscaled point this represents.</param>
-    /// <param name="stroke">The <see cref="IChartBrush"/> entity stroke.</param>
-    /// <param name="fill">The <see cref="IChartBrush"/> entity fill.</param>
-    public InternalChartEntity(double x, double y, IChartEntity backingPoint, IChartBrush? stroke, IChartBrush? fill)
-    {
-        this.X = x;
-        this.Y = y;
-        this.BackingPoint = backingPoint;
-        this.Stroke = stroke;
-        this.Fill = fill;
     }
 }
