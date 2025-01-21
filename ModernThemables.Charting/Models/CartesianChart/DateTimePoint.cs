@@ -7,6 +7,18 @@ using ModernThemables.Charting.Interfaces;
 /// </summary>
 public class DateTimePoint : IChartEntity
 {
+    /// <summary>
+    /// Initialises a new <see cref="DateTimePoint"/> with a given <see cref="System.DateTime"/> and
+    /// <see cref="double"/>.
+    /// </summary>
+    /// <param name="dateTime">The input <see cref="System.DateTime"/> X axis value.</param>
+    /// <param name="value">The input <see cref="double"/> Y axis value.</param>
+    public DateTimePoint(DateTime dateTime, double value)
+    {
+        this.DateTime = dateTime;
+        this.Value = value;
+    }
+
     /// <inheritdoc />
     public string Name => throw new NotImplementedException();
 
@@ -37,18 +49,6 @@ public class DateTimePoint : IChartEntity
 
     /// <inheritdoc />
     public bool IsFocused { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    /// <summary>
-    /// Initialises a new <see cref="DateTimePoint"/> with a given <see cref="System.DateTime"/> and
-    /// <see cref="double"/>.
-    /// </summary>
-    /// <param name="dateTime">The input <see cref="System.DateTime"/> X axis value.</param>
-    /// <param name="value">The input <see cref="double"/> Y axis value.</param>
-    public DateTimePoint(DateTime dateTime, double value)
-    {
-        this.DateTime = dateTime;
-        this.Value = value;
-    }
 
     /// <inheritdoc />
     public object XValueToImplementation() => new DateTime(TimeSpan.FromDays(this.XValue).Ticks);

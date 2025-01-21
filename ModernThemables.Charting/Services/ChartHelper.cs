@@ -9,7 +9,7 @@ using ModernThemables.Charting.Models;
 
 public static class ChartHelper
 {
-    public static (int row, int column, Visibility visibility, Thickness margin, Orientation orientation) GetLegendProperties(LegendLocation legendLocation)
+    public static (int Row, int Column, Visibility Visibility, Thickness Margin, Orientation Orientation) GetLegendProperties(LegendLocation legendLocation)
     {
         int row = 0;
         int column = 0;

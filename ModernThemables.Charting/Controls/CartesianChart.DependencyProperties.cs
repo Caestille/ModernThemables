@@ -9,133 +9,133 @@ using ModernThemables.Charting.ViewModels.CartesianChart;
 public partial class CartesianChart // .DependencyProperties
 {
     public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-        "Series",
+        nameof(Series),
         typeof(ObservableCollection<ISeries>),
         typeof(CartesianChart),
         new FrameworkPropertyMetadata(null, OnSeriesSet));
 
     public static readonly DependencyProperty XAxisFormatterProperty = DependencyProperty.Register(
-        "XAxisFormatter",
+        nameof(XAxisFormatter),
         typeof(Func<object, string>),
         typeof(CartesianChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty XAxisCursorLabelFormatterProperty = DependencyProperty.Register(
-        "XAxisCursorLabelFormatter",
+        nameof(XAxisCursorLabelFormatter),
         typeof(Func<object, string>),
         typeof(CartesianChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty YAxisFormatterProperty = DependencyProperty.Register(
-        "YAxisFormatter",
+        nameof(YAxisFormatter),
         typeof(Func<object, string>),
         typeof(CartesianChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty YAxisCursorLabelFormatterProperty = DependencyProperty.Register(
-        "YAxisCursorLabelFormatter",
+        nameof(YAxisCursorLabelFormatter),
         typeof(Func<object, string>),
         typeof(CartesianChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
-        "YAxisLabelIdentifier",
+        nameof(YAxisLabelIdentifier),
         typeof(Func<object, bool>),
         typeof(CartesianChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty XAxisLabelIdentifierProperty = DependencyProperty.Register(
-        "XAxisLabelIdentifier",
+        nameof(XAxisLabelIdentifier),
         typeof(Func<object, bool>),
         typeof(CartesianChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty ShowXSeparatorLinesProperty = DependencyProperty.Register(
-        "ShowXSeparatorLines",
+        nameof(ShowXSeparatorLines),
         typeof(bool),
         typeof(CartesianChart),
         new PropertyMetadata(true));
 
     public static readonly DependencyProperty ShowYSeparatorLinesProperty = DependencyProperty.Register(
-        "ShowYSeparatorLines",
+        nameof(ShowYSeparatorLines),
         typeof(bool),
         typeof(CartesianChart),
         new PropertyMetadata(true));
 
     public static readonly DependencyProperty IsZoomedProperty = DependencyProperty.Register(
-        "IsZoomed",
+        nameof(IsZoomed),
         typeof(bool),
         typeof(CartesianChart),
         new PropertyMetadata(false));
 
     public static readonly DependencyProperty TooltipTemplateProperty = DependencyProperty.Register(
-        "TooltipTemplate",
+        nameof(TooltipTemplate),
         typeof(DataTemplate),
         typeof(CartesianChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty LegendTemplateProperty = DependencyProperty.Register(
-        "LegendTemplate",
+        nameof(LegendTemplate),
         typeof(DataTemplate),
         typeof(CartesianChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
-        "LegendLocation",
+        nameof(LegendLocation),
         typeof(LegendLocation),
         typeof(CartesianChart),
         new UIPropertyMetadata(LegendLocation.None, OnLegendLocationSet));
 
     public static readonly DependencyProperty TooltipFindingStrategyProperty = DependencyProperty.Register(
-        "TooltipFindingStrategy",
+        nameof(TooltipFindingStrategy),
         typeof(TooltipFindingStrategy),
         typeof(CartesianChart),
         new PropertyMetadata(TooltipFindingStrategy.NearestXAllY));
 
     public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
-        "TooltipLocation",
+        nameof(TooltipLocation),
         typeof(TooltipLocation),
         typeof(CartesianChart),
         new FrameworkPropertyMetadata(TooltipLocation.Cursor));
 
     public static readonly DependencyProperty TooltipLocationThresholdProperty = DependencyProperty.Register(
-        "TooltipLocationThreshold",
+        nameof(TooltipLocationThreshold),
         typeof(double),
         typeof(CartesianChart),
         new PropertyMetadata(5d));
 
     public static readonly DependencyProperty TooltipOpacityProperty = DependencyProperty.Register(
-        "TooltipOpacity",
+        nameof(TooltipOpacity),
         typeof(double),
         typeof(CartesianChart),
         new PropertyMetadata(1d));
 
     public static readonly DependencyProperty YPaddingFracProperty = DependencyProperty.Register(
-        "YPaddingFrac",
+        nameof(YPaddingFrac),
         typeof(double),
         typeof(CartesianChart),
         new PropertyMetadata(0.1d));
 
     public static readonly DependencyProperty TooltipContentGetterProperty = DependencyProperty.Register(
-        "TooltipContentGetter",
+        nameof(TooltipContentGetter),
         typeof(Func<IEnumerable<IChartEntity>, IChartEntity, object>),
         typeof(CartesianChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
-        "InternalSeries",
+        nameof(InternalSeries),
         typeof(ObservableCollection<InternalPathSeriesViewModel>),
         typeof(CartesianChart),
         new PropertyMetadata(new ObservableCollection<InternalPathSeriesViewModel>()));
 
     public static readonly DependencyProperty XAxisLabelsProperty = DependencyProperty.Register(
-        "XAxisLabels",
+        nameof(XAxisLabels),
         typeof(ObservableCollection<AxisLabel>),
         typeof(CartesianChart),
         new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
     public static readonly DependencyProperty YAxisLabelsProperty = DependencyProperty.Register(
-        "YAxisLabels",
+        nameof(YAxisLabels),
         typeof(ObservableCollection<AxisLabel>),
         typeof(CartesianChart),
         new PropertyMetadata(new ObservableCollection<AxisLabel>()));

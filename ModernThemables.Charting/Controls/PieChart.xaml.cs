@@ -162,11 +162,11 @@ public partial class PieChart : UserControl
 
         var properties = ChartHelper.GetLegendProperties(chart.LegendLocation);
 
-        chart.LegendGrid.SetValue(Grid.RowProperty, properties.row);
-        chart.LegendGrid.SetValue(Grid.ColumnProperty, properties.column);
-        chart.LegendGrid.Visibility = properties.visibility;
-        chart.LegendGrid.Margin = properties.margin;
-        chart.LegendGrid.Orientation = properties.orientation;
+        chart.LegendGrid.SetValue(Grid.RowProperty, properties.Row);
+        chart.LegendGrid.SetValue(Grid.ColumnProperty, properties.Column);
+        chart.LegendGrid.Visibility = properties.Visibility;
+        chart.LegendGrid.Margin = properties.Margin;
+        chart.LegendGrid.Orientation = properties.Orientation;
 
         await Task.Delay(1);
         chart.QueueRenderChart(null, null, true);

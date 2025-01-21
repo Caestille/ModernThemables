@@ -9,9 +9,6 @@ using ModernThemables.Charting.Interfaces;
 /// </summary>
 public sealed class SolidBrush : IChartBrush
 {
-    /// <inheritdoc />
-    public Brush? CoreBrush { get; private set; }
-
     private Color colour;
 
     /// <summary>
@@ -24,6 +21,9 @@ public sealed class SolidBrush : IChartBrush
         this.colour = colour;
         Application.Current.Dispatcher.Invoke(() => { this.CoreBrush = new SolidColorBrush(colour); });
     }
+
+    /// <inheritdoc />
+    public Brush? CoreBrush { get; private set; }
 
     /// <inheritdoc />
     public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre) { }

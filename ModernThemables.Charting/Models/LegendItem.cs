@@ -8,6 +8,19 @@ using ModernThemables.Charting.Interfaces;
 public struct LegendItem
 {
     /// <summary>
+    /// Initialises a new <see cref="LegendItem"/>.
+    /// </summary>
+    /// <param name="value">The value to display.</param>
+    /// <param name="stroke">The stroke colour of the display element of the legend item.</param>
+    /// <param name="fill">The fill colour of the display element of the legend item.</param>
+    public LegendItem(string value, IChartBrush stroke, IChartBrush fill)
+    {
+        this.Value = value;
+        this.Stroke = stroke;
+        this.Fill = fill;
+    }
+
+    /// <summary>
     /// The text element for the legend item to display.
     /// </summary>
     public string Value { get; set; }
@@ -21,17 +34,4 @@ public struct LegendItem
     /// Fill colour of the display element of the legend item.
     /// </summary>
     public IChartBrush Fill { get; set; }
-
-    /// <summary>
-    /// Initialises a new <see cref="LegendItem"/>.
-    /// </summary>
-    /// <param name="value">The value to display.</param>
-    /// <param name="stroke">The stroke colour of the display element of the legend item.</param>
-    /// <param name="fill">The fill colour of the display element of the legend item.</param>
-    public LegendItem(string value, IChartBrush stroke, IChartBrush fill)
-    {
-        this.Value = value;
-        this.Stroke = stroke;
-        this.Fill = fill;
-    }
 }

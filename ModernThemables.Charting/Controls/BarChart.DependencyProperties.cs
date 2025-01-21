@@ -9,127 +9,127 @@ using ModernThemables.Charting.ViewModels;
 public partial class BarChart // .DependencyProperties
 {
     public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-        "Series",
+        nameof(Series),
         typeof(ObservableCollection<ISeries>),
         typeof(BarChart),
         new FrameworkPropertyMetadata(null, OnSeriesSet));
 
     public static readonly DependencyProperty YAxisFormatterProperty = DependencyProperty.Register(
-        "YAxisFormatter",
+        nameof(YAxisFormatter),
         typeof(Func<object, string>),
         typeof(BarChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty YAxisLabelIdentifierProperty = DependencyProperty.Register(
-        "YAxisLabelIdentifier",
+        nameof(YAxisLabelIdentifier),
         typeof(Func<object, bool>),
         typeof(BarChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty ShowXSeparatorLinesProperty = DependencyProperty.Register(
-        "ShowXSeparatorLines",
+        nameof(ShowXSeparatorLines),
         typeof(bool),
         typeof(BarChart),
         new PropertyMetadata(true));
 
     public static readonly DependencyProperty ShowYSeparatorLinesProperty = DependencyProperty.Register(
-        "ShowYSeparatorLines",
+        nameof(ShowYSeparatorLines),
         typeof(bool),
         typeof(BarChart),
         new PropertyMetadata(true));
 
     public static readonly DependencyProperty TooltipTemplateProperty = DependencyProperty.Register(
-        "TooltipTemplate",
+        nameof(TooltipTemplate),
         typeof(DataTemplate),
         typeof(BarChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty LegendTemplateProperty = DependencyProperty.Register(
-        "LegendTemplate",
+        nameof(LegendTemplate),
         typeof(DataTemplate),
         typeof(BarChart),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
-        "LegendLocation",
+        nameof(LegendLocation),
         typeof(LegendLocation),
         typeof(BarChart),
         new UIPropertyMetadata(LegendLocation.None, OnLegendLocationSet));
 
     public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
-        "TooltipLocation",
+        nameof(TooltipLocation),
         typeof(TooltipLocation),
         typeof(BarChart),
         new FrameworkPropertyMetadata(TooltipLocation.Cursor));
 
     public static readonly DependencyProperty TooltipOpacityProperty = DependencyProperty.Register(
-        "TooltipOpacity",
+        nameof(TooltipOpacity),
         typeof(double),
         typeof(BarChart),
         new PropertyMetadata(1d));
 
     public static readonly DependencyProperty BarCornerRadiusFractionProperty = DependencyProperty.Register(
-        "BarCornerRadiusFraction",
+        nameof(BarCornerRadiusFraction),
         typeof(double),
         typeof(BarChart),
         new UIPropertyMetadata(0d, TriggerReRender));
 
     public static readonly DependencyProperty BarGroupSeparationPixelsProperty = DependencyProperty.Register(
-        "BarGroupSeparationPixels",
+        nameof(BarGroupSeparationPixels),
         typeof(double),
         typeof(BarChart),
         new UIPropertyMetadata(0d, TriggerReRender));
 
     public static readonly DependencyProperty BarSeparationPixelsProperty = DependencyProperty.Register(
-        "BarSeparationPixels",
+        nameof(BarSeparationPixels),
         typeof(double),
         typeof(BarChart),
         new UIPropertyMetadata(0d, TriggerReRender));
 
     public static readonly DependencyProperty XAxisLabelRotationProperty = DependencyProperty.Register(
-        "XAxisLabelRotation",
+        nameof(XAxisLabelRotation),
         typeof(double),
         typeof(BarChart),
         new UIPropertyMetadata(0d, TriggerReRender));
 
     public static readonly DependencyProperty InternalSeriesProperty = DependencyProperty.Register(
-        "InternalSeries",
+        nameof(InternalSeries),
         typeof(ObservableCollection<InternalChartEntity>),
         typeof(BarChart),
         new PropertyMetadata(new ObservableCollection<InternalChartEntity>()));
 
     public static readonly DependencyProperty XAxisLabelsProperty = DependencyProperty.Register(
-        "XAxisLabels",
+        nameof(XAxisLabels),
         typeof(ObservableCollection<AxisLabel>),
         typeof(BarChart),
         new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
     public static readonly DependencyProperty YAxisLabelsProperty = DependencyProperty.Register(
-        "YAxisLabels",
+        nameof(YAxisLabels),
         typeof(ObservableCollection<AxisLabel>),
         typeof(BarChart),
         new PropertyMetadata(new ObservableCollection<AxisLabel>()));
 
     public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
-        "BarWidth",
+        nameof(BarWidth),
         typeof(double),
         typeof(BarChart),
         new PropertyMetadata(0d));
 
     public static readonly DependencyProperty GroupWidthProperty = DependencyProperty.Register(
-        "GroupWidth",
+        nameof(GroupWidth),
         typeof(double),
         typeof(BarChart),
         new PropertyMetadata(0d));
 
     public static readonly DependencyProperty BarCornerRadiusProperty = DependencyProperty.Register(
-        "BarCornerRadius",
+        nameof(BarCornerRadius),
         typeof(CornerRadius),
         typeof(BarChart),
         new PropertyMetadata(new CornerRadius(0)));
 
     public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
-        "TooltipGetterFunc",
+        nameof(TooltipGetterFunc),
         typeof(Func<Point, IEnumerable<TooltipViewModel>>),
         typeof(BarChart),
         new PropertyMetadata(null));

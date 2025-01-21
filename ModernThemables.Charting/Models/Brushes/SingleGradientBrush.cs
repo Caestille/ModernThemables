@@ -11,9 +11,6 @@ using ModernThemables.Charting.Interfaces;
 /// </summary>
 public sealed class SingleGradientBrush : IChartBrush
 {
-    /// <inheritdoc />
-    public Brush? CoreBrush { get; private set; }
-
     private Color topColour;
     private Color bottomColour;
 
@@ -42,6 +39,9 @@ public sealed class SingleGradientBrush : IChartBrush
     }
 
     /// <inheritdoc />
+    public Brush? CoreBrush { get; private set; }
+
+    /// <inheritdoc />
     public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre)
     {
         this.yMax = yMax;
@@ -65,7 +65,7 @@ public sealed class SingleGradientBrush : IChartBrush
         }
         else if (y < this.yMax && y > this.yMin)
         {
-            var ratio = (double)(1 - (y - this.yMin) / (this.yMax - this.yMin));
+            var ratio = (double)(1 - ((y - this.yMin) / (this.yMax - this.yMin)));
             return this.topColour.Combine(this.bottomColour, ratio);
         }
         else if (y <= this.yMin)

@@ -8,8 +8,8 @@ using ModernThemables.Charting.Interfaces;
 public class SeriesWatcherService
 {
     private readonly Action<IList<ISeries>?, IList<ISeries>?, bool> onSeriesUpdated;
-    private bool hasSetSeries;
     private readonly List<ISeries> subscribedSeries = new();
+    private bool hasSetSeries;
 
     public SeriesWatcherService(Action<IList<ISeries>?, IList<ISeries>?, bool> onSeriesUpdated)
     {
@@ -37,6 +37,14 @@ public class SeriesWatcherService
         }
 
         this.onSeriesUpdated(null, null, true);
+    }
+
+    public void Dispose()
+    {
+        foreach (var series in this.subscribedSeries)
+        {
+            series.PropertyChanged -= this.Series_PropertyChanged;
+        }
     }
 
     private void Subscribe(ObservableCollection<ISeries> series)
@@ -101,14 +109,6 @@ public class SeriesWatcherService
         {
             var list = new List<ISeries>() { series };
             this.onSeriesUpdated(list, list, false);
-        }
-    }
-
-    public void Dispose()
-    {
-        foreach (var series in this.subscribedSeries)
-        {
-            series.PropertyChanged -= this.Series_PropertyChanged;
         }
     }
 }

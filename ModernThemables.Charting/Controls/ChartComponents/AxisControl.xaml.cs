@@ -13,168 +13,80 @@ using ModernThemables.Charting.Services;
 /// </summary>
 public partial class AxisControl : UserControl
 {
-    public Orientation Orientation
-    {
-        get => (Orientation)this.GetValue(OrientationProperty);
-        set => this.SetValue(OrientationProperty, value);
-    }
-
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        "Orientation",
+        nameof(Orientation),
         typeof(Orientation),
         typeof(AxisControl),
         new UIPropertyMetadata(Orientation.Vertical, OnSetAxisOrientation));
 
-    public double LabelRotation
-    {
-        get => (double)this.GetValue(LabelRotationProperty);
-        set => this.SetValue(LabelRotationProperty, value);
-    }
-
     public static readonly DependencyProperty LabelRotationProperty = DependencyProperty.Register(
-        "LabelRotation",
+        nameof(LabelRotation),
         typeof(double),
         typeof(AxisControl),
         new UIPropertyMetadata(0d, OnSetLabelRotation));
 
-    public bool ShowDividers
-    {
-        get => (bool)this.GetValue(ShowDividersProperty);
-        set => this.SetValue(ShowDividersProperty, value);
-    }
-
     public static readonly DependencyProperty ShowDividersProperty = DependencyProperty.Register(
-        "ShowDividers",
+        nameof(ShowDividers),
         typeof(bool),
         typeof(AxisControl),
         new UIPropertyMetadata(true));
-
-    public bool ShowIndicators
-    {
-        get => (bool)this.GetValue(ShowIndicatorsProperty);
-        set => this.SetValue(ShowIndicatorsProperty, value);
-    }
 
     public static readonly DependencyProperty ShowIndicatorsProperty = DependencyProperty.Register(
-        "ShowIndicators",
+        nameof(ShowIndicators),
         typeof(bool),
         typeof(AxisControl),
         new UIPropertyMetadata(true));
-    public static readonly DependencyProperty LabelHeightProperty = DependencyProperty.Register(
-        "LabelHeight",
-        typeof(double),
-        typeof(AxisControl),
-        new UIPropertyMetadata(0d));
-
-    private double DividerWidth
-    {
-        get => (double)this.GetValue(DividerWidthtProperty);
-        set => this.SetValue(DividerWidthtProperty, value);
-    }
 
     public static readonly DependencyProperty DividerWidthtProperty = DependencyProperty.Register(
-        "DividerWidth",
+        nameof(DividerWidth),
         typeof(double),
         typeof(AxisControl),
         new UIPropertyMetadata(0d));
-
-    private double DividerHeight
-    {
-        get => (double)this.GetValue(DividerHeightProperty);
-        set => this.SetValue(DividerHeightProperty, value);
-    }
 
     public static readonly DependencyProperty DividerHeightProperty = DependencyProperty.Register(
-        "DividerHeight",
+        nameof(DividerHeight),
         typeof(double),
         typeof(AxisControl),
         new UIPropertyMetadata(0d));
-
-    public double DividerOffset
-    {
-        get => (double)this.GetValue(DividerOffsetProperty);
-        set => this.SetValue(DividerOffsetProperty, value);
-    }
 
     public static readonly DependencyProperty DividerOffsetProperty = DependencyProperty.Register(
-        "DividerOffset",
+        nameof(DividerOffset),
         typeof(double),
         typeof(AxisControl),
         new UIPropertyMetadata(0d));
-    public static readonly DependencyProperty LabelAlignmentProperty = DependencyProperty.Register(
-        "LabelAlignment",
-        typeof(HorizontalAlignment),
-        typeof(AxisControl),
-        new UIPropertyMetadata(HorizontalAlignment.Center));
-
-    private Thickness DividerBorderThickness
-    {
-        get => (Thickness)this.GetValue(DividerBorderThicknessProperty);
-        set => this.SetValue(DividerBorderThicknessProperty, value);
-    }
 
     public static readonly DependencyProperty DividerBorderThicknessProperty = DependencyProperty.Register(
-        "DividerBorderThickness",
+        nameof(DividerBorderThickness),
         typeof(Thickness),
         typeof(AxisControl),
         new UIPropertyMetadata(new Thickness(0)));
 
-    private string MarginString
-    {
-        get => (string)this.GetValue(MarginStringProperty);
-        set => this.SetValue(MarginStringProperty, value);
-    }
-
     public static readonly DependencyProperty MarginStringProperty = DependencyProperty.Register(
-        "MarginString",
+        nameof(MarginString),
         typeof(string),
         typeof(AxisControl),
         new UIPropertyMetadata("0-0-0-1"));
 
-    private HorizontalAlignment DividerAlignment
-    {
-        get => (HorizontalAlignment)this.GetValue(DividerAlignmentProperty);
-        set => this.SetValue(DividerAlignmentProperty, value);
-    }
-
     public static readonly DependencyProperty DividerAlignmentProperty = DependencyProperty.Register(
-        "DividerAlignment",
+        nameof(DividerAlignment),
         typeof(HorizontalAlignment),
         typeof(AxisControl),
         new UIPropertyMetadata(HorizontalAlignment.Right));
 
-    private VerticalAlignment Alignment
-    {
-        get => (VerticalAlignment)this.GetValue(AlignmentProperty);
-        set => this.SetValue(AlignmentProperty, value);
-    }
-
     public static readonly DependencyProperty AlignmentProperty = DependencyProperty.Register(
-        "Alignment",
+        nameof(Alignment),
         typeof(VerticalAlignment),
         typeof(AxisControl),
         new UIPropertyMetadata(VerticalAlignment.Bottom));
 
-    public ObservableCollection<AxisLabel> Labels
-    {
-        get => (ObservableCollection<AxisLabel>)this.GetValue(LabelsProperty);
-        set => this.SetValue(LabelsProperty, value);
-    }
-
     public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
-        "Labels",
+        nameof(Labels),
         typeof(ObservableCollection<AxisLabel>),
         typeof(AxisControl),
         new UIPropertyMetadata(null, OnSetLabelRotation));
 
-    public MouseCoordinator Coordinator
-    {
-        get => (MouseCoordinator)this.GetValue(MouseCoordinatorProperty);
-        set => this.SetValue(MouseCoordinatorProperty, value);
-    }
-
     public static readonly DependencyProperty MouseCoordinatorProperty = DependencyProperty.Register(
-        "MouseCoordinator",
+        nameof(MouseCoordinator),
         typeof(MouseCoordinator),
         typeof(AxisControl),
         new PropertyMetadata(null, OnSetMouseCoordinator));
@@ -184,6 +96,166 @@ public partial class AxisControl : UserControl
         this.InitializeComponent();
         this.MainItemsControl.SizeChanged += this.MainItemsControl_SizeChanged;
         this.Loaded += this.AxisControl_Loaded;
+    }
+
+    public Orientation Orientation
+    {
+        get => (Orientation)this.GetValue(OrientationProperty);
+        set => this.SetValue(OrientationProperty, value);
+    }
+
+    public double LabelRotation
+    {
+        get => (double)this.GetValue(LabelRotationProperty);
+        set => this.SetValue(LabelRotationProperty, value);
+    }
+
+    public bool ShowDividers
+    {
+        get => (bool)this.GetValue(ShowDividersProperty);
+        set => this.SetValue(ShowDividersProperty, value);
+    }
+
+    public bool ShowIndicators
+    {
+        get => (bool)this.GetValue(ShowIndicatorsProperty);
+        set => this.SetValue(ShowIndicatorsProperty, value);
+    }
+
+    public double DividerOffset
+    {
+        get => (double)this.GetValue(DividerOffsetProperty);
+        set => this.SetValue(DividerOffsetProperty, value);
+    }
+
+    public ObservableCollection<AxisLabel> Labels
+    {
+        get => (ObservableCollection<AxisLabel>)this.GetValue(LabelsProperty);
+        set => this.SetValue(LabelsProperty, value);
+    }
+
+    public MouseCoordinator Coordinator
+    {
+        get => (MouseCoordinator)this.GetValue(MouseCoordinatorProperty);
+        set => this.SetValue(MouseCoordinatorProperty, value);
+    }
+
+    private double DividerWidth
+    {
+        get => (double)this.GetValue(DividerWidthtProperty);
+        set => this.SetValue(DividerWidthtProperty, value);
+    }
+
+    private double DividerHeight
+    {
+        get => (double)this.GetValue(DividerHeightProperty);
+        set => this.SetValue(DividerHeightProperty, value);
+    }
+
+    private Thickness DividerBorderThickness
+    {
+        get => (Thickness)this.GetValue(DividerBorderThicknessProperty);
+        set => this.SetValue(DividerBorderThicknessProperty, value);
+    }
+
+    private string MarginString
+    {
+        get => (string)this.GetValue(MarginStringProperty);
+        set => this.SetValue(MarginStringProperty, value);
+    }
+
+    private HorizontalAlignment DividerAlignment
+    {
+        get => (HorizontalAlignment)this.GetValue(DividerAlignmentProperty);
+        set => this.SetValue(DividerAlignmentProperty, value);
+    }
+
+    private VerticalAlignment Alignment
+    {
+        get => (VerticalAlignment)this.GetValue(AlignmentProperty);
+        set => this.SetValue(AlignmentProperty, value);
+    }
+
+    private static void OnSetAxisOrientation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (sender is not AxisControl axisControl)
+        {
+            return;
+        }
+
+        switch (axisControl.Orientation)
+        {
+            case Orientation.Vertical:
+                axisControl.MarginString = "0-0-0-1";
+                break;
+            case Orientation.Horizontal:
+                axisControl.MarginString = "1-0-0-0";
+                break;
+        }
+
+        OnSetLabelRotation(sender, e);
+    }
+
+    private static void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (sender is not AxisControl axisControl)
+        {
+            return;
+        }
+
+        axisControl.Coordinator.MouseMove += axisControl.Coordinator_MouseMove;
+        axisControl.Coordinator.MouseLeave += axisControl.Coordinator_MouseLeave;
+        axisControl.Coordinator.MouseEnter += axisControl.Coordinator_MouseEnter;
+    }
+
+    private static void OnSetLabelRotation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (sender is not AxisControl axisControl || axisControl.Labels == null || !axisControl.Labels.Any())
+        {
+            return;
+        }
+
+        var sizes = axisControl.Labels.Select(
+            x => StringWidthGetterConverter.MeasureString(
+                x.FormattedValue,
+                axisControl.FontSize,
+                axisControl.FontFamily,
+                axisControl.FontStyle,
+                axisControl.FontWeight,
+                axisControl.FontStretch));
+
+        var width = sizes.Max(x => x.Width);
+        var height = sizes.Max(x => x.Height);
+
+        var mult = axisControl.Orientation == Orientation.Vertical
+            ? Math.Cos(axisControl.LabelRotation * Math.PI / 180)
+            : Math.Sin(axisControl.LabelRotation * Math.PI / 180);
+        var value2 = (width * mult) + (axisControl.Orientation == Orientation.Horizontal ? 20 : 10);
+
+        switch (axisControl.Orientation)
+        {
+            case Orientation.Horizontal:
+                axisControl.MainItemsControl.Height = axisControl.DividerItemsControl.Height = value2;
+                axisControl.MainItemsControl.Width = axisControl.DividerItemsControl.Width = double.NaN;
+                axisControl.MainItemsControl.Margin = axisControl.DividerItemsControl.Margin = new Thickness(-axisControl.BorderThickness.Left, 0, 0, 0);
+                axisControl.Alignment = VerticalAlignment.Top;
+                axisControl.DividerWidth = 2;
+                axisControl.DividerHeight = 6;
+                axisControl.DividerBorderThickness = new Thickness(1, 0, 0, 0);
+                axisControl.DividerAlignment = HorizontalAlignment.Left;
+                break;
+            case Orientation.Vertical:
+                axisControl.MainItemsControl.Width = axisControl.DividerItemsControl.Width = value2;
+                axisControl.MainItemsControl.Height = axisControl.DividerItemsControl.Height = double.NaN;
+                axisControl.MainItemsControl.Margin = new Thickness(-axisControl.BorderThickness.Left, 0, 0, -height / 2);
+                axisControl.DividerItemsControl.Margin = new Thickness(-axisControl.BorderThickness.Left, 0, 0, -1);
+                axisControl.Alignment = VerticalAlignment.Bottom;
+                axisControl.DividerWidth = 6;
+                axisControl.DividerHeight = 2;
+                axisControl.DividerBorderThickness = new Thickness(0, 0, 0, 1);
+                axisControl.DividerAlignment = HorizontalAlignment.Right;
+                break;
+        }
     }
 
     private void AxisControl_Loaded(object sender, RoutedEventArgs e)
@@ -196,98 +268,17 @@ public partial class AxisControl : UserControl
         this.Loaded -= this.AxisControl_Loaded;
     }
 
-    private void MainItemsControl_SizeChanged(object sender, SizeChangedEventArgs e) => OnSetLabelRotation(this, new DependencyPropertyChangedEventArgs());
+    private void MainItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        => OnSetLabelRotation(this, default);
 
-    private static void OnSetAxisOrientation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-    {
-        if (sender is not AxisControl _this)
-        {
-            return;
-        }
-
-        switch (_this.Orientation)
-        {
-            case Orientation.Vertical:
-                _this.MarginString = "0-0-0-1";
-                break;
-            case Orientation.Horizontal:
-                _this.MarginString = "1-0-0-0";
-                break;
-        }
-
-        OnSetLabelRotation(sender, e);
-    }
-
-    private static void OnSetMouseCoordinator(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-    {
-        if (sender is not AxisControl _this)
-        {
-            return;
-        }
-
-        _this.Coordinator.MouseMove += _this.Coordinator_MouseMove;
-        _this.Coordinator.MouseLeave += _this.Coordinator_MouseLeave;
-        _this.Coordinator.MouseEnter += _this.Coordinator_MouseEnter;
-    }
-
-    private static void OnSetLabelRotation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-    {
-        if (sender is not AxisControl _this || _this.Labels == null || !_this.Labels.Any())
-        {
-            return;
-        }
-
-        var sizes = _this.Labels.Select(
-            x => StringWidthGetterConverter.MeasureString(
-                x.FormattedValue,
-                _this.FontSize,
-                _this.FontFamily,
-                _this.FontStyle,
-                _this.FontWeight,
-                _this.FontStretch));
-
-        var width = sizes.Max(x => x.Width);
-        var height = sizes.Max(x => x.Height);
-
-        var mult = _this.Orientation == Orientation.Vertical
-            ? Math.Cos(_this.LabelRotation * Math.PI / 180)
-            : Math.Sin(_this.LabelRotation * Math.PI / 180);
-        var value2 = width * mult + (_this.Orientation == Orientation.Horizontal ? 20 : 10);
-
-        switch (_this.Orientation)
-        {
-            case Orientation.Horizontal:
-                _this.MainItemsControl.Height = _this.DividerItemsControl.Height = value2;
-                _this.MainItemsControl.Width = _this.DividerItemsControl.Width = Double.NaN;
-                _this.MainItemsControl.Margin = _this.DividerItemsControl.Margin = new Thickness(-_this.BorderThickness.Left, 0, 0, 0);
-                _this.Alignment = VerticalAlignment.Top;
-                _this.DividerWidth = 2;
-                _this.DividerHeight = 6;
-                _this.DividerBorderThickness = new Thickness(1, 0, 0, 0);
-                _this.DividerAlignment = HorizontalAlignment.Left;
-                break;
-            case Orientation.Vertical:
-                _this.MainItemsControl.Width = _this.DividerItemsControl.Width = value2;
-                _this.MainItemsControl.Height = _this.DividerItemsControl.Height = Double.NaN;
-                _this.MainItemsControl.Margin = new Thickness(-_this.BorderThickness.Left, 0, 0, -height / 2);
-                _this.DividerItemsControl.Margin = new Thickness(-_this.BorderThickness.Left, 0, 0, -1);
-                _this.Alignment = VerticalAlignment.Bottom;
-                _this.DividerWidth = 6;
-                _this.DividerHeight = 2;
-                _this.DividerBorderThickness = new Thickness(0, 0, 0, 1);
-                _this.DividerAlignment = HorizontalAlignment.Right;
-                break;
-        }
-    }
-
-    private void Coordinator_MouseMove(object? sender, (bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args) e)
+    private void Coordinator_MouseMove(object? sender, (bool IsUserDragging, bool IsUserPanning, Point? LowerSelection, Point LastMousePoint, MouseEventArgs Args) e)
     {
         if (!this.ShowIndicators)
         {
             return;
         }
 
-        var mouseLoc = e.args.GetPosition(this.Coordinator);
+        var mouseLoc = e.Args.GetPosition(this.Coordinator);
         var axisLength = this.Orientation == Orientation.Horizontal ? this.Grid.ActualWidth : this.Grid.ActualHeight;
         var axisFrac = this.Orientation == Orientation.Horizontal
             ? mouseLoc.X / axisLength
@@ -303,15 +294,15 @@ public partial class AxisControl : UserControl
             return;
         }
 
-        var min = labelMin?.Value - minFrac * fullRange;
-        var max = labelMax?.Value + (1 - maxFrac) * fullRange;
+        var min = labelMin?.Value - (minFrac * fullRange);
+        var max = labelMax?.Value + ((1 - maxFrac) * fullRange);
 
-        var value = min + axisFrac * (max - min);
+        var value = min + (axisFrac * (max - min));
 
         this.ValueLabel.Text = (this.Labels.First().IndicatorFormatter ?? this.Labels.First().ValueFormatter)(value ?? 0);
         this.ValueDisplay.Margin = this.Orientation == Orientation.Horizontal
-            ? new Thickness(axisFrac * this.Grid.ActualWidth - (this.ValueDisplay.ActualWidth / 2), 4, -100, -100)
-            : new Thickness(-5, (1 - axisFrac) * this.Grid.ActualHeight - 9, -100, 0);
+            ? new Thickness((axisFrac * this.Grid.ActualWidth) - (this.ValueDisplay.ActualWidth / 2), 4, -100, -100)
+            : new Thickness(-5, ((1 - axisFrac) * this.Grid.ActualHeight) - 9, -100, 0);
     }
 
     private void Coordinator_MouseLeave(object sender, MouseEventArgs e)

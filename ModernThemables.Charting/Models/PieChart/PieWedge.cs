@@ -8,6 +8,22 @@ using ModernThemables.Charting.Interfaces;
 public class PieWedge : IChartEntity
 {
     /// <summary>
+    /// Initialises a new <see cref="PieWedge"/> with a given <see cref="string"/> and
+    /// <see cref="double"/> name and value.
+    /// </summary>
+    /// <param name="name">The input name.</param>
+    /// <param name="value">The input value.</param>
+    /// <param name="stroke">The wedge stroke.</param>
+    /// <param name="fill">The wedge fill.</param>
+    public PieWedge(string name, double value, IChartBrush stroke, IChartBrush fill)
+    {
+        this.Name = name;
+        this.XValue = value;
+        this.Stroke = stroke;
+        this.Fill = fill;
+    }
+
+    /// <summary>
     /// The name of the pie wedge.
     /// </summary>
     public string Name { get; }
@@ -29,22 +45,6 @@ public class PieWedge : IChartEntity
     public double XValue { get; }
 
     public double YValue => throw new NotImplementedException();
-
-    /// <summary>
-    /// Initialises a new <see cref="PieWedge"/> with a given <see cref="string"/> and
-    /// <see cref="double"/> name and value.
-    /// </summary>
-    /// <param name="name">The input name.</param>
-    /// <param name="value">The input value.</param>
-    /// <param name="stroke">The wedge stroke.</param>
-    /// <param name="fill">The wedge fill.</param>
-    public PieWedge(string name, double value, IChartBrush stroke, IChartBrush fill)
-    {
-        this.Name = name;
-        this.XValue = value;
-        this.Stroke = stroke;
-        this.Fill = fill;
-    }
 
     /// <inheritdoc />
     public object XValueToImplementation() => throw new NotImplementedException();

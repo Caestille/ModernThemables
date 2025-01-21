@@ -10,28 +10,14 @@ using ModernThemables.Charting.Interfaces;
 /// </summary>
 public class Series : ISeries
 {
+    private ObservableCollection<IChartEntity> values = new();
+
     /// <inheritdoc />
     public event EventHandler<PropertyChangedEventArgs>? PropertyChanged;
 
     /// <inheritdoc />
     public event EventHandler<NotifyCollectionChangedEventArgs>? CollectionChanged;
 
-    /// <inheritdoc />
-    public Func<IChartEntity, string>? ValueFormatter { get; set; }
-
-    /// <inheritdoc />
-    public IChartBrush? Stroke { get; set; }
-
-    /// <inheritdoc />
-    public IChartBrush? Fill { get; set; }
-
-    /// <inheritdoc />
-    public Guid Identifier { get; } = Guid.NewGuid();
-
-    /// <inheritdoc />
-    public string? Name { get; set; }
-
-    private ObservableCollection<IChartEntity> values = new();
     /// <inheritdoc />
     public ObservableCollection<IChartEntity> Values
     {
@@ -49,5 +35,21 @@ public class Series : ISeries
         }
     }
 
-    private void Values_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) => this.CollectionChanged?.Invoke(this, e);
+    /// <inheritdoc />
+    public Func<IChartEntity, string>? ValueFormatter { get; set; }
+
+    /// <inheritdoc />
+    public IChartBrush? Stroke { get; set; }
+
+    /// <inheritdoc />
+    public IChartBrush? Fill { get; set; }
+
+    /// <inheritdoc />
+    public Guid Identifier { get; } = Guid.NewGuid();
+
+    /// <inheritdoc />
+    public string? Name { get; set; }
+
+    private void Values_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        => this.CollectionChanged?.Invoke(this, e);
 }

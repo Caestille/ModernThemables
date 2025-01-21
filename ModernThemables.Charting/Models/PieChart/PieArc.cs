@@ -6,19 +6,81 @@ using System.Windows.Shapes;
 
 public class PieArc : Shape
 {
-    public double Radius
-    {
-        get => (double)this.GetValue(RadiusProperty);
-        set => this.SetValue(RadiusProperty, value);
-    }
-
     public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
-        "Radius",
+        nameof(Radius),
         typeof(double),
         typeof(PieArc),
         new FrameworkPropertyMetadata(
             0.0,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
+        nameof(IsIndeterminate),
+        typeof(bool),
+        typeof(PieArc),
+        new FrameworkPropertyMetadata(
+            true,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
+        nameof(PushOut),
+        typeof(double),
+        typeof(PieArc),
+        new FrameworkPropertyMetadata(
+            0.0,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
+        nameof(InnerRadiusFraction),
+        typeof(double),
+        typeof(PieArc),
+        new FrameworkPropertyMetadata(
+            0.0,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
+        nameof(RotationAngle),
+        typeof(double),
+        typeof(PieArc),
+        new FrameworkPropertyMetadata(
+            0.0,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
+        nameof(CentreX),
+        typeof(double),
+        typeof(PieArc),
+        new FrameworkPropertyMetadata(
+            0.0,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
+        nameof(CentreY),
+        typeof(double),
+        typeof(PieArc),
+        new FrameworkPropertyMetadata(
+            0.0,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
+        nameof(Percentage),
+        typeof(double),
+        typeof(PieArc),
+        new FrameworkPropertyMetadata(
+            0.0,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty PieceValueProperty = DependencyProperty.Register(
+        nameof(PieceValue),
+        typeof(double),
+        typeof(PieArc),
+        new FrameworkPropertyMetadata(0.0));
+
+    public double Radius
+    {
+        get => (double)this.GetValue(RadiusProperty);
+        set => this.SetValue(RadiusProperty, value);
+    }
 
     public bool IsIndeterminate
     {
@@ -26,27 +88,11 @@ public class PieArc : Shape
         set => this.SetValue(IsIndeterminateProperty, value);
     }
 
-    public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
-        "IsIndeterminate",
-        typeof(bool),
-        typeof(PieArc),
-        new FrameworkPropertyMetadata(
-            true,
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-
     public double PushOut
     {
         get => (double)this.GetValue(PushOutProperty);
         set => this.SetValue(PushOutProperty, value);
     }
-
-    public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
-        "PushOut",
-        typeof(double),
-        typeof(PieArc),
-        new FrameworkPropertyMetadata(
-            0.0,
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     public double InnerRadiusFraction
     {
@@ -54,27 +100,11 @@ public class PieArc : Shape
         set => this.SetValue(InnerRadiusProperty, value);
     }
 
-    public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
-        "InnerRadiusFraction",
-        typeof(double),
-        typeof(PieArc),
-        new FrameworkPropertyMetadata(
-            0.0,
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-
     public double RotationAngle
     {
         get => (double)this.GetValue(RotationAngleProperty);
         set => this.SetValue(RotationAngleProperty, value);
     }
-
-    public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
-        "RotationAngle",
-        typeof(double),
-        typeof(PieArc),
-        new FrameworkPropertyMetadata(
-            0.0,
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     public double CentreX
     {
@@ -82,27 +112,11 @@ public class PieArc : Shape
         set => this.SetValue(CentreXProperty, value);
     }
 
-    public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
-        "CentreX",
-        typeof(double),
-        typeof(PieArc),
-        new FrameworkPropertyMetadata(
-            0.0,
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-
     public double CentreY
     {
         get => (double)this.GetValue(CentreYProperty);
         set => this.SetValue(CentreYProperty, value);
     }
-
-    public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
-        "CentreY",
-        typeof(double),
-        typeof(PieArc),
-        new FrameworkPropertyMetadata(
-            0.0,
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     public double Percentage
     {
@@ -110,25 +124,11 @@ public class PieArc : Shape
         set => this.SetValue(PercentageProperty, value);
     }
 
-    public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
-        "Percentage",
-        typeof(double),
-        typeof(PieArc),
-        new FrameworkPropertyMetadata(
-            0.0,
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-
     public double PieceValue
     {
         get => (double)this.GetValue(PieceValueProperty);
         set => this.SetValue(PieceValueProperty, value);
     }
-
-    public static readonly DependencyProperty PieceValueProperty = DependencyProperty.Register(
-        "PieceValue",
-        typeof(double),
-        typeof(PieArc),
-        new FrameworkPropertyMetadata(0.0));
 
     protected override Geometry DefiningGeometry
     {
@@ -164,20 +164,20 @@ public class PieArc : Shape
         Point innerArcStartPoint = this.ComputeCartesianCoordinate(this.RotationAngle, innerRadius);
         innerArcStartPoint.Offset(this.CentreX, this.CentreY);
 
-        Point innerArcEndPoint = this.ComputeCartesianCoordinate(this.RotationAngle + this.Percentage * 360 / 100, innerRadius);
+        Point innerArcEndPoint = this.ComputeCartesianCoordinate(this.RotationAngle + ((this.Percentage * 360) / 100), innerRadius);
         innerArcEndPoint.Offset(this.CentreX, this.CentreY);
 
         Point outerArcStartPoint = this.ComputeCartesianCoordinate(this.RotationAngle, this.Radius);
         outerArcStartPoint.Offset(this.CentreX, this.CentreY);
 
-        Point outerArcEndPoint = this.ComputeCartesianCoordinate(this.RotationAngle + this.Percentage * 360 / 100, this.Radius);
+        Point outerArcEndPoint = this.ComputeCartesianCoordinate(this.RotationAngle + ((this.Percentage * 360) / 100), this.Radius);
         outerArcEndPoint.Offset(this.CentreX, this.CentreY);
 
         bool largeArc = this.Percentage > 50;
 
         if (this.PushOut > 0)
         {
-            Point offset = this.ComputeCartesianCoordinate(this.RotationAngle + this.Percentage * 360 / 100 / 2, this.PushOut);
+            Point offset = this.ComputeCartesianCoordinate(this.RotationAngle + (((this.Percentage * 360) / 100) / 2), this.PushOut);
             innerArcStartPoint.Offset(offset.X, offset.Y);
             innerArcEndPoint.Offset(offset.X, offset.Y);
             outerArcStartPoint.Offset(offset.X, offset.Y);
