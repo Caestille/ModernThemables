@@ -113,6 +113,7 @@ public class BlurHost : ContentControl
           new PropertyMetadata(new object(), Draw));
 
     private Border? PART_BlurDecorator { get; set; }
+
     private VisualBrush BlurDecoratorBrush { get; set; }
 
     public BlurHost()

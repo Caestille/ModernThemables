@@ -8,7 +8,6 @@ using CoreUtilities.Helpers.Extensions;
 
 public class BrushColourInverterConverter : IValueConverter
 {
-
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is SolidColorBrush brush)
@@ -19,5 +18,6 @@ public class BrushColourInverterConverter : IValueConverter
         return value;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => Binding.DoNothing;
 }

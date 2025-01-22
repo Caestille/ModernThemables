@@ -5,20 +5,20 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-[TemplatePart(Name = PART_MidRange, Type = typeof(RepeatButton))]
-[TemplatePart(Name = PART_HigherSlider, Type = typeof(Slider))]
-[TemplatePart(Name = PART_LowerSlider, Type = typeof(Slider))]
-[TemplatePart(Name = PART_Track, Type = typeof(Track))]
+[TemplatePart(Name = PARTMidRange, Type = typeof(RepeatButton))]
+[TemplatePart(Name = PARTHigherSlider, Type = typeof(Slider))]
+[TemplatePart(Name = PARTLowerSlider, Type = typeof(Slider))]
+[TemplatePart(Name = PARTTrack, Type = typeof(Track))]
 
 public class RangeSlider : Slider2
 {
     private bool midRangeMouseDown;
     private Point midRangeMouseDownPoint;
 
-    private const string PART_MidRange = "PART_MidRange";
-    private const string PART_HigherSlider = "PART_HigherSlider";
-    private const string PART_LowerSlider = "PART_LowerSlider";
-    private const string PART_Track = "PART_Track";
+    private const string PARTMidRange = "PART_MidRange";
+    private const string PARTHigherSlider = "PART_HigherSlider";
+    private const string PARTLowerSlider = "PART_LowerSlider";
+    private const string PARTTrack = "PART_Track";
 
     private RepeatButton? midRange;
     private Slider? lowerSlider;
@@ -29,9 +29,6 @@ public class RangeSlider : Slider2
         this.SizeChanged += this.RangeSlider_SizeChanged;
     }
 
-    #region Properties
-
-    #region HigherValue
     /// <summary>
     /// HigherValue property represents the higher value within the selected range.
     /// </summary>
@@ -72,9 +69,6 @@ public class RangeSlider : Slider2
         this.RaiseEvent(args);
     }
 
-    #endregion HigherValue
-
-    #region LowerValue
     /// <summary>
     /// LowerValue property represents the lower value within the selected range.
     /// </summary>
@@ -120,23 +114,15 @@ public class RangeSlider : Slider2
         this.RaiseEvent(args);
     }
 
-    #endregion LowerValue
-
     protected override void OnMaximumChanged(double oldValue, double newValue) => this.AdjustView();
-
-    #region Minimum
 
     protected override void OnMinimumChanged(double oldValue, double newValue) =>
         // adjust the range width
         this.AdjustView();
 
-    #endregion Minimum
-
-    #region RangeWidth
     /// <summary>
     /// RangeWidth property is a readonly property, used to calculate the percentage of the range within the entire min/max range.
     /// </summary>
-
     private static readonly DependencyPropertyKey RangeWidthPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeWidth", typeof(double),
       typeof(RangeSlider), new PropertyMetadata(0d));
 
@@ -148,13 +134,9 @@ public class RangeSlider : Slider2
         private set => this.SetValue(RangeSlider.RangeWidthPropertyKey, value);
     }
 
-    #endregion RangeWidth
-
-    #region RangeMargin
     /// <summary>
     /// RangeMargin property is a readonly property, used to calculate the offset of the range within the left hand side of the range.
     /// </summary>
-
     private static readonly DependencyPropertyKey RangeMarginPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeMargin", typeof(Thickness),
       typeof(RangeSlider), new PropertyMetadata(new Thickness(0)));
 
@@ -165,12 +147,6 @@ public class RangeSlider : Slider2
         get => (Thickness)this.GetValue(RangeSlider.RangeMarginProperty);
         private set => this.SetValue(RangeSlider.RangeMarginPropertyKey, value);
     }
-
-    #endregion RangeWidth
-
-    #endregion Properties
-
-    #region Override
 
     public override void OnApplyTemplate()
     {
@@ -183,7 +159,7 @@ public class RangeSlider : Slider2
             this.midRange.PreviewMouseUp -= this.MidRange_MouseUp;
         }
 
-        this.midRange = this.Template.FindName(PART_MidRange, this) as RepeatButton;
+        this.midRange = this.Template.FindName(PARTMidRange, this) as RepeatButton;
         if (this.midRange != null)
         {
             this.midRange.PreviewMouseDown += this.MidRange_MouseDown;
@@ -197,7 +173,7 @@ public class RangeSlider : Slider2
             this.lowerSlider.ValueChanged -= this.LowerSlider_ValueChanged;
         }
 
-        this.lowerSlider = this.Template.FindName(PART_LowerSlider, this) as Slider;
+        this.lowerSlider = this.Template.FindName(PARTLowerSlider, this) as Slider;
         if (this.lowerSlider != null)
         {
             this.lowerSlider.Loaded += this.Slider_Loaded;
@@ -211,7 +187,7 @@ public class RangeSlider : Slider2
             this.higherSlider.ValueChanged -= this.HigherSlider_ValueChanged;
         }
 
-        this.higherSlider = this.Template.FindName(PART_HigherSlider, this) as Slider;
+        this.higherSlider = this.Template.FindName(PARTHigherSlider, this) as Slider;
         if (this.higherSlider != null)
         {
             this.higherSlider.Loaded += this.Slider_Loaded;
@@ -246,10 +222,6 @@ public class RangeSlider : Slider2
             this.HigherValue = newMax;
         }
     }
-
-    #endregion Override
-
-    #region Methods
 
     private void AdjustView()
     {
@@ -296,11 +268,11 @@ public class RangeSlider : Slider2
     private void SetHigherSliderValues(double value, double? minimum, double? maximum) => this.SetSliderValues(this.higherSlider, this.HigherSlider_ValueChanged, value, minimum, maximum);
 
     private void SetSliderValues(
-      Slider? slider,
-      RoutedPropertyChangedEventHandler<double> handler,
-      double value,
-      double? minimum,
-      double? maximum)
+        Slider? slider,
+        RoutedPropertyChangedEventHandler<double> handler,
+        double value,
+        double? minimum,
+        double? maximum)
     {
         if (slider != null)
         {
@@ -339,11 +311,8 @@ public class RangeSlider : Slider2
         this.LowerValue = newValue;
     }
 
-    #endregion
-
-    #region Events
-
     public static readonly RoutedEvent LowerValueChangedEvent = EventManager.RegisterRoutedEvent("LowerValueChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RangeSlider));
+
     public event RoutedEventHandler LowerValueChanged
     {
         add => this.AddHandler(RangeSlider.LowerValueChangedEvent, value);
@@ -351,15 +320,12 @@ public class RangeSlider : Slider2
     }
 
     public static readonly RoutedEvent HigherValueChangedEvent = EventManager.RegisterRoutedEvent("HigherValueChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RangeSlider));
+
     public event RoutedEventHandler HigherValueChanged
     {
         add => this.AddHandler(RangeSlider.HigherValueChangedEvent, value);
         remove => this.RemoveHandler(RangeSlider.HigherValueChangedEvent, value);
     }
-
-    #endregion //Events
-
-    #region Events Handlers
 
     private void RangeSlider_SizeChanged(object sender, SizeChangedEventArgs e) => this.AdjustView();
 
@@ -380,8 +346,6 @@ public class RangeSlider : Slider2
             this.UpdateHigherValue(e.NewValue);
         }
     }
-
-    #endregion Events Handlers
 
     private struct CoercedValues
     {

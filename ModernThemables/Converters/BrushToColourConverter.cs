@@ -7,7 +7,6 @@ using System.Windows.Media;
 
 public class BrushToColourConverter : IValueConverter
 {
-
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is SolidColorBrush brush)
@@ -18,5 +17,6 @@ public class BrushToColourConverter : IValueConverter
         return value;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => Binding.DoNothing;
 }

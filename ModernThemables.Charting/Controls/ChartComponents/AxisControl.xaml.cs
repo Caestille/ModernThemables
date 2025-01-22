@@ -271,7 +271,7 @@ public partial class AxisControl : UserControl
     private void MainItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
         => OnSetLabelRotation(this, default);
 
-    private void Coordinator_MouseMove(object? sender, (bool IsUserDragging, bool IsUserPanning, Point? LowerSelection, Point LastMousePoint, MouseEventArgs Args) e)
+    private void Coordinator_MouseMove(object? sender, MouseCoordinatorMouseMoveEventArgs e)
     {
         if (!this.ShowIndicators)
         {

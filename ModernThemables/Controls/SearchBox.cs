@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 public class SearchBox : TextBox
 {
-    private const string PART_button = "PART_button";
+    private const string PARTButton = "PART_button";
 
     private Button2? button;
 
@@ -43,7 +43,7 @@ public class SearchBox : TextBox
             this.button.Click -= this.Button_Click;
         }
 
-        if (this.Template.FindName(PART_button, this) is Button2 bt)
+        if (this.Template.FindName(PARTButton, this) is Button2 bt)
         {
             this.button = bt;
         }

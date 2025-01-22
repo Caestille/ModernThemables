@@ -14,18 +14,26 @@ public class AliasableViewModelBase<TChild> : ViewModelBase<TChild>
     where TChild : GenericViewModelBase
 {
     private string? previousAlias;
+    private bool isEditingAlias;
+    private string? alias;
+
+    public AliasableViewModelBase(
+        string name, string? alias, Func<TChild>? createChild = null)
+        : base(name, createChild)
+    {
+        this.Alias = alias;
+    }
 
     public ICommand EditAliasCommand => new RelayCommand(this.EditAlias);
+
     public ICommand AliasEditorKeyDownCommand => new RelayCommand<object>(this.NameEditorKeyDown);
 
-    private bool isEditingAlias;
     public bool IsEditingAlias
     {
         get => this.isEditingAlias;
         set => this.SetProperty(ref this.isEditingAlias, value);
     }
 
-    private string? alias;
     public string? Alias
     {
         get => this.alias;
@@ -35,13 +43,6 @@ public class AliasableViewModelBase<TChild> : ViewModelBase<TChild>
     public override string Name => string.IsNullOrWhiteSpace(this.Alias) ? base.Name : this.Alias;
 
     public string OriginalName => base.Name;
-
-    public AliasableViewModelBase(
-        string name, string? alias, Func<TChild>? createChild = null)
-        : base(name, createChild)
-    {
-        this.Alias = alias;
-    }
 
     protected virtual void OnCommitAliasUpdate() => this.OnPropertyChanged(nameof(this.Name));
 

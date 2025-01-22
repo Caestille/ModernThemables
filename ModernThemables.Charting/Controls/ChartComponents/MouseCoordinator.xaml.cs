@@ -9,9 +9,11 @@ using System.Windows.Input;
 /// </summary>
 public partial class MouseCoordinator : UserControl
 {
-    public event EventHandler<Point>? PointClicked;
-    public event EventHandler<(Point lowerValue, Point upperValue)>? PointRangeSelected;
-    public new event EventHandler<(bool isUserDragging, bool isUserPanning, Point? lowerSelection, Point lastMousePoint, MouseEventArgs args)>? MouseMove;
+    public static readonly DependencyProperty MouseMoveThrottleMsProperty = DependencyProperty.Register(
+        nameof(MouseMoveThrottleMs),
+        typeof(double?),
+        typeof(MouseCoordinator),
+        new PropertyMetadata(null, OnSetThrottle));
 
     private MouseButton? mouseDown;
 
@@ -27,21 +29,21 @@ public partial class MouseCoordinator : UserControl
 
     private bool isRunning;
 
+    public MouseCoordinator()
+    {
+        this.InitializeComponent();
+    }
+
+    public event EventHandler<Point>? PointClicked;
+
+    public event EventHandler<(Point LowerValue, Point UpperValue)>? PointRangeSelected;
+
+    public new event EventHandler<MouseCoordinatorMouseMoveEventArgs>? MouseMove;
+
     public double? MouseMoveThrottleMs
     {
         get => (double?)this.GetValue(MouseMoveThrottleMsProperty);
         set => this.SetValue(MouseMoveThrottleMsProperty, value);
-    }
-
-    public static readonly DependencyProperty MouseMoveThrottleMsProperty = DependencyProperty.Register(
-        "MouseMoveThrottleMs",
-        typeof(double?),
-        typeof(MouseCoordinator),
-        new PropertyMetadata(null, OnSetThrottle));
-
-    public MouseCoordinator()
-    {
-        this.InitializeComponent();
     }
 
     private static void OnSetThrottle(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -73,7 +75,14 @@ public partial class MouseCoordinator : UserControl
         this.isRunning = true;
         var mouseLoc = e.GetPosition(this.MouseCaptureGrid);
         this.timeLastUpdated = DateTime.Now;
-        this.MouseMove?.Invoke(this, (this.mouseDown == MouseButton.Left, this.mouseDown == MouseButton.Right, this.mouseDownPoint, this.lastMouseMovePoint ?? mouseLoc, e));
+        this.MouseMove?.Invoke(
+            this,
+            new MouseCoordinatorMouseMoveEventArgs(
+                this.mouseDown == MouseButton.Left,
+                this.mouseDown == MouseButton.Right,
+                this.mouseDownPoint,
+                this.lastMouseMovePoint ?? mouseLoc,
+                e));
         this.lastMouseMovePoint = mouseLoc;
         this.isRunning = false;
     }
@@ -109,7 +118,5 @@ public partial class MouseCoordinator : UserControl
 
     private void MouseCaptureGrid_MouseDown(object sender, MouseButtonEventArgs e) => e.Handled = false;
 
-    private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e)
-    {
-    }
+    private void MouseCaptureGrid_MouseLeave(object sender, MouseEventArgs e) { }
 }

@@ -24,7 +24,7 @@ public class PieLabelMarginConverter : IMultiValueConverter
             var centreY = centreX;
             var radius = centreX * 0.9;
 
-            var angle = startAngle + percent / 2 * 360 / 100;
+            var angle = startAngle + (((percent / 2) * 360) / 100);
             var translatedAngle = angle;
             if (angle > 90 && angle <= 180)
             {
@@ -68,8 +68,8 @@ public class PieLabelMarginConverter : IMultiValueConverter
                 desiredY = centreY - a;
             }
 
-            var offsetX = desiredX - textWidth / 2;
-            var offsetY = desiredY - textHeight / 2;
+            var offsetX = desiredX - (textWidth / 2);
+            var offsetY = desiredY - (textHeight / 2);
 
             return new Thickness(offsetX, offsetY, 0, 0);
         }
@@ -79,9 +79,14 @@ public class PieLabelMarginConverter : IMultiValueConverter
         }
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => new object[] {
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+    {
+        return new object[]
+        {
             Binding.DoNothing,
             Binding.DoNothing,
             Binding.DoNothing,
-            Binding.DoNothing, };
+            Binding.DoNothing,
+        };
+    }
 }

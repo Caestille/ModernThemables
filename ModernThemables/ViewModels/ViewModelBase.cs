@@ -17,16 +17,8 @@ public class ViewModelBase : ViewModelBase<GenericViewModelBase>
 public class ViewModelBase<TChild> : GenericViewModelBase
     where TChild : GenericViewModelBase
 {
-    public ICommand AddChildCommand => new RelayCommand(() => this.AddChild());
-
     private readonly Func<TChild>? createChildFunc;
-
     private RangeObservableCollection<TChild> childViewModels = new();
-    public RangeObservableCollection<TChild> ChildViewModels
-    {
-        get => this.childViewModels;
-        set => this.SetProperty(ref this.childViewModels, value);
-    }
 
     public ViewModelBase(string name, Func<TChild>? createChild = null)
         : base(name)
@@ -35,44 +27,12 @@ public class ViewModelBase<TChild> : GenericViewModelBase
         this.BindMessages();
     }
 
-    protected virtual void BindMessages()
+    public ICommand AddChildCommand => new RelayCommand(() => this.AddChild());
+
+    public RangeObservableCollection<TChild> ChildViewModels
     {
-        this.Messenger.Register<ViewModelRequestShowMessage>(this, (sender, message) =>
-        {
-            if (message.ViewModel == this)
-            {
-                this.OnRequestShowReceived(message);
-            }
-            else if (this.IsSelected)
-            {
-                this.IsSelected = false;
-            }
-        });
-
-        this.Messenger.Register<ViewModelRequestDeleteMessage>(this, (sender, message) =>
-        {
-            this.OnRequestDeleteReceived(message);
-        });
-    }
-
-    protected virtual void OnRequestShowReceived(ViewModelRequestShowMessage message)
-    {
-        if (this.IsSelected && message.ViewModel != this)
-        {
-            this.IsSelected = false;
-        }
-    }
-
-    protected virtual void OnRequestDeleteReceived(ViewModelRequestDeleteMessage message)
-    {
-        if (message.ViewModel is TChild child && this.ChildViewModels.Contains(child))
-        {
-            child.OnDelete();
-            this.ChildViewModels.Remove(child);
-
-            this.OnPropertyChanged(nameof(this.ChildViewModels));
-            this.OnChildrenChanged();
-        }
+        get => this.childViewModels;
+        set => this.SetProperty(ref this.childViewModels, value);
     }
 
     public virtual void AddChild(TChild? viewModelToAdd = null, string name = "", int? index = null)
@@ -117,6 +77,46 @@ public class ViewModelBase<TChild> : GenericViewModelBase
         }
 
         return result;
+    }
+
+    protected virtual void BindMessages()
+    {
+        this.Messenger.Register<ViewModelRequestShowMessage>(this, (sender, message) =>
+        {
+            if (message.ViewModel == this)
+            {
+                this.OnRequestShowReceived(message);
+            }
+            else if (this.IsSelected)
+            {
+                this.IsSelected = false;
+            }
+        });
+
+        this.Messenger.Register<ViewModelRequestDeleteMessage>(this, (sender, message) =>
+        {
+            this.OnRequestDeleteReceived(message);
+        });
+    }
+
+    protected virtual void OnRequestShowReceived(ViewModelRequestShowMessage message)
+    {
+        if (this.IsSelected && message.ViewModel != this)
+        {
+            this.IsSelected = false;
+        }
+    }
+
+    protected virtual void OnRequestDeleteReceived(ViewModelRequestDeleteMessage message)
+    {
+        if (message.ViewModel is TChild child && this.ChildViewModels.Contains(child))
+        {
+            child.OnDelete();
+            this.ChildViewModels.Remove(child);
+
+            this.OnPropertyChanged(nameof(this.ChildViewModels));
+            this.OnChildrenChanged();
+        }
     }
 
     protected virtual void OnChildrenChanged() { }

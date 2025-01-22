@@ -12,9 +12,6 @@ using ModernThemables.Charting.Interfaces;
 /// </summary>
 public sealed class MultiGradientBrush : IChartBrush
 {
-    /// <inheritdoc />
-    public Brush? CoreBrush { get; private set; }
-
     private Color topColour;
     private Color bottomColour;
     private Color topCentreColour;
@@ -43,6 +40,9 @@ public sealed class MultiGradientBrush : IChartBrush
     }
 
     /// <inheritdoc />
+    public Brush? CoreBrush { get; private set; }
+
+    /// <inheritdoc />
     public void Reevaluate(double yMax, double yMin, double yCentre, double xMax, double xMin, double xCentre)
     {
         this.yMax = yMax;
@@ -50,7 +50,7 @@ public sealed class MultiGradientBrush : IChartBrush
         this.yCentre = yCentre;
 
         yCentre = Math.Min(Math.Max(yCentre, yMin), yMax);
-        var ratio = (double)(1 - (yCentre - yMin) / (yMax - yMin));
+        var ratio = (double)(1 - ((yCentre - yMin) / (yMax - yMin)));
 
         GradientStopCollection collection = new()
         {
@@ -73,12 +73,12 @@ public sealed class MultiGradientBrush : IChartBrush
         }
         else if (y < this.yMax && y >= this.yCentre)
         {
-            var ratio = (double)(1 - (y - this.yCentre) / (this.yMax - this.yCentre));
+            var ratio = (double)(1 - ((y - this.yCentre) / (this.yMax - this.yCentre)));
             return this.topColour.Combine(this.topCentreColour, ratio);
         }
         else if (y > this.yMin && y <= this.yCentre)
         {
-            var ratio = (double)(1 - (y - this.yMin) / (this.yCentre - this.yMin));
+            var ratio = (double)(1 - ((y - this.yMin) / (this.yCentre - this.yMin)));
             return this.bottomColour.Combine(this.bottomCentreColour, ratio);
         }
         else if (y <= this.yMin)

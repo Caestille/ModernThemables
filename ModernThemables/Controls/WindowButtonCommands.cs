@@ -20,120 +20,74 @@ using Windows.Win32;
 [TemplatePart(Name = "PART_ThemeSetButton", Type = typeof(Button))]
 public class WindowButtonCommands : ContentControl
 {
-    public event WindowEventHandler? ClosingWindow;
-    public event WindowEventHandler? MaximisingWindow;
-    public event WindowEventHandler? MinimisingWindow;
-    public event WindowEventHandler? RestoringWindow;
-
-    public event WindowEventHandler? MaximisedWindow;
-    public event WindowEventHandler? MinimisedWindow;
-    public event WindowEventHandler? RestoredWindow;
-
-    public event WindowEventHandler? ToggleThemeingMenu;
-
-    public delegate void WindowEventHandler(object sender, WindowEventHandlerArgs args);
-
-    /// <summary>Identifies the <see cref="Minimize"/> dependency property.</summary>
+    /// <summary>
+    /// Identifies the <see cref="Minimize"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty MinimizeProperty
         = DependencyProperty.Register(
             nameof(Minimize),
-                                      typeof(string),
-                                      typeof(WindowButtonCommands),
-                                      new PropertyMetadata(null));
+            typeof(string),
+            typeof(WindowButtonCommands),
+            new PropertyMetadata(null));
 
     /// <summary>
-    /// Gets or sets the minimize button tooltip.
+    /// Identifies the <see cref="Maximize"/> dependency property.
     /// </summary>
-    public string? Minimize
-    {
-        get => (string?)this.GetValue(MinimizeProperty);
-        set => this.SetValue(MinimizeProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="Maximize"/> dependency property.</summary>
     public static readonly DependencyProperty MaximizeProperty
         = DependencyProperty.Register(
             nameof(Maximize),
-                                      typeof(string),
-                                      typeof(WindowButtonCommands),
-                                      new PropertyMetadata(null));
+            typeof(string),
+            typeof(WindowButtonCommands),
+            new PropertyMetadata(null));
 
     /// <summary>
-    /// Gets or sets the maximize button tooltip.
+    /// Identifies the <see cref="Close"/> dependency property.
     /// </summary>
-    public string? Maximize
-    {
-        get => (string?)this.GetValue(MaximizeProperty);
-        set => this.SetValue(MaximizeProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="Close"/> dependency property.</summary>
     public static readonly DependencyProperty CloseProperty
         = DependencyProperty.Register(
             nameof(Close),
-                                      typeof(string),
-                                      typeof(WindowButtonCommands),
-                                      new PropertyMetadata(null));
+            typeof(string),
+            typeof(WindowButtonCommands),
+            new PropertyMetadata(null));
 
     /// <summary>
-    /// Gets or sets the close button tooltip.
+    /// Identifies the <see cref="Restore"/> dependency property.
     /// </summary>
-    public string? Close
-    {
-        get => (string?)this.GetValue(CloseProperty);
-        set => this.SetValue(CloseProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="Restore"/> dependency property.</summary>
     public static readonly DependencyProperty RestoreProperty
         = DependencyProperty.Register(
             nameof(Restore),
-                                      typeof(string),
-                                      typeof(WindowButtonCommands),
-                                      new PropertyMetadata(null));
+            typeof(string),
+            typeof(WindowButtonCommands),
+            new PropertyMetadata(null));
 
     /// <summary>
-    /// Gets or sets the restore button tooltip.
+    /// Identifies the <see cref="Maximize"/> dependency property.
     /// </summary>
-    public string? Restore
-    {
-        get => (string?)this.GetValue(RestoreProperty);
-        set => this.SetValue(RestoreProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="ParentWindow"/> dependency property.</summary>
-    internal static readonly DependencyPropertyKey ParentWindowPropertyKey =
-        DependencyProperty.RegisterReadOnly(
-            nameof(ParentWindow),
-                                            typeof(Window),
-                                            typeof(WindowButtonCommands),
-                                            new PropertyMetadata(null));
-
-    /// <summary>Identifies the <see cref="ParentWindow"/> dependency property.</summary>
-    public static readonly DependencyProperty ParentWindowProperty = ParentWindowPropertyKey.DependencyProperty;
-
-    public bool IsThemingMenuVisible
-    {
-        get => (bool)this.GetValue(IsThemingMenuVisibleProperty);
-        set => this.SetValue(IsThemingMenuVisibleProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="Maximize"/> dependency property.</summary>
     public static readonly DependencyProperty IsThemingMenuVisibleProperty
         = DependencyProperty.Register(
             nameof(IsThemingMenuVisible),
-                                      typeof(bool),
-                                      typeof(WindowButtonCommands),
-                                      new PropertyMetadata(false));
+            typeof(bool),
+            typeof(WindowButtonCommands),
+            new PropertyMetadata(false));
 
     /// <summary>
-    /// Gets the window.
+    /// Identifies the <see cref="ParentWindow"/> dependency property.
     /// </summary>
-    public Window? ParentWindow
-    {
-        get => (Window?)this.GetValue(ParentWindowProperty);
-        protected set => this.SetValue(ParentWindowPropertyKey, value);
-    }
+    internal static readonly DependencyPropertyKey ParentWindowPropertyKey =
+        DependencyProperty.RegisterReadOnly(
+            nameof(ParentWindow),
+            typeof(Window),
+            typeof(WindowButtonCommands),
+            new PropertyMetadata(null));
+
+    /// <summary>
+    /// Identifies the <see cref="ParentWindow"/> dependency property.
+    /// </summary>
+#pragma warning disable SA1202 // Elements should be ordered by access
+    public static readonly DependencyProperty ParentWindowProperty = ParentWindowPropertyKey.DependencyProperty;
+#pragma warning restore SA1202 // Elements should be ordered by access
+
+    private static SafeHandle? user32;
 
     public WindowButtonCommands()
     {
@@ -171,7 +125,156 @@ public class WindowButtonCommands : ContentControl
                     this.SetCurrentValue(RestoreProperty, GetCaption(903));
                 }
             },
-        DispatcherPriority.Loaded);
+            DispatcherPriority.Loaded);
+    }
+
+    public delegate void WindowEventHandler(object sender, WindowEventHandlerArgs args);
+
+    public event WindowEventHandler? ClosingWindow;
+
+    public event WindowEventHandler? MaximisingWindow;
+
+    public event WindowEventHandler? MinimisingWindow;
+
+    public event WindowEventHandler? RestoringWindow;
+
+    public event WindowEventHandler? MaximisedWindow;
+
+    public event WindowEventHandler? MinimisedWindow;
+
+    public event WindowEventHandler? RestoredWindow;
+
+    public event WindowEventHandler? ToggleThemeingMenu;
+
+    /// <summary>
+    /// Gets or sets the minimize button tooltip.
+    /// </summary>
+    public string? Minimize
+    {
+        get => (string?)this.GetValue(MinimizeProperty);
+        set => this.SetValue(MinimizeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the maximize button tooltip.
+    /// </summary>
+    public string? Maximize
+    {
+        get => (string?)this.GetValue(MaximizeProperty);
+        set => this.SetValue(MaximizeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the close button tooltip.
+    /// </summary>
+    public string? Close
+    {
+        get => (string?)this.GetValue(CloseProperty);
+        set => this.SetValue(CloseProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the restore button tooltip.
+    /// </summary>
+    public string? Restore
+    {
+        get => (string?)this.GetValue(RestoreProperty);
+        set => this.SetValue(RestoreProperty, value);
+    }
+
+    public bool IsThemingMenuVisible
+    {
+        get => (bool)this.GetValue(IsThemingMenuVisibleProperty);
+        set => this.SetValue(IsThemingMenuVisibleProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the window.
+    /// </summary>
+    public Window? ParentWindow
+    {
+        get => (Window?)this.GetValue(ParentWindowProperty);
+        protected set => this.SetValue(ParentWindowPropertyKey, value);
+    }
+
+    public static T? TryFindParent<T>(DependencyObject child)
+        where T : DependencyObject
+    {
+        // get parent item
+        var parentObject = GetParentObject(child);
+        while (parentObject is not null)
+        {
+            // check if the parent matches the type we're looking for
+            if (parentObject is T objectToFind)
+            {
+                return objectToFind;
+            }
+
+            parentObject = GetParentObject(parentObject);
+        }
+
+        // we've reached the end of the tree
+        return null;
+    }
+
+    public static DependencyObject? GetParentObject(DependencyObject? child)
+    {
+        if (child is null)
+        {
+            return null;
+        }
+
+        // handle content elements separately
+        if (child is ContentElement contentElement)
+        {
+            DependencyObject parent = ContentOperations.GetParent(contentElement);
+            if (parent is not null)
+            {
+                return parent;
+            }
+
+            return contentElement is FrameworkContentElement fce ? fce.Parent : null;
+        }
+
+        var childParent = VisualTreeHelper.GetParent(child);
+        if (childParent is not null)
+        {
+            return childParent;
+        }
+
+        // also try searching for parent in framework elements (such as DockPanel, etc)
+        if (child is FrameworkElement frameworkElement)
+        {
+            DependencyObject parent = frameworkElement.Parent;
+            if (parent is not null)
+            {
+                return parent;
+            }
+        }
+
+        return null;
+    }
+
+    public static unsafe string GetCaption(uint id)
+    {
+        if (user32 is null)
+        {
+            user32 = PInvoke.LoadLibrary(Path.Combine(Environment.SystemDirectory, "User32.dll"));
+        }
+
+        var chars = new char[256];
+
+        fixed (char* pchars = chars)
+        {
+            // PWSTR str = new PWSTR()
+            if (PInvoke.LoadString(user32, id, pchars, chars.Length) == 0)
+            {
+                return string.Format("String with id '{0}' could not be found.", id);
+            }
+#pragma warning disable CA1307 // Specify StringComparison for clarity
+            return new string(chars).Replace("&", string.Empty);
+#pragma warning restore CA1307 // Specify StringComparison for clarity
+        }
     }
 
     public override void OnApplyTemplate()
@@ -250,87 +353,6 @@ public class WindowButtonCommands : ContentControl
             }
 
             SystemCommands.CloseWindow(this.ParentWindow);
-        }
-    }
-
-    public static T? TryFindParent<T>(DependencyObject child)
-        where T : DependencyObject
-    {
-        // get parent item
-        var parentObject = GetParentObject(child);
-        while (parentObject is not null)
-        {
-            // check if the parent matches the type we're looking for
-            if (parentObject is T objectToFind)
-            {
-                return objectToFind;
-            }
-
-            parentObject = GetParentObject(parentObject);
-        }
-
-        // we've reached the end of the tree
-        return null;
-    }
-
-    public static DependencyObject? GetParentObject(DependencyObject? child)
-    {
-        if (child is null)
-        {
-            return null;
-        }
-
-        // handle content elements separately
-        if (child is ContentElement contentElement)
-        {
-            DependencyObject parent = ContentOperations.GetParent(contentElement);
-            if (parent is not null)
-            {
-                return parent;
-            }
-
-            return contentElement is FrameworkContentElement fce ? fce.Parent : null;
-        }
-
-        var childParent = VisualTreeHelper.GetParent(child);
-        if (childParent is not null)
-        {
-            return childParent;
-        }
-
-        // also try searching for parent in framework elements (such as DockPanel, etc)
-        if (child is FrameworkElement frameworkElement)
-        {
-            DependencyObject parent = frameworkElement.Parent;
-            if (parent is not null)
-            {
-                return parent;
-            }
-        }
-
-        return null;
-    }
-
-    private static SafeHandle? user32;
-    public static unsafe string GetCaption(uint id)
-    {
-        if (user32 is null)
-        {
-            user32 = PInvoke.LoadLibrary(Path.Combine(Environment.SystemDirectory, "User32.dll"));
-        }
-
-        var chars = new char[256];
-
-        fixed (char* pchars = chars)
-        {
-            // PWSTR str = new PWSTR()
-            if (PInvoke.LoadString(user32, id, pchars, chars.Length) == 0)
-            {
-                return string.Format("String with id '{0}' could not be found.", id);
-            }
-#pragma warning disable CA1307 // Specify StringComparison for clarity
-            return new string(chars).Replace("&", string.Empty);
-#pragma warning restore CA1307 // Specify StringComparison for clarity
         }
     }
 }

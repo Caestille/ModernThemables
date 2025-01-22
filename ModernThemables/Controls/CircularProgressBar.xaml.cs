@@ -17,6 +17,7 @@ public partial class CircularProgressBar : UserControl
         typeof(double),
         typeof(CircularProgressBar),
         new PropertyMetadata(0d, OnSetPercentage));
+
     public double StrokeWidthFraction
     {
         get => (double)this.GetValue(StrokeWidthFractionProperty);
@@ -62,25 +63,25 @@ public partial class CircularProgressBar : UserControl
 
     private static void OnSetPercentage(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
-        if (sender is not CircularProgressBar _this)
+        if (sender is not CircularProgressBar control)
         {
             return;
         }
 
-        if (!_this.IsIndeterminate)
+        if (!control.IsIndeterminate)
         {
-            _this.Arc.RotationAngle = 0;
-            _this.Arc.Percentage = Math.Max(0, Math.Min(100, _this.Percentage));
+            control.Arc.RotationAngle = 0;
+            control.Arc.Percentage = Math.Max(0, Math.Min(100, control.Percentage));
         }
     }
 
     private static void OnSetStrokeFraction(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
-        if (sender is not CircularProgressBar _this)
+        if (sender is not CircularProgressBar control)
         {
             return;
         }
 
-        _this.Arc.InnerRadiusFraction = 1 - Math.Max(0, Math.Min(1, _this.StrokeWidthFraction));
+        control.Arc.InnerRadiusFraction = 1 - Math.Max(0, Math.Min(1, control.StrokeWidthFraction));
     }
 }

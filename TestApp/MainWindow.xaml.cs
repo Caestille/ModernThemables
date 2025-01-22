@@ -1,5 +1,7 @@
 ﻿namespace TestApp;
 
+#pragma warning disable SA1201 // Elements should appear in the correct order
+
 using ModernThemables.Controls;
 using ModernThemables.ViewModels;
 

@@ -6,6 +6,15 @@ using ModernThemables.Charting.Models.Brushes;
 
 public class LabelledBar : IChartEntity
 {
+    public LabelledBar(double value, string label, int position)
+    {
+        this.Name = label;
+        this.XValue = position;
+        this.YValue = value;
+        this.Stroke = new SolidBrush(Colors.Transparent);
+        this.Fill = new SolidBrush(Colors.Transparent);
+    }
+
     /// <inheritdoc />
     public string Name { get; }
 
@@ -23,15 +32,6 @@ public class LabelledBar : IChartEntity
 
     /// <inheritdoc />
     public Guid Identifier { get; } = Guid.NewGuid();
-
-    public LabelledBar(double value, string label, int position)
-    {
-        this.Name = label;
-        this.XValue = position;
-        this.YValue = value;
-        this.Stroke = new SolidBrush(Colors.Transparent);
-        this.Fill = new SolidBrush(Colors.Transparent);
-    }
 
     /// <inheritdoc />
     public object XValueToImplementation() => throw new NotImplementedException();

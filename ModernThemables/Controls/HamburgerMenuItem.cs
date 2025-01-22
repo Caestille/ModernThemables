@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 
 public class HamburgerMenuItem : Control
 {
-    readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
+    private readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
 
     public HamburgerMenuItem()
     {

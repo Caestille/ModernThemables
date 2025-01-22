@@ -22,76 +22,15 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
 {
     private const string ThemePath = "Theme.json";
 
-    [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
-    public static extern bool ShouldSystemUseDarkMode();
+    private readonly IDialogueService dialogueService;
+    private readonly Timer osThemePollTimer = new Timer(1000);
+
+    private bool isTransparentHeader;
+    private bool isDarkMode;
+    private bool isSyncingWithOs;
 
     private bool? wasDarkBeforeSync;
     private Color? themeBeforeSync;
-
-    private readonly IDialogueService dialogueService;
-
-    private readonly Timer osThemePollTimer = new Timer(1000);
-
-    public event EventHandler<bool>? TransparentHeaderChanged;
-    public event EventHandler<bool>? IsDarkChanged;
-    public event EventHandler<bool>? SyncWithOsChanged;
-
-    public ICommand ChangeColourCommand => new RelayCommand(this.ChangeColour);
-
-    private void ChangeColour() => this.ThemeColourProperty = this.dialogueService.ShowColourPickerDialogue(this.ThemeColourProperty, (colour) => this.ThemeColourProperty = colour);
-
-    /// <summary>
-    /// Gets or sets the current Theme colour.
-    /// </summary>
-    public Color ThemeColourProperty
-    {
-        get => ThemeColour;
-        set => this.SetThemeColour(value);
-    }
-
-    private bool isSyncingWithOs;
-    /// <summary>
-    /// Gets or sets whether the theme is being synchronised with the OS.
-    /// </summary>
-    public bool IsSyncingWithOs
-    {
-        get => this.isSyncingWithOs;
-        set
-        {
-            this.SetProperty(ref this.isSyncingWithOs, value);
-            this.SyncThemeWithOs(value);
-            this.SyncWithOsChanged?.Invoke(this, value);
-        }
-    }
-
-    private bool isDarkMode;
-    /// <summary>
-    /// Gets or sets whether the theme is Dark or Light.
-    /// </summary>
-    public bool IsDarkMode
-    {
-        get => this.isDarkMode;
-        set
-        {
-            this.SetProperty(ref this.isDarkMode, value);
-            this.SetBrightnessMode();
-            this.IsDarkChanged?.Invoke(this, value);
-        }
-    }
-
-    private bool isTransparentHeader;
-    /// <summary>
-    /// Gets or sets whether the theme is being synchronised with the OS.
-    /// </summary>
-    public bool IsTransparentHeader
-    {
-        get => this.isTransparentHeader;
-        set
-        {
-            this.SetProperty(ref this.isTransparentHeader, value);
-            this.TransparentHeaderChanged?.Invoke(this, value);
-        }
-    }
 
     /// <summary>
     /// Initialises a new <see cref="ThemingControlViewModel"/>.
@@ -116,11 +55,77 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
         Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
     }
 
+    public event EventHandler<bool>? TransparentHeaderChanged;
+
+    public event EventHandler<bool>? IsDarkChanged;
+
+    public event EventHandler<bool>? SyncWithOsChanged;
+
+    public ICommand ChangeColourCommand => new RelayCommand(this.ChangeColour);
+
+    /// <summary>
+    /// Gets or sets the current Theme colour.
+    /// </summary>
+    public Color ThemeColourProperty
+    {
+        get => ThemeColour;
+        set => this.SetThemeColour(value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether the theme is being synchronised with the OS.
+    /// </summary>
+    public bool IsSyncingWithOs
+    {
+        get => this.isSyncingWithOs;
+        set
+        {
+            this.SetProperty(ref this.isSyncingWithOs, value);
+            this.SyncThemeWithOs(value);
+            this.SyncWithOsChanged?.Invoke(this, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets whether the theme is Dark or Light.
+    /// </summary>
+    public bool IsDarkMode
+    {
+        get => this.isDarkMode;
+        set
+        {
+            this.SetProperty(ref this.isDarkMode, value);
+            this.SetBrightnessMode();
+            this.IsDarkChanged?.Invoke(this, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets whether the theme is being synchronised with the OS.
+    /// </summary>
+    public bool IsTransparentHeader
+    {
+        get => this.isTransparentHeader;
+        set
+        {
+            this.SetProperty(ref this.isTransparentHeader, value);
+            this.TransparentHeaderChanged?.Invoke(this, value);
+        }
+    }
+
+    [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
+    public static extern bool ShouldSystemUseDarkMode();
+
     public void Dispose()
     {
         this.osThemePollTimer.Elapsed -= this.OsThemePollTimer_Elapsed;
         this.osThemePollTimer.Stop();
     }
+
+    private void ChangeColour()
+        => this.ThemeColourProperty = this.dialogueService.ShowColourPickerDialogue(
+            this.ThemeColourProperty,
+            (colour) => this.ThemeColourProperty = colour);
 
     private void SetBrightnessMode()
     {
@@ -156,41 +161,44 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
             = new SolidColorBrush(this.isDarkMode ? SecondaryControlDisabledColourDark : SecondaryControlDisabledColourLight);
     }
 
-    private async void SyncThemeWithOs(bool doSync) => await Task.Run(() =>
-                                                            {
-                                                                if (doSync)
-                                                                {
-                                                                    if (!this.osThemePollTimer.Enabled)
-                                                                    {
-                                                                        this.wasDarkBeforeSync = this.isDarkMode;
-                                                                        this.themeBeforeSync = ThemeColour;
-                                                                    }
+    private async void SyncThemeWithOs(bool doSync)
+    {
+        await Task.Run(() =>
+        {
+            if (doSync)
+            {
+                if (!this.osThemePollTimer.Enabled)
+                {
+                    this.wasDarkBeforeSync = this.isDarkMode;
+                    this.themeBeforeSync = ThemeColour;
+                }
 
-                                                                    var shouldBeDark = ShouldSystemUseDarkMode();
-                                                                    if (shouldBeDark != this.isDarkMode)
-                                                                    {
-                                                                        this.IsDarkMode = shouldBeDark;
-                                                                    }
+                var shouldBeDark = ShouldSystemUseDarkMode();
+                if (shouldBeDark != this.isDarkMode)
+                {
+                    this.IsDarkMode = shouldBeDark;
+                }
 
-                                                                    var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush)?.Color;
-                                                                    if (colour.HasValue && ThemeColour != colour.Value)
-                                                                    {
-                                                                        this.SetThemeColour(colour.Value);
-                                                                    }
-                                                                }
-                                                                else
-                                                                {
-                                                                    if (this.wasDarkBeforeSync != null)
-                                                                    {
-                                                                        this.IsDarkMode = this.wasDarkBeforeSync.Value;
-                                                                    }
+                var colour = (SystemParameters.WindowGlassBrush as SolidColorBrush)?.Color;
+                if (colour.HasValue && ThemeColour != colour.Value)
+                {
+                    this.SetThemeColour(colour.Value);
+                }
+            }
+            else
+            {
+                if (this.wasDarkBeforeSync != null)
+                {
+                    this.IsDarkMode = this.wasDarkBeforeSync.Value;
+                }
 
-                                                                    if (this.themeBeforeSync != null)
-                                                                    {
-                                                                        this.SetThemeColour(this.themeBeforeSync.Value);
-                                                                    }
-                                                                }
-                                                            });
+                if (this.themeBeforeSync != null)
+                {
+                    this.SetThemeColour(this.themeBeforeSync.Value);
+                }
+            }
+        });
+    }
 
     private void SetThemeColour(Color colour)
     {

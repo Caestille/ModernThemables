@@ -16,21 +16,6 @@ public class PieCentreRadiusConverter : IMultiValueConverter
         Radius,
     }
 
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-    {
-        if (values[0] is double width
-            && values[1] is double height
-            && parameter is string toReturn
-            && Enum.TryParse<PieConverterReturnType>(toReturn, out var returnType))
-        {
-            return ConvertLocally(width, height, returnType);
-        }
-        else
-        {
-            return Binding.DoNothing;
-        }
-    }
-
     public static double ConvertLocally(double width, double height, PieConverterReturnType toReturn)
     {
         switch (toReturn)
@@ -46,5 +31,21 @@ public class PieCentreRadiusConverter : IMultiValueConverter
         }
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => new object[] { Binding.DoNothing, Binding.DoNothing, Binding.DoNothing };
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (values[0] is double width
+            && values[1] is double height
+            && parameter is string toReturn
+            && Enum.TryParse<PieConverterReturnType>(toReturn, out var returnType))
+        {
+            return ConvertLocally(width, height, returnType);
+        }
+        else
+        {
+            return Binding.DoNothing;
+        }
+    }
+
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        => new object[] { Binding.DoNothing, Binding.DoNothing, Binding.DoNothing };
 }

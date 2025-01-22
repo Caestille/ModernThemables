@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 public class Button2 : Button
 {
-    readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
+    private readonly static SolidColorBrush DefaultMouseOverProperty = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFBEE6FD")!;
 
     public Brush MouseOverBrush
     {

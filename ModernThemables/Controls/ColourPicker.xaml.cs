@@ -95,6 +95,7 @@ public partial class ColourPicker : UserControl
         new KeyValuePair<Color, double>(Colors.Yellow, 5d / 6),
         new KeyValuePair<Color, double>(Colors.Red, 1),
     };
+
     private static readonly List<KeyValuePair<Color, double>> VerticalColourStops = new List<KeyValuePair<Color, double>>()
     {
         new KeyValuePair<Color, double>(Colors.Black, 0),

@@ -6,7 +6,6 @@
     <converters:BrushColourInverterConverter x:Key="BrushColourInverterConverter" />
     <converters:ColourRgbConverter x:Key="ColourRgbConverter" />
     <converters:ColourRgbTextConverter x:Key="ColourRgbTextConverter" />
-    <converters:RoundedGeometryGroupConverter x:Key="RoundedGeometryGroupConverter" />
     <converters:DoubleToBorderThicknessConverter x:Key="DoubleToBorderThicknessConverter" />
     <converters:MultiBindingDoubleToBorderThicknessConverter x:Key="MultiBindingDoubleToBorderThicknessConverter" />
     <converters:BrushToColourConverter x:Key="BrushToColourConverter" />

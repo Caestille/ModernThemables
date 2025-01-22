@@ -11,98 +11,50 @@ using ModernThemables.Charting.Interfaces;
 /// </summary>
 public partial class LegendControl : UserControl
 {
-    public ObservableCollection<ISeries> Items
-    {
-        get => (ObservableCollection<ISeries>)this.GetValue(ItemsProperty);
-        set => this.SetValue(ItemsProperty, value);
-    }
-
     public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
-        "Items",
+        nameof(Items),
         typeof(ObservableCollection<ISeries>),
         typeof(LegendControl),
         new UIPropertyMetadata(null));
 
-    public DataTemplate LegendTemplate
-    {
-        get => (DataTemplate)this.GetValue(LegendTemplateProperty);
-        set => this.SetValue(LegendTemplateProperty, value);
-    }
-
     public static readonly DependencyProperty LegendTemplateProperty = DependencyProperty.Register(
-        "LegendTemplate",
+        nameof(LegendTemplate),
         typeof(DataTemplate),
         typeof(LegendControl),
         new PropertyMetadata(null));
 
-    public CornerRadius CornerRadius
-    {
-        get => (CornerRadius)this.GetValue(CornerRadiusProperty);
-        set => this.SetValue(CornerRadiusProperty, value);
-    }
-
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-        "CornerRadius",
+        nameof(CornerRadius),
         typeof(CornerRadius),
         typeof(LegendControl),
         new PropertyMetadata(null));
 
-    public object TemplatedDataContext
-    {
-        get => (DataTemplate)this.GetValue(TemplatedDataContextProperty);
-        set => this.SetValue(TemplatedDataContextProperty, value);
-    }
-
     public static readonly DependencyProperty TemplatedDataContextProperty = DependencyProperty.Register(
-        "TemplatedDataContext",
+        nameof(TemplatedDataContext),
         typeof(object),
         typeof(LegendControl),
         new PropertyMetadata(null));
 
-    public Orientation Orientation
-    {
-        get => (Orientation)this.GetValue(OrientationProperty);
-        set => this.SetValue(OrientationProperty, value);
-    }
-
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        "Orientation",
+        nameof(Orientation),
         typeof(Orientation),
         typeof(LegendControl),
         new UIPropertyMetadata(Orientation.Vertical, OnSetLegendOrientation));
 
-    public new Brush Background
-    {
-        get => (Brush)this.GetValue(BackgroundProperty);
-        set => this.SetValue(BackgroundProperty, value);
-    }
-
     public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
-        "Background",
+        nameof(Background),
         typeof(Brush),
         typeof(LegendControl),
         new PropertyMetadata(null));
-
-    public new Brush BorderBrush
-    {
-        get => (Brush)this.GetValue(BorderBrushProperty);
-        set => this.SetValue(BorderBrushProperty, value);
-    }
 
     public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-        "BorderBrush",
+        nameof(BorderBrush),
         typeof(Brush),
         typeof(LegendControl),
         new PropertyMetadata(null));
 
-    public new Thickness BorderThickness
-    {
-        get => (Thickness)this.GetValue(BorderThicknessProperty);
-        set => this.SetValue(BorderThicknessProperty, value);
-    }
-
     public static readonly new DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-        "BorderThickness",
+        nameof(BorderThickness),
         typeof(Thickness),
         typeof(LegendControl),
         new PropertyMetadata(null));
@@ -112,20 +64,68 @@ public partial class LegendControl : UserControl
         this.InitializeComponent();
     }
 
+    public ObservableCollection<ISeries> Items
+    {
+        get => (ObservableCollection<ISeries>)this.GetValue(ItemsProperty);
+        set => this.SetValue(ItemsProperty, value);
+    }
+
+    public DataTemplate LegendTemplate
+    {
+        get => (DataTemplate)this.GetValue(LegendTemplateProperty);
+        set => this.SetValue(LegendTemplateProperty, value);
+    }
+
+    public CornerRadius CornerRadius
+    {
+        get => (CornerRadius)this.GetValue(CornerRadiusProperty);
+        set => this.SetValue(CornerRadiusProperty, value);
+    }
+
+    public object TemplatedDataContext
+    {
+        get => (DataTemplate)this.GetValue(TemplatedDataContextProperty);
+        set => this.SetValue(TemplatedDataContextProperty, value);
+    }
+
+    public Orientation Orientation
+    {
+        get => (Orientation)this.GetValue(OrientationProperty);
+        set => this.SetValue(OrientationProperty, value);
+    }
+
+    public new Brush Background
+    {
+        get => (Brush)this.GetValue(BackgroundProperty);
+        set => this.SetValue(BackgroundProperty, value);
+    }
+
+    public new Brush BorderBrush
+    {
+        get => (Brush)this.GetValue(BorderBrushProperty);
+        set => this.SetValue(BorderBrushProperty, value);
+    }
+
+    public new Thickness BorderThickness
+    {
+        get => (Thickness)this.GetValue(BorderThicknessProperty);
+        set => this.SetValue(BorderThicknessProperty, value);
+    }
+
     private static void OnSetLegendOrientation(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
-        if (sender is not LegendControl _this)
+        if (sender is not LegendControl control)
         {
             return;
         }
 
-        switch (_this.Orientation)
+        switch (control.Orientation)
         {
             case Orientation.Vertical:
-                _this.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)_this.Resources["StackTemplate"];
+                control.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)control.Resources["StackTemplate"];
                 break;
             case Orientation.Horizontal:
-                _this.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)_this.Resources["WrapTemplate"];
+                control.LegendItemsControl.ItemsPanel = (ItemsPanelTemplate)control.Resources["WrapTemplate"];
                 break;
         }
     }

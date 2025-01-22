@@ -19,7 +19,8 @@ public class MultiBindingDoubleToBorderThicknessConverter : IMultiValueConverter
         var weightingsString = string.Empty;
 
         if (values[0] is double inValue
-            && (values.Count() > 1 && values[1] is string weightings || parameter is string weightings2))
+            && ((values.Count() > 1 && values[1] is string weightings)
+            || parameter is string weightings2))
         {
             weightingsString = values.Count() > 1 && values[1] is string
                 ? (string)values[1]
@@ -50,5 +51,6 @@ public class MultiBindingDoubleToBorderThicknessConverter : IMultiValueConverter
         return Binding.DoNothing;
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        => throw new NotImplementedException();
 }

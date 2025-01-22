@@ -11,29 +11,34 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using ModernThemables.Messages;
 
-public interface IHamburgerMenuItem
-{
-    string Name { get; }
-
-    List<object> GetChildren(bool recurse = false);
-}
-
 public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenuItem
 {
     private readonly IEnumerable<Action<Color>> notifyColourUpdates = new List<Action<Color>>();
-    public ICommand SelectCommand => new RelayCommand(() => this.Select(this));
-    public ICommand DeleteCommand => new RelayCommand(this.Delete);
+
+    private bool isDisplayed;
+    private bool isExpanded;
+    private bool isSelected;
+    private Color colour = Colors.Red;
+    private string name = string.Empty;
+
+    public GenericViewModelBase(string name)
+    {
+        this.Name = name;
+        Application.Current.Dispatcher.ShutdownStarted += this.OnShutdownStart;
+    }
 
     public static string? WorkingDirectory { protected get; set; }
 
-    private string name = string.Empty;
+    public ICommand SelectCommand => new RelayCommand(() => this.Select(this));
+
+    public ICommand DeleteCommand => new RelayCommand(this.Delete);
+
     public virtual string Name
     {
         get => this.name;
         set => this.SetProperty(ref this.name, value.TrimStart());
     }
 
-    private Color colour = Colors.Red;
     public Color Colour
     {
         get => this.colour;
@@ -44,21 +49,18 @@ public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenu
         }
     }
 
-    private bool isSelected;
     public bool IsSelected
     {
         get => this.isSelected;
         set => this.SetProperty(ref this.isSelected, value);
     }
 
-    private bool isExpanded;
     public bool IsExpanded
     {
         get => this.isExpanded;
         set => this.SetProperty(ref this.isExpanded, value);
     }
 
-    private bool isDisplayed;
     public bool IsDisplayed
     {
         get => this.isDisplayed;
@@ -67,17 +69,14 @@ public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenu
 
     protected IMessenger BaseMessenger => this.Messenger;
 
-    public GenericViewModelBase(string name)
-    {
-        this.Name = name;
-        Application.Current.Dispatcher.ShutdownStarted += this.OnShutdownStart;
-    }
+    public void RegisterColourUpdateNotification(Action<Color> toInvoke)
+        => this.notifyColourUpdates.Append(toInvoke);
 
-    public void RegisterColourUpdateNotification(Action<Color> toInvoke) => this.notifyColourUpdates.Append(toInvoke);
+    public virtual void Select(GenericViewModelBase? sender = null)
+        => this.Messenger.Send(new ViewModelRequestShowMessage(this, sender ?? this));
 
-    public virtual void Select(GenericViewModelBase? sender = null) => this.Messenger.Send(new ViewModelRequestShowMessage(this, sender ?? this));
-
-    public virtual void Delete() => this.Messenger.Send(new ViewModelRequestDeleteMessage(this));
+    public virtual void Delete()
+        => this.Messenger.Send(new ViewModelRequestDeleteMessage(this));
 
     public virtual void OnDelete() { }
 

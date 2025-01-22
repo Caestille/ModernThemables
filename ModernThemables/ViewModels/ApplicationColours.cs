@@ -1,5 +1,9 @@
 ﻿namespace ModernThemables.ViewModels;
 
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable SA1306 // Member names should begin with lower-case letter
+#pragma warning disable SA1214 // Readonly field should appear before non-readonly field
+
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 

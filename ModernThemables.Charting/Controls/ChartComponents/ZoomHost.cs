@@ -259,13 +259,7 @@ public class ZoomHost : ContentControl
         return (topDiff, bottomDiff);
     }
 
-    private void Coordinator_MouseMove(
-        object? sender,
-        (bool IsUserDragging,
-        bool IsUserPanning,
-        Point? LowerSelection,
-        Point LastMousePoint,
-        System.Windows.Input.MouseEventArgs Args) e)
+    private void Coordinator_MouseMove(object? sender, MouseCoordinatorMouseMoveEventArgs e)
     {
         if (this.currentCoordinator == null)
         {

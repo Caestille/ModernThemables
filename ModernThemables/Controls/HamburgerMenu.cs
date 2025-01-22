@@ -15,9 +15,9 @@ using ModernThemables.ViewModels;
 
 public class HamburgerMenu : Control
 {
-    private const string PART_OpenButton = "PART_OpenButton";
-    private const string PART_PinButton = "PART_PinButton";
-    private const string PART_SearchBox = "PART_SearchBox";
+    private const string PARTOpenButton = "PART_OpenButton";
+    private const string PARTPinButton = "PART_PinButton";
+    private const string PARTSearchBox = "PART_SearchBox";
 
     private Button2? openButton;
     private Button2? pinButton;
@@ -213,7 +213,7 @@ public class HamburgerMenu : Control
             this.openButton.Click -= this.OpenButton_Click;
         }
 
-        if (this.Template.FindName(PART_OpenButton, this) is Button2 open)
+        if (this.Template.FindName(PARTOpenButton, this) is Button2 open)
         {
             this.openButton = open;
         }
@@ -228,7 +228,7 @@ public class HamburgerMenu : Control
             this.pinButton.Click -= this.PinButton_Click;
         }
 
-        if (this.Template.FindName(PART_PinButton, this) is Button2 pin)
+        if (this.Template.FindName(PARTPinButton, this) is Button2 pin)
         {
             this.pinButton = pin;
         }
@@ -238,14 +238,12 @@ public class HamburgerMenu : Control
             this.pinButton.Click += this.PinButton_Click;
         }
 
-        ;
-
         if (this.searchBox != null)
         {
             this.searchBox.TextChanged -= this.SearchBox_SearchTextChanged;
         }
 
-        if (this.Template.FindName(PART_SearchBox, this) is SearchBox search)
+        if (this.Template.FindName(PARTSearchBox, this) is SearchBox search)
         {
             this.searchBox = search;
         }
