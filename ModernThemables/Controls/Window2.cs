@@ -396,7 +396,7 @@ public class Window2 : WindowChromeWindow
             this.VerifyAccess();
             var value = typeof(Window)
                 .GetProperty("CriticalHandle", BindingFlags.NonPublic | BindingFlags.Instance)?
-                .GetValue(this, new object[0])
+                .GetValue(this, [])
                     ?? IntPtr.Zero;
             return (IntPtr)value;
         }

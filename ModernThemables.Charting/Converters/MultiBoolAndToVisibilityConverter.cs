@@ -31,5 +31,5 @@ public class MultiBoolAndToVisibilityConverter : IMultiValueConverter
         return allow ? Visibility.Visible : type;
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => new[] { Binding.DoNothing };
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => [Binding.DoNothing];
 }

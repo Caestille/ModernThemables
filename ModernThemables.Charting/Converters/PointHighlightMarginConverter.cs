@@ -25,8 +25,8 @@ public class PointHighlightMarginConverter : IMultiValueConverter
         }
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => new object[]
-        {
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
+        [
             Binding.DoNothing,
-        };
+        ];
 }

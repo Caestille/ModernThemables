@@ -25,5 +25,5 @@ public class MultiBoolOrToVisibilityConverter : IMultiValueConverter
         return allow ? Visibility.Visible : Visibility.Collapsed;
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => new[] { Binding.DoNothing };
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => [Binding.DoNothing];
 }

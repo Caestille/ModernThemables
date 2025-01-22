@@ -81,12 +81,12 @@ public class PieLabelMarginConverter : IMultiValueConverter
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {
-        return new object[]
-        {
+        return
+        [
             Binding.DoNothing,
             Binding.DoNothing,
             Binding.DoNothing,
             Binding.DoNothing,
-        };
+        ];
     }
 }

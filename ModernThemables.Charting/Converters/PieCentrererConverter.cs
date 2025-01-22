@@ -24,5 +24,5 @@ public class PieCentrererConverter : IMultiValueConverter
         }
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => new object[] { Binding.DoNothing, Binding.DoNothing, Binding.DoNothing };
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => [Binding.DoNothing, Binding.DoNothing, Binding.DoNothing];
 }
