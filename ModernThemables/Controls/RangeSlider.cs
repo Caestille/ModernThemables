@@ -12,28 +12,101 @@ using System.Windows.Controls.Primitives;
 
 public class RangeSlider : Slider2
 {
-    private bool midRangeMouseDown;
-    private Point midRangeMouseDownPoint;
+    public static readonly RoutedEvent LowerValueChangedEvent = EventManager.RegisterRoutedEvent(
+        nameof(LowerValueChanged),
+        RoutingStrategy.Bubble,
+        typeof(RoutedEventHandler),
+        typeof(RangeSlider));
+
+    public static readonly RoutedEvent HigherValueChangedEvent = EventManager.RegisterRoutedEvent(
+        nameof(HigherValueChanged),
+        RoutingStrategy.Bubble,
+        typeof(RoutedEventHandler),
+        typeof(RangeSlider));
+
+    /// <summary>
+    /// HigherValue property represents the higher value within the selected range.
+    /// </summary>
+    public static readonly DependencyProperty HigherValueProperty = DependencyProperty.Register(
+        nameof(HigherValue),
+        typeof(double),
+        typeof(RangeSlider),
+        new FrameworkPropertyMetadata(
+           0d,
+           FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+           OnHigherValueChanged,
+           OnCoerceHigherValueChanged));
+
+    /// <summary>
+    /// LowerValue property represents the lower value within the selected range.
+    /// </summary>
+    public static readonly DependencyProperty LowerValueProperty = DependencyProperty.Register(
+        nameof(LowerValue),
+        typeof(double),
+        typeof(RangeSlider),
+        new FrameworkPropertyMetadata(
+           0d,
+           FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+           OnLowerValueChanged,
+           OnCoerceLowerValueChanged));
+
+    /// <summary>
+    /// RangeWidth property is a readonly property, used to calculate the percentage of the range within the entire min/max range.
+    /// </summary>
+    private static readonly DependencyPropertyKey RangeWidthPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
+        nameof(RangeWidth),
+        typeof(double),
+        typeof(RangeSlider),
+        new PropertyMetadata(0d));
+
+    /// <summary>
+    /// RangeMargin property is a readonly property, used to calculate the offset of the range within the left hand side of the range.
+    /// </summary>
+    private static readonly DependencyPropertyKey RangeMarginPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
+        nameof(RangeMargin),
+        typeof(Thickness),
+        typeof(RangeSlider),
+        new PropertyMetadata(new Thickness(0)));
+
+#pragma warning disable SA1202 // Elements should be ordered by access
+    public static readonly DependencyProperty RangeMarginProperty = RangeMarginPropertyKey.DependencyProperty;
+
+    public static readonly DependencyProperty RangeWidthProperty = RangeWidthPropertyKey.DependencyProperty;
+#pragma warning restore SA1202 // Elements should be ordered by access
 
     private const string PARTMidRange = "PART_MidRange";
     private const string PARTHigherSlider = "PART_HigherSlider";
     private const string PARTLowerSlider = "PART_LowerSlider";
     private const string PARTTrack = "PART_Track";
 
+    private bool midRangeMouseDown;
+    private Point midRangeMouseDownPoint;
+
     private RepeatButton? midRange;
     private Slider? lowerSlider;
     private Slider? higherSlider;
+
+    static RangeSlider()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(RangeSlider), new FrameworkPropertyMetadata(typeof(RangeSlider)));
+    }
 
     public RangeSlider()
     {
         this.SizeChanged += this.RangeSlider_SizeChanged;
     }
 
-    /// <summary>
-    /// HigherValue property represents the higher value within the selected range.
-    /// </summary>
-    public static readonly DependencyProperty HigherValueProperty = DependencyProperty.Register("HigherValue", typeof(double), typeof(RangeSlider),
-      new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, RangeSlider.OnHigherValueChanged, RangeSlider.OnCoerceHigherValueChanged));
+    public event RoutedEventHandler LowerValueChanged
+    {
+        add => this.AddHandler(RangeSlider.LowerValueChangedEvent, value);
+        remove => this.RemoveHandler(RangeSlider.LowerValueChangedEvent, value);
+    }
+
+    public event RoutedEventHandler HigherValueChanged
+    {
+        add => this.AddHandler(RangeSlider.HigherValueChangedEvent, value);
+        remove => this.RemoveHandler(RangeSlider.HigherValueChangedEvent, value);
+    }
 
     public double HigherValue
     {
@@ -41,106 +114,17 @@ public class RangeSlider : Slider2
         set => this.SetValue(RangeSlider.HigherValueProperty, value);
     }
 
-    private static object OnCoerceHigherValueChanged(DependencyObject d, object basevalue)
-    {
-        var rangeSlider = (RangeSlider)d;
-        if ((rangeSlider == null) || !rangeSlider.IsLoaded)
-        {
-            return basevalue;
-        }
-
-        return Math.Max(rangeSlider.LowerValue, (double)basevalue);
-    }
-
-    private static void OnHigherValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-    {
-        if (sender is RangeSlider rangeSlider)
-        {
-            rangeSlider.OnHigherValueChanged((double)args.OldValue, (double)args.NewValue);
-        }
-    }
-
-    protected virtual void OnHigherValueChanged(double oldValue, double newValue)
-    {
-        this.AdjustView();
-
-        RoutedEventArgs args = new RoutedEventArgs();
-        args.RoutedEvent = HigherValueChangedEvent;
-        this.RaiseEvent(args);
-    }
-
-    /// <summary>
-    /// LowerValue property represents the lower value within the selected range.
-    /// </summary>
-    public static readonly DependencyProperty LowerValueProperty = DependencyProperty.Register("LowerValue", typeof(double), typeof(RangeSlider),
-      new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, RangeSlider.OnLowerValueChanged, RangeSlider.OnCoerceLowerValueChanged));
-
     public double LowerValue
     {
         get => (double)this.GetValue(RangeSlider.LowerValueProperty);
         set => this.SetValue(RangeSlider.LowerValueProperty, value);
     }
 
-    private static object OnCoerceLowerValueChanged(DependencyObject d, object basevalue)
-    {
-        var rangeSlider = (RangeSlider)d;
-        if ((rangeSlider == null) || !rangeSlider.IsLoaded)
-        {
-            return basevalue;
-        }
-
-        var min = Math.Min(rangeSlider.Minimum, rangeSlider.Maximum);
-        var max = Math.Max(rangeSlider.Minimum, rangeSlider.Maximum);
-        var lowerValue = Math.Max(rangeSlider.Minimum, Math.Min(rangeSlider.Maximum, (double)basevalue));
-        lowerValue = Math.Min((double)basevalue, rangeSlider.HigherValue);
-
-        return lowerValue;
-    }
-
-    private static void OnLowerValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-    {
-        if (sender is RangeSlider rangeSlider)
-        {
-            rangeSlider.OnLowerValueChanged((double)args.OldValue, (double)args.NewValue);
-        }
-    }
-
-    protected virtual void OnLowerValueChanged(double oldValue, double newValue)
-    {
-        this.AdjustView();
-
-        RoutedEventArgs args = new RoutedEventArgs();
-        args.RoutedEvent = RangeSlider.LowerValueChangedEvent;
-        this.RaiseEvent(args);
-    }
-
-    protected override void OnMaximumChanged(double oldValue, double newValue) => this.AdjustView();
-
-    protected override void OnMinimumChanged(double oldValue, double newValue) =>
-        // adjust the range width
-        this.AdjustView();
-
-    /// <summary>
-    /// RangeWidth property is a readonly property, used to calculate the percentage of the range within the entire min/max range.
-    /// </summary>
-    private static readonly DependencyPropertyKey RangeWidthPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeWidth", typeof(double),
-      typeof(RangeSlider), new PropertyMetadata(0d));
-
-    public static readonly DependencyProperty RangeWidthProperty = RangeWidthPropertyKey.DependencyProperty;
-
     public double RangeWidth
     {
         get => (double)this.GetValue(RangeSlider.RangeWidthProperty);
         private set => this.SetValue(RangeSlider.RangeWidthPropertyKey, value);
     }
-
-    /// <summary>
-    /// RangeMargin property is a readonly property, used to calculate the offset of the range within the left hand side of the range.
-    /// </summary>
-    private static readonly DependencyPropertyKey RangeMarginPropertyKey = DependencyProperty.RegisterAttachedReadOnly("RangeMargin", typeof(Thickness),
-      typeof(RangeSlider), new PropertyMetadata(new Thickness(0)));
-
-    public static readonly DependencyProperty RangeMarginProperty = RangeMarginPropertyKey.DependencyProperty;
 
     public Thickness RangeMargin
     {
@@ -196,6 +180,73 @@ public class RangeSlider : Slider2
         }
     }
 
+    protected virtual void OnHigherValueChanged(double oldValue, double newValue)
+    {
+        this.AdjustView();
+
+        RoutedEventArgs args = new RoutedEventArgs();
+        args.RoutedEvent = HigherValueChangedEvent;
+        this.RaiseEvent(args);
+    }
+
+    protected virtual void OnLowerValueChanged(double oldValue, double newValue)
+    {
+        this.AdjustView();
+
+        RoutedEventArgs args = new RoutedEventArgs();
+        args.RoutedEvent = RangeSlider.LowerValueChangedEvent;
+        this.RaiseEvent(args);
+    }
+
+    protected override void OnMaximumChanged(double oldValue, double newValue) => this.AdjustView();
+
+    protected override void OnMinimumChanged(double oldValue, double newValue) =>
+        // adjust the range width
+        this.AdjustView();
+
+    private static object OnCoerceLowerValueChanged(DependencyObject d, object basevalue)
+    {
+        var rangeSlider = (RangeSlider)d;
+        if ((rangeSlider == null) || !rangeSlider.IsLoaded)
+        {
+            return basevalue;
+        }
+
+        var min = Math.Min(rangeSlider.Minimum, rangeSlider.Maximum);
+        var max = Math.Max(rangeSlider.Minimum, rangeSlider.Maximum);
+        var lowerValue = Math.Max(rangeSlider.Minimum, Math.Min(rangeSlider.Maximum, (double)basevalue));
+        lowerValue = Math.Min((double)basevalue, rangeSlider.HigherValue);
+
+        return lowerValue;
+    }
+
+    private static void OnLowerValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+    {
+        if (sender is RangeSlider rangeSlider)
+        {
+            rangeSlider.OnLowerValueChanged((double)args.OldValue, (double)args.NewValue);
+        }
+    }
+
+    private static object OnCoerceHigherValueChanged(DependencyObject d, object basevalue)
+    {
+        var rangeSlider = (RangeSlider)d;
+        if ((rangeSlider == null) || !rangeSlider.IsLoaded)
+        {
+            return basevalue;
+        }
+
+        return Math.Max(rangeSlider.LowerValue, (double)basevalue);
+    }
+
+    private static void OnHigherValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+    {
+        if (sender is RangeSlider rangeSlider)
+        {
+            rangeSlider.OnHigherValueChanged((double)args.OldValue, (double)args.NewValue);
+        }
+    }
+
     private void MidRange_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         this.midRangeMouseDownPoint = e.GetPosition(this.midRange);
@@ -213,8 +264,8 @@ public class RangeSlider : Slider2
 
         var pos = e.GetPosition(this.midRange);
 
-        var newMin = this.LowerValue + ((pos.X - this.midRangeMouseDownPoint.X) / this.ActualWidth) * (this.Maximum - this.Minimum);
-        var newMax = this.HigherValue + ((pos.X - this.midRangeMouseDownPoint.X) / this.ActualWidth) * (this.Maximum - this.Minimum);
+        var newMin = this.LowerValue + (((pos.X - this.midRangeMouseDownPoint.X) / this.ActualWidth) * (this.Maximum - this.Minimum));
+        var newMax = this.HigherValue + (((pos.X - this.midRangeMouseDownPoint.X) / this.ActualWidth) * (this.Maximum - this.Minimum));
 
         if (newMin >= this.Minimum && newMax <= this.Maximum)
         {
@@ -253,7 +304,7 @@ public class RangeSlider : Slider2
     private CoercedValues GetCoercedValues()
     {
         var buffer = (this.Maximum - this.Minimum) * 0.01;
-        CoercedValues cv = new CoercedValues();
+        CoercedValues cv = default;
         cv.Minimum = Math.Min(this.Minimum, this.Maximum);
         cv.Maximum = Math.Max(cv.Minimum, this.Maximum);
         cv.LowerValue = Math.Max(cv.Minimum, Math.Min(cv.Maximum, this.LowerValue));
@@ -263,9 +314,11 @@ public class RangeSlider : Slider2
         return cv;
     }
 
-    private void SetLowerSliderValues(double value, double? minimum, double? maximum) => this.SetSliderValues(this.lowerSlider, this.LowerSlider_ValueChanged, value, minimum, maximum);
+    private void SetLowerSliderValues(double value, double? minimum, double? maximum)
+        => this.SetSliderValues(this.lowerSlider, this.LowerSlider_ValueChanged, value, minimum, maximum);
 
-    private void SetHigherSliderValues(double value, double? minimum, double? maximum) => this.SetSliderValues(this.higherSlider, this.HigherSlider_ValueChanged, value, minimum, maximum);
+    private void SetHigherSliderValues(double value, double? minimum, double? maximum)
+        => this.SetSliderValues(this.higherSlider, this.HigherSlider_ValueChanged, value, minimum, maximum);
 
     private void SetSliderValues(
         Slider? slider,
@@ -309,22 +362,6 @@ public class RangeSlider : Slider2
         newValue = Math.Min(newValue, cv.HigherValue);
         this.SetLowerSliderValues(newValue, null, null);
         this.LowerValue = newValue;
-    }
-
-    public static readonly RoutedEvent LowerValueChangedEvent = EventManager.RegisterRoutedEvent("LowerValueChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RangeSlider));
-
-    public event RoutedEventHandler LowerValueChanged
-    {
-        add => this.AddHandler(RangeSlider.LowerValueChangedEvent, value);
-        remove => this.RemoveHandler(RangeSlider.LowerValueChangedEvent, value);
-    }
-
-    public static readonly RoutedEvent HigherValueChangedEvent = EventManager.RegisterRoutedEvent("HigherValueChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RangeSlider));
-
-    public event RoutedEventHandler HigherValueChanged
-    {
-        add => this.AddHandler(RangeSlider.HigherValueChangedEvent, value);
-        remove => this.RemoveHandler(RangeSlider.HigherValueChangedEvent, value);
     }
 
     private void RangeSlider_SizeChanged(object sender, SizeChangedEventArgs e) => this.AdjustView();

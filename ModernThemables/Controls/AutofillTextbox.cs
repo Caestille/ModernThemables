@@ -10,6 +10,34 @@ using System.Windows.Media;
 
 public class AutofillTextbox : TextBox
 {
+    public static readonly DependencyProperty AutofillOptionsProperty = DependencyProperty.Register(
+        nameof(AutofillOptions),
+        typeof(ObservableCollection<string>),
+        typeof(AutofillTextbox),
+        new FrameworkPropertyMetadata(null));
+
+    public static readonly DependencyProperty SuggestionTextProperty = DependencyProperty.Register(
+        nameof(SuggestionText),
+        typeof(string),
+        typeof(AutofillTextbox),
+        new FrameworkPropertyMetadata(string.Empty));
+
+    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        nameof(CornerRadius),
+        typeof(CornerRadius),
+        typeof(AutofillTextbox),
+        new PropertyMetadata(new CornerRadius(0)));
+
+    public static readonly DependencyProperty WatermarkForegroundProperty = DependencyProperty.Register(
+        nameof(WatermarkForeground),
+        typeof(Brush),
+        typeof(AutofillTextbox));
+
+    static AutofillTextbox()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(AutofillTextbox), new FrameworkPropertyMetadata(typeof(AutofillTextbox)));
+    }
+
     public AutofillTextbox()
     {
     }
@@ -20,23 +48,11 @@ public class AutofillTextbox : TextBox
         set => this.SetValue(AutofillOptionsProperty, value);
     }
 
-    public static readonly DependencyProperty AutofillOptionsProperty = DependencyProperty.Register(
-        nameof(AutofillOptions),
-        typeof(ObservableCollection<string>),
-        typeof(AutofillTextbox),
-        new FrameworkPropertyMetadata(null));
-
     public string SuggestionText
     {
         get => (string)this.GetValue(SuggestionTextProperty);
         set => this.SetValue(SuggestionTextProperty, value);
     }
-
-    public static readonly DependencyProperty SuggestionTextProperty = DependencyProperty.Register(
-        nameof(SuggestionText),
-        typeof(string),
-        typeof(AutofillTextbox),
-        new FrameworkPropertyMetadata(string.Empty));
 
     public CornerRadius CornerRadius
     {
@@ -44,22 +60,11 @@ public class AutofillTextbox : TextBox
         set => this.SetValue(CornerRadiusProperty, value);
     }
 
-    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-        nameof(CornerRadius),
-        typeof(CornerRadius),
-        typeof(AutofillTextbox),
-        new PropertyMetadata(new CornerRadius(0)));
-
     public Brush WatermarkForeground
     {
         get => (Brush)this.GetValue(WatermarkForegroundProperty);
         set => this.SetValue(WatermarkForegroundProperty, value);
     }
-
-    public static readonly DependencyProperty WatermarkForegroundProperty = DependencyProperty.Register(
-        nameof(WatermarkForeground),
-        typeof(Brush),
-        typeof(AutofillTextbox));
 
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
@@ -113,6 +118,4 @@ public class AutofillTextbox : TextBox
 
         this.SuggestionText = string.IsNullOrWhiteSpace(this.Text) ? string.Empty : this.AutofillOptions.FirstOrDefault(x => x.StartsWith(this.Text, StringComparison.OrdinalIgnoreCase)) ?? string.Empty;
     }
-
-    public override void OnApplyTemplate() => base.OnApplyTemplate();
 }

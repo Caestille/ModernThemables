@@ -6,12 +6,14 @@ using System.Windows.Input;
 
 public partial class ThemingControl : UserControl
 {
-    public event EventHandler? InternalRequestClose;
-
     public ThemingControl()
     {
         this.InitializeComponent();
     }
+
+    public event EventHandler? InternalRequestClose;
+
+    public void FocusOnOpen() => this.SyncCheckbox.Focus();
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
@@ -20,6 +22,4 @@ public partial class ThemingControl : UserControl
             this.InternalRequestClose?.Invoke(this, EventArgs.Empty);
         }
     }
-
-    public void FocusOnOpen() => this.SyncCheckbox.Focus();
 }

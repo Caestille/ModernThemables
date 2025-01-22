@@ -8,24 +8,12 @@ using System.Windows.Media.Effects;
 
 public class BlurHost : ContentControl
 {
-    public FrameworkElement BlurBackground
-    {
-        get => (FrameworkElement)this.GetValue(BlurBackgroundProperty);
-        set => this.SetValue(BlurBackgroundProperty, value);
-    }
-
     public static readonly DependencyProperty BlurBackgroundProperty =
         DependencyProperty.Register(
           nameof(BlurBackground),
           typeof(FrameworkElement),
           typeof(BlurHost),
           new PropertyMetadata(default(FrameworkElement), OnBlurBackgroundChanged));
-
-    public double OffsetX
-    {
-        get => (double)this.GetValue(OffsetXProperty);
-        set => this.SetValue(OffsetXProperty, value);
-    }
 
     public static readonly DependencyProperty OffsetXProperty =
         DependencyProperty.Register(
@@ -34,24 +22,12 @@ public class BlurHost : ContentControl
           typeof(BlurHost),
           new PropertyMetadata(0d));
 
-    public double OffsetY
-    {
-        get => (double)this.GetValue(OffsetYProperty);
-        set => this.SetValue(OffsetYProperty, value);
-    }
-
     public static readonly DependencyProperty OffsetYProperty =
         DependencyProperty.Register(
           nameof(OffsetY),
           typeof(double),
           typeof(BlurHost),
           new PropertyMetadata(0d));
-
-    public double BlurRadius
-    {
-        get => (double)this.GetValue(BlurRadiusProperty);
-        set => this.SetValue(BlurRadiusProperty, value);
-    }
 
     public static readonly DependencyProperty BlurRadiusProperty =
         DependencyProperty.Register(
@@ -60,24 +36,12 @@ public class BlurHost : ContentControl
           typeof(BlurHost),
           new UIPropertyMetadata(30d, OnBlurBackgroundChanged));
 
-    public double BlurOpacity
-    {
-        get => (double)this.GetValue(BlurOpacityProperty);
-        set => this.SetValue(BlurOpacityProperty, value);
-    }
-
     public static readonly DependencyProperty BlurOpacityProperty =
         DependencyProperty.Register(
           nameof(BlurOpacity),
           typeof(double),
           typeof(BlurHost),
           new PropertyMetadata(1.0));
-
-    public bool PreventResample
-    {
-        get => (bool)this.GetValue(PreventResampleProperty);
-        set => this.SetValue(PreventResampleProperty, value);
-    }
 
     public static readonly DependencyProperty PreventResampleProperty =
         DependencyProperty.Register(
@@ -86,24 +50,12 @@ public class BlurHost : ContentControl
           typeof(BlurHost),
           new PropertyMetadata(false));
 
-    public bool BlurEnabled
-    {
-        get => (bool)this.GetValue(BlurEnabledProperty);
-        set => this.SetValue(BlurEnabledProperty, value);
-    }
-
     public static readonly DependencyProperty BlurEnabledProperty =
         DependencyProperty.Register(
           nameof(BlurEnabled),
           typeof(bool),
           typeof(BlurHost),
           new PropertyMetadata(true));
-
-    public object RedrawTrigger
-    {
-        get => this.GetValue(RedrawTriggerProperty);
-        set => this.SetValue(RedrawTriggerProperty, value);
-    }
 
     public static readonly DependencyProperty RedrawTriggerProperty =
         DependencyProperty.Register(
@@ -112,9 +64,10 @@ public class BlurHost : ContentControl
           typeof(BlurHost),
           new PropertyMetadata(new object(), Draw));
 
-    private Border? PART_BlurDecorator { get; set; }
-
-    private VisualBrush BlurDecoratorBrush { get; set; }
+    static BlurHost()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BlurHost), new FrameworkPropertyMetadata(typeof(BlurHost)));
+    }
 
     public BlurHost()
     {
@@ -127,42 +80,57 @@ public class BlurHost : ContentControl
         };
     }
 
-    public void DrawBlurredElementBackground()
+    public FrameworkElement BlurBackground
     {
-        if (!this.BlurEnabled)
-        {
-            return;
-        }
-
-        if (!this.TryFindVisualRootContainer(this, out var blurHostContainer)
-            || !this.TryFindVisualRootContainer(this.BlurBackground, out var backgroundContainer))
-        {
-            return;
-        }
-
-        Rect blurHostBounds = this.TransformToVisual(blurHostContainer)
-            .TransformBounds(new Rect(this.RenderSize));
-        Rect backgroundBounds = this.BlurBackground.TransformToVisual(backgroundContainer)
-            .TransformBounds(new Rect(this.BlurBackground.RenderSize));
-
-        var transform = backgroundContainer?.TransformToVisual(blurHostContainer).Transform(new Point(0, 0)) ?? new Point();
-
-        var viewBox = new Rect(Math.Max(blurHostBounds.Left - transform.X, 0) + this.OffsetX, Math.Max(blurHostBounds.Top - transform.Y, 0) + this.OffsetY, blurHostBounds.Width, blurHostBounds.Height);
-
-        this.BlurDecoratorBrush.Viewbox = viewBox;
-
-        this.BlurDecoratorBrush.Opacity = this.BlurOpacity;
+        get => (FrameworkElement)this.GetValue(BlurBackgroundProperty);
+        set => this.SetValue(BlurBackgroundProperty, value);
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    public double OffsetX
     {
-        if (this.TryFindVisualRootContainer(this, out var rootContainer) && rootContainer != null)
-        {
-            rootContainer.SizeChanged += this.OnRootContainerElementResized;
-        }
-
-        this.DrawBlurredElementBackground();
+        get => (double)this.GetValue(OffsetXProperty);
+        set => this.SetValue(OffsetXProperty, value);
     }
+
+    public double OffsetY
+    {
+        get => (double)this.GetValue(OffsetYProperty);
+        set => this.SetValue(OffsetYProperty, value);
+    }
+
+    public double BlurRadius
+    {
+        get => (double)this.GetValue(BlurRadiusProperty);
+        set => this.SetValue(BlurRadiusProperty, value);
+    }
+
+    public double BlurOpacity
+    {
+        get => (double)this.GetValue(BlurOpacityProperty);
+        set => this.SetValue(BlurOpacityProperty, value);
+    }
+
+    public bool PreventResample
+    {
+        get => (bool)this.GetValue(PreventResampleProperty);
+        set => this.SetValue(PreventResampleProperty, value);
+    }
+
+    public bool BlurEnabled
+    {
+        get => (bool)this.GetValue(BlurEnabledProperty);
+        set => this.SetValue(BlurEnabledProperty, value);
+    }
+
+    public object RedrawTrigger
+    {
+        get => this.GetValue(RedrawTriggerProperty);
+        set => this.SetValue(RedrawTriggerProperty, value);
+    }
+
+    private Border? PART_BlurDecorator { get; set; }
+
+    private VisualBrush BlurDecoratorBrush { get; set; }
 
     public override void OnApplyTemplate()
     {
@@ -221,6 +189,45 @@ public class BlurHost : ContentControl
         {
             this_.DrawBlurredElementBackground();
         }
+    }
+
+    private void DrawBlurredElementBackground()
+    {
+        if (!this.BlurEnabled)
+        {
+            return;
+        }
+
+        if (!this.TryFindVisualRootContainer(this, out var blurHostContainer)
+            || !this.TryFindVisualRootContainer(this.BlurBackground, out var backgroundContainer))
+        {
+            return;
+        }
+
+        var blurHostBounds = this.TransformToVisual(blurHostContainer).TransformBounds(new Rect(this.RenderSize));
+        var backgroundBounds = this.BlurBackground.TransformToVisual(backgroundContainer).TransformBounds(new Rect(this.BlurBackground.RenderSize));
+
+        var transform = backgroundContainer?.TransformToVisual(blurHostContainer).Transform(new Point(0, 0)) ?? default;
+
+        var viewBox = new Rect(
+            Math.Max(blurHostBounds.Left - transform.X, 0) + this.OffsetX,
+            Math.Max(blurHostBounds.Top - transform.Y, 0) + this.OffsetY,
+            blurHostBounds.Width,
+            blurHostBounds.Height);
+
+        this.BlurDecoratorBrush.Viewbox = viewBox;
+
+        this.BlurDecoratorBrush.Opacity = this.BlurOpacity;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        if (this.TryFindVisualRootContainer(this, out var rootContainer) && rootContainer != null)
+        {
+            rootContainer.SizeChanged += this.OnRootContainerElementResized;
+        }
+
+        this.DrawBlurredElementBackground();
     }
 
     private void OnRootContainerElementResized(object sender, SizeChangedEventArgs e)

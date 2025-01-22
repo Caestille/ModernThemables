@@ -7,6 +7,17 @@ using System.Windows.Media;
 
 public class SearchBox : TextBox
 {
+    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        nameof(CornerRadius),
+        typeof(CornerRadius),
+        typeof(SearchBox),
+        new PropertyMetadata(new CornerRadius(0)));
+
+    public static readonly DependencyProperty WatermarkForegroundProperty = DependencyProperty.Register(
+        nameof(WatermarkForeground),
+        typeof(Brush),
+        typeof(SearchBox));
+
     private const string PARTButton = "PART_button";
 
     private Button2? button;
@@ -17,22 +28,11 @@ public class SearchBox : TextBox
         set => this.SetValue(CornerRadiusProperty, value);
     }
 
-    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-        nameof(CornerRadius),
-        typeof(CornerRadius),
-        typeof(SearchBox),
-        new PropertyMetadata(new CornerRadius(0)));
-
     public Brush WatermarkForeground
     {
         get => (Brush)this.GetValue(WatermarkForegroundProperty);
         set => this.SetValue(WatermarkForegroundProperty, value);
     }
-
-    public static readonly DependencyProperty WatermarkForegroundProperty = DependencyProperty.Register(
-        nameof(WatermarkForeground),
-        typeof(Brush),
-        typeof(SearchBox));
 
     public override void OnApplyTemplate()
     {

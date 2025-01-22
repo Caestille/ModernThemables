@@ -9,28 +9,33 @@ using System.Windows.Media;
 /// </summary>
 public partial class ColourPickerDialogue : Window2
 {
-    private Color initialColour;
-    private readonly Action<Color>? colourChangedCallback;
-
-    public Color Colour
-    {
-        get => (Color)this.GetValue(ColourProperty);
-        set => this.SetValue(ColourProperty, value);
-    }
-
     public static readonly DependencyProperty ColourProperty = DependencyProperty.Register(
         nameof(Colour),
         typeof(Color),
         typeof(ColourPickerDialogue),
         new FrameworkPropertyMetadata(Colors.Black, OnColourSet));
 
+    private readonly Action<Color>? colourChangedCallback;
+    private Color initialColour;
+
+    static ColourPickerDialogue()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ColourPickerDialogue), new FrameworkPropertyMetadata(typeof(ColourPickerDialogue)));
+    }
+
     public ColourPickerDialogue(Color inputColour, Action<Color>? colourChangedCallback)
     {
         this.InitializeComponent();
         this.initialColour = inputColour;
         this.colourChangedCallback = colourChangedCallback;
-        this.ColourPickerControl.colourChangedCallback = colourChangedCallback;
+        this.ColourPickerControl.ColourChangedCallback = colourChangedCallback;
         this.Colour = inputColour;
+    }
+
+    public Color Colour
+    {
+        get => (Color)this.GetValue(ColourProperty);
+        set => this.SetValue(ColourProperty, value);
     }
 
     private static void OnColourSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)

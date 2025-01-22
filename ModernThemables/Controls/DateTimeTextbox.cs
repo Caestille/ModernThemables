@@ -13,14 +13,55 @@ using CoreUtilities.Services;
 
 public class DateTimeTextBox : TextBox
 {
-    private bool blockUpdate;
-    private readonly RefreshTrigger trigger;
-    private bool isKeyboardUpdate = false;
-    private bool blockRecalculateOnce;
+    public static readonly RoutedEvent DateChangedEvent = EventManager.RegisterRoutedEvent(
+        nameof(DateChanged),
+        RoutingStrategy.Bubble,
+        typeof(RoutedPropertyChangedEventHandler<DateTime?>),
+        typeof(DateTimeTextBox));
+
+    public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register(
+        nameof(DateTime),
+        typeof(DateTime?),
+        typeof(DateTimeTextBox),
+        new FrameworkPropertyMetadata(System.DateTime.Now, OnSetDateTime));
+
+    public static readonly DependencyProperty DateTimeValidProperty = DependencyProperty.Register(
+        nameof(DateTimeValid),
+        typeof(bool),
+        typeof(DateTimeTextBox),
+        new FrameworkPropertyMetadata(true));
+
+    public static readonly DependencyProperty FormatProperty = DependencyProperty.Register(
+        nameof(Format),
+        typeof(string),
+        typeof(DateTimeTextBox),
+        new FrameworkPropertyMetadata(OnSetFormat));
+
+    public static readonly DependencyProperty WarningBrushProperty = DependencyProperty.Register(
+        nameof(WarningBrush),
+        typeof(Brush),
+        typeof(DateTimeTextBox),
+        new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Red)));
+
+    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        nameof(CornerRadius),
+        typeof(CornerRadius),
+        typeof(DateTimeTextBox),
+        new PropertyMetadata(new CornerRadius(0)));
 
     private readonly List<string> skipCharacters = new() { string.Empty, " ", ":", "/" };
 
+    private readonly RefreshTrigger trigger;
+    private bool blockUpdate;
+    private bool isKeyboardUpdate = false;
+    private bool blockRecalculateOnce;
+
     private DateTime? lastValue;
+
+    static DateTimeTextBox()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(DateTimeTextBox), new FrameworkPropertyMetadata(typeof(DateTimeTextBox)));
+    }
 
     public DateTimeTextBox()
     {
@@ -30,12 +71,10 @@ public class DateTimeTextBox : TextBox
         OnSetDateTime(this, new DependencyPropertyChangedEventArgs(DateTimeProperty, System.DateTime.MinValue, this.DateTime));
     }
 
-    private void DatetimeTextBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    public event RoutedPropertyChangedEventHandler<DateTime?> DateChanged
     {
-        if (this.DataContext is null)
-        {
-            this.DateTime = null;
-        }
+        add => this.AddHandler(DateChangedEvent, value);
+        remove => this.RemoveHandler(DateChangedEvent, value);
     }
 
     public DateTime? DateTime
@@ -44,23 +83,11 @@ public class DateTimeTextBox : TextBox
         set => this.SetValue(DateTimeProperty, value);
     }
 
-    public static readonly DependencyProperty DateTimeProperty = DependencyProperty.Register(
-        nameof(DateTime),
-        typeof(DateTime?),
-        typeof(DateTimeTextBox),
-        new FrameworkPropertyMetadata(System.DateTime.Now, OnSetDateTime));
-
     public bool DateTimeValid
     {
         get => (bool)this.GetValue(DateTimeValidProperty);
         set => this.SetValue(DateTimeValidProperty, value);
     }
-
-    public static readonly DependencyProperty DateTimeValidProperty = DependencyProperty.Register(
-        nameof(DateTimeValid),
-        typeof(bool),
-        typeof(DateTimeTextBox),
-        new FrameworkPropertyMetadata(true));
 
     public string Format
     {
@@ -68,79 +95,16 @@ public class DateTimeTextBox : TextBox
         set => this.SetValue(FormatProperty, value);
     }
 
-    public static readonly DependencyProperty FormatProperty = DependencyProperty.Register(
-        nameof(Format),
-        typeof(string),
-        typeof(DateTimeTextBox),
-        new FrameworkPropertyMetadata(OnSetFormat));
-
     public Brush WarningBrush
     {
         get => (Brush)this.GetValue(WarningBrushProperty);
         set => this.SetValue(WarningBrushProperty, value);
     }
 
-    public static readonly DependencyProperty WarningBrushProperty = DependencyProperty.Register(
-        nameof(WarningBrush),
-        typeof(Brush),
-        typeof(DateTimeTextBox),
-        new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Red)));
-
     public CornerRadius CornerRadius
     {
         get => (CornerRadius)this.GetValue(CornerRadiusProperty);
         set => this.SetValue(CornerRadiusProperty, value);
-    }
-
-    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-        nameof(CornerRadius),
-        typeof(CornerRadius),
-        typeof(DateTimeTextBox),
-        new PropertyMetadata(new CornerRadius(0)));
-
-    private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-    {
-        var _this = sender as DateTimeTextBox;
-        if (_this != null)
-        {
-            _this.blockRecalculateOnce = true;
-            _this.Text = _this.DateTime.HasValue ? _this.DateTime.Value.ToString(_this.Format) : string.Empty;
-        }
-    }
-
-    private static void OnSetDateTime(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-    {
-        var _this = sender as DateTimeTextBox;
-        if (_this != null)
-        {
-            if (!_this.isKeyboardUpdate && _this.IsKeyboardFocused)
-            {
-                Keyboard.ClearFocus();
-            }
-
-            if ((e.OldValue == null || e.NewValue != e.OldValue)
-                && e.NewValue is DateTime dt
-                && _this != null && !_this.IsFocused)
-            {
-                _this.blockUpdate = true;
-                if (!_this.isKeyboardUpdate)
-                {
-                    _this.Focusable = false;
-                }
-
-                _this.Text = dt.ToString(_this.Format);
-                if (!_this.isKeyboardUpdate)
-                {
-                    _this.Focusable = true;
-                }
-
-                _this.blockUpdate = false;
-            }
-            else if (e.NewValue == null && _this != null && !_this.isKeyboardUpdate)
-            {
-                _this.Text = string.Join(string.Empty, _this.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
-            }
-        }
     }
 
     public override void OnApplyTemplate()
@@ -165,16 +129,57 @@ public class DateTimeTextBox : TextBox
         }
     }
 
-    public static readonly RoutedEvent DateChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(DateChanged),
-        RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<DateTime?>),
-        typeof(DateTimeTextBox));
-
-    public event RoutedPropertyChangedEventHandler<DateTime?> DateChanged
+    private static void OnSetFormat(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
-        add => this.AddHandler(DateChangedEvent, value);
-        remove => this.RemoveHandler(DateChangedEvent, value);
+        var control = sender as DateTimeTextBox;
+        if (control != null)
+        {
+            control.blockRecalculateOnce = true;
+            control.Text = control.DateTime.HasValue ? control.DateTime.Value.ToString(control.Format) : string.Empty;
+        }
+    }
+
+    private static void OnSetDateTime(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    {
+        var control = sender as DateTimeTextBox;
+        if (control != null)
+        {
+            if (!control.isKeyboardUpdate && control.IsKeyboardFocused)
+            {
+                Keyboard.ClearFocus();
+            }
+
+            if ((e.OldValue == null || e.NewValue != e.OldValue)
+                && e.NewValue is DateTime dt
+                && control != null && !control.IsFocused)
+            {
+                control.blockUpdate = true;
+                if (!control.isKeyboardUpdate)
+                {
+                    control.Focusable = false;
+                }
+
+                control.Text = dt.ToString(control.Format);
+                if (!control.isKeyboardUpdate)
+                {
+                    control.Focusable = true;
+                }
+
+                control.blockUpdate = false;
+            }
+            else if (e.NewValue == null && control != null && !control.isKeyboardUpdate)
+            {
+                control.Text = string.Join(string.Empty, control.Format.ToCharArray().Where(x => x == ':' || x == ' ' || x == '/'));
+            }
+        }
+    }
+
+    private void DatetimeTextBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (this.DataContext is null)
+        {
+            this.DateTime = null;
+        }
     }
 
     private void ThisTextChanged(object sender, TextChangedEventArgs e)
@@ -228,10 +233,10 @@ public class DateTimeTextBox : TextBox
             || e.Key == Key.Delete
             || e.Key == Key.Back
             || e.Key == Key.Tab
-            || Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
-            || Keyboard.IsKeyDown(Key.RightCtrl) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
-            || Keyboard.IsKeyDown(Key.LeftShift) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion
-            || Keyboard.IsKeyDown(Key.RightShift) && e.Key != Key.OemSemicolon && e.Key != Key.OemQuestion))
+            || (Keyboard.IsKeyDown(Key.LeftCtrl) && (e.Key != Key.OemSemicolon) && (e.Key != Key.OemQuestion))
+            || (Keyboard.IsKeyDown(Key.RightCtrl) && (e.Key != Key.OemSemicolon) && (e.Key != Key.OemQuestion))
+            || (Keyboard.IsKeyDown(Key.LeftShift) && (e.Key != Key.OemSemicolon) && (e.Key != Key.OemQuestion))
+            || (Keyboard.IsKeyDown(Key.RightShift) && (e.Key != Key.OemSemicolon) && (e.Key != Key.OemQuestion))))
         {
             e.Handled = true;
             return;
@@ -297,7 +302,7 @@ public class DateTimeTextBox : TextBox
                         text = $"{text.Substring(0, this.SelectionStart)}{updated3}{text.Substring(this.SelectionStart + this.SelectionLength, text.Length - this.SelectionStart - this.SelectionLength)}";
                         selectStart = this.SelectionStart;
                         setStart = true;
-                        e.Handled = !(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Regex.IsMatch(key, "^[A-Z]$") || e.Key == Key.Space;
+                        e.Handled = (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Regex.IsMatch(key, "^[A-Z]$")) || e.Key == Key.Space;
                     }
 
                     break;

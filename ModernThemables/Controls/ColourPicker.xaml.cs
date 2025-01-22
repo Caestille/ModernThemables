@@ -16,11 +16,60 @@ using CoreUtilities.Helpers.Extensions;
 /// </summary>
 public partial class ColourPicker : UserControl
 {
+    public static readonly DependencyProperty ColourProperty = DependencyProperty.Register(
+        nameof(Colour),
+        typeof(Color),
+        typeof(ColourPicker),
+        new UIPropertyMetadata(Colors.Black, OnColourSet));
+
+    public static readonly DependencyProperty HtmlProperty = DependencyProperty.Register(
+        nameof(Html),
+        typeof(string),
+        typeof(ColourPicker),
+        new UIPropertyMetadata(string.Empty, OnHtmlSet));
+
+    private static readonly List<KeyValuePair<Color, double>> HorizontalColourStops = new()
+    {
+        new KeyValuePair<Color, double>(Colors.Red, 0),
+        new KeyValuePair<Color, double>(Colors.Magenta, 1d / 6),
+        new KeyValuePair<Color, double>(Colors.Blue, 2d / 6),
+        new KeyValuePair<Color, double>(Colors.Cyan, 3d / 6),
+        new KeyValuePair<Color, double>(Colors.Lime, 4d / 6),
+        new KeyValuePair<Color, double>(Colors.Yellow, 5d / 6),
+        new KeyValuePair<Color, double>(Colors.Red, 1),
+    };
+
+    private static readonly List<KeyValuePair<Color, double>> VerticalColourStops = new()
+    {
+        new KeyValuePair<Color, double>(Colors.Black, 0),
+        new KeyValuePair<Color, double>(Colors.Transparent, 0.48),
+        new KeyValuePair<Color, double>(Colors.Transparent, 0.52),
+        new KeyValuePair<Color, double>(Colors.White, 1),
+    };
+
+    private bool isMouseDown;
     private bool blockHtml;
     private bool blockColour;
     private CancellationTokenSource cts = new CancellationTokenSource();
 
-    public Action<Color>? colourChangedCallback;
+    static ColourPicker()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ColourPicker), new FrameworkPropertyMetadata(typeof(ColourPicker)));
+    }
+
+    public ColourPicker()
+    {
+        this.InitializeComponent();
+        this.Loaded += this.ColourPicker_Loaded;
+    }
+
+    public Action<Color>? ColourChangedCallback { get; set; }
+
+    public string Html
+    {
+        get => (string)this.GetValue(HtmlProperty);
+        set => this.SetValue(HtmlProperty, value);
+    }
 
     public Color Colour
     {
@@ -28,11 +77,70 @@ public partial class ColourPicker : UserControl
         set => this.SetValue(ColourProperty, value);
     }
 
-    public static readonly DependencyProperty ColourProperty = DependencyProperty.Register(
-        nameof(Colour),
-        typeof(Color),
-        typeof(ColourPicker),
-        new UIPropertyMetadata(Colors.Black, OnColourSet));
+    public Color? GetColorAt(int x, int y)
+    {
+        x = (int)Math.Min(Math.Max(x, 1), this.ColourSelectionBorder.ActualWidth);
+        y = (int)Math.Min(Math.Max(y, 1), this.ColourSelectionBorder.ActualHeight);
+
+        var horizFrac = x / this.ColourSelectionBorder.ActualWidth;
+        var vertFrac = (float)(((y / this.ColourSelectionBorder.ActualHeight) - 0.5) * 2);
+
+        var leftColour = HorizontalColourStops.Where(x => x.Value <= horizFrac)
+            .DefaultIfEmpty(new KeyValuePair<Color, double>(Colors.Red, 0)).Last();
+        var rightColour = HorizontalColourStops.Where(x => x.Value >= horizFrac)
+            .DefaultIfEmpty(new KeyValuePair<Color, double>(Colors.Red, 1)).First();
+
+        var outputColour = leftColour.Key.Combine(rightColour.Key, (horizFrac - leftColour.Value) / (rightColour.Value - leftColour.Value));
+
+        var output = outputColour.ChangeColourBrightness(-vertFrac);
+
+        return output;
+    }
+
+    public async Task<Point> GetPointAtColour(Color colour)
+    {
+        return await Task.Run(() =>
+        {
+            this.cts.Cancel();
+            this.cts = new CancellationTokenSource();
+            var iter = 200;
+            var threshold = 10;
+
+            int width = (int)this.ColourSelectionBorder.ActualWidth;
+            int height = (int)this.ColourSelectionBorder.ActualHeight;
+            var xStep = width / iter;
+            var yStep = height / iter;
+            int xPos = 0;
+            int yPos = 0;
+            for (int i = 0; i < iter; i++)
+            {
+                var doBreak = false;
+                for (int j = 0; j < iter; j++)
+                {
+                    if (this.cts.IsCancellationRequested)
+                    {
+                        return new Point(-1, -1);
+                    }
+
+                    xPos = xStep * i;
+                    yPos = yStep * j;
+                    var sampled = this.GetColorAt(xPos, yPos);
+                    if (sampled.HasValue && sampled.Value.ColoursAreClose(colour, threshold))
+                    {
+                        doBreak = true;
+                        break;
+                    }
+                }
+
+                if (doBreak)
+                {
+                    break;
+                }
+            }
+
+            return new Point(xPos, yPos);
+        });
+    }
 
     private static void OnColourSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
@@ -48,18 +156,6 @@ public partial class ColourPicker : UserControl
             self_.blockColour = false;
         }
     }
-
-    public string Html
-    {
-        get => (string)this.GetValue(HtmlProperty);
-        set => this.SetValue(HtmlProperty, value);
-    }
-
-    public static readonly DependencyProperty HtmlProperty = DependencyProperty.Register(
-        nameof(Html),
-        typeof(string),
-        typeof(ColourPicker),
-        new UIPropertyMetadata(string.Empty, OnHtmlSet));
 
     private static void OnHtmlSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
@@ -84,32 +180,6 @@ public partial class ColourPicker : UserControl
         }
     }
 
-    private bool isMouseDown;
-    private static readonly List<KeyValuePair<Color, double>> HorizontalColourStops = new List<KeyValuePair<Color, double>>()
-    {
-        new KeyValuePair<Color, double>(Colors.Red, 0),
-        new KeyValuePair<Color, double>(Colors.Magenta, 1d / 6),
-        new KeyValuePair<Color, double>(Colors.Blue, 2d / 6),
-        new KeyValuePair<Color, double>(Colors.Cyan, 3d / 6),
-        new KeyValuePair<Color, double>(Colors.Lime, 4d / 6),
-        new KeyValuePair<Color, double>(Colors.Yellow, 5d / 6),
-        new KeyValuePair<Color, double>(Colors.Red, 1),
-    };
-
-    private static readonly List<KeyValuePair<Color, double>> VerticalColourStops = new List<KeyValuePair<Color, double>>()
-    {
-        new KeyValuePair<Color, double>(Colors.Black, 0),
-        new KeyValuePair<Color, double>(Colors.Transparent, 0.48),
-        new KeyValuePair<Color, double>(Colors.Transparent, 0.52),
-        new KeyValuePair<Color, double>(Colors.White, 1),
-    };
-
-    public ColourPicker()
-    {
-        this.InitializeComponent();
-        this.Loaded += this.ColourPicker_Loaded;
-    }
-
     private async void ColourPicker_Loaded(object sender, RoutedEventArgs e)
     {
         var point = await this.GetPointAtColour(this.Colour);
@@ -120,68 +190,6 @@ public partial class ColourPicker : UserControl
 
         this.Loaded -= this.ColourPicker_Loaded;
     }
-
-    public Color? GetColorAt(int x, int y)
-    {
-        x = (int)Math.Min(Math.Max(x, 1), this.ColourSelectionBorder.ActualWidth);
-        y = (int)Math.Min(Math.Max(y, 1), this.ColourSelectionBorder.ActualHeight);
-
-        var horizFrac = x / this.ColourSelectionBorder.ActualWidth;
-        var vertFrac = (float)(((y / this.ColourSelectionBorder.ActualHeight) - 0.5) * 2);
-
-        var leftColour = HorizontalColourStops.Where(x => x.Value <= horizFrac)
-            .DefaultIfEmpty(new KeyValuePair<Color, double>(Colors.Red, 0)).Last();
-        var rightColour = HorizontalColourStops.Where(x => x.Value >= horizFrac)
-            .DefaultIfEmpty(new KeyValuePair<Color, double>(Colors.Red, 1)).First();
-
-        var outputColour = leftColour.Key.Combine(rightColour.Key, (horizFrac - leftColour.Value) / (rightColour.Value - leftColour.Value));
-
-        var output = outputColour.ChangeColourBrightness(-vertFrac);
-
-        return output;
-    }
-
-    public async Task<Point> GetPointAtColour(Color colour) => await Task.Run(() =>
-                                                                    {
-                                                                        this.cts.Cancel();
-                                                                        this.cts = new CancellationTokenSource();
-                                                                        var iter = 200;
-                                                                        var threshold = 10;
-
-                                                                        int width = (int)this.ColourSelectionBorder.ActualWidth;
-                                                                        int height = (int)this.ColourSelectionBorder.ActualHeight;
-                                                                        var xStep = width / iter;
-                                                                        var yStep = height / iter;
-                                                                        int xPos = 0;
-                                                                        int yPos = 0;
-                                                                        for (int i = 0; i < iter; i++)
-                                                                        {
-                                                                            var doBreak = false;
-                                                                            for (int j = 0; j < iter; j++)
-                                                                            {
-                                                                                if (this.cts.IsCancellationRequested)
-                                                                                {
-                                                                                    return new Point(-1, -1);
-                                                                                }
-
-                                                                                xPos = xStep * i;
-                                                                                yPos = yStep * j;
-                                                                                var sampled = this.GetColorAt(xPos, yPos);
-                                                                                if (sampled.HasValue && sampled.Value.ColoursAreClose(colour, threshold))
-                                                                                {
-                                                                                    doBreak = true;
-                                                                                    break;
-                                                                                }
-                                                                            }
-
-                                                                            if (doBreak)
-                                                                            {
-                                                                                break;
-                                                                            }
-                                                                        }
-
-                                                                        return new Point(xPos, yPos);
-                                                                    });
 
     private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e) => this.isMouseDown = true;
 
@@ -200,9 +208,9 @@ public partial class ColourPicker : UserControl
             this.AdjustSelectedColourCursor((int)point.X, (int)point.Y);
         }
 
-        if (this.colourChangedCallback != null)
+        if (this.ColourChangedCallback != null)
         {
-            this.colourChangedCallback(this.Colour);
+            this.ColourChangedCallback(this.Colour);
         }
     }
 
@@ -215,9 +223,9 @@ public partial class ColourPicker : UserControl
         this.AdjustSelectedColourCursor((int)borderCursor.X, (int)borderCursor.Y);
         var c = this.GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
         this.Colour = c ?? this.Colour;
-        if (this.colourChangedCallback != null)
+        if (this.ColourChangedCallback != null)
         {
-            this.colourChangedCallback(this.Colour);
+            this.ColourChangedCallback(this.Colour);
         }
     }
 
@@ -226,7 +234,8 @@ public partial class ColourPicker : UserControl
         // if (isMouseDown) isMouseDown = false;
     }
 
-    private void AdjustSelectedColourCursor(int x, int y) => this.SelectedColourBorder.Margin = new Thickness(Math.Max(x - 5, -5), Math.Max(y - 5, -5), 0, 0);
+    private void AdjustSelectedColourCursor(int x, int y)
+        => this.SelectedColourBorder.Margin = new Thickness(Math.Max(x - 5, -5), Math.Max(y - 5, -5), 0, 0);
 
     private void Root_MouseMove(object sender, MouseEventArgs e)
     {
@@ -244,9 +253,9 @@ public partial class ColourPicker : UserControl
         var cursor = this.PointToScreen(e.GetPosition(this));
         var c = this.GetColorAt((int)borderCursor.X, (int)borderCursor.Y);
         this.Colour = c ?? this.Colour;
-        if (this.colourChangedCallback != null)
+        if (this.ColourChangedCallback != null)
         {
-            this.colourChangedCallback(this.Colour);
+            this.ColourChangedCallback(this.Colour);
         }
     }
 }

@@ -15,6 +15,89 @@ using ModernThemables.ViewModels;
 
 public class HamburgerMenu : Control
 {
+    public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
+        nameof(ItemTemplate),
+        typeof(DataTemplate),
+        typeof(HamburgerMenu),
+        new PropertyMetadata(null));
+
+    public static readonly DependencyProperty SearchItemTemplateProperty = DependencyProperty.Register(
+        nameof(SearchItemTemplate),
+        typeof(DataTemplate),
+        typeof(HamburgerMenu),
+        new PropertyMetadata(null));
+
+    public static readonly DependencyProperty AccentBrushProperty = DependencyProperty.Register(
+        nameof(AccentBrush),
+        typeof(Brush),
+        typeof(HamburgerMenu),
+        new PropertyMetadata(new SolidColorBrush(Colors.DeepSkyBlue)));
+
+    public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
+        nameof(Items),
+        typeof(IEnumerable<IHamburgerMenuItem>),
+        typeof(HamburgerMenu),
+        new UIPropertyMetadata(new ObservableCollection<IHamburgerMenuItem>()));
+
+    public static readonly DependencyProperty FilteredItemsProperty = DependencyProperty.Register(
+        nameof(FilteredItems),
+        typeof(RangeObservableCollection<IHamburgerMenuItem>),
+        typeof(HamburgerMenu),
+        new FrameworkPropertyMetadata(new RangeObservableCollection<IHamburgerMenuItem>()));
+
+    public static readonly DependencyProperty IsMenuOpenProperty = DependencyProperty.Register(
+        nameof(IsMenuOpen),
+        typeof(bool),
+        typeof(HamburgerMenu),
+        new FrameworkPropertyMetadata(false, OnSetIsMenuOpen));
+
+    public static readonly DependencyProperty IsMenuPinnedProperty = DependencyProperty.Register(
+        nameof(IsMenuPinned),
+        typeof(bool),
+        typeof(HamburgerMenu),
+        new FrameworkPropertyMetadata(false));
+
+    public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
+        nameof(SearchText),
+        typeof(string),
+        typeof(HamburgerMenu),
+        new FrameworkPropertyMetadata(string.Empty));
+
+    public static readonly DependencyProperty BlurBackgroundProperty =
+        DependencyProperty.Register(
+          nameof(BlurBackground),
+          typeof(FrameworkElement),
+          typeof(HamburgerMenu),
+          new PropertyMetadata(default(FrameworkElement)));
+
+    public static readonly DependencyProperty SettingsVmProperty =
+        DependencyProperty.Register(
+          nameof(SettingsVm),
+          typeof(object),
+          typeof(HamburgerMenu),
+          new PropertyMetadata(default(object)));
+
+    public static readonly DependencyProperty SettingsTemplateProperty =
+        DependencyProperty.Register(
+          nameof(SettingsTemplate),
+          typeof(DataTemplate),
+          typeof(HamburgerMenu),
+          new PropertyMetadata(null));
+
+    public static readonly DependencyProperty ShowSettingsProperty =
+        DependencyProperty.Register(
+          nameof(ShowSettings),
+          typeof(bool),
+          typeof(HamburgerMenu),
+          new PropertyMetadata(false));
+
+    public static readonly DependencyProperty ShowSettingsCommandProperty =
+        DependencyProperty.Register(
+          nameof(ShowSettingsCommand),
+          typeof(ICommand),
+          typeof(HamburgerMenu),
+          new PropertyMetadata(null));
+
     private const string PARTOpenButton = "PART_OpenButton";
     private const string PARTPinButton = "PART_PinButton";
     private const string PARTSearchBox = "PART_SearchBox";
@@ -22,6 +105,11 @@ public class HamburgerMenu : Control
     private Button2? openButton;
     private Button2? pinButton;
     private SearchBox? searchBox;
+
+    static HamburgerMenu()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(HamburgerMenu), new FrameworkPropertyMetadata(typeof(HamburgerMenu)));
+    }
 
     public HamburgerMenu()
     {
@@ -34,23 +122,11 @@ public class HamburgerMenu : Control
         set => this.SetValue(ItemTemplateProperty, value);
     }
 
-    public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
-        nameof(ItemTemplate),
-        typeof(DataTemplate),
-        typeof(HamburgerMenu),
-        new PropertyMetadata(null));
-
     public DataTemplate SearchItemTemplate
     {
         get => (DataTemplate)this.GetValue(SearchItemTemplateProperty);
         set => this.SetValue(SearchItemTemplateProperty, value);
     }
-
-    public static readonly DependencyProperty SearchItemTemplateProperty = DependencyProperty.Register(
-        nameof(SearchItemTemplate),
-        typeof(DataTemplate),
-        typeof(HamburgerMenu),
-        new PropertyMetadata(null));
 
     public Brush AccentBrush
     {
@@ -58,23 +134,11 @@ public class HamburgerMenu : Control
         set => this.SetValue(AccentBrushProperty, value);
     }
 
-    public static readonly DependencyProperty AccentBrushProperty = DependencyProperty.Register(
-        nameof(AccentBrush),
-        typeof(Brush),
-        typeof(HamburgerMenu),
-        new PropertyMetadata(new SolidColorBrush(Colors.DeepSkyBlue)));
-
     public IEnumerable<IHamburgerMenuItem> Items
     {
         get => (IEnumerable<IHamburgerMenuItem>)this.GetValue(ItemsProperty);
         set => this.SetValue(ItemsProperty, value);
     }
-
-    public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
-        nameof(Items),
-        typeof(IEnumerable<IHamburgerMenuItem>),
-        typeof(HamburgerMenu),
-        new UIPropertyMetadata(new ObservableCollection<IHamburgerMenuItem>()));
 
     public RangeObservableCollection<IHamburgerMenuItem> FilteredItems
     {
@@ -82,23 +146,11 @@ public class HamburgerMenu : Control
         set => this.SetValue(FilteredItemsProperty, value);
     }
 
-    public static readonly DependencyProperty FilteredItemsProperty = DependencyProperty.Register(
-        nameof(FilteredItems),
-        typeof(RangeObservableCollection<IHamburgerMenuItem>),
-        typeof(HamburgerMenu),
-        new FrameworkPropertyMetadata(new RangeObservableCollection<IHamburgerMenuItem>()));
-
     public bool IsMenuOpen
     {
         get => (bool)this.GetValue(IsMenuOpenProperty);
         set => this.SetValue(IsMenuOpenProperty, value);
     }
-
-    public static readonly DependencyProperty IsMenuOpenProperty = DependencyProperty.Register(
-        nameof(IsMenuOpen),
-        typeof(bool),
-        typeof(HamburgerMenu),
-        new FrameworkPropertyMetadata(false, OnSetIsMenuOpen));
 
     public bool IsMenuPinned
     {
@@ -106,23 +158,11 @@ public class HamburgerMenu : Control
         set => this.SetValue(IsMenuPinnedProperty, value);
     }
 
-    public static readonly DependencyProperty IsMenuPinnedProperty = DependencyProperty.Register(
-        nameof(IsMenuPinned),
-        typeof(bool),
-        typeof(HamburgerMenu),
-        new FrameworkPropertyMetadata(false));
-
     public string SearchText
     {
         get => (string)this.GetValue(SearchTextProperty);
         set => this.SetValue(SearchTextProperty, value);
     }
-
-    public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
-        nameof(SearchText),
-        typeof(string),
-        typeof(HamburgerMenu),
-        new FrameworkPropertyMetadata(string.Empty));
 
     public FrameworkElement BlurBackground
     {
@@ -130,25 +170,11 @@ public class HamburgerMenu : Control
         set => this.SetValue(BlurBackgroundProperty, value);
     }
 
-    public static readonly DependencyProperty BlurBackgroundProperty =
-        DependencyProperty.Register(
-          nameof(BlurBackground),
-          typeof(FrameworkElement),
-          typeof(HamburgerMenu),
-          new PropertyMetadata(default(FrameworkElement)));
-
     public object SettingsVm
     {
         get => this.GetValue(SettingsVmProperty);
         set => this.SetValue(SettingsVmProperty, value);
     }
-
-    public static readonly DependencyProperty SettingsVmProperty =
-        DependencyProperty.Register(
-          nameof(SettingsVm),
-          typeof(object),
-          typeof(HamburgerMenu),
-          new PropertyMetadata(default(object)));
 
     public DataTemplate SettingsTemplate
     {
@@ -156,38 +182,17 @@ public class HamburgerMenu : Control
         set => this.SetValue(SettingsTemplateProperty, value);
     }
 
-    public static readonly DependencyProperty SettingsTemplateProperty =
-        DependencyProperty.Register(
-          nameof(SettingsTemplate),
-          typeof(DataTemplate),
-          typeof(HamburgerMenu),
-          new PropertyMetadata(null));
-
     public bool ShowSettings
     {
         get => (bool)this.GetValue(ShowSettingsProperty);
         set => this.SetValue(ShowSettingsProperty, value);
     }
 
-    public static readonly DependencyProperty ShowSettingsProperty =
-        DependencyProperty.Register(
-          nameof(ShowSettings),
-          typeof(bool),
-          typeof(HamburgerMenu),
-          new PropertyMetadata(false));
-
     public ICommand ShowSettingsCommand
     {
         get => (ICommand)this.GetValue(ShowSettingsCommandProperty);
         set => this.SetValue(ShowSettingsCommandProperty, value);
     }
-
-    public static readonly DependencyProperty ShowSettingsCommandProperty =
-        DependencyProperty.Register(
-          nameof(ShowSettingsCommand),
-          typeof(ICommand),
-          typeof(HamburgerMenu),
-          new PropertyMetadata(null));
 
     public RangeObservableCollection<IHamburgerMenuItem> AllViewModels
     {
@@ -254,18 +259,6 @@ public class HamburgerMenu : Control
         }
     }
 
-    private void OpenButton_Click(object sender, RoutedEventArgs e) => this.IsMenuOpen = !this.IsMenuOpen;
-
-    private void PinButton_Click(object sender, RoutedEventArgs e) => this.IsMenuPinned = !this.IsMenuPinned;
-
-    private void SearchBox_SearchTextChanged(object? sender, TextChangedEventArgs e)
-    {
-        this.SearchText = (e.OriginalSource as TextBox)!.Text;
-        this.FilteredItems = this.AllViewModels
-            .Where(x => x.Name.Contains(this.SearchText, StringComparison.OrdinalIgnoreCase))
-            .ToRangeObservableCollection();
-    }
-
     private static void OnSetIsMenuOpen(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
         if (sender is HamburgerMenu this_)
@@ -283,6 +276,18 @@ public class HamburgerMenu : Control
                 }
             }
         }
+    }
+
+    private void OpenButton_Click(object sender, RoutedEventArgs e) => this.IsMenuOpen = !this.IsMenuOpen;
+
+    private void PinButton_Click(object sender, RoutedEventArgs e) => this.IsMenuPinned = !this.IsMenuPinned;
+
+    private void SearchBox_SearchTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        this.SearchText = (e.OriginalSource as TextBox)!.Text;
+        this.FilteredItems = this.AllViewModels
+            .Where(x => x.Name.Contains(this.SearchText, StringComparison.OrdinalIgnoreCase))
+            .ToRangeObservableCollection();
     }
 
     private void ToggleShowSettings()

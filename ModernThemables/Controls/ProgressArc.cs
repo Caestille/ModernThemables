@@ -7,12 +7,6 @@ using System.Windows.Shapes;
 
 public class ProgressArc : Shape
 {
-    public double Radius
-    {
-        get => (double)this.GetValue(RadiusProperty);
-        set => this.SetValue(RadiusProperty, value);
-    }
-
     public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
         nameof(Radius),
         typeof(double),
@@ -20,12 +14,6 @@ public class ProgressArc : Shape
         new FrameworkPropertyMetadata(
             0.0,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    public bool IsIndeterminate
-    {
-        get => (bool)this.GetValue(IsIndeterminateProperty);
-        set => this.SetValue(IsIndeterminateProperty, value);
-    }
 
     public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
         nameof(IsIndeterminate),
@@ -35,12 +23,6 @@ public class ProgressArc : Shape
             false,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-    public bool RoundedEnd
-    {
-        get => (bool)this.GetValue(RoundedEndProperty);
-        set => this.SetValue(RoundedEndProperty, value);
-    }
-
     public static readonly DependencyProperty RoundedEndProperty = DependencyProperty.Register(
         nameof(RoundedEnd),
         typeof(bool),
@@ -48,12 +30,6 @@ public class ProgressArc : Shape
         new FrameworkPropertyMetadata(
             false,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    public double InnerRadiusFraction
-    {
-        get => (double)this.GetValue(InnerRadiusProperty);
-        set => this.SetValue(InnerRadiusProperty, value);
-    }
 
     public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
         nameof(InnerRadiusFraction),
@@ -63,12 +39,6 @@ public class ProgressArc : Shape
             0.0,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-    public double RotationAngle
-    {
-        get => (double)this.GetValue(RotationAngleProperty);
-        set => this.SetValue(RotationAngleProperty, value);
-    }
-
     public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(
         nameof(RotationAngle),
         typeof(double),
@@ -76,12 +46,6 @@ public class ProgressArc : Shape
         new FrameworkPropertyMetadata(
             0.0,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    public double CentreX
-    {
-        get => (double)this.GetValue(CentreXProperty);
-        set => this.SetValue(CentreXProperty, value);
-    }
 
     public static readonly DependencyProperty CentreXProperty = DependencyProperty.Register(
         nameof(CentreX),
@@ -91,12 +55,6 @@ public class ProgressArc : Shape
             0.0,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-    public double CentreY
-    {
-        get => (double)this.GetValue(CentreYProperty);
-        set => this.SetValue(CentreYProperty, value);
-    }
-
     public static readonly DependencyProperty CentreYProperty = DependencyProperty.Register(
         nameof(CentreY),
         typeof(double),
@@ -105,12 +63,6 @@ public class ProgressArc : Shape
             0.0,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-    public double Percentage
-    {
-        get => (double)this.GetValue(PercentageProperty);
-        set => this.SetValue(PercentageProperty, value);
-    }
-
     public static readonly DependencyProperty PercentageProperty = DependencyProperty.Register(
         nameof(Percentage),
         typeof(double),
@@ -118,6 +70,61 @@ public class ProgressArc : Shape
         new FrameworkPropertyMetadata(
             0.0,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    static ProgressArc()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ProgressArc), new FrameworkPropertyMetadata(typeof(ProgressArc)));
+    }
+
+    public ProgressArc() { }
+
+    public double Radius
+    {
+        get => (double)this.GetValue(RadiusProperty);
+        set => this.SetValue(RadiusProperty, value);
+    }
+
+    public bool IsIndeterminate
+    {
+        get => (bool)this.GetValue(IsIndeterminateProperty);
+        set => this.SetValue(IsIndeterminateProperty, value);
+    }
+
+    public bool RoundedEnd
+    {
+        get => (bool)this.GetValue(RoundedEndProperty);
+        set => this.SetValue(RoundedEndProperty, value);
+    }
+
+    public double InnerRadiusFraction
+    {
+        get => (double)this.GetValue(InnerRadiusProperty);
+        set => this.SetValue(InnerRadiusProperty, value);
+    }
+
+    public double RotationAngle
+    {
+        get => (double)this.GetValue(RotationAngleProperty);
+        set => this.SetValue(RotationAngleProperty, value);
+    }
+
+    public double CentreX
+    {
+        get => (double)this.GetValue(CentreXProperty);
+        set => this.SetValue(CentreXProperty, value);
+    }
+
+    public double CentreY
+    {
+        get => (double)this.GetValue(CentreYProperty);
+        set => this.SetValue(CentreYProperty, value);
+    }
+
+    public double Percentage
+    {
+        get => (double)this.GetValue(PercentageProperty);
+        set => this.SetValue(PercentageProperty, value);
+    }
 
     protected override Geometry DefiningGeometry
     {

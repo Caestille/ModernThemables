@@ -8,16 +8,6 @@ using ModernThemables.Services;
 
 public class ColourPickerBox : Control
 {
-    private const string PARTButton = "PART_button";
-
-    private Button2? button;
-
-    public Color TemporaryColour
-    {
-        get => (Color)this.GetValue(TemporaryColourProperty);
-        set => this.SetValue(TemporaryColourProperty, value);
-    }
-
     public static readonly DependencyProperty TemporaryColourProperty =
         DependencyProperty.Register(
             nameof(TemporaryColour),
@@ -25,17 +15,34 @@ public class ColourPickerBox : Control
             typeof(ColourPickerBox),
             new FrameworkPropertyMetadata(Colors.Black));
 
-    public CornerRadius CornerRadius
-    {
-        get => (CornerRadius)this.GetValue(CornerRadiusProperty);
-        set => this.SetValue(CornerRadiusProperty, value);
-    }
-
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius),
         typeof(CornerRadius),
         typeof(ColourPickerBox),
         new PropertyMetadata(new CornerRadius(0)));
+
+    private const string PARTButton = "PART_button";
+
+    private Button2? button;
+
+    static ColourPickerBox()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ColourPickerBox), new FrameworkPropertyMetadata(typeof(ColourPickerBox)));
+    }
+
+    public ColourPickerBox() { }
+
+    public Color TemporaryColour
+    {
+        get => (Color)this.GetValue(TemporaryColourProperty);
+        set => this.SetValue(TemporaryColourProperty, value);
+    }
+
+    public CornerRadius CornerRadius
+    {
+        get => (CornerRadius)this.GetValue(CornerRadiusProperty);
+        set => this.SetValue(CornerRadiusProperty, value);
+    }
 
     public override void OnApplyTemplate()
     {
