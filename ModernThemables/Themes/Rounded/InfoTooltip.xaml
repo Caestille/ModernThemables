@@ -25,7 +25,6 @@
     </ControlTemplate>
 
     <Style x:Key="InfoTooltip" TargetType="ToolTip">
-        <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Placement" Value="Bottom" />
         <Setter Property="VerticalOffset" Value="3" />
         <Setter Property="HasDropShadow" Value="False" />

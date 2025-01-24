@@ -224,7 +224,8 @@
         <Setter Property="HorizontalGridLinesBrush" Value="Transparent" />
         <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
         <Setter Property="RowBackground" Value="Transparent" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />

@@ -3,6 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/FocusStyle.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <ControlTemplate x:Key="RoundedToggleButton2ControlTemplate" TargetType="{x:Type controls:ToggleButton2}">
         <Border
             x:Name="PART_border"

@@ -24,7 +24,6 @@
     </ControlTemplate>
 
     <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
-        <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="HasDropShadow" Value="False" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />

@@ -25,7 +25,6 @@
     </ControlTemplate>
 
     <Style x:Key="InfoTooltipHorizontal" TargetType="ToolTip">
-        <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Placement" Value="Right" />
         <Setter Property="HorizontalOffset" Value="3" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />

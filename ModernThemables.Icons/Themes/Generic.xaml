@@ -4,7 +4,7 @@
     xmlns:icons="clr-namespace:ModernThemables.Icons">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/ModernThemables.Icons;component/Themes/Icons.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables.Icons;component/Themes/Icon.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables.Icons;component/Themes/AnimatedMenuIcon.xaml" />
     </ResourceDictionary.MergedDictionaries>
 

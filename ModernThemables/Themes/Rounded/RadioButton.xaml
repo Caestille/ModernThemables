@@ -44,8 +44,8 @@
                     x:Name="content"
                     Grid.Column="1"
                     Margin="5,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top" />
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
 
             </Grid>
         </Border>

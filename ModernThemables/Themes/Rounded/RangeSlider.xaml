@@ -11,7 +11,6 @@
 
     <Style x:Key="RoundedRangeSliderRepeatButtonDecrease" TargetType="RepeatButton">
         <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="IsTabStop" Value="false" />
         <Setter Property="Focusable" Value="false" />
         <Setter Property="Template">
@@ -73,7 +72,6 @@
     <Style BasedOn="{StaticResource ResourceKey={x:Type Slider}}" TargetType="{x:Type controls:RangeSlider}">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Template" Value="{StaticResource RoundedSlider2}" />
         <Setter Property="ActiveBarBrush" Value="{DynamicResource ThemeBrush}" />
         <Setter Property="InactiveBarBrush" Value="{DynamicResource SecondaryControlBrush}" />
