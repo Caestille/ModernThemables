@@ -134,37 +134,6 @@ csharp_style_expression_bodied_local_functions = false:silent
 csharp_indent_labels = no_change
 csharp_style_prefer_extended_property_pattern = true:suggestion
 csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true:silent
-dotnet_diagnostic.SA1512.severity = none
-dotnet_diagnostic.SA1601.severity = none
-dotnet_diagnostic.SA1602.severity = none
-dotnet_diagnostic.SA1611.severity = none
-dotnet_diagnostic.SA1615.severity = none
-dotnet_diagnostic.SA1617.severity = warning
-dotnet_diagnostic.SA1618.severity = none
-dotnet_diagnostic.SA1619.severity = none
-dotnet_diagnostic.SA1600.severity = none
-dotnet_diagnostic.SA1604.severity = none
-dotnet_diagnostic.SA1605.severity = none
-dotnet_diagnostic.SA1606.severity = none
-dotnet_diagnostic.SA1607.severity = none
-dotnet_diagnostic.SA1608.severity = none
-dotnet_diagnostic.SA1609.severity = none
-dotnet_diagnostic.SA1610.severity = none
-dotnet_diagnostic.SA1612.severity = none
-dotnet_diagnostic.SA1613.severity = warning
-dotnet_diagnostic.SA1614.severity = none
-dotnet_diagnostic.SA1616.severity = none
-dotnet_diagnostic.SA1620.severity = none
-dotnet_diagnostic.SA1622.severity = none
-dotnet_diagnostic.SA1623.severity = none
-dotnet_diagnostic.SA1624.severity = none
-dotnet_diagnostic.SA1625.severity = none
-dotnet_diagnostic.SA1626.severity = none
-dotnet_diagnostic.SA1642.severity = none
-dotnet_diagnostic.SA1643.severity = none
-dotnet_diagnostic.SA1648.severity = none
-dotnet_diagnostic.SA1402.severity = suggestion
-dotnet_diagnostic.SA1502.severity = none
 
 # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = none
@@ -223,6 +192,7 @@ insert_final_newline = true
 indent_style = tab
 indent_size = tab
 max_line_length = off
+
 [*.{cs,vb}]
 dotnet_style_coalesce_expression = true:suggestion
 dotnet_style_null_propagation = true:suggestion
@@ -259,3 +229,8 @@ dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
 dotnet_style_qualification_for_field = true:warning
 dotnet_style_qualification_for_method = true:warning
 dotnet_style_qualification_for_event = true:warning
+
+# stylecop suppressions
+dotnet_diagnostic.SA1502.severity = none # Element should not be on a single line
+dotnet_diagnostic.SA1512.severity = none # Single line comments should not be followed by a blank line
+dotnet_diagnostic.SA1600.severity = none # Elements should be documents

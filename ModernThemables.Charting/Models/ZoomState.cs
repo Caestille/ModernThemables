@@ -9,7 +9,7 @@ using ModernThemables.Charting.Interfaces;
 internal class ZoomState : ObservableObject
 {
     /// <summary>
-    /// Initialises a new <see cref="ZoomState"/>. If <paramref name="expandY"/> is <see cref="true"/>, the given Y
+    /// Initialises a new <see cref="ZoomState"/>. If <paramref name="expandY"/> is <see langword="true"/>, the given Y
     /// values will be expanded by their distance apart multiplied by the <paramref name="yBuffer"/>, for the
     /// purpose of having a buffer distance in which the max/minima of the chart do not occupy (prevents y values
     /// reaching the edge of the chart).
@@ -21,7 +21,7 @@ internal class ZoomState : ObservableObject
     /// <param name="xOffset">The distance in relative scale by which X should be offset by for panning purposes.
     /// </param>
     /// <param name="yBuffer">The fractional distance by which the Y points will be expanded by if
-    /// <paramref name="expandY"/> is <see cref="true"/>.</param>
+    /// <paramref name="expandY"/> is <see langword="true"/>.</param>
     /// <param name="expandY">Whether the expand the Y points by the <paramref name="yBuffer"/> fraction.</param>
     public ZoomState(double xMin, double xMax, double yMin, double yMax, double xOffset, double yBuffer, bool expandY = true)
     {

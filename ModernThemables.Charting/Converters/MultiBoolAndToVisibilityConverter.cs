@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 /// <summary>
 /// Given a set of <see cref="bool"/> bindings, if an AND operation on all <see cref="bool"/>s evaluates to
-/// <see cref="true"/>, returns <see cref="Visibility.Visible"/>, else <see cref="Visibility.Collapsed"/>.
+/// <see langword="true"/>, returns <see cref="Visibility.Visible"/>, else <see cref="Visibility.Collapsed"/>.
 /// </summary>
 public class MultiBoolAndToVisibilityConverter : IMultiValueConverter
 {

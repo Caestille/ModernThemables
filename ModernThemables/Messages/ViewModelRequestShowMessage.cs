@@ -1,5 +1,7 @@
 ﻿namespace ModernThemables.Messages;
 
+#pragma warning disable SA1402 // File may only contain a single type
+
 using ModernThemables.ViewModels;
 
 public class ViewModelRequestShowMessage
