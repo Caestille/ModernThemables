@@ -8,6 +8,6 @@
         <ResourceDictionary Source="pack://application:,,,/ModernThemables.Icons;component/Themes/AnimatedMenuIcon.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style BasedOn="{StaticResource Icons}" TargetType="{x:Type icons:Icon}" />
+    <Style BasedOn="{StaticResource Icon}" TargetType="{x:Type icons:Icon}" />
 
 </ResourceDictionary>

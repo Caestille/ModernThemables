@@ -38,7 +38,7 @@
         </Grid>
     </ControlTemplate>
 
-    <Style x:Key="Icons" TargetType="{x:Type icons:Icon}">
+    <Style x:Key="Icon" TargetType="{x:Type icons:Icon}">
         <Setter Property="Padding" Value="0" />
         <Setter Property="FlowDirection" Value="LeftToRight" />
         <Setter Property="IsTabStop" Value="False" />
