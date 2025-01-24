@@ -16,8 +16,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PlottingTestApp\PlottingTestApp.csproj" />
-  </ItemGroup>
-
 </Project>
