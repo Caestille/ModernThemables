@@ -62,11 +62,11 @@ public partial class CartesianChart : UserControl
         }));
         this.renderThread.Start();
 
-        this.TooltipControl.TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>(point =>
+        this.TooltipControl.TooltipGetterFunc = new Func<Point, IEnumerable<ChartTooltipViewModel>>(point =>
         {
             var pointsUnderMouse = this.GetPointsUnderMouse(point);
 
-            var tooltips = pointsUnderMouse.Select(x => new TooltipViewModel(
+            var tooltips = pointsUnderMouse.Select(x => new ChartTooltipViewModel(
                 x.Point,
                 new SolidColorBrush(x.Series.Stroke != null
                     ? x.Series.Stroke.ColourAtPoint(
@@ -93,7 +93,7 @@ public partial class CartesianChart : UserControl
                             == tooltips.Min(x => Math.Abs(x.LocationY - point.Y)));
                     if (nearestPoint != null)
                     {
-                        tooltips = new List<TooltipViewModel>() { nearestPoint };
+                        tooltips = new List<ChartTooltipViewModel>() { nearestPoint };
                     }
                     else
                     {
@@ -102,7 +102,7 @@ public partial class CartesianChart : UserControl
 
                     break;
                 case TooltipFindingStrategy.NearestXWithinThreshold:
-                    tooltips = new List<TooltipViewModel>(
+                    tooltips = new List<ChartTooltipViewModel>(
                         tooltips.Where(
                             x => Math.Abs(x.LocationX - point.X) <= this.TooltipLocationThreshold));
                     break;

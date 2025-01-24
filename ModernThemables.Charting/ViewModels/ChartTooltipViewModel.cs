@@ -7,18 +7,19 @@ using CommunityToolkit.Mvvm.ComponentModel;
 /// <summary>
 /// A view model represnting a tooltip aligned to a point on a chart.
 /// </summary>
-public class TooltipViewModel : ObservableObject
+public class ChartTooltipViewModel : ObservableObject
 {
     private bool resizeTrigger;
 
     /// <summary>
-    /// Initialises a new <see cref="TooltipViewModel"/>.
+    /// Initialises a new <see cref="ChartTooltipViewModel"/>.
     /// </summary>
     /// <param name="point">The <see cref="InternalChartEntity"/> being represented.</param>
     /// <param name="fill">The point fill if visible.</param>
-    /// <param name="primaryValue">The <see cref="string"/> used to make up the tooltip display.</param>
-    /// <param name="secondaryValue">The <see cref="string"/> used to make up the tooltip display.</param>
-    public TooltipViewModel(
+    /// <param name="primaryValue">The <see cref="string"/> first line used to make up the tooltip display.</param>
+    /// <param name="secondaryValue">The <see cref="string"/> second line used to make up the tooltip display.</param>
+    /// <param name="tertiaryValue">The <see cref="string"/> third line used to make up the tooltip display.</param>
+    public ChartTooltipViewModel(
         InternalChartEntity point,
         Brush? fill,
         string primaryValue,
@@ -33,7 +34,7 @@ public class TooltipViewModel : ObservableObject
         this.TertiaryValue = tertiaryValue;
     }
 
-    public TooltipViewModel(
+    public ChartTooltipViewModel(
         double locationX,
         double locationY,
         Brush? fill,

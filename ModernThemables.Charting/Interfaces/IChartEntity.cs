@@ -50,6 +50,7 @@ public interface IChartEntity
     /// <summary>
     /// Converts a given X value to the underlying representation of an inheriting class.
     /// </summary>
+    /// <param name="convert">The value to convert.</param>
     /// <returns>A <see cref="object"/>. It is up to the user to correctly unbox this and ensure the given input is
     /// of the correct scale.</returns>
     object XValueToImplementation(double convert);
@@ -57,6 +58,7 @@ public interface IChartEntity
     /// <summary>
     /// Converts a given Y value to the underlying representation of an inheriting class.
     /// </summary>
+    /// <param name="convert">The value to convert.</param>
     /// <returns>A <see cref="object"/>. It is up to the user to correctly unbox this and ensure the given input is
     /// of the correct scale.</returns>
     object YValueToImplementation(double convert);

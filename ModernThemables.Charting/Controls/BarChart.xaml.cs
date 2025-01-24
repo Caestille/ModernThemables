@@ -53,9 +53,9 @@ public partial class BarChart : UserControl
             }
         })).Start();
 
-        this.TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((point) =>
+        this.TooltipGetterFunc = new Func<Point, IEnumerable<ChartTooltipViewModel>>((point) =>
         {
-            var tooltipPoints = new List<TooltipViewModel>();
+            var tooltipPoints = new List<ChartTooltipViewModel>();
 
             foreach (var bar in this.InternalSeries)
             {
@@ -78,7 +78,7 @@ public partial class BarChart : UserControl
                         : matchingSeries.Name;
                     var formattedDate = tooltipBar.BackingPoint.Name;
 
-                    tooltipPoints.Add(new TooltipViewModel(
+                    tooltipPoints.Add(new ChartTooltipViewModel(
                         tooltipBar, tooltipBar?.Fill?.CoreBrush, formattedValue, formattedDate, category ?? string.Empty));
                 }
                 else

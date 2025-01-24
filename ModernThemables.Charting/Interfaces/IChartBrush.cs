@@ -1,6 +1,7 @@
 ﻿namespace ModernThemables.Charting.Interfaces;
 
 using System.Windows.Media;
+using ModernThemables.Charting.Controls;
 
 /// <summary>
 /// An interface for brushes working with the <see cref="CartesianChart"/>.

@@ -54,9 +54,9 @@ public partial class PieChart : UserControl
         }));
         this.renderThread.Start();
 
-        this.TooltipGetterFunc = new Func<Point, IEnumerable<TooltipViewModel>>((mouseLoc) =>
+        this.TooltipGetterFunc = new Func<Point, IEnumerable<ChartTooltipViewModel>>((mouseLoc) =>
         {
-            var tooltipPoints = new List<TooltipViewModel>();
+            var tooltipPoints = new List<ChartTooltipViewModel>();
 
             var centreX = PieCentreRadiusConverter.ConvertLocally(
                 this.SeriesItemsControl.ActualWidth,
@@ -84,7 +84,7 @@ public partial class PieChart : UserControl
                     wedge.IsMouseOver = false;
                 }
 
-                return new List<TooltipViewModel>();
+                return new List<ChartTooltipViewModel>();
             }
 
             var angle = this.GetMouseAngleFromPoint(mouseLoc, new Point(centreX, centreY));
@@ -127,7 +127,7 @@ public partial class PieChart : UserControl
                             y = y + centreY - 20;
                         }
 
-                        var tooltip = new TooltipViewModel(
+                        var tooltip = new ChartTooltipViewModel(
                             x, y, wedge?.Fill?.CoreBrush, formattedValue, matchingWedge.Name, formattedPercent);
                         tooltipPoints.Add(tooltip);
                     }

@@ -65,7 +65,7 @@ public partial class PieChart // .DependencyProperties
 
     public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
         nameof(TooltipGetterFunc),
-        typeof(Func<Point, IEnumerable<TooltipViewModel>>),
+        typeof(Func<Point, IEnumerable<ChartTooltipViewModel>>),
         typeof(PieChart),
         new PropertyMetadata(null));
 
@@ -123,9 +123,9 @@ public partial class PieChart // .DependencyProperties
         set => this.SetValue(InternalSeriesProperty, value);
     }
 
-    private Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
+    private Func<Point, IEnumerable<ChartTooltipViewModel>> TooltipGetterFunc
     {
-        get => (Func<Point, IEnumerable<TooltipViewModel>>)this.GetValue(TooltipGetterFuncProperty);
+        get => (Func<Point, IEnumerable<ChartTooltipViewModel>>)this.GetValue(TooltipGetterFuncProperty);
         set => this.SetValue(TooltipGetterFuncProperty, value);
     }
 }

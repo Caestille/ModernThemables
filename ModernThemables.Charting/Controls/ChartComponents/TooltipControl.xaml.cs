@@ -99,9 +99,9 @@ public partial class TooltipControl : UserControl
 
     public static readonly DependencyProperty TooltipPointsProperty = DependencyProperty.Register(
         nameof(TooltipPoints),
-        typeof(ObservableCollection<TooltipViewModel>),
+        typeof(ObservableCollection<ChartTooltipViewModel>),
         typeof(TooltipControl),
-        new PropertyMetadata(new ObservableCollection<TooltipViewModel>()));
+        new PropertyMetadata(new ObservableCollection<ChartTooltipViewModel>()));
 
     public static readonly DependencyProperty TooltipLocationProperty = DependencyProperty.Register(
         nameof(TooltipLocation),
@@ -111,7 +111,7 @@ public partial class TooltipControl : UserControl
 
     public static readonly DependencyProperty TooltipGetterFuncProperty = DependencyProperty.Register(
         nameof(TooltipGetterFunc),
-        typeof(Func<Point, IEnumerable<TooltipViewModel>>),
+        typeof(Func<Point, IEnumerable<ChartTooltipViewModel>>),
         typeof(TooltipControl),
         new PropertyMetadata(null));
 
@@ -219,9 +219,9 @@ public partial class TooltipControl : UserControl
         set => this.SetValue(TooltipLocationProperty, value);
     }
 
-    public Func<Point, IEnumerable<TooltipViewModel>> TooltipGetterFunc
+    public Func<Point, IEnumerable<ChartTooltipViewModel>> TooltipGetterFunc
     {
-        get => (Func<Point, IEnumerable<TooltipViewModel>>)this.GetValue(TooltipGetterFuncProperty);
+        get => (Func<Point, IEnumerable<ChartTooltipViewModel>>)this.GetValue(TooltipGetterFuncProperty);
         set => this.SetValue(TooltipGetterFuncProperty, value);
     }
 
@@ -243,9 +243,9 @@ public partial class TooltipControl : UserControl
         set => this.SetValue(ShowCrosshairsProperty, value);
     }
 
-    private ObservableCollection<TooltipViewModel> TooltipPoints
+    private ObservableCollection<ChartTooltipViewModel> TooltipPoints
     {
-        get => (ObservableCollection<TooltipViewModel>)this.GetValue(TooltipPointsProperty);
+        get => (ObservableCollection<ChartTooltipViewModel>)this.GetValue(TooltipPointsProperty);
         set => this.SetValue(TooltipPointsProperty, value);
     }
 
@@ -404,7 +404,7 @@ public partial class TooltipControl : UserControl
         // Place/populate tooltip
         if ((this.ShowTooltip || this.ShowPointIndicators) && this.TooltipGetterFunc != null)
         {
-            this.TooltipPoints = new ObservableCollection<TooltipViewModel>(this.TooltipGetterFunc(mouseLoc));
+            this.TooltipPoints = new ObservableCollection<ChartTooltipViewModel>(this.TooltipGetterFunc(mouseLoc));
 
             if (this.TooltipPoints.Any())
             {
