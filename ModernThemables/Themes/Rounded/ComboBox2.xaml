@@ -155,6 +155,7 @@
         <Setter Property="ContentBackground" Value="{DynamicResource SecondaryControlBrush}" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Background" Value="{DynamicResource PrimaryControlBrush}" />
         <Setter Property="MouseOverBrush" Value="{DynamicResource PrimaryControlMouseOverBrush}" />
