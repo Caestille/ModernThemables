@@ -141,6 +141,7 @@
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="MinHeight" Value="16" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryControlBorderBrush}" />
         <Setter Property="Template" Value="{StaticResource RoundedToggleCheckBoxTemplate}" />
     </Style>

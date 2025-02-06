@@ -35,7 +35,6 @@
     </Style>
 
     <Style BasedOn="{StaticResource ResourceKey={x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Padding" Value="0" />
@@ -43,14 +42,10 @@
 
     <Style BasedOn="{StaticResource ResourceKey={x:Type ContentControl}}" TargetType="{x:Type ContentControl}">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
     </Style>
 
     <Style BasedOn="{StaticResource ResourceKey={x:Type ItemsControl}}" TargetType="{x:Type ItemsControl}">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
     </Style>
 
 </ResourceDictionary>

@@ -66,7 +66,7 @@ public partial class BarChart : UserControl
 
             if (tooltipBar != null)
             {
-                var matchingSeries = this.Series.FirstOrDefault(x => x.Values.Any(y => y.Identifier == tooltipBar.Identifier));
+                var matchingSeries = this.Series?.FirstOrDefault(x => x.Values.Any(y => y.Identifier == tooltipBar.Identifier));
                 if (matchingSeries != null)
                 {
                     var formattedValue = matchingSeries.ValueFormatter != null
@@ -111,12 +111,12 @@ public partial class BarChart : UserControl
 
     private static void OnSeriesSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
-        if (sender is not BarChart chart)
+        if (sender is not BarChart chart || chart.Series is null)
         {
             return;
         }
 
-        chart.seriesWatcher.ProvideSeries(chart.Series);
+        chart.seriesWatcher.ProvideSeries(chart.Series!);
     }
 
     private static async void OnLegendLocationSet(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -151,6 +151,14 @@ public partial class BarChart : UserControl
             await this.SetYAxisLabels();
 
             var barSep = this.BarSeparationPixels;
+
+            if (this.Series is null)
+            {
+                this.InternalSeries = new ObservableCollection<InternalChartEntity>();
+                this.XAxisLabels = new ObservableCollection<AxisLabel>();
+                this.renderInProgress = false;
+                return;
+            }
 
             var source = this.Series.ShallowCopy().ToList();
 
@@ -241,7 +249,7 @@ public partial class BarChart : UserControl
 
     private async Task SetYAxisLabels()
     {
-        if (!this.HasData)
+        if (!this.HasData || this.Series is null)
         {
             this.YAxisLabels.Clear();
             return;
@@ -266,7 +274,7 @@ public partial class BarChart : UserControl
     {
         List<double> yVals = new();
 
-        if (this.YAxisLabelIdentifier != null)
+        if (this.YAxisLabelIdentifier != null && this.Series != null)
         {
             var currVal = yMin;
             while (currVal < yMax)

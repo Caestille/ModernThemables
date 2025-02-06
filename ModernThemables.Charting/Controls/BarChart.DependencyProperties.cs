@@ -134,9 +134,9 @@ public partial class BarChart // .DependencyProperties
         typeof(BarChart),
         new PropertyMetadata(null));
 
-    public ObservableCollection<ISeries> Series
+    public ObservableCollection<ISeries>? Series
     {
-        get => (ObservableCollection<ISeries>)this.GetValue(SeriesProperty);
+        get => (ObservableCollection<ISeries>?)this.GetValue(SeriesProperty);
         set => this.SetValue(SeriesProperty, value);
     }
 

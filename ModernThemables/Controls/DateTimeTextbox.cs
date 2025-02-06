@@ -29,13 +29,13 @@ public class DateTimeTextBox : TextBox
         nameof(DateTimeValid),
         typeof(bool),
         typeof(DateTimeTextBox),
-        new FrameworkPropertyMetadata(true));
+        new FrameworkPropertyMetadata(false));
 
     public static readonly DependencyProperty FormatProperty = DependencyProperty.Register(
         nameof(Format),
         typeof(string),
         typeof(DateTimeTextBox),
-        new FrameworkPropertyMetadata(OnSetFormat));
+        new FrameworkPropertyMetadata("dd/MM/yyyy HH:mm:ss", OnSetFormat));
 
     public static readonly DependencyProperty WarningBrushProperty = DependencyProperty.Register(
         nameof(WarningBrush),
