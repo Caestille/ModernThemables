@@ -52,11 +52,6 @@ public partial class ColourPicker : UserControl
     private bool blockColour;
     private CancellationTokenSource cts = new CancellationTokenSource();
 
-    static ColourPicker()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ColourPicker), new FrameworkPropertyMetadata(typeof(ColourPicker)));
-    }
-
     public ColourPicker()
     {
         this.InitializeComponent();

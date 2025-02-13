@@ -32,11 +32,6 @@ public partial class CircularProgressBar : UserControl
         typeof(CircularProgressBar),
         new PropertyMetadata(false));
 
-    static CircularProgressBar()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(CircularProgressBar), new FrameworkPropertyMetadata(typeof(CircularProgressBar)));
-    }
-
     public CircularProgressBar()
     {
         this.InitializeComponent();

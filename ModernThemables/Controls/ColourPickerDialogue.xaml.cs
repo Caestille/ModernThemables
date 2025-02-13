@@ -18,11 +18,6 @@ public partial class ColourPickerDialogue : Window2
     private readonly Action<Color>? colourChangedCallback;
     private Color initialColour;
 
-    static ColourPickerDialogue()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ColourPickerDialogue), new FrameworkPropertyMetadata(typeof(ColourPickerDialogue)));
-    }
-
     public ColourPickerDialogue(Color inputColour, Action<Color>? colourChangedCallback)
     {
         this.InitializeComponent();
