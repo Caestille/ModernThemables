@@ -424,7 +424,7 @@ public partial class CartesianChart : UserControl
         foreach (var point in series.Values.ShallowCopy())
         {
             double x = (double)(point.XValue - xMin) / (double)xRange * (double)this.PlotAreaWidth;
-            double y = this.PlotAreaHeight - ((point.YValue - yMin) / yRange) * this.PlotAreaHeight;
+            double y = this.PlotAreaHeight - (((point.YValue - yMin) / yRange) * this.PlotAreaHeight);
             points.Add(new InternalChartEntity(x, y, point));
         }
 
