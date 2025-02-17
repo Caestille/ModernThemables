@@ -113,7 +113,7 @@ public partial class CartesianChart : UserControl
 
         this.Zoom.GetDataHeightPixelsInBounds = new Func<(double, double)>(() =>
         {
-            var allPoints = this.InternalSeries.SelectMany(x => x.Data);
+            var allPoints = this.InternalSeries.SelectMany(x => x.Data).ToList();
             if (!allPoints.Any())
             {
                 return (0, 1);
@@ -124,7 +124,7 @@ public partial class CartesianChart : UserControl
             var range = max - min;
             var boundedXMax = max - (this.Zoom.RightFraction * range) + ((this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth) / this.Zoom.ActualWidth);
             var boundedXMin = min + (this.Zoom.LeftFraction * range) + ((this.Zoom.PanOffsetFraction * range * this.Coordinator.ActualWidth) / this.Zoom.ActualWidth);
-            var pointsInRange = allPoints.Where(x => x.X >= boundedXMin && x.X <= boundedXMax);
+            var pointsInRange = allPoints.Where(x => x.X >= boundedXMin && x.X <= boundedXMax).ToList();
             var boundedYMax = pointsInRange.Any() ? pointsInRange.Max(x => x.Y) : allPoints.Max(x => x.Y);
             var boundedYMin = pointsInRange.Any() ? pointsInRange.Min(x => x.Y) : allPoints.Min(x => x.Y);
             return (boundedYMin, boundedYMax);
@@ -424,10 +424,11 @@ public partial class CartesianChart : UserControl
         foreach (var point in series.Values.ShallowCopy())
         {
             double x = (double)(point.XValue - xMin) / (double)xRange * (double)this.PlotAreaWidth;
-            double y = this.PlotAreaHeight - ((point.YValue - yMin) / (yRange * this.PlotAreaHeight));
+            double y = this.PlotAreaHeight - ((point.YValue - yMin) / yRange) * this.PlotAreaHeight;
             points.Add(new InternalChartEntity(x, y, point));
         }
 
+        var what = points.Select(x => x.Y).ToList();
         return points;
     }
 
