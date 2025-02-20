@@ -33,6 +33,8 @@ public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenu
 
     public ICommand DeleteCommand => new RelayCommand(this.Delete);
 
+    public abstract NavigationProperties NavigationProperties { get; }
+
     public virtual string Name
     {
         get => this.name;

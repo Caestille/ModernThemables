@@ -6,13 +6,13 @@ using System;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 
-public class AliasableViewModelBase : AliasableViewModelBase<GenericViewModelBase>
+public abstract class AliasableViewModelBase : AliasableViewModelBase<GenericViewModelBase>
 {
     public AliasableViewModelBase(string name, string? alias, Func<GenericViewModelBase>? createChild = null)
         : base(name, alias, createChild) { }
 }
 
-public class AliasableViewModelBase<TChild> : ViewModelBase<TChild>
+public abstract class AliasableViewModelBase<TChild> : ViewModelBase<TChild>
     where TChild : GenericViewModelBase
 {
     private string? previousAlias;

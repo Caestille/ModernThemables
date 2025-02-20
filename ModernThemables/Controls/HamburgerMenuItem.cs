@@ -85,14 +85,14 @@ public class HamburgerMenuItem : Control
         typeof(HamburgerMenuItem),
         new PropertyMetadata(null));
 
-    public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
-        nameof(IsOpen),
+    public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register(
+        nameof(IsExpanded),
         typeof(bool),
         typeof(HamburgerMenuItem),
         new PropertyMetadata(false));
 
-    public static readonly DependencyProperty StartOpenProperty = DependencyProperty.Register(
-        nameof(StartOpen),
+    public static readonly DependencyProperty StartExpandedProperty = DependencyProperty.Register(
+        nameof(StartExpanded),
         typeof(bool),
         typeof(HamburgerMenuItem),
         new PropertyMetadata(false, OnSetStartOpen));
@@ -139,11 +139,11 @@ public class HamburgerMenuItem : Control
         typeof(HamburgerMenuItem),
         new PropertyMetadata(true));
 
-    public static readonly DependencyProperty CanOpenProperty = DependencyProperty.Register(
-        nameof(CanOpen),
-        typeof(bool),
+    public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
+        nameof(SelectionMode),
+        typeof(ViewModels.SelectionMode),
         typeof(HamburgerMenuItem),
-        new PropertyMetadata(true));
+        new PropertyMetadata(ViewModels.SelectionMode.Automatic));
 
     public static readonly DependencyProperty AddChildCommandProperty = DependencyProperty.Register(
         nameof(AddChildCommand),
@@ -177,9 +177,9 @@ public class HamburgerMenuItem : Control
     public HamburgerMenuItem()
     {
         this.InternalSelectCommand = new RelayCommand(this.Select);
-        if (this.StartOpen)
+        if (this.StartExpanded)
         {
-            this.IsOpen = true;
+            this.IsExpanded = true;
         }
     }
 
@@ -261,16 +261,16 @@ public class HamburgerMenuItem : Control
         set => this.SetValue(SubTitleProperty, value);
     }
 
-    public bool IsOpen
+    public bool IsExpanded
     {
-        get => (bool)this.GetValue(IsOpenProperty);
-        set => this.SetValue(IsOpenProperty, value);
+        get => (bool)this.GetValue(IsExpandedProperty);
+        set => this.SetValue(IsExpandedProperty, value);
     }
 
-    public bool StartOpen
+    public bool StartExpanded
     {
-        get => (bool)this.GetValue(StartOpenProperty);
-        set => this.SetValue(StartOpenProperty, value);
+        get => (bool)this.GetValue(StartExpandedProperty);
+        set => this.SetValue(StartExpandedProperty, value);
     }
 
     public bool ShowOpenIndicator
@@ -315,10 +315,10 @@ public class HamburgerMenuItem : Control
         set => this.SetValue(CanDeleteProperty, value);
     }
 
-    public bool CanOpen
+    public ViewModels.SelectionMode SelectionMode
     {
-        get => (bool)this.GetValue(CanOpenProperty);
-        set => this.SetValue(CanOpenProperty, value);
+        get => (ViewModels.SelectionMode)this.GetValue(SelectionModeProperty);
+        set => this.SetValue(SelectionModeProperty, value);
     }
 
     public ICommand AddChildCommand
@@ -347,23 +347,41 @@ public class HamburgerMenuItem : Control
 
     private static void OnSetStartOpen(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
-        if (sender is HamburgerMenuItem this_ && this_.StartOpen && !this_.IsOpen)
+        if (sender is HamburgerMenuItem this_ && this_.StartExpanded && !this_.IsExpanded)
         {
-            this_.IsOpen = true;
+            this_.IsExpanded = true;
         }
     }
 
     private void Select()
     {
-        if (this.ChildItems.Any() && this.CanOpen)
+        switch (this.SelectionMode)
         {
-            this.IsOpen = !this.IsOpen;
-            return;
-        }
+            case ViewModels.SelectionMode.Automatic:
+                if (this.ChildItems.Any())
+                {
+                    this.IsExpanded = !this.IsExpanded;
+                    break;
+                }
 
-        if (this.SelectCommand != null)
-        {
-            this.SelectCommand.Execute(this);
+                if (this.SelectCommand != null)
+                {
+                    this.SelectCommand.Execute(this);
+                }
+
+                break;
+
+            case ViewModels.SelectionMode.Select:
+                if (this.SelectCommand != null)
+                {
+                    this.SelectCommand.Execute(this);
+                }
+
+                break;
+
+            case ViewModels.SelectionMode.Expand:
+                this.IsExpanded = !this.IsExpanded;
+                break;
         }
     }
 }

@@ -10,13 +10,13 @@ using CommunityToolkit.Mvvm.Messaging;
 using CoreUtilities.Helpers.WPF;
 using ModernThemables.Messages;
 
-public class ViewModelBase : ViewModelBase<GenericViewModelBase>
+public abstract class ViewModelBase : ViewModelBase<GenericViewModelBase>
 {
     public ViewModelBase(string name)
         : base(name) { }
 }
 
-public class ViewModelBase<TChild> : GenericViewModelBase
+public abstract class ViewModelBase<TChild> : GenericViewModelBase
     where TChild : GenericViewModelBase
 {
     private readonly Func<TChild>? createChildFunc;
@@ -29,7 +29,7 @@ public class ViewModelBase<TChild> : GenericViewModelBase
         this.BindMessages();
     }
 
-    public ICommand AddChildCommand => new RelayCommand(() => this.AddChild());
+    public ICommand? AddChildCommand => this.createChildFunc != null ? new RelayCommand(() => this.AddChild()) : null;
 
     public RangeObservableCollection<TChild> ChildViewModels
     {
@@ -85,14 +85,14 @@ public class ViewModelBase<TChild> : GenericViewModelBase
     {
         this.Messenger.Register<ViewModelRequestShowMessage>(this, (sender, message) =>
         {
-            if (message.ViewModel == this)
-            {
+            //if (message.ViewModel == this)
+            //{
                 this.OnRequestShowReceived(message);
-            }
-            else if (this.IsSelected)
-            {
-                this.IsSelected = false;
-            }
+            //}
+            //else if (this.IsSelected)
+            //{
+            //    this.IsSelected = false;
+            //}
         });
 
         this.Messenger.Register<ViewModelRequestDeleteMessage>(this, (sender, message) =>
