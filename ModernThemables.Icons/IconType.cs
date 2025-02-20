@@ -20,6 +20,7 @@ public enum IconType
     Expand,
     Gear,
     Graph,
+    Import,
     MagnifyingGlass,
     Maximise,
     Menu,

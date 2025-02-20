@@ -52,7 +52,7 @@ public class AliasableViewModelBase<TChild> : ViewModelBase<TChild>
     {
         this.IsEditingAlias = !this.IsEditingAlias;
         this.previousAlias = this.Alias;
-        if (this.IsEditingAlias)
+        if (this.IsEditingAlias && this.Alias != this.Name)
         {
             this.Alias = this.Name;
         }
