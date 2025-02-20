@@ -270,10 +270,10 @@
                                     AccentBrush="Transparent"
                                     CanAddChild="False"
                                     CanDelete="False"
-                                    SelectionMode="Expand"
                                     IsContainingMenuOpen="{Binding IsMenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                     IsExpanded="{Binding ShowSettings, RelativeSource={RelativeSource TemplatedParent}}"
                                     SelectCommand="{Binding ShowSettingsCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                    SelectionMode="Expand"
                                     Visibility="{Binding SettingsVm, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleIfNotNullConverter}}">
                                     <controls:HamburgerMenuItem.IconTemplate>
                                         <DataTemplate>
@@ -342,9 +342,9 @@
                         AccentBrush="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:HamburgerMenu}}, Path=AccentBrush}"
                         CanAddChild="False"
                         CanDelete="False"
-                        SelectionMode="Automatic"
                         Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:HamburgerMenu}}, Path=Foreground}"
-                        IsContainingMenuOpen="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:HamburgerMenu}}, Path=IsMenuOpen}" />
+                        IsContainingMenuOpen="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:HamburgerMenu}}, Path=IsMenuOpen}"
+                        SelectionMode="Automatic" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>
