@@ -31,7 +31,7 @@
         <CheckBox
             x:Name="SyncCheckbox"
             Grid.Column="1"
-            Margin="2,0"
+            Margin="10,0,0,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             IsChecked="{Binding IsSyncingWithOs, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -39,13 +39,14 @@
         <Label
             Grid.Row="1"
             Grid.Column="0"
+            Margin="0,5,0,0"
             Content="Brightness Mode"
             Foreground="{DynamicResource PrimaryTextBrush}"
             SnapsToDevicePixels="True" />
         <CheckBox
             Grid.Row="1"
             Grid.Column="1"
-            Margin="2,0"
+            Margin="10,5,0,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             IsChecked="{Binding IsDarkMode}"
@@ -54,8 +55,7 @@
         <Grid
             Grid.Row="1"
             Grid.Column="2"
-            Width="30"
-            Height="30"
+            Margin="10,5,0,0"
             HorizontalAlignment="Left"
             Focusable="False">
             <scalableicons:Icon
@@ -75,19 +75,21 @@
         </Grid>
         <Label
             Grid.Row="2"
+            Margin="0,5,0,0"
             Content="Transparent Title Bar"
             Foreground="{DynamicResource PrimaryTextBrush}"
             SnapsToDevicePixels="True" />
         <CheckBox
             Grid.Row="2"
             Grid.Column="1"
-            Margin="2,0"
+            Margin="10,5,0,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             IsChecked="{Binding IsTransparentHeader}"
             Style="{StaticResource ToggleCheckbox}" />
         <Label
             Grid.Row="3"
+            Margin="0,5,0,0"
             Content="Theme Colour"
             Foreground="{DynamicResource PrimaryTextBrush}"
             SnapsToDevicePixels="True" />
@@ -97,7 +99,7 @@
             Grid.ColumnSpan="2"
             Width="40"
             Height="40"
-            Margin="2,3,2,5"
+            Margin="10,5,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Background="{Binding Colour, Converter={StaticResource ColourToBrushConverter}}"

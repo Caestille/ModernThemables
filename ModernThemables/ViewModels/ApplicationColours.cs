@@ -12,7 +12,7 @@ public partial class ThemingControlViewModel : ObservableObject
     private static readonly Color PrimaryBackgroundColourLight = MonoColour(255);
     private static readonly Color PrimaryBackgroundColourDark = MonoColour(10);
 
-    private static readonly Color SecondaryBackgroundColourLight = MonoColour(225);
+    private static readonly Color SecondaryBackgroundColourLight = MonoColour(240);
     private static readonly Color SecondaryBackgroundColourDark = MonoColour(15);
 
     private static readonly Color PrimaryTextColourLight = Colors.Black;
