@@ -6,6 +6,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CoreUtilities;component/Themes/Converters.xaml" />
 
+        <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/AnimatedMenuIcon.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Generic/BlurHost.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Colours.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Converters.xaml" />
@@ -14,4 +15,5 @@
     </ResourceDictionary.MergedDictionaries>
 
     <wpf:BindingProxy x:Key="proxy" Data="{Binding}" />
+
 </ResourceDictionary>

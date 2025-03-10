@@ -1,4 +1,4 @@
-﻿namespace ModernThemables.Icons.AnimatedIcons;
+﻿namespace ModernThemables.Controls;
 
 using System.Windows;
 using System.Windows.Controls;

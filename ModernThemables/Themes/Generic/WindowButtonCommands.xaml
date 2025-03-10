@@ -2,10 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
-    xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/ModernThemables.Icons;component/Themes/Generic.xaml" />
         <ResourceDictionary Source="pack://application:,,,/ModernThemables;component/Themes/Rounded/Button2.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
@@ -40,16 +39,16 @@
                 x:Name="PART_ThemeSetButton"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="Set theme">
-                <scalableicons:Icon
+                <iconPacks:PackIconCodicons 
                     Width="11"
                     Height="6"
                     Foreground="{TemplateBinding Foreground}"
-                    Kind="Expand"
+                    Kind="ChevronDown"
                     RenderTransformOrigin="0.5,0.5">
-                    <scalableicons:Icon.RenderTransform>
+                    <iconPacks:PackIconCodicons.RenderTransform>
                         <RotateTransform x:Name="RotateTransformBlah" Angle="0" />
-                    </scalableicons:Icon.RenderTransform>
-                </scalableicons:Icon>
+                    </iconPacks:PackIconCodicons.RenderTransform>
+                </iconPacks:PackIconCodicons>
             </controls:Button2>
             <Border
                 x:Name="PART_Splitter"
@@ -64,13 +63,13 @@
                 Command="{x:Static SystemCommands.MinimizeWindowCommand}"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="{Binding Minimize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
-                <scalableicons:Icon
+                <iconPacks:PackIconCodicons
                     Width="10"
                     Height="1"
                     Margin="0,0,0,10"
                     VerticalAlignment="Bottom"
                     Foreground="{TemplateBinding Foreground}"
-                    Kind="Minimise" />
+                    Kind="ChromeMinimize" />
             </controls:Button2>
             <controls:Button2
                 x:Name="PART_Max"
@@ -79,11 +78,11 @@
                 Command="{x:Static SystemCommands.MaximizeWindowCommand}"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="{Binding Maximize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
-                <scalableicons:Icon
+                <iconPacks:PackIconCodicons
                     Width="10"
                     Height="10"
                     Foreground="{TemplateBinding Foreground}"
-                    Kind="Maximise" />
+                    Kind="ChromeMaximize" />
             </controls:Button2>
             <controls:Button2
                 x:Name="PART_Close"
@@ -94,11 +93,11 @@
                 MouseOverBrush="#e81123"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="{Binding Close, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
-                <scalableicons:Icon
+                <iconPacks:PackIconCodicons
                     Width="10"
                     Height="10"
                     Foreground="{TemplateBinding Foreground}"
-                    Kind="Close" />
+                    Kind="ChromeClose" />
             </controls:Button2>
         </StackPanel>
         <ControlTemplate.Triggers>
@@ -138,10 +137,10 @@
                 <Setter TargetName="PART_Max" Property="ToolTip" Value="{Binding Restore, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
                 <Setter TargetName="PART_Max" Property="Content">
                     <Setter.Value>
-                        <scalableicons:Icon
+                        <iconPacks:PackIconCodicons
                             Width="10"
                             Height="10"
-                            Kind="Restore" />
+                            Kind="ChromeRestore" />
                     </Setter.Value>
                 </Setter>
             </DataTrigger>

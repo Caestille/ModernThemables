@@ -5,7 +5,7 @@
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:controlzEx="urn:controlzex"
     xmlns:ex="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons">
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Converters.xaml" />
@@ -194,11 +194,11 @@
                                         CornerRadius="0,5,0,5"
                                         MouseDownBrush="{DynamicResource PrimaryControlMouseDownBrush}"
                                         MouseOverBrush="{DynamicResource PrimaryControlMouseOverBrush}">
-                                        <scalableicons:Icon
+                                        <iconPacks:PackIconCodicons
                                             Width="10"
                                             Height="10"
                                             Foreground="{DynamicResource PrimaryTextBrush}"
-                                            Kind="Close" />
+                                            Kind="ChromeClose" />
                                     </controls:Button2>
                                 </Grid>
                             </Border>

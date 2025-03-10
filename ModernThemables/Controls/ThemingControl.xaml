@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons"
     xmlns:viewmodels="clr-namespace:ModernThemables.ViewModels"
     x:Name="WindowControl"
     Width="Auto"
@@ -58,19 +58,19 @@
             Margin="10,5,0,0"
             HorizontalAlignment="Left"
             Focusable="False">
-            <scalableicons:Icon
+            <iconPacks:PackIconMaterial
                 Grid.Row="1"
                 Width="15"
                 Height="15"
                 Foreground="{DynamicResource SecondaryTextBrush}"
-                Kind="Sun"
+                Kind="WhiteBalanceSunny"
                 Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfFalseConverter}}" />
-            <scalableicons:Icon
+            <iconPacks:PackIconMaterial
                 Grid.Row="1"
                 Width="15"
                 Height="15"
                 Foreground="{DynamicResource SecondaryTextBrush}"
-                Kind="Moon"
+                Kind="MoonWaningCrescent"
                 Visibility="{Binding IsDarkMode, Converter={StaticResource VisibleIfTrueConverter}}" />
         </Grid>
         <Label

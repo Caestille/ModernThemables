@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ModernThemables.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:scalableicons="clr-namespace:ModernThemables.Icons;assembly=ModernThemables.Icons"
     mc:Ignorable="d">
 
     <ResourceDictionary.MergedDictionaries>
@@ -186,6 +186,7 @@
                                     </Grid.ColumnDefinitions>
                                     <!--#region Add child button-->
                                     <controls:Button2
+                                        Padding="4"
                                         Background="Transparent"
                                         Command="{Binding AddChildCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                         Style="{StaticResource MenuItemButtonStyle}"
@@ -197,16 +198,14 @@
                                                 <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                             </MultiBinding>
                                         </controls:Button2.Visibility>
-                                        <scalableicons:Icon
-                                            Width="10"
-                                            Height="10"
-                                            Margin="2"
+                                        <iconPacks:PackIconMaterial
                                             Kind="Plus" />
                                     </controls:Button2>
                                     <!--#endregion-->
                                     <!--#region Delete button-->
                                     <controls:Button2
                                         Grid.Column="1"
+                                        Padding="4"
                                         Command="{Binding DeleteCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                         Style="{StaticResource MenuItemButtonStyle}"
                                         ToolTip="Delete">
@@ -217,20 +216,18 @@
                                                 <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                             </MultiBinding>
                                         </controls:Button2.Visibility>
-                                        <scalableicons:Icon
-                                            Width="10"
-                                            Height="10"
-                                            Margin="1,0,0,0"
-                                            Kind="Bin" />
+                                        <iconPacks:PackIconMaterial
+                                            Kind="Delete" />
                                     </controls:Button2>
                                     <!--#endregion-->
                                     <!--#region Drop down indicator-->
                                     <Grid
                                         Grid.Column="2"
-                                        Width="10"
-                                        Height="10"
-                                        Margin="3,0,0,0"
+                                        Width="11"
+                                        Height="11"
+                                        Margin="3,1,0,0"
                                         HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
                                         IsHitTestVisible="False"
                                         RenderTransformOrigin="0.5,0.5">
                                         <Grid.Visibility>
@@ -253,7 +250,7 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
-                                        <scalableicons:Icon Foreground="{TemplateBinding Foreground}" Kind="Expand" />
+                                        <iconPacks:PackIconCodicons Foreground="{TemplateBinding Foreground}" Kind="ChevronDown" />
                                     </Grid>
                                     <!--#endregion-->
                                 </Grid>
