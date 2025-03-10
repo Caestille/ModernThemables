@@ -51,7 +51,7 @@
                                     <Binding ElementName="Text" Path="FontStyle" />
                                     <Binding ElementName="Text" Path="FontWeight" />
                                     <Binding ElementName="Text" Path="FontStretch" />
-                                    <Binding ElementName="root" Path="LabelAlignment" />
+                                    <Binding ElementName="root" Path="HorizontalAlignment" />
                                     <Binding ElementName="root" Path="Orientation" />
                                     <Binding ElementName="root" Path="LabelRotation" />
                                 </MultiBinding>
