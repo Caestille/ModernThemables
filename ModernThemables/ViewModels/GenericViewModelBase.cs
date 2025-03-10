@@ -13,8 +13,6 @@ using ModernThemables.Messages;
 
 public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenuItem
 {
-    private readonly IEnumerable<Action<Color>> notifyColourUpdates = new List<Action<Color>>();
-
     private bool isDisplayed;
     private bool isExpanded;
     private bool isSelected;
@@ -71,9 +69,6 @@ public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenu
 
     protected IMessenger BaseMessenger => this.Messenger;
 
-    public void RegisterColourUpdateNotification(Action<Color> toInvoke)
-        => this.notifyColourUpdates.Append(toInvoke);
-
     public virtual void Select(GenericViewModelBase? sender = null)
         => this.Messenger.Send(new ViewModelRequestShowMessage(this, sender ?? this));
 
@@ -84,16 +79,7 @@ public abstract class GenericViewModelBase : ObservableRecipient, IHamburgerMenu
 
     public abstract List<object> GetChildren(bool recurse = false);
 
-    protected virtual void OnCommitColourUpdate()
-    {
-        if (this.notifyColourUpdates.Any())
-        {
-            foreach (var action in this.notifyColourUpdates)
-            {
-                action(this.Colour);
-            }
-        }
-    }
+    protected virtual void OnCommitColourUpdate() { }
 
     protected virtual void OnShutdownStart(object? sender, EventArgs e) { }
 }

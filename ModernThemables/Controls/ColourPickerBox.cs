@@ -3,6 +3,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using ModernThemables.Services;
 
@@ -68,8 +69,13 @@ public class ColourPickerBox : Control
         }
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e) => this.Background = new SolidColorBrush(
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        this.Background = new SolidColorBrush(
             new DialogueService().ShowColourPickerDialogue(
                 (this.Background as SolidColorBrush)!.Color,
                 colour => this.TemporaryColour = colour));
+        BindingOperations.GetBindingExpression(this, ColourPickerBox.BackgroundProperty).UpdateSource();
+    }
+
 }
