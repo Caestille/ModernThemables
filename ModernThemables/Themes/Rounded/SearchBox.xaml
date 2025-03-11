@@ -86,8 +86,8 @@
                 <controls:Button2
                     x:Name="PART_button"
                     Grid.Column="2"
-                    Height="{Binding ElementName=PART_ContentHost, Path=ActualHeight}"
                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                    Height="{Binding ElementName=PART_ContentHost, Path=ActualHeight}"
                     Margin="10,2,3,2"
                     Padding="2"
                     HorizontalAlignment="Right"
@@ -101,8 +101,8 @@
                     Foreground="{DynamicResource SecondaryTextBrush}"
                     MouseOverBrush="{DynamicResource PrimaryControlMouseOverBrush}">
                     <iconPacks:PackIconCodicons
-                        Height="Auto"
                         Width="Auto"
+                        Height="Auto"
                         Background="Transparent"
                         Kind="ChromeClose" />
                 </controls:Button2>

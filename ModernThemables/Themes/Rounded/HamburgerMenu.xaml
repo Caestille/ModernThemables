@@ -182,7 +182,10 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
-                                        <iconPacks:PackIconMaterial Margin="5" Kind="Pin" RenderTransformOrigin="0.5,0.5">
+                                        <iconPacks:PackIconMaterial
+                                            Margin="5"
+                                            Kind="Pin"
+                                            RenderTransformOrigin="0.5,0.5">
                                             <iconPacks:PackIconMaterial.RenderTransform>
                                                 <RotateTransform Angle="45" />
                                             </iconPacks:PackIconMaterial.RenderTransform>

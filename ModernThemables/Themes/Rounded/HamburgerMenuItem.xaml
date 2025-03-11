@@ -198,8 +198,7 @@
                                                 <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                             </MultiBinding>
                                         </controls:Button2.Visibility>
-                                        <iconPacks:PackIconMaterial
-                                            Kind="Plus" />
+                                        <iconPacks:PackIconMaterial Kind="Plus" />
                                     </controls:Button2>
                                     <!--#endregion-->
                                     <!--#region Delete button-->
@@ -216,8 +215,7 @@
                                                 <Binding ElementName="SingleItemGrid" Path="IsMouseOver" />
                                             </MultiBinding>
                                         </controls:Button2.Visibility>
-                                        <iconPacks:PackIconMaterial
-                                            Kind="Delete" />
+                                        <iconPacks:PackIconMaterial Kind="Delete" />
                                     </controls:Button2>
                                     <!--#endregion-->
                                     <!--#region Drop down indicator-->

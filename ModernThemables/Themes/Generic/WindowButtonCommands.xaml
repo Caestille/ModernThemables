@@ -39,7 +39,7 @@
                 x:Name="PART_ThemeSetButton"
                 Style="{StaticResource TitleBarButton}"
                 ToolTip="Set theme">
-                <iconPacks:PackIconCodicons 
+                <iconPacks:PackIconCodicons
                     Width="11"
                     Height="6"
                     Foreground="{TemplateBinding Foreground}"

@@ -13,7 +13,7 @@
             x:Name="grip"
             Width="14"
             Height="14"
-            Margin="-7,0"
+            Margin="0,-1,0,0"
             VerticalAlignment="Center"
             Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBrush}"
             BorderBrush="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Slider2}}, Path=ThumbBorderBrush}"
@@ -74,10 +74,16 @@
             </Grid.RowDefinitions>
             <Track x:Name="PART_Track" Grid.Row="1">
                 <Track.DecreaseRepeatButton>
-                    <RepeatButton Command="Slider.DecreaseLarge" Style="{StaticResource RoundedSliderRepeatButtonDecrease}" />
+                    <RepeatButton
+                        Margin="3,0,-7,0"
+                        Command="Slider.DecreaseLarge"
+                        Style="{StaticResource RoundedSliderRepeatButtonDecrease}" />
                 </Track.DecreaseRepeatButton>
                 <Track.IncreaseRepeatButton>
-                    <RepeatButton Command="Slider.IncreaseLarge" Style="{StaticResource RoundedSliderRepeatButtonIncrease}" />
+                    <RepeatButton
+                        Margin="-7,0,3,0"
+                        Command="Slider.IncreaseLarge"
+                        Style="{StaticResource RoundedSliderRepeatButtonIncrease}" />
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
                     <Thumb Template="{StaticResource RoundedSliderThumb}" />

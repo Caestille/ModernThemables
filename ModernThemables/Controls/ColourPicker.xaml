@@ -86,7 +86,7 @@
                 Content="R"
                 Foreground="{DynamicResource PrimaryTextBrush}"
                 SnapsToDevicePixels="True" />
-            <Slider
+            <local:Slider2
                 Grid.Column="1"
                 Width="100"
                 VerticalAlignment="Center"
@@ -111,7 +111,7 @@
                 Grid.Row="1"
                 Content="G"
                 Foreground="{DynamicResource PrimaryTextBrush}" />
-            <Slider
+            <local:Slider2
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="100"
@@ -140,7 +140,7 @@
                 Content="B"
                 Foreground="{DynamicResource PrimaryTextBrush}"
                 SnapsToDevicePixels="True" />
-            <Slider
+            <local:Slider2
                 Grid.Row="2"
                 Grid.Column="1"
                 Width="100"
