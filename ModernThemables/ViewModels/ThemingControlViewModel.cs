@@ -55,6 +55,10 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
         Application.Current.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
     }
 
+    public static event EventHandler<bool>? DarkModeChanged;
+
+    public static bool DarkMode { get; private set; }
+
     public event EventHandler<bool>? TransparentHeaderChanged;
 
     public event EventHandler<bool>? IsDarkChanged;
@@ -94,6 +98,8 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
         get => this.isDarkMode;
         set
         {
+            DarkMode = value;
+            DarkModeChanged?.Invoke(this, value);
             this.SetProperty(ref this.isDarkMode, value);
             this.SetBrightnessMode();
             this.IsDarkChanged?.Invoke(this, value);
@@ -137,20 +143,20 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
             = new SolidColorBrush(this.isDarkMode ? PrimaryTextColourDark : PrimaryTextColourLight);
         Application.Current.Resources[nameof(SecondaryTextColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
             = new SolidColorBrush(this.isDarkMode ? SecondaryTextColourDark : SecondaryTextColourLight);
-        Application.Current.Resources[nameof(TertiaryTextColorLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
-            = new SolidColorBrush(this.isDarkMode ? TertiaryTextColourDark : TertiaryTextColorLight);
+        Application.Current.Resources[nameof(TertiaryTextColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
+            = new SolidColorBrush(this.isDarkMode ? TertiaryTextColourDark : TertiaryTextColourLight);
         Application.Current.Resources[nameof(PrimaryControlColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
             = new SolidColorBrush(this.isDarkMode ? PrimaryControlColourDark : PrimaryControlColourLight);
         Application.Current.Resources[nameof(SecondaryControlColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
             = new SolidColorBrush(this.isDarkMode ? SecondaryControlColourDark : SecondaryControlColourLight);
-        Application.Current.Resources[nameof(PrimaryControlMouseOverBrushLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
-            = new SolidColorBrush(this.isDarkMode ? PrimaryControlMouseOverBrushDark : PrimaryControlMouseOverBrushLight);
-        Application.Current.Resources[nameof(SecondaryControlMouseOverBrushLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
-            = new SolidColorBrush(this.isDarkMode ? SecondaryControlMouseOverBrushDark : SecondaryControlMouseOverBrushLight);
-        Application.Current.Resources[nameof(PrimaryControlMouseDownBrushLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
-            = new SolidColorBrush(this.isDarkMode ? PrimaryControlMouseDownBrushDark : PrimaryControlMouseDownBrushLight);
-        Application.Current.Resources[nameof(SecondaryControlMouseDownBrushLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
-            = new SolidColorBrush(this.isDarkMode ? SecondaryControlMouseDownBrushDark : SecondaryControlMouseDownBrushLight);
+        Application.Current.Resources[nameof(PrimaryControlMouseOverColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
+            = new SolidColorBrush(this.isDarkMode ? PrimaryControlMouseOverColourDark : PrimaryControlMouseOverColourLight);
+        Application.Current.Resources[nameof(SecondaryControlMouseOverColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
+            = new SolidColorBrush(this.isDarkMode ? SecondaryControlMouseOverColourDark : SecondaryControlMouseOverColourLight);
+        Application.Current.Resources[nameof(PrimaryControlMouseDownColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
+            = new SolidColorBrush(this.isDarkMode ? PrimaryControlMouseDownColourDark : PrimaryControlMouseDownColourLight);
+        Application.Current.Resources[nameof(SecondaryControlMouseDownColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
+            = new SolidColorBrush(this.isDarkMode ? SecondaryControlMouseDownColourDark : SecondaryControlMouseDownColourLight);
         Application.Current.Resources[nameof(PrimaryControlBorderColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
             = new SolidColorBrush(this.isDarkMode ? PrimaryControlBorderColourDark : PrimaryControlBorderColourLight);
         Application.Current.Resources[nameof(SecondaryControlBorderColourLight).Replace("Colour", "Brush").Replace("Light", string.Empty)]
@@ -208,9 +214,9 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
         var isThemeDark = ThemeColour.PerceivedBrightness() < 0.5;
         ThemeTextColour = isThemeDark ? Colors.White : Colors.Black;
 
-        ThemeMouseOverBrush = ThemeColour.ChangeColourBrightness(0.3f);
+        ThemeMouseOverColour = ThemeColour.ChangeColourBrightness(0.3f);
 
-        ThemeMouseDownBrush = ThemeColour.ChangeColourBrightness(-0.2f);
+        ThemeMouseDownColour = ThemeColour.ChangeColourBrightness(-0.2f);
 
         ThemeBorderColour = ThemeColour.ChangeColourBrightness(this.isDarkMode ? -0.2f : 0.3f);
 
@@ -220,10 +226,10 @@ public partial class ThemingControlViewModel : ObservableObject, IDisposable
 
         Application.Current.Resources["ThemeBrush"] = new SolidColorBrush(ThemeColour);
         Application.Current.Resources["ThemeTextBrush"] = new SolidColorBrush(ThemeTextColour);
-        Application.Current.Resources["ThemeMouseOverBrush"] = new SolidColorBrush(ThemeMouseOverBrush);
-        Application.Current.Resources["ThemeMouseDownBrush"] = new SolidColorBrush(ThemeMouseDownBrush);
-        Application.Current.Resources["ThemeBorderBrush"] = new SolidColorBrush(ThemeMouseOverBrush);
-        Application.Current.Resources["ThemeDisabledBrush"] = new SolidColorBrush(ThemeMouseDownBrush);
+        Application.Current.Resources["ThemeMouseOverBrush"] = new SolidColorBrush(ThemeMouseOverColour);
+        Application.Current.Resources["ThemeMouseDownBrush"] = new SolidColorBrush(ThemeMouseDownColour);
+        Application.Current.Resources["ThemeBorderBrush"] = new SolidColorBrush(ThemeMouseOverColour);
+        Application.Current.Resources["ThemeDisabledBrush"] = new SolidColorBrush(ThemeMouseDownColour);
     }
 
     private void OsThemePollTimer_Elapsed(object? sender, ElapsedEventArgs e)
