@@ -77,5 +77,4 @@ public class ColourPickerBox : Control
                 colour => this.TemporaryColour = colour));
         BindingOperations.GetBindingExpression(this, ColourPickerBox.BackgroundProperty).UpdateSource();
     }
-
 }
