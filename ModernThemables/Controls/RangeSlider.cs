@@ -278,22 +278,18 @@ public class RangeSlider : Slider2
     {
         var cv = this.GetCoercedValues();
 
-        double actualWidth = this.ActualWidth;
-        double lowerSliderThumbWidth = 0d;
-        double higherSliderThumbWidth = 0d;
+        var thumbWidth = 10;
+        double width = this.ActualWidth - thumbWidth;
 
-        actualWidth -= lowerSliderThumbWidth + higherSliderThumbWidth;
         this.SetLowerSliderValues(cv.LowerValue, cv.Minimum, cv.Maximum);
         this.SetHigherSliderValues(cv.HigherValue, cv.Minimum, cv.Maximum);
 
-        double entireRange = cv.Maximum - cv.Minimum;
+        double range = cv.Maximum - cv.Minimum;
 
-        if (entireRange > 0)
+        if (range > 0)
         {
-            var higherValue = cv.HigherValue;
-            var lowerValue = cv.LowerValue;
-            this.RangeWidth = (actualWidth * (higherValue - lowerValue)) / entireRange;
-            this.RangeMargin = new Thickness(((lowerValue - this.Minimum) / entireRange) * actualWidth, 0, 0, 0);
+            this.RangeWidth = (width * (cv.HigherValue - cv.LowerValue)) / range;
+            this.RangeMargin = new Thickness((((cv.LowerValue - this.Minimum) / range) * width) + (thumbWidth * 0.5), 0, 0, 0);
         }
         else
         {
@@ -303,7 +299,6 @@ public class RangeSlider : Slider2
 
     private CoercedValues GetCoercedValues()
     {
-        var buffer = (this.Maximum - this.Minimum) * 0.01;
         CoercedValues cv = default;
         cv.Minimum = Math.Min(this.Minimum, this.Maximum);
         cv.Maximum = Math.Max(cv.Minimum, this.Maximum);
